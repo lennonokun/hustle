@@ -6,8 +6,8 @@ use crate::ds::{Word, Feedback, DTree, WSet, FbMap, get_words};
 mod analysis;
 use crate::analysis::HData;
 
-const NTOPS: usize = 15;
-const ENDGCUTOFF: usize = 25;
+const NTOPS: usize = 10;
+const ENDGCUTOFF: usize = 20;
 
 // TODO:
 // multithread
@@ -16,7 +16,7 @@ const ENDGCUTOFF: usize = 25;
 // are inf counts useful?
 // keep track of n for hdata?
 // is it incorrect for happrox.csv to give 1.0 for x=1?
-// why cant i get past 3.425?
+// implement yellows working actually
 
 // get feedback partitions
 fn fb_partition(gw: Word, aws: &WSet) -> FbMap<WSet> {
@@ -169,7 +169,6 @@ fn solve_state(gws: &WSet, aws: &WSet, n: i32, hd: &mut HData) -> Option<DTree> 
 	// search top heuristic words and stop
 	// on guaranteed next guess (score = 2)
 	for gw in top_words(gws, aws, hd, NTOPS) {
-		// println!("{}", gw.to_string());
 		match solve_given(gw, gws, aws, n, hd) {
 			None => {},
 			Some(dt2) => {
@@ -194,7 +193,7 @@ fn solve_state(gws: &WSet, aws: &WSet, n: i32, hd: &mut HData) -> Option<DTree> 
 	}
 }
 
-// best found: salet, 3.425917926565871
+// best found: salet, 3.424859246427026
 fn main() {
 	let gws = get_words("data/guess_words").unwrap();
 	let aws = get_words("data/answer_words").unwrap();
@@ -206,7 +205,8 @@ fn main() {
 		// println!("{}. {}", i+1, gw.to_string()); 
 		// solve_given(*gw, &gws, &aws, 6, &mut hd);
 	// }
-	let dt = solve_given(w, &gws, &aws, 6, &mut hd).unwrap();
+	// optimal decision tree can be limited to a max of 5 guesses
+	let dt = solve_given(w, &gws, &aws, 5, &mut hd).unwrap();
 	println!("{}", dt.get_eval())
 	// hd.write("data/hdata.csv").unwrap();
 }

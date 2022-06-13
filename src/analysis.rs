@@ -62,7 +62,3 @@ impl HData {
 		Ok(())
 	}
 }
-
-// pub fn write_data(path: &str, data: &Vec<(f64, f64)>) -> Result<()> {
-// }
-

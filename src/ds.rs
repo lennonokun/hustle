@@ -4,7 +4,7 @@ use std::path::Path;
 use std::collections::{HashSet, HashMap};
 
 pub const NLETS: usize = 5;
-pub const NWORDS: usize = 2315;
+pub const NWORDS: usize = 2309;
 
 #[derive(Debug)]
 #[derive(Hash)]
