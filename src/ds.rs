@@ -4,6 +4,7 @@ use std::path::Path;
 use std::collections::{HashSet, HashMap};
 
 pub const NLETS: usize = 5;
+pub const NAlPH: usize = 26;
 pub const NWORDS: usize = 2309;
 
 #[derive(Debug)]
@@ -38,6 +39,10 @@ pub fn get_words<P>(p: P) -> Result<WSet, Error> where P: AsRef<Path> {
 		.collect()
 }
 
+// pub struct WTable {
+	// cts: [u64; NWORDS]
+// }
+
 #[derive(Debug)]
 #[derive(Hash, PartialEq, Eq, PartialOrd, Clone, Copy)]
 pub struct Feedback {
@@ -50,11 +55,24 @@ impl Feedback {
 	// answer, guess
 	pub fn from(gw: Word, aw: Word) -> Self {
 		let mut fb = Feedback{g_bs: 0, y_bs:0};
+		// bitset for used chars
+		let mut use_bs = 0u8;
+		// first find greens
 		for i in 0..NLETS {
 			if aw.data[i] == gw.data[i] {
 				fb.g_bs |= 1 << i;
-			} else if aw.data.contains(&gw.data[i]) {
-				fb.y_bs |= 1 << i;
+				use_bs |= 1 << i;
+			}
+		}
+		// then find yellows
+		for i in 0..NLETS {
+			if fb.g_bs & 1 << i == 0 {
+				for j in 0..NLETS {
+					if gw.data[i] == aw.data[j] && (use_bs & 1 << j == 0) {
+						fb.y_bs |= 1 << i;
+						use_bs |= 1 << j;
+					}
+				}
 			}
 		};
 		fb
