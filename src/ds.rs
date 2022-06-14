@@ -2,6 +2,7 @@ use std::io::{BufRead, BufReader, Error};
 use std::fs::File;
 use std::path::Path;
 use std::collections::{HashSet, HashMap};
+use std::mem::MaybeUninit;
 
 pub const NLETS: usize = 5;
 // pub const NAlPH: usize = 26;
@@ -16,11 +17,24 @@ pub struct Word {
 }
 
 impl Word {
-	pub fn from(s: &String) -> Result<Word, Error> {
-		Ok(Word{data: s.chars()
-						.collect::<Vec<char>>()
-						.try_into()
-						.expect("Expected string of length 5")})
+	pub fn from(s: &String) -> Option<Word> {
+		if s.len() != NLETS {return None}
+		let data = MaybeUninit::<[char; 5]>::uninit();
+		let mut data = unsafe {data.assume_init()};
+		for (i,c) in &mut s.chars().enumerate() {
+			data[i] = c;
+		}
+		Some(Word{data: data})
+	}
+
+	pub fn from_str(s: &str) -> Option<Word> {
+		if s.len() != NLETS {return None}
+		let data = MaybeUninit::<[char; 5]>::uninit();
+		let mut data2 = unsafe {data.assume_init()};
+		for (i,c) in &mut s.chars().enumerate() {
+			data2[i] = c;
+		}
+		Some(Word{data: data2})
 	}
 
 	pub fn to_string(&self) -> String {
@@ -29,14 +43,26 @@ impl Word {
 }
 
 pub type WSet = HashSet<Word>;
+pub type WArr = [Word; NWORDS];
 
 pub fn get_words<P>(p: P) -> Result<WSet, Error> where P: AsRef<Path> {
 	let file = File::open(p)?;
 	let reader = BufReader::new(file);
-	reader.lines()
+	Ok(reader.lines()
 		.filter_map(Result::ok)
-		.map(|s| Word::from(&s))
-		.collect()
+		.filter_map(|s| Word::from(&s))
+		.collect())
+}
+
+pub fn get_awarr<P>(p: P) -> Result<WArr, Error> where P: AsRef<Path> {
+	let file = File::open(p)?;
+	let reader = BufReader::new(file);
+	Ok(reader.lines()
+		.filter_map(Result::ok)
+		.filter_map(|s| Word::from(&s))
+		.collect::<Vec<Word>>()
+		.try_into()
+		.expect("expected results of length NWORDS"))
 }
 
 // pub struct WTable {
@@ -103,7 +129,15 @@ impl Feedback {
 		};
 		fb
 	}
+
+	pub fn get_g(&self, i: usize) -> bool {
+		return self.g_bs & 1 << i != 0;
+	}
 	
+	pub fn get_y(&self, i: usize) -> bool {
+		return self.y_bs & 1 << i != 0;
+	}
+
 	pub fn is_correct(&self) -> bool {
 		self.g_bs == 31
 	}
