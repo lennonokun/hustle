@@ -1,11 +1,12 @@
 use std::sync::Mutex;
+use std::io;
 
 mod analysis;
 use crate::analysis::{HData, HRec};
 mod ds;
 use crate::ds::*;
 mod game;
-use crate::game::play;
+use crate::game::Game;
 mod solve;
 use crate::solve::*;
 
@@ -19,7 +20,8 @@ fn main() {
 	// let hd = HData::load("data/happrox.csv").unwrap();
 	// let hr_mut = Mutex::new(HRec::new());
 	// let w = Word::from(&String::from("reast")).unwrap();
-	play(&gws, &awarr);
+	let mut game = Game::new(&gws, &awarr, io::stdin(), io::stdout());
+	game.start();
 	// let dt = solve_given(w, &gws, &aws, 6, &hd, &hr_mut).unwrap();
 	// println!("{}", dt.get_eval());
 
