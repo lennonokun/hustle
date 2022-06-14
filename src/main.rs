@@ -1,21 +1,22 @@
 use std::collections::{HashMap, HashSet};
+use std::sync::Mutex;
+use rayon::prelude::*;
 
 mod ds;
-use crate::ds::{Word, Feedback, DTree, WSet, FbMap, get_words};
+use crate::ds::{Word, Feedback, DTree, WSet,
+								FbMap, get_words, NLETS};
 
 mod analysis;
-use crate::analysis::HData;
+use crate::analysis::{HData, HRec};
+
 
 const NTOPS: usize = 20;
-const ENDGCUTOFF: usize = 15;
+const ENDGCUTOFF: usize = 20;
 
 // TODO:
-// multithread
 // better understand borrowing
-// heuristic is worse now for bigger partitions bc i dont sample enough
 // are inf counts useful?
 // keep track of n for hdata?
-// is it incorrect for happrox.csv to give 1.0 for x=1?
 
 // get feedback partitions
 fn fb_partition(gw: Word, aws: &WSet) -> FbMap<WSet> {
@@ -60,33 +61,32 @@ fn top_words(gws: &WSet, aws: &WSet, hd: &HData, n: usize)
 }
 
 // NOT WORTH
-// fn common_letters(w1: Word, w2: Word) -> i32 {
-	// let mut out = 0;
-	// for i in 0..NLETS {
-		// if w1.data[i] == w2.data[i] {
-			// out += 1;
-		// }
-	// }
-	// out
-// }
-// 
-// fn reduce_words(gw: Word, gws: &WSet, aws: &WSet) -> WSet {
-	// gws.iter()
-		// // why double?
-		// .filter(|gw2| common_letters(gw, **gw2) <= 1 || aws.contains(gw2))
-		// .copied()
-		// .collect()
-// }
+fn common_letters(w1: Word, w2: Word) -> i32 {
+	let mut out = 0;
+	for i in 0..NLETS {
+		if w1.data[i] == w2.data[i] {
+			out += 1;
+		}
+	}
+	out
+}
+
+fn reduce_words(gw: Word, gws: &WSet) -> WSet {
+	gws.iter()
+		// why double?
+		.filter(|gw2| common_letters(gw, **gw2) <= 1)
+		.copied()
+		.collect()
+}
 
 // get upper bound for minimum mean guesses at state given guess
-fn solve_given(gw: Word, gws: &WSet, aws: &WSet,
-							 n: i32, hd: &mut HData) -> Option<DTree> {
+fn solve_given(gw: Word, gws: &WSet, aws: &WSet, n: i32,
+							 hd: &HData, hrm: &Mutex<HRec>) -> Option<DTree> {
 	// unnecessary unless user is dumb
-	if aws.len() == 1 && gw == *aws.iter().next().unwrap() {
+	let alen = aws.len();
+	if alen == 1 && gw == *aws.iter().next().unwrap() {
 		return Some(DTree::Leaf);
-	}
-	// todo if n == 1 && aws.len() > 20?
-	if n == 0 {
+	} else if n == 0 || (n == 1 && alen > 20) {
 		return None
 	}
 
@@ -94,12 +94,17 @@ fn solve_given(gw: Word, gws: &WSet, aws: &WSet,
 	let mut fbmap = FbMap::new();
 	for (fb, set) in fb_partition(gw, aws) {
 		if !fb.is_correct() {
-			let dt2 = solve_state(gws, &set, n-1, hd);
+			let dt2 = solve_state(&gws, &set, n-1, hd, hrm);
+			// let dt2 = if alen > ENDGCUTOFF {
+				// solve_state(&reduce_words(gw, &gws), &set, n-1, hd)
+			// } else {
+				// solve_state(&gws, &set, n-1, hd)
+			// };
 			match dt2 {
 				None => {
 					return None;
 				} Some(dt2) => {
-					eval += (set.len() as f64/aws.len() as f64) * dt2.get_eval();
+					eval += (set.len() as f64/alen as f64) * dt2.get_eval();
 					fbmap.insert(fb, dt2);
 				}
 			}
@@ -111,101 +116,122 @@ fn solve_given(gw: Word, gws: &WSet, aws: &WSet,
 	});
 }
 
+struct SolveData {
+	dt: Option<DTree>,
+	eval: f64,
+	stop: bool,
+}
+
 // get upper bound for mean guesses at state
-fn solve_state(gws: &WSet, aws: &WSet, n: i32, hd: &mut HData) -> Option<DTree> {
+fn solve_state(gws: &WSet, aws: &WSet, n: i32,
+							 hd: &HData, hrm: &Mutex<HRec>) -> Option<DTree> {
 	// worth?
-	if aws.len() == 1 {
+	let alen = aws.len();
+	if alen == 1 {
 		// 100% chance for one guess
+		hrm.lock().unwrap().record(1, 1.0);
 		return Some(DTree::Node{
 			eval: 1.0, 
 			word: *aws.iter().next().unwrap(),
 			fbmap: [(Feedback::from_str("GGGGG"), DTree::Leaf)].into()
 		});
 	}
-		// return 
-	// } else if aws.len() == 2 {
-		// // 50% chance for one guess
-		// return 1.5;
-		// return Some(DTree::Node{
-			// eval: 1.5, 
-			// word: *aws.iter().next().unwrap(),
-			// fbmap: [(fb_solved, DTree::Leaf)].into()
-		// });
 
 	if n == 0 {
+		hrm.lock().unwrap().record_inf(n as usize);
 		return None
 	}
 
 	// todo update comments for no above?
-	let mut dt = Some(DTree::Leaf);
-	let mut eval = f64::INFINITY;
+	let sd = Mutex::new(SolveData{
+		dt: Some(DTree::Leaf),
+		eval: f64::INFINITY,
+		stop: false,
+	});
 
 	// in "endgame", check if guessing a possible
 	// answer guarantees correct next guess (score < 2)
-	// (so far aws.len() = 14 is max i've found where this is possible)
-	if aws.len() <= ENDGCUTOFF {
-		for aw in aws {
-			match solve_given(*aw, gws, aws, n, hd) {
+	// (so far alen = 15 is max i've found where this is possible)
+	if alen <= ENDGCUTOFF {
+		aws.into_par_iter().for_each(|aw| {
+			// check stop
+			if sd.lock().unwrap().stop {return}
+			match solve_given(*aw, gws, aws, n, hd, hrm) {
 				None => {},
 				Some(dt2) => {
+					// check stop
+					let mut sd2 = sd.lock().unwrap();
 					let eval2 = dt2.get_eval();
-					if eval2 < 2.0 {
-						hd.record(aws.len(), eval2); 
-						return Some(dt2);
-					} else if eval2 < eval {
-						dt = Some(dt2);
-						eval = eval2;
+					if sd2.stop {
+						return;
+					} else if eval2 < 1.999 {
+						// hd.record(alen, eval2); 
+						sd2.dt = Some(dt2);
+						sd2.eval = eval2;
+						sd2.stop = true;
+					} else if eval2 < sd2.eval {
+						sd2.dt = Some(dt2);
+						sd2.eval = eval2;
 					}
 				}
 			}
-		}
+		});
 	}
 	// dont bother checking other words if a 2 was found
-	if eval < 2.001 {
-		hd.record(aws.len(), eval); 
-		return dt;
+	if sd.lock().unwrap().eval < 2.001 {
+		// cringe?
+		hrm.lock().unwrap().record(alen, sd.lock().unwrap().eval); 
+		return sd.into_inner().unwrap().dt;
 	}
 
 	// search top heuristic words and stop
 	// on guaranteed next guess (score = 2)
-	for gw in top_words(gws, aws, hd, NTOPS) {
-		match solve_given(gw, gws, aws, n, hd) {
-			None => {},
-			Some(dt2) => {
-				let eval2 = dt2.get_eval();
-				if eval2 < 2.0001 {
-					return Some(dt2);
-				} else if eval2 < eval {
-					dt = Some(dt2);
-					eval = eval2;
+	top_words(gws, aws, hd, NTOPS)
+		.into_par_iter()
+		.for_each(|gw| {
+			if sd.lock().unwrap().stop {return}
+			let dt2 = solve_given(gw, gws, aws, n, hd, hrm);
+			match dt2 {
+				None => {},
+				Some(dt2) => {
+					let mut sd2 = sd.lock().unwrap();
+					let eval2 = dt2.get_eval(); 
+					if sd2.stop {
+						return;
+					} else if eval2 < 2.001 {
+						sd2.dt = Some(dt2);
+						sd2.eval = eval2;
+						sd2.stop = true;
+					} else if eval2 < sd2.eval {
+						sd2.dt = Some(dt2);
+						sd2.eval = eval2;
+					}
 				}
-			}
-		};
-	}
+			};
+		});
 
-	if eval == f64::INFINITY {
+	let sd2 = sd.into_inner().unwrap();
+	if sd2.eval == f64::INFINITY {
 		// todo why inf?
-		hd.record_inf(n as usize);
+		hrm.lock().unwrap().record_inf(n as usize);
 		return None;
 	} else {
-		hd.record(aws.len(), eval);
-		return dt;
+		hrm.lock().unwrap().record(alen, sd2.eval);
+		return sd2.dt;
 	}
 }
 
-// best found: salet, 3.421394543092247
+// best found: salet, 3.42052836
+// out1: salet.BBBYB.drone.BGGBG didnt find prove?
+// out2: reast/BYYYY not finding whelk?
 fn main() {
 	let gws = get_words("data/guess_words").unwrap();
 	let aws = get_words("data/answer_words").unwrap();
-	let mut hd = HData::new();
-	hd.read("data/happrox.csv").unwrap();
-	let w = Word::from(&String::from("salet")).unwrap();
-	// good way to generate hdata
-	// for (i,gw) in top_words(&gws, &aws, &hd, 100).iter().enumerate() {
-		// println!("{}. {}", i+1, gw.to_string()); 
-		// solve_given(*gw, &gws, &aws, 6, &mut hd);
-	// }
-	let dt = solve_given(w, &gws, &aws, 6, &mut hd).unwrap();
-	println!("{}", dt.get_eval())
-	// hd.write("data/hdata.csv").unwrap();
+	let hd = HData::load("data/happrox.csv").unwrap();
+	let hr_mut = Mutex::new(HRec::new());
+	let w = Word::from(&String::from("reast")).unwrap();
+	let dt = solve_given(w, &gws, &aws, 6, &hd, &hr_mut).unwrap();
+	println!("{}", dt.get_eval());
+	// dt.pprint(&String::from(""), 1);
+	// hr_mut.into_inner().unwrap().save("data/hdata.csv").unwrap();
 }

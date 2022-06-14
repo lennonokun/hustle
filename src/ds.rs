@@ -4,7 +4,7 @@ use std::path::Path;
 use std::collections::{HashSet, HashMap};
 
 pub const NLETS: usize = 5;
-pub const NAlPH: usize = 26;
+// pub const NAlPH: usize = 26;
 pub const NWORDS: usize = 2309;
 
 #[derive(Debug)]
@@ -44,7 +44,7 @@ pub fn get_words<P>(p: P) -> Result<WSet, Error> where P: AsRef<Path> {
 // }
 
 #[derive(Debug)]
-#[derive(Hash, PartialEq, Eq, PartialOrd, Clone, Copy)]
+#[derive(Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 pub struct Feedback {
 	// green + yellow bitsets
 	g_bs: u8, 
@@ -76,6 +76,20 @@ impl Feedback {
 			}
 		};
 		fb
+	}
+
+	pub fn to_string(&self) -> String {
+		let mut out = String::new();
+		for i in 0..NLETS {
+			if self.g_bs & 1 << i != 0 {
+				out.push('G');
+			} else if self.y_bs & 1 << i != 0 {
+				out.push('Y');
+			} else {
+				out.push('B');
+			}
+		};
+		out
 	}
 
 	pub fn from_str(s: &str) -> Self {
@@ -130,6 +144,25 @@ impl DTree {
 		match self {
 			DTree::Leaf => None,
 			DTree::Node{eval, word, fbmap} => Some(fbmap)
+		}
+	}
+
+	pub fn pprint(self: &Self, indent: &String, n: i32) {
+		match self {
+			DTree::Leaf => {}
+			DTree::Node{eval, word, fbmap} => {
+				println!("{}{}, {}", indent, word.to_string(), eval);
+				let mut indent2 = indent.clone();
+				indent2.push(' ');
+				let mut items : Vec<(&Feedback, &DTree)> =
+					fbmap.iter().collect();
+				items.sort_by(|(_, dt1), (_, dt2)|
+					dt1.get_eval().partial_cmp(&dt2.get_eval()).unwrap());
+				for (fb, dt) in items {
+					println!("{}{}{}", indent2, fb.to_string(), n);
+					dt.pprint(&indent2,n+1);
+				}
+			}
 		}
 	}
 }

@@ -1,0 +1,13854 @@
+1,5c1,5
+< salet, 3.420961455175401
+<  BGBBG
+<  thing, 2.3125
+<   GBYBB
+<   tacit, 1
+---
+> salet, 3.4209614551754024
+>  BBGYY
+>  tilde, 1.5
+>   GBGBG
+>   tulle, 1
+8,9c8,19
+<   GBBBB
+<   tarot, 1
+---
+>  GBBGY
+>  steed, 2
+>   GGGGB
+>   steep, 1.5
+>    GGGGB
+>    steer, 1
+>     GGGGG
+>     DONE
+>  YBGYB
+>  welsh, 1.5
+>   BYGGB
+>   pulse, 1
+12,13c22,25
+<   YYBGB
+<   haunt, 1
+---
+>  YGBYY
+>  cowps, 2.4999999999999996
+>   BBYBY
+>   waste, 1
+16,17c28,37
+<   YBBGY
+<   gaunt, 1
+---
+>   BBBBY
+>   taste, 2
+>    BGGGG
+>    baste, 1.5
+>     BGGGG
+>     haste, 1
+>      GGGGG
+>      DONE
+>   GBBBY
+>   caste, 1
+20,21c40,41
+<   YYBBB
+<   yacht, 1
+---
+>   BBBYY
+>   paste, 1
+24,25c44,47
+<   YBBBY
+<   gamut, 1
+---
+>  BGBGB
+>  gormy, 2.499999999999999
+>   BBBBY
+>   payee, 1
+28,35c50,55
+<   YBBBB
+<   caput, 1.5
+<    GGBBG
+<    carat, 1
+<     GGGGG
+<     DONE
+<   YBGGB
+<   faint, 1.5
+---
+>   GBYBY
+>   gayer, 1
+>    GGGGG
+>    DONE
+>   BBGBB
+>   parer, 1.5
+37c57
+<    paint, 1
+---
+>    rarer, 1
+40,41c60,61
+<   YYYBB
+<   habit, 1
+---
+>   BBGYB
+>   harem, 1
+44,53c64,65
+<   YBBGB
+<   vaunt, 2
+<    BGGGG
+<    daunt, 1.5
+<     BGGGG
+<     jaunt, 1
+<      GGGGG
+<      DONE
+<   GBBGB
+<   taunt, 1
+---
+>   BYBYB
+>   cameo, 1
+56,57c68,69
+<   GBGGB
+<   taint, 1
+---
+>   GBYYB
+>   gamer, 1
+60,63c72,73
+<  BBBGB
+<  rownd, 2.822429906542054
+<   BBBBG
+<   embed, 1
+---
+>   BBYBY
+>   payer, 1
+66,85c76,79
+<   BGYYB
+<   woven, 2
+<    GGBGG
+<    woken, 1.5
+<     GGBGG
+<     women, 1
+<      GGGGG
+<      DONE
+<   BBBBB
+<   emcee, 1.75
+<    BBYGB
+<    chief, 1
+<     GGGGG
+<     DONE
+<    YBYGB
+<    cheek, 1
+<     GGGGG
+<     DONE
+<    BBGGB
+<    bicep, 1
+---
+>   YBYBB
+>   wager, 1.5
+>    BGGGG
+>    eager, 1
+88,89c82,83
+<   YGBYB
+<   goner, 1
+---
+>   BYBBB
+>   oaken, 1
+92,93c86,87
+<   GGBBY
+<   rodeo, 1
+---
+>   YBBBG
+>   cagey, 1
+96,111c90,93
+<   BBBYG
+<   unfed, 1.5
+<    BGBGG
+<    kneed, 1
+<     GGGGG
+<     DONE
+<   BBBYB
+<   vixen, 2
+<    BBBGG
+<    queen, 1.5
+<     BBBGG
+<     hymen, 1
+<      GGGGG
+<      DONE
+<    BGBGY
+<    piney, 1
+---
+>   BBYYB
+>   ramen, 1.5
+>    YGYGB
+>    maker, 1
+114,115c96,99
+<    YGBGG
+<    given, 1
+---
+>   BBYBB
+>   caper, 2.142857142857143
+>    BGGGG
+>    paper, 1
+118,127c102,105
+<   BBGYG
+<   unwed, 1
+<    GGGGG
+<    DONE
+<   YGBBB
+<   vichy, 2.2222222222222223
+<    BBBBB
+<    poker, 1.6666666666666665
+<     BGGGG
+<     joker, 1
+---
+>    BGBGG
+>    wafer, 1.6666666666666665
+>     BGBGG
+>     baker, 1
+130,131c108,109
+<     BGBGG
+<     boxer, 1
+---
+>     GGBGG
+>     waver, 1
+134,147c112,113
+<    BBBBY
+<    foyer, 1
+<     GGGGG
+<     DONE
+<    YBYBB
+<    cover, 1
+<     GGGGG
+<     DONE
+<    BBBYB
+<    homer, 1
+<     GGGGG
+<     DONE
+<    YBBBB
+<    mover, 1
+---
+>    BGBGY
+>    raven, 1
+150,151c116,117
+<    BBYBB
+<    corer, 1
+---
+>    YGBGG
+>    racer, 1
+154,155c120,127
+<    YBBYB
+<    hover, 1
+---
+>   GBYBB
+>   gazer, 1
+>    GGGGG
+>    DONE
+>   BBBBB
+>   haven, 1.5
+>    BGBGG
+>    waxen, 1
+158,159c130,141
+<   YBYBY
+<   wider, 1
+---
+>  YBBGY
+>  ester, 1
+>   GGGGG
+>   DONE
+>  BYBBY
+>  conia, 2.1904761904761902
+>   BGGBG
+>   tonga, 1
+>    GGGGG
+>    DONE
+>   BBYYY
+>   titan, 1
+163,169c145
+<   odder, 1.5
+<    GBGGG
+<    order, 1
+<     GGGGG
+<     DONE
+<   GGGBB
+<   rower, 1
+---
+>   actor, 1
+172,185c148,149
+<   BGBYB
+<   boney, 2
+<    BGYGB
+<    coven, 1
+<     GGGGG
+<     DONE
+<    BGGGG
+<    honey, 1.5
+<     BGGGG
+<     money, 1
+<      GGGGG
+<      DONE
+<   YBGBB
+<   fewer, 1
+---
+>   BBBYG
+>   tiara, 1
+188,189c152,153
+<   BGBYY
+<   dozen, 1
+---
+>   YBBGY
+>   attic, 1
+192,195c156,159
+<   YBBYY
+<   under, 1.5
+<    BYYGG
+<    diner, 1
+---
+>   BBYBY
+>   twang, 1.5
+>    GBGGB
+>    thank, 1
+198,199c162,163
+<   BBYYY
+<   widen, 1
+---
+>   BBYGY
+>   train, 1
+202,223c166,169
+<   YBBBB
+<   pubic, 2.2380952380952372
+<    BBBBB
+<    freer, 1.5
+<     GBYGG
+<     fever, 1
+<      GGGGG
+<      DONE
+<    BBBBY
+<    cheer, 1.5
+<     GBGGY
+<     creek, 1
+<      GGGGG
+<      DONE
+<    GGBBB
+<    purer, 1.5
+<     GGGGB
+<     puree, 1
+<      GGGGG
+<      DONE
+<    BBYYB
+<    brief, 1
+---
+>   BBBBY
+>   tramp, 1.5
+>    YGGBB
+>    wrath, 1
+226,227c172,175
+<    YBBBB
+<    hyper, 1
+---
+>   BBBYY
+>   triad, 1.5
+>    YBGYB
+>    amity, 1
+230,231c178,185
+<    YBBYB
+<    viper, 1
+---
+>   YBBBY
+>   track, 1
+>    GGGGG
+>    DONE
+>   BGBBY
+>   topaz, 1.5
+>    GGBGB
+>    today, 1
+234,235c188,229
+<    BBGBB
+<    ember, 1
+---
+>   BYBBG
+>   quota, 1
+>    GGGGG
+>    DONE
+>   BBGBY
+>   aunty, 1
+>    GGGGG
+>    DONE
+>   BGBBG
+>   aorta, 1
+>    GGGGG
+>    DONE
+>   BBBGG
+>   tibia, 1
+>    GGGGG
+>    DONE
+>   YBYGY
+>   antic, 1
+>    GGGGG
+>    DONE
+>   BBGBG
+>   junta, 1
+>    GGGGG
+>    DONE
+>  YGGYB
+>  false, 1
+>   GGGGG
+>   DONE
+>  BBBYG
+>  runic, 2.2727272727272716
+>   BBBYB
+>   eight, 1
+>    GGGGG
+>    DONE
+>   YBBGB
+>   merit, 1
+>    GGGGG
+>    DONE
+>   BBBBB
+>   theft, 1.5
+>    BBYBG
+>    depot, 1
+238,239c232,235
+<    BBGYB
+<    fiber, 1
+---
+>   GBBGB
+>   refit, 1.5
+>    GGBGG
+>    remit, 1
+242,243c238,245
+<    YYBBB
+<    upper, 1
+---
+>   GYBBY
+>   recut, 1
+>    GGGGG
+>    DONE
+>   BBBGB
+>   befit, 1.5
+>    YGBGG
+>    debit, 1
+246,247c248,251
+<    YBBBY
+<    creep, 1
+---
+>   YBBBB
+>   exert, 1.5
+>    BBGGG
+>    overt, 1
+250,251c254,265
+<    BBBYY
+<    crier, 1
+---
+>   YBYYB
+>   inert, 1
+>    GGGGG
+>    DONE
+>   GYBBB
+>   rebut, 1
+>    GGGGG
+>    DONE
+>   YBBBY
+>   crept, 1.5
+>    YGGBG
+>    erect, 1
+254,265c268,271
+<    BBBYB
+<    giver, 1.6666666666666665
+<     GYBGY
+<     grief, 1
+<      GGGGG
+<      DONE
+<     BGBGG
+<     fixer, 1
+<      GGGGG
+<      DONE
+<    BGBBB
+<    queer, 1
+---
+>   BBBYY
+>   evict, 1.5
+>    GBGGG
+>    edict, 1
+268,269c274,299
+<    BBGBY
+<    cyber, 1
+---
+>   BYBBB
+>   debut, 1
+>    GGGGG
+>    DONE
+>   YYBBB
+>   erupt, 1
+>    GGGGG
+>    DONE
+>   BBYYB
+>   inept, 1
+>    GGGGG
+>    DONE
+>   BBYBB
+>   event, 1
+>    GGGGG
+>    DONE
+>   BBBBY
+>   eject, 1
+>    GGGGG
+>    DONE
+>  BBBYY
+>  trite, 2.442307692307691
+>   YBYBG
+>   cutie, 1.5
+>    BYGGG
+>    untie, 1
+272,273c302,305
+<    GBBYB
+<    piper, 1
+---
+>   BGBGG
+>   brute, 1.5
+>    BGBGG
+>    wrote, 1
+276,277c308,315
+<    BGYBB
+<    buyer, 1
+---
+>   GBYBY
+>   tepid, 1
+>    GGGGG
+>    DONE
+>   YBYBY
+>   ethic, 1.5
+>    YYBGB
+>    fetid, 1
+280,281c318,319
+<   GBBYB
+<   ripen, 1
+---
+>   GGBBY
+>   trend, 1
+284,285c322,323
+<   GBYYB
+<   renew, 1
+---
+>   GBYYG
+>   tithe, 1
+288,291c326,337
+<   YBBYB
+<   finer, 2
+<    BGYGG
+<    nicer, 1
+---
+>   GYBBG
+>   there, 1
+>    GGGGG
+>    DONE
+>   BBGGY
+>   deity, 1
+>    GGGGG
+>    DONE
+>   GGBBG
+>   trope, 1.6666666666666665
+>    GGGBG
+>    trove, 1
+294,295c340,341
+<    BGGGG
+<    miner, 1
+---
+>    GGBBG
+>    truce, 1
+298,299c344,347
+<    YYYGG
+<    infer, 1
+---
+>   YBBBY
+>   fetch, 1.5
+>    BGGBB
+>    detox, 1
+302,305c350,359
+<    BBYGY
+<    green, 1.5
+<     BGGGG
+<     preen, 1
+---
+>   BBYGY
+>   piety, 1
+>    GGGGG
+>    DONE
+>   GGGBG
+>   tribe, 2
+>    GGGBG
+>    tripe, 1.5
+>     GGGBG
+>     trice, 1
+308,309c362,365
+<    BBYGG
+<    never, 1
+---
+>   GBBBG
+>   theme, 1.5
+>    GGBGG
+>    thyme, 1
+312,313c368,371
+<    BYGGG
+<    inner, 1
+---
+>   YBBGY
+>   jetty, 1.5
+>    BGGGG
+>    petty, 1
+316,327d373
+<   YGGBB
+<   power, 2
+<    BGGGG
+<    cower, 1.5
+<     BGGGG
+<     mower, 1
+<      GGGGG
+<      DONE
+<   YBGYB
+<   newer, 1
+<    GGGGG
+<    DONE
+329,331c375,377
+<   ruder, 1.5
+<    GBGGG
+<    rider, 1
+---
+>   teddy, 1.5
+>    GGBBB
+>    tempo, 1
+334,343c380,383
+<   YBBBG
+<   ficos, 2.25
+<    BBBBB
+<    greed, 1.5
+<     BGGGG
+<     breed, 1
+<      GGGGG
+<      DONE
+<    BBYBB
+<    creed, 1
+---
+>   BBBGG
+>   chute, 1.5
+>    BBYGG
+>    quote, 1
+346,353c386,397
+<    BYBBB
+<    dried, 1.5
+<     BGGGG
+<     pried, 1
+<      GGGGG
+<      DONE
+<    GYBBB
+<    fried, 1
+---
+>   YBBGG
+>   butte, 1
+>    GGGGG
+>    DONE
+>   GYBBY
+>   tenor, 1
+>    GGGGG
+>    DONE
+>   BYBGG
+>   route, 1.5
+>    YGBGG
+>    forte, 1
+356,357c400,403
+<    BYYBB
+<    cried, 1
+---
+>   GBBGY
+>   teeth, 1.5
+>    GGBGG
+>    tenth, 1
+360,361c406,413
+<    GBBBB
+<    freed, 1
+---
+>   YBBBG
+>   etude, 1
+>    GGGGG
+>    DONE
+>   GBGBG
+>   twine, 1.5
+>    GGGBG
+>    twice, 1
+364,367c416,423
+<   GGBBB
+<   rover, 1.5
+<    GGBGG
+<    roger, 1
+---
+>   GYYBY
+>   their, 1
+>    GGGGG
+>    DONE
+>   BBGGG
+>   unite, 1.6666666666666665
+>    YBGGG
+>    quite, 1
+370,373c426,427
+<   BGBBB
+<   gooey, 1.5
+<    BGBGG
+<    covey, 1
+---
+>    BBGGG
+>    white, 1
+376,389c430,431
+<   BYBBY
+<   video, 1
+<    GGGGG
+<    DONE
+<   YYBBB
+<   offer, 1
+<    GGGGG
+<    DONE
+<   BBBBY
+<   dicey, 1
+<    GGGGG
+<    DONE
+<   YGYBB
+<   wooer, 1
+---
+>   BGGGG
+>   write, 1
+392,395c434,437
+<   BGBBY
+<   modem, 1.5
+<    BGYGB
+<    dopey, 1
+---
+>   YYBBY
+>   retry, 1.7999999999999998
+>    BYGGG
+>    entry, 1
+398,401c440,441
+<   GBBBB
+<   riper, 1.75
+<    GGBGG
+<    river, 1
+---
+>    GGGGB
+>    retro, 1
+404,405c444,445
+<    GBGGB
+<    rupee, 1
+---
+>    GGGBB
+>    retch, 1
+408,409c448,449
+<    GBBGG
+<    refer, 1
+---
+>    BGGGB
+>    metro, 1
+412,413c452,453
+<   YYYYB
+<   owner, 1
+---
+>   BYBGY
+>   berth, 1
+416,427c456,459
+<   YBBBY
+<   drier, 1.8333333333333337
+<    YBYGG
+<    cider, 1
+<     GGGGG
+<     DONE
+<    GBBGG
+<    defer, 1
+<     GGGGG
+<     DONE
+<    GGBGG
+<    dryer, 1
+---
+>   BBBGY
+>   empty, 1.6666666666666665
+>    YBGGB
+>    depth, 1
+431,435c463
+<    udder, 1
+<     GGGGG
+<     DONE
+<    GBYGG
+<    diver, 1
+---
+>    hefty, 1
+438,443c466,467
+<   BBBYY
+<   index, 1
+<    GGGGG
+<    DONE
+<  YBYBY
+<  lusty, 1
+---
+>  BYGBG
+>  allot, 1
+446,447c470,471
+<  GBYGG
+<  sleet, 1
+---
+>  YGYGB
+>  easel, 1
+450,459c474,481
+<  BBGGB
+<  idler, 2
+<   BBGGB
+<   golem, 1.5
+<    BBGGY
+<    melee, 1
+<     GGGGG
+<     DONE
+<   YBGGG
+<   filer, 1
+---
+>  GYGBB
+>  solar, 1
+>   GGGGG
+>   DONE
+>  GBBYY
+>  morne, 2.181818181818181
+>   YYBBG
+>   smote, 1
+462,463c484,491
+<   BBGGG
+<   ruler, 1
+---
+>   BBBBG
+>   suite, 1.5
+>    GBGGG
+>    spite, 1
+>     GGGGG
+>     DONE
+>   BBBYY
+>   stein, 1
+466,477c494,495
+<  YBYGB
+<  loser, 1
+<   GGGGG
+<   DONE
+<  BYGBG
+<  allot, 1
+<   GGGGG
+<   DONE
+<  GBYBB
+<  plink, 2.333333333333334
+<   BYGBB
+<   swirl, 1.5
+---
+>   BYBBG
+>   stove, 1.5
+479c497
+<    swill, 1
+---
+>    stoke, 1
+482,493c500,501
+<   BGBBB
+<   slush, 1.6666666666666665
+<    GGBBB
+<    slyly, 1
+<     GGGGG
+<     DONE
+<    GGBGG
+<    slosh, 1
+<     GGGGG
+<     DONE
+<   BGBGG
+<   slunk, 1
+---
+>   BYYBG
+>   store, 1
+496,497c504,505
+<   BGGGG
+<   slink, 1
+---
+>   YBBBG
+>   smite, 1
+500,501c508,509
+<   BGGBB
+<   slimy, 1
+---
+>   BYBGG
+>   stone, 1
+504,505c512,513
+<   BGBGB
+<   slung, 1
+---
+>   BBYYY
+>   stern, 1
+508,509c516,517
+<   YYYBB
+<   spoil, 1
+---
+>   BBBBY
+>   setup, 1
+512,527c520,523
+<   BYBBB
+<   shyly, 1.75
+<    GBBYB
+<    scowl, 1
+<     GGGGG
+<     DONE
+<    GBBGG
+<    surly, 1
+<     GGGGG
+<     DONE
+<    GBBGB
+<    scold, 1
+<     GGGGG
+<     DONE
+<   YYBBB
+<   spool, 1
+---
+>  BYYYG
+>  leapt, 2.125
+>   YGGBG
+>   dealt, 1
+530,533c526,533
+<   YGBBB
+<   slurp, 1.6666666666666665
+<    GGGBG
+<    slump, 1
+---
+>   YYYYG
+>   pleat, 1
+>    GGGGG
+>    DONE
+>   YYYBG
+>   bleat, 1.6666666666666665
+>    BGGGG
+>    cleat, 1
+536,537c536,537
+<    GGBBG
+<    sloop, 1
+---
+>    BGGYG
+>    alert, 1
+540,541c540,541
+<   BGGBG
+<   slick, 1
+---
+>   YYGBG
+>   exalt, 1
+544,545c544,545
+<   BYGBY
+<   skill, 1
+---
+>   GGGBG
+>   leant, 1
+548,549c548,555
+<   YYGBB
+<   spill, 1
+---
+>  GBGBG
+>  split, 1
+>   GGGGG
+>   DONE
+>  YYBGB
+>  askew, 1.5
+>   GGBGB
+>   ashen, 1
+552,553c558,561
+<   BGGGB
+<   sling, 1
+---
+>  GYYYY
+>  slate, 1.6666666666666665
+>   GYYYY
+>   steal, 1
+556,557c564,565
+<   BYBBG
+<   skulk, 1
+---
+>   GYGYG
+>   stale, 1
+560,561c568,571
+<   BYBBY
+<   skull, 1
+---
+>  GBBYB
+>  prink, 2.3783783783783794
+>   BBBBY
+>   smoke, 1
+564,575c574,575
+<  GGBBG
+<  saint, 1
+<   GGGGG
+<   DONE
+<  YGBBG
+<  waist, 1
+<   GGGGG
+<   DONE
+<  GBYBY
+<  still, 1.6666666666666665
+<   GGBBG
+<   stool, 1
+---
+>   BBBYB
+>   sense, 1
+578,579c578,579
+<   GYBYB
+<   sloth, 1
+---
+>   YBBBB
+>   scope, 1
+582,589c582,583
+<  BYGYY
+<  delta, 1
+<   GGGGG
+<   DONE
+<  BGYBY
+<  natal, 1.6666666666666665
+<   BGGBY
+<   latch, 1
+---
+>   BBGBB
+>   seize, 1
+592,593c586,587
+<   BGGGG
+<   fatal, 1
+---
+>   BYBYB
+>   snore, 1
+596,601c590,597
+<  BBYBG
+<  bling, 2.0769230769230766
+<   BGBBB
+<   flout, 1.5
+<    BGGGG
+<    clout, 1
+---
+>   BBBBB
+>   segue, 1.6666666666666665
+>    GBBBG
+>    shove, 1
+>     GGGGG
+>     DONE
+>    GGBBY
+>    seedy, 1
+604,611d599
+<   BYGBB
+<   quilt, 1
+<    GGGGG
+<    DONE
+<   GGBGB
+<   blunt, 1
+<    GGGGG
+<    DONE
+613,617c601
+<   limit, 1
+<    GGGGG
+<    DONE
+<   BGGBB
+<   flirt, 1
+---
+>   serif, 1
+620,621c604,605
+<   BYYBY
+<   light, 1
+---
+>   YBGYB
+>   snipe, 1
+624,625c608,615
+<   BYGBY
+<   guilt, 1
+---
+>   BBYBB
+>   sieve, 1.5
+>    GGGBG
+>    siege, 1
+>     GGGGG
+>     DONE
+>   BBGYB
+>   snide, 1
+628,629c618,619
+<   BYBBB
+<   moult, 1
+---
+>   YYGBB
+>   spire, 1
+632,633c622,629
+<   BGGGB
+<   flint, 1
+---
+>   YYBBB
+>   sperm, 1.5
+>    GGYGB
+>    spore, 1
+>     GGGGG
+>     DONE
+>   YBGGB
+>   spine, 1
+636,637c632,633
+<   BGGGY
+<   glint, 1
+---
+>   YBGBY
+>   spike, 1
+640,641c636,643
+<   GYGBB
+<   built, 1
+---
+>   BBGGB
+>   shine, 1.5
+>    GBGGG
+>    swine, 1
+>     GGGGG
+>     DONE
+>   YBBBG
+>   speck, 1
+644,645c646,647
+<   GGBBB
+<   blurt, 1
+---
+>   BBYBG
+>   sheik, 1
+648,651c650,683
+<  BGBGG
+<  facet, 1.5
+<   BGYGG
+<   cadet, 1
+---
+>   BBYYB
+>   singe, 1.5
+>    GGGBG
+>    since, 1
+>     GGGGG
+>     DONE
+>   BYBBB
+>   curch, 2.0000000000000004
+>    YBYBB
+>    score, 1
+>     GGGGG
+>     DONE
+>    BBYBB
+>    swore, 1
+>     GGGGG
+>     DONE
+>    BBYBY
+>    shore, 1
+>     GGGGG
+>     DONE
+>    BYGBB
+>    serum, 1
+>     GGGGG
+>     DONE
+>    BBGBB
+>    serve, 1
+>     GGGGG
+>     DONE
+>    BGGBB
+>    surge, 1
+>     GGGGG
+>     DONE
+>   YBGBB
+>   spice, 1
+654,657c686,687
+<  YYYYB
+<  aisle, 1.6666666666666665
+<   YBYYG
+<   lease, 1
+---
+>   YBBGB
+>   spend, 1
+660,661c690,691
+<   YBYYY
+<   leash, 1
+---
+>   YBBBY
+>   spoke, 1
+664,667c694,705
+<  BBYYY
+<  title, 1.8571428571428568
+<   BGGYG
+<   lithe, 1
+---
+>   BBBGB
+>   scene, 1.6666666666666665
+>    GBBGG
+>    shone, 1
+>     GGGGG
+>     DONE
+>    GGBGG
+>    scone, 1
+>     GGGGG
+>     DONE
+>   BYGBB
+>   shire, 1
+670,671c708,711
+<   YYBGG
+<   utile, 1
+---
+>  GYBBB
+>  cramp, 2.3125
+>   YYYBG
+>   scrap, 1
+674,675c714,727
+<   YBBYG
+<   flute, 1
+---
+>   YBGBB
+>   snack, 1.5
+>    GBGGG
+>    shack, 1
+>     GGGGG
+>     DONE
+>   BYYBB
+>   sugar, 1.5
+>    GBBGG
+>    sonar, 1
+>     GGGGG
+>     DONE
+>   BBGGG
+>   swamp, 1
+678,679c730,731
+<   YBBYY
+<   lefty, 1
+---
+>   YYYYB
+>   scram, 1
+683,701c735
+<   extol, 1
+<    GGGGG
+<    DONE
+<   YYBYG
+<   elite, 1
+<    GGGGG
+<    DONE
+<  BYGYG
+<  eclat, 1
+<   GGGGG
+<   DONE
+<  GYGBB
+<  solar, 1
+<   GGGGG
+<   DONE
+<  GYYYB
+<  scale, 1.5
+<   GBGGG
+<   shale, 1
+---
+>   spasm, 1
+704,705d737
+<  BBYGB
+<  bevor, 2.558139534883722
+707c739
+<   liver, 1
+---
+>   sharp, 1
+710,711c742,743
+<   BGGBG
+<   lever, 1
+---
+>   BYGYB
+>   swarm, 1
+714,715c746,747
+<   BGBBB
+<   jewel, 1
+---
+>   BYGBY
+>   spark, 1
+718,725c750,751
+<   GYBBB
+<   bleep, 1.5
+<    GGGGB
+<    bleed, 1
+<     GGGGG
+<     DONE
+<   YGBBY
+<   rebel, 1
+---
+>   YBGGG
+>   scamp, 1
+728,729c754,755
+<   BGGBY
+<   revel, 1
+---
+>   YBGYB
+>   smack, 1
+732,741c758,759
+<   BYBBB
+<   plink, 2.09090909090909
+<    YYYBB
+<    impel, 1
+<     GGGGG
+<     DONE
+<    BGBBB
+<    clued, 1
+<     GGGGG
+<     DONE
+---
+>   BBGBB
+>   shank, 1.7999999999999998
+743,751c761
+<    plied, 1
+<     GGGGG
+<     DONE
+<    BYBYY
+<    kneel, 1
+<     GGGGG
+<     DONE
+<    GYYBB
+<    pixel, 1
+---
+>    shady, 1
+754,761c764,765
+<    BYBBB
+<    wheel, 1.5
+<     BBYGG
+<     excel, 1
+<      GGGGG
+<      DONE
+<    YYBBB
+<    expel, 1
+---
+>    GYGBB
+>    swash, 1
+764,765c768,769
+<    BYYYY
+<    liken, 1
+---
+>    GBGYY
+>    snaky, 1
+768,769c772,773
+<    BYBYB
+<    lumen, 1
+---
+>    GGGBY
+>    shaky, 1
+772,773c776,779
+<    BYYYB
+<    linen, 1
+---
+>   BYGBB
+>   shard, 1.5
+>    GGGGB
+>    shark, 1
+776,777c782,783
+<   BGBBG
+<   leper, 1
+---
+>   BYYBY
+>   spray, 1
+780,781c786,787
+<   BGGBB
+<   level, 1
+---
+>   BBYGB
+>   sigma, 1
+784,785c790,791
+<   BYGYG
+<   lover, 1
+---
+>   BBYBB
+>   squad, 1
+788,789c794,801
+<   YYBBB
+<   libel, 1
+---
+>   YYGBB
+>   scary, 1.5
+>    GGGGB
+>    scarf, 1
+>     GGGGG
+>     DONE
+>   YBYYB
+>   sumac, 1
+792,793c804,805
+<   BGBBY
+<   repel, 1
+---
+>   YBYBB
+>   scuba, 1
+796,799c808,811
+<   BYGYB
+<   novel, 1.5
+<    BGGGG
+<    hovel, 1
+---
+>   BBGBY
+>   spawn, 1.6666666666666665
+>    GGGBY
+>    spank, 1
+802,803c814,819
+<   GGBBB
+<   bezel, 1
+---
+>    GYGBB
+>    soapy, 1
+>     GGGGG
+>     DONE
+>   BBGYB
+>   smash, 1
+806,807c822,823
+<   GYBBG
+<   bluer, 1
+---
+>   BBGGB
+>   swami, 1
+810,815c826,833
+<   BYBBG
+<   flier, 2
+<    BGBGG
+<    ulcer, 1.5
+<     BGBGG
+<     elder, 1
+---
+>  BBYBB
+>  courd, 2.6122448979591812
+>   GBGBB
+>   cluck, 2
+>    GGGBB
+>    clung, 1.5
+>     GGGBB
+>     clump, 1
+818,819c836,839
+<    GGBGG
+<    flyer, 1
+---
+>   BBBYB
+>   grill, 2
+>    GYYGB
+>    girly, 1
+823,827c843,849
+<    plier, 1
+<     GGGGG
+<     DONE
+<    BYYGG
+<    liner, 1
+---
+>    krill, 1.5
+>     BGGGG
+>     frill, 1
+>      GGGGG
+>      DONE
+>    BGBGB
+>    wryly, 1
+830,831c852,853
+<   GYBYB
+<   bowel, 1
+---
+>   BYBBY
+>   oddly, 1
+834,849c856,859
+<   BYBBY
+<   gruel, 1.5
+<    BGGGG
+<    cruel, 1
+<     GGGGG
+<     DONE
+<   BYBYG
+<   older, 1.5
+<    YYBGG
+<    lower, 1
+<     GGGGG
+<     DONE
+<   BYBYB
+<   model, 1.6666666666666665
+<    BGYGG
+<    dowel, 1
+---
+>   BBBBG
+>   lipid, 1.6666666666666665
+>    GGBGG
+>    livid, 1
+852,853c862,863
+<    BYGGY
+<    olden, 1
+---
+>    YYBBG
+>    blind, 1
+856,857c866,867
+<   BYYYB
+<   vowel, 1
+---
+>   BBBGB
+>   whirl, 1
+860,861c870,871
+<   GGGBB
+<   bevel, 1
+---
+>   BYBGB
+>   glory, 1
+864,867c874,875
+<  BYBYY
+<  trace, 2.2499999999999996
+<   GYGBY
+<   teary, 1
+---
+>   YBYYB
+>   lurch, 1
+870,871c878,879
+<   GYYBY
+<   terra, 1
+---
+>   BGGBG
+>   would, 1
+874,877c882,889
+<   GBYBY
+<   theta, 1.5
+<    GBGBY
+<    tweak, 1
+---
+>   BGBGB
+>   lorry, 1
+>    GGGGG
+>    DONE
+>   BYBYY
+>   drool, 1.5
+>    GGGBG
+>    droll, 1
+880,881c892,893
+<   YBYYG
+<   acute, 1
+---
+>   BBYYG
+>   lurid, 1
+884,885c896,897
+<   YYYBY
+<   extra, 1
+---
+>   YBGBB
+>   pluck, 1
+888,891c900,903
+<   YBGBG
+<   agate, 1.6666666666666665
+<    GBGGG
+<    abate, 1
+---
+>   BYBBB
+>   blown, 1.8571428571428568
+>    BYYBY
+>    lingo, 1
+894,895c906,907
+<    BBGGG
+<    ovate, 1
+---
+>    GGGBB
+>    bloom, 1
+898,901c910,911
+<   YBGBY
+<   heath, 1.6666666666666665
+<    BGGGG
+<    death, 1
+---
+>    YYYBB
+>    limbo, 1
+904,905c914,915
+<    BGGGB
+<    meaty, 1
+---
+>    BYGBY
+>    knoll, 1
+908,917d917
+<   YGGYG
+<   crate, 1
+<    GGGGG
+<    DONE
+<   GBGGY
+<   teach, 1
+<    GGGGG
+<    DONE
+<   YGGBG
+<   irate, 1.5
+919c919
+<    grate, 1
+---
+>    flown, 1
+922,927c922,927
+<   GGYBY
+<   tread, 1
+<    GGGGG
+<    DONE
+<   YBYBG
+<   atone, 1
+---
+>    BGGBB
+>    gloom, 1
+>     GGGGG
+>     DONE
+>   GGGBG
+>   could, 1
+930,931c930,931
+<   GGGBG
+<   trade, 1
+---
+>   BGBBY
+>   godly, 1
+934,943c934,937
+<  BYBYB
+<  beard, 2.6265060240963867
+<   BYGBB
+<   amuck, 2
+<    GGBBB
+<    amaze, 1
+<     GGGGG
+<     DONE
+<    YBYBY
+<    quake, 1
+---
+>   YBYBB
+>   lucky, 1.5
+>    GGYBB
+>    lunch, 1
+946,947c940,947
+<    GBBBB
+<    agape, 1
+---
+>   BGYBB
+>   mogul, 1
+>    GGGGG
+>    DONE
+>   BBYBG
+>   guild, 1.5
+>    BGGGG
+>    build, 1
+950,951c950,957
+<    YBBBY
+<    knave, 1
+---
+>   BBGGB
+>   blurb, 1
+>    GGGGG
+>    DONE
+>   YBBBB
+>   flick, 1.5
+>    BYGYB
+>    icily, 1
+954,955c960,963
+<    YBBBB
+<    inane, 1
+---
+>   GBBBB
+>   clink, 2.125
+>    GGGGB
+>    cling, 1
+958,959c966,973
+<    YBBYB
+<    chafe, 1
+---
+>    GGGBB
+>    climb, 1.5
+>     GGGBB
+>     cliff, 1
+>      GGGGG
+>      DONE
+>    GYYBB
+>    civil, 1
+962,963c976,983
+<    GBBBY
+<    awake, 1
+---
+>    GYGBB
+>    chill, 1.5
+>     GGGGB
+>     chili, 1
+>      GGGGG
+>      DONE
+>    GGGBG
+>    click, 1
+966,967c986,989
+<    YGBBB
+<    image, 1
+---
+>   BGBBB
+>   wooly, 1.8333333333333337
+>    BGBYB
+>    login, 1
+970,973c992,993
+<   BGGBB
+<   heavy, 1.7999999999999998
+<    BGGBB
+<    peace, 1
+---
+>    BGBGG
+>    nobly, 1
+976,977c996,997
+<    YGGBB
+<    peach, 1
+---
+>    BGGYG
+>    loopy, 1
+980,981c1000,1001
+<    GGGGB
+<    heave, 1
+---
+>    BGBYG
+>    lobby, 1
+984,985c1004,1005
+<    BGGGB
+<    weave, 1
+---
+>    YGBGG
+>    lowly, 1
+988,991c1008,1015
+<   BYYBB
+<   anime, 1.9999999999999998
+<    YBBYY
+<    omega, 1
+---
+>   YBBYB
+>   lyric, 1
+>    GGGGG
+>    DONE
+>   BBBYY
+>   dryly, 1.5
+>    GGBGB
+>    drill, 1
+994,995c1018,1029
+<    YGBGY
+<    enema, 1
+---
+>   BYYYB
+>   flour, 1
+>    GGGGG
+>    DONE
+>   BBYYB
+>   burly, 1
+>    GGGGG
+>    DONE
+>   BBGBB
+>   flunk, 1.9999999999999998
+>    GGGBB
+>    fluff, 1
+998,1005c1032,1033
+<    YYBBY
+<    ocean, 1.5
+<     BBGYY
+<     hyena, 1
+<      GGGGG
+<      DONE
+<    GBBBG
+<    awoke, 1
+---
+>    GGGGB
+>    flung, 1
+1008,1009c1036,1037
+<    YBBBY
+<    cheap, 1
+---
+>    YGGBB
+>    bluff, 1
+1012,1017c1040,1043
+<   BYGYB
+<   cezve, 2.125
+<    BBBBG
+<    grape, 1.5
+<     BGGBG
+<     frame, 1
+---
+>    BGGBB
+>    plumb, 1.5
+>     GGGGB
+>     plump, 1
+1020,1025c1046,1047
+<    BBBGG
+<    grave, 1
+<     GGGGG
+<     DONE
+<    YBBBG
+<    grace, 1
+---
+>    BGGGG
+>    plunk, 1
+1028,1029c1050,1053
+<    GBYBG
+<    craze, 1
+---
+>   BYBBG
+>   blood, 1.6666666666666665
+>    BGGGG
+>    flood, 1
+1032,1033c1056,1057
+<    BBYBG
+<    graze, 1
+---
+>    GGGBG
+>    blond, 1
+1036,1037c1060,1063
+<    GBBGG
+<    crave, 1
+---
+>   YYBBB
+>   block, 1.5
+>    BGGGG
+>    flock, 1
+1040,1041c1066,1069
+<    GBBBG
+<    crane, 1
+---
+>   GYBBB
+>   clock, 1.5
+>    GGGBB
+>    clown, 1
+1044,1047c1072,1075
+<   BYGYY
+<   drape, 1.6666666666666665
+<    YGGBG
+<    grade, 1
+---
+>   BYBYB
+>   prowl, 1.75
+>    BGGGG
+>    growl, 1
+1050,1051c1078,1079
+<    GGGBG
+<    drake, 1
+---
+>    BYGBY
+>    floor, 1
+1054,1057c1082,1083
+<   BGYYB
+<   repay, 1.5
+<    GGYGB
+<    recap, 1
+---
+>    BGGBG
+>    broil, 1
+1060,1089c1086,1087
+<   BYYYY
+<   dream, 1
+<    GGGGG
+<    DONE
+<   GYYYG
+<   bread, 1
+<    GGGGG
+<    DONE
+<   GGGBY
+<   beady, 1
+<    GGGGG
+<    DONE
+<   GYYYB
+<   break, 1
+<    GGGGG
+<    DONE
+<   GGYBB
+<   began, 1
+<    GGGGG
+<    DONE
+<   BGGGG
+<   heard, 1
+<    GGGGG
+<    DONE
+<   BYYYG
+<   dread, 1
+<    GGGGG
+<    DONE
+<   YGYGB
+<   zebra, 1
+---
+>   GYYBG
+>   cloud, 1
+1092,1103c1090,1091
+<   YYYBY
+<   abide, 1.6666666666666665
+<    GGBGG
+<    abode, 1
+<     GGGGG
+<     DONE
+<    GYBYG
+<    adobe, 1
+<     GGGGG
+<     DONE
+<   BGGBY
+<   heady, 1
+---
+>   YGBBB
+>   logic, 1
+1106,1113c1094,1097
+<   BGYBB
+<   vegan, 1.6666666666666665
+<    BGBGG
+<    pecan, 1
+<     GGGGG
+<     DONE
+<    BGBYB
+<    mecca, 1
+---
+>   BBBBY
+>   dimly, 1.5
+>    YYBGY
+>    idyll, 1
+1116,1121c1100,1101
+<   BYYBY
+<   anode, 1
+<    GGGGG
+<    DONE
+<   BGYYY
+<   cedar, 1
+---
+>   GBYYB
+>   curly, 1
+1124,1125c1104,1105
+<   BGGYB
+<   reach, 1
+---
+>   GBBBG
+>   child, 1
+1128,1129c1108,1109
+<   BYYGY
+<   adore, 1
+---
+>   BGBYG
+>   world, 1
+1132,1141c1112,1115
+<   BYYYB
+<   wreak, 2
+<    BGGGG
+<    freak, 1.5
+<     BGGGG
+<     creak, 1
+<      GGGGG
+<      DONE
+<    BGGGB
+<    cream, 1
+---
+>   BBBBB
+>   lying, 1.8888888888888893
+>    YYYBB
+>    imply, 1
+1144,1145c1118,1119
+<    BGGYB
+<    arena, 1
+---
+>    YBGGG
+>    fling, 1
+1148,1149c1122,1123
+<    BGYYB
+<    argue, 1
+---
+>    YYBBY
+>    glyph, 1
+1152,1159c1126,1127
+<   BYGGB
+<   aware, 1
+<    GGGGG
+<    DONE
+<   BYYGB
+<   azure, 1.6666666666666665
+<    YBBGY
+<    opera, 1
+---
+>    YYYYB
+>    vinyl, 1
+1162,1163c1130,1131
+<    GBBGG
+<    afire, 1
+---
+>    GGBBB
+>    lymph, 1
+1166,1169c1134,1135
+<   BYYBG
+<   ahead, 1.6666666666666665
+<    BBGGG
+<    knead, 1
+---
+>    YBGGB
+>    blink, 1
+1172,1173c1138,1139
+<    GBGBG
+<    amend, 1
+---
+>    YBGBB
+>    blimp, 1
+1176,1179c1142,1143
+<   BGGGB
+<   yearn, 1.6666666666666665
+<    BGGGB
+<    rearm, 1
+---
+>    YBYBY
+>    vigil, 1
+1182,1183c1146,1165
+<    YGGGB
+<    weary, 1
+---
+>   GGBBB
+>   coyly, 1
+>    GGGGG
+>    DONE
+>   BBGBG
+>   fluid, 1
+>    GGGGG
+>    DONE
+>   YBYBG
+>   lucid, 1
+>    GGGGG
+>    DONE
+>   BYYBB
+>   ghoul, 1
+>    GGGGG
+>    DONE
+>   BBYBB
+>   quill, 1.6666666666666665
+>    BGYBG
+>    pupil, 1
+1186,1189c1168,1169
+<   BYGBY
+<   evade, 1.5
+<    BBGYG
+<    adage, 1
+---
+>    BGBYB
+>    lumpy, 1
+1192,1195c1172,1177
+<   YGYYB
+<   rebar, 1.5
+<    GGYGB
+<    rehab, 1
+---
+>  BYBGB
+>  anger, 1.9999999999999998
+>   GBBGG
+>   aider, 1.5
+>    GBBGG
+>    amber, 1
+1198,1199c1180,1181
+<   YYYBB
+<   above, 1
+---
+>   GBYGY
+>   agree, 1
+1202,1203c1184,1185
+<   YGYBB
+<   kebab, 1
+---
+>   GBBGB
+>   abbey, 1
+1206,1207c1188,1189
+<   GGGBB
+<   beach, 1
+---
+>   GYBGB
+>   apnea, 1
+1210,1211c1192,1193
+<   YGYYY
+<   debar, 1
+---
+>   GGBGB
+>   annex, 1
+1214,1221c1196,1199
+<   BGYBY
+<   media, 1.5
+<    BGYBY
+<    decay, 1
+<     GGGGG
+<     DONE
+<   BGGYY
+<   ready, 1
+---
+>  BGYYY
+>  latte, 1.6666666666666665
+>   GGGBG
+>   lathe, 1
+1224,1235c1202,1203
+<   GYGYB
+<   brace, 2
+<    GGGBG
+<    brake, 1.5
+<     GGGBG
+<     brave, 1
+<      GGGGG
+<      DONE
+<  YBBGB
+<  risen, 2
+<   GGGGB
+<   riser, 1
+---
+>   YGYBG
+>   table, 1
+1238,1239c1206,1213
+<   YBGGB
+<   poser, 1
+---
+>  GGYBB
+>  sadly, 1
+>   GGGGG
+>   DONE
+>  BBYBY
+>  troll, 1.875
+>   YBYYB
+>   lofty, 1
+1242,1243c1216,1217
+<   BBGGB
+<   bused, 1
+---
+>   YBYGB
+>   hotly, 1
+1245a1220,1241
+>   GGBGB
+>   truly, 1
+>    GGGGG
+>    DONE
+>   YBBBG
+>   until, 1
+>    GGGGG
+>    DONE
+>   YBBYB
+>   blitz, 1
+>    GGGGG
+>    DONE
+>   YBGYB
+>   cloth, 1
+>    GGGGG
+>    DONE
+>   GYBBG
+>   twirl, 1
+>    GGGGG
+>    DONE
+>  YBBGB
+>  risen, 2
+1247c1243
+<   miser, 1.5
+---
+>   wiser, 1.5
+1249c1245
+<    wiser, 1
+---
+>    miser, 1
+1255a1252,1259
+>   GGGGB
+>   riser, 1
+>    GGGGG
+>    DONE
+>   YBGGB
+>   poser, 1
+>    GGGGG
+>    DONE
+1260,1263c1264,1265
+<  YGBYY
+<  wecht, 2.5
+<   BYBYY
+<   haste, 1
+---
+>   BBGGB
+>   bused, 1
+1266,1267c1268,1271
+<   GYBBY
+<   waste, 1
+---
+>  YGBBY
+>  theta, 2.1666666666666665
+>   BYBGY
+>   hasty, 1
+1270,1279c1274,1275
+<   BYBBY
+<   paste, 2
+<    BGGGG
+<    baste, 1.5
+<     BGGGG
+<     taste, 1
+<      GGGGG
+<      DONE
+<   BYYBY
+<   caste, 1
+---
+>   GBBGY
+>   tasty, 1
+1282,1285c1278,1279
+<  BGGYB
+<  value, 1.6666666666666665
+<   YGGBG
+<   halve, 1
+---
+>   YBBBY
+>   patsy, 1
+1288,1289c1282,1289
+<   GGGBG
+<   valve, 1
+---
+>   BBBGY
+>   pasty, 1.5
+>    BGGGG
+>    nasty, 1
+>     GGGGG
+>     DONE
+>   BBBGG
+>   pasta, 1
+1292,1299c1292,1295
+<  GGBYB
+<  sauce, 1
+<   GGGGG
+<   DONE
+<  GGGBB
+<  gadso, 1.9999999999999998
+<   BGYYB
+<   salad, 1
+---
+>  YBBBB
+>  mucho, 2.4047619047619033
+>   BBYBB
+>   crisp, 1
+1302,1303c1298,1299
+<   BGBYY
+<   salon, 1
+---
+>   GBBBY
+>   mossy, 1
+1306,1307c1302,1303
+<   BGBYB
+<   sally, 1
+---
+>   BBYBG
+>   disco, 1
+1310,1311c1306,1307
+<   BGBYG
+<   salvo, 1
+---
+>   BBYBY
+>   cross, 1
+1314,1315c1310,1311
+<   BGBGB
+<   salsa, 1
+---
+>   BBBGB
+>   fishy, 1
+1318,1321c1314,1315
+<  BBGGG
+<  inlet, 1.5
+<   YBGGG
+<   filet, 1
+---
+>   GGYBB
+>   music, 1
+1324,1327c1318,1329
+<  GBYYG
+<  smelt, 1.6666666666666665
+<   GBGYG
+<   slept, 1
+---
+>   BYBBB
+>   virus, 1.6666666666666665
+>    BBYYY
+>    usurp, 1
+>     GGGGG
+>     DONE
+>    BYBYY
+>    using, 1
+>     GGGGG
+>     DONE
+>   YBBBY
+>   bosom, 1
+1330,1331c1332,1333
+<   GBGGG
+<   spelt, 1
+---
+>   GYBBB
+>   minus, 1
+1334,1337c1336,1343
+<  BBGYY
+<  tulle, 1.5
+<   GBGBG
+<   tilde, 1
+---
+>   BGBBB
+>   dusky, 1.5
+>    BGGBG
+>    fussy, 1
+>     GGGGG
+>     DONE
+>   YBBBB
+>   prism, 1
+1340,1343c1346,1353
+<  YYBBG
+<  carob, 2.0000000000000004
+<   BYBBB
+<   angst, 1
+---
+>   BGBYB
+>   husky, 1.5
+>    GGGBG
+>    hussy, 1
+>     GGGGG
+>     DONE
+>   BYGBY
+>   focus, 1
+1346,1347c1356,1357
+<   GYBYB
+<   coast, 1
+---
+>   GBBBB
+>   missy, 1
+1350,1351c1360,1365
+<   YYBGB
+<   ascot, 1
+---
+>   BYBYB
+>   brush, 1
+>    GGGGG
+>    DONE
+>   BBBYB
+>   whisk, 1
+1355c1369
+<   roast, 1
+---
+>   crush, 1
+1358,1359c1372,1379
+<   BYBYB
+<   toast, 1
+---
+>   BGBGB
+>   pushy, 1.5
+>    BGGGG
+>    bushy, 1
+>     GGGGG
+>     DONE
+>   GGBBB
+>   musky, 1
+1362,1363c1382,1383
+<   BYBYY
+<   boast, 1
+---
+>   BYBBY
+>   bonus, 1
+1366,1369c1386,1387
+<  BBYYB
+<  doing, 2.5306122448979584
+<   BGBYB
+<   noble, 1
+---
+>   GGBGB
+>   mushy, 1
+1372,1373c1390,1391
+<   GBBBB
+<   dwell, 1
+---
+>   BYGBB
+>   ficus, 1
+1377,1407c1395,1397
+<   clump, 1.9999999999999991
+<    BGGGB
+<    flume, 1
+<     GGGGG
+<     DONE
+<    BGGGY
+<    plume, 1
+<     GGGGG
+<     DONE
+<    GYBBB
+<    cycle, 1
+<     GGGGG
+<     DONE
+<    GGBBB
+<    clerk, 1
+<     GGGGG
+<     DONE
+<    BGGBB
+<    fluke, 1
+<     GGGGG
+<     DONE
+<    YYBBB
+<    leech, 1
+<     GGGGG
+<     DONE
+<    BYYYB
+<    lemur, 1
+<     GGGGG
+<     DONE
+<    BYBBB
+<    leery, 1
+---
+>   frisk, 1.8333333333333337
+>    BBYGB
+>    gipsy, 1
+1410,1411c1400,1401
+<    BYYBB
+<    quell, 1
+---
+>    BGGGG
+>    brisk, 1
+1414,1415c1404,1405
+<    BYBBY
+<    reply, 1
+---
+>    BBBGB
+>    gypsy, 1
+1418,1419c1408,1409
+<    YGBBB
+<    fleck, 1
+---
+>    BBYYB
+>    wispy, 1
+1422,1423c1412,1413
+<    BYBBG
+<    whelp, 1
+---
+>    BYYYY
+>    risky, 1
+1426,1427c1416,1417
+<   BBGBY
+<   guile, 1
+---
+>   GGGBB
+>   mucus, 1
+1430,1431c1420,1421
+<   GBYBB
+<   devil, 1
+---
+>   YGBYB
+>   humus, 1
+1434,1437c1424,1427
+<   BYBBB
+<   elbow, 1.7999999999999998
+<    YYBYY
+<    whole, 1
+---
+>   BBBBY
+>   noisy, 1.9999999999999998
+>    BGBGG
+>    bossy, 1
+1440,1441c1430,1431
+<    GGBYB
+<    elope, 1
+---
+>    YYYYB
+>    bison, 1
+1444,1445c1434,1441
+<    YGYYB
+<    bloke, 1
+---
+>    BYBGB
+>    gross, 1.5
+>     BGGGG
+>     dross, 1
+>      GGGGG
+>      DONE
+>    BYYYB
+>    visor, 1
+1448,1449c1444,1445
+<    YGBYB
+<    clove, 1
+---
+>    BYYGB
+>    kiosk, 1
+1452,1453c1448,1451
+<   BYBGB
+<   clone, 1
+---
+>  BGYGB
+>  nymph, 2.272727272727272
+>   YBBYB
+>   panel, 1
+1456,1467c1454,1455
+<   BBBBY
+<   leggy, 1.6666666666666665
+<    YYGBB
+<    bugle, 1
+<     GGGGG
+<     DONE
+<    YYBGG
+<    elegy, 1
+<     GGGGG
+<     DONE
+<   YBGBY
+<   glide, 1
+---
+>   BBGBB
+>   camel, 1
+1470,1485c1458,1463
+<   BYBBY
+<   glove, 1.5
+<    GGGBG
+<    globe, 1
+<     GGGGG
+<     DONE
+<   YBYBB
+<   field, 2
+<    BGGGG
+<    yield, 1.5
+<     BGGGG
+<     wield, 1
+<      GGGGG
+<      DONE
+<   BYBYB
+<   lemon, 1
+---
+>   GBBBB
+>   navel, 1
+>    GGGGG
+>    DONE
+>   BBBBY
+>   hazel, 1
+1489,1491c1467,1481
+<   uncle, 1.5
+<    BYBGY
+<    newly, 1
+---
+>   lapel, 1
+>    GGGGG
+>    DONE
+>   BYBBB
+>   layer, 1
+>    GGGGG
+>    DONE
+>   YBBBB
+>   laden, 1
+>    GGGGG
+>    DONE
+>   BBBBB
+>   lager, 1.75
+>    GGBGB
+>    label, 1
+1494,1497c1484,1485
+<   BBGBB
+<   exile, 1.5
+<    BBGGG
+<    while, 1
+---
+>    YGYGB
+>    gavel, 1
+1500,1507c1488,1489
+<   YBBBY
+<   ledge, 1
+<    GGGGG
+<    DONE
+<   BBYBB
+<   bible, 1.6666666666666665
+<    BGBGG
+<    rifle, 1
+---
+>    YGGGB
+>    bagel, 1
+1510,1511c1492,1497
+<    BYBYY
+<    peril, 1
+---
+>  YBYBB
+>  floss, 2
+>   BGBGB
+>   blush, 1.5
+>    BGGGG
+>    plush, 1
+1514,1519c1500,1501
+<   YBBGB
+<   blend, 1
+<    GGGGG
+<    DONE
+<   BGBBB
+<   boule, 1
+---
+>   BYBBG
+>   lupus, 1
+1522,1523c1504,1505
+<   YGBBY
+<   lodge, 1
+---
+>   BYYGB
+>   lousy, 1
+1526,1527c1508,1509
+<   BBYBY
+<   liege, 1
+---
+>   GGBGB
+>   flush, 1
+1530,1531c1512,1513
+<   BYGBB
+<   olive, 1
+---
+>   BYYBG
+>   locus, 1
+1534,1535c1516,1517
+<   YBBBB
+<   elude, 1
+---
+>   BGBGG
+>   bliss, 1
+1538,1539c1520,1521
+<   YBGBB
+<   elide, 1
+---
+>   BGGGG
+>   gloss, 1
+1542,1543c1524,1527
+<   BBYYB
+<   elfin, 1
+---
+>  GBBBG
+>  churn, 2.210526315789474
+>   BBBBY
+>   stint, 1
+1546,1547c1530,1531
+<   BBBYY
+<   lunge, 1
+---
+>   BBGGB
+>   spurt, 1
+1550,1553c1534,1535
+<  YGBYB
+<  parse, 2
+<   BGYGG
+<   raise, 1
+---
+>   BBGBY
+>   stunt, 1
+1556,1557c1538,1539
+<   GGBGG
+<   pause, 1
+---
+>   BBYBY
+>   snout, 1
+1560,1563c1542,1545
+<   BGBGG
+<   masse, 1.5
+<    BGBGG
+<    cause, 1
+---
+>   BGBGB
+>   short, 1.5
+>    GGBGG
+>    shirt, 1
+1566,1573c1548,1549
+<  BGBYB
+<  cumin, 2.2777777777777772
+<   BBBBY
+<   range, 1
+<    GGGGG
+<    DONE
+<   BBYBB
+<   maybe, 1
+---
+>   BGYBB
+>   shout, 1
+1576,1577c1552,1553
+<   YBBBB
+<   farce, 1
+---
+>   BBYYB
+>   strut, 1
+1580,1593c1556,1559
+<   BBBBB
+<   badge, 1.6666666666666665
+<    GGBGG
+<    barge, 1
+<     GGGGG
+<     DONE
+<    BGBYG
+<    gaffe, 1
+<     GGGGG
+<     DONE
+<   BYBBB
+<   gauze, 1.6666666666666665
+<    GGGBG
+<    gauge, 1
+---
+>   BBBGB
+>   sport, 1.5
+>    GBBGG
+>    skirt, 1
+1596,1597c1562,1569
+<    YGYBG
+<    vague, 1
+---
+>   BBBGY
+>   snort, 1
+>    GGGGG
+>    DONE
+>   BBYBB
+>   spout, 1.5
+>    GBGGG
+>    stout, 1
+1600,1601c1572,1573
+<   BBYYB
+<   maize, 1
+---
+>   BGGBY
+>   shunt, 1
+1604,1605c1576,1583
+<   BBYBY
+<   mange, 1
+---
+>   BGBBB
+>   shift, 1.5
+>    GGBBG
+>    shoot, 1
+>     GGGGG
+>     DONE
+>   YBYBB
+>   scout, 1
+1608,1609c1586,1587
+<   BYYBB
+<   mauve, 1
+---
+>   BBBBB
+>   swift, 1
+1612,1613c1590,1591
+<   GBBBY
+<   canoe, 1
+---
+>   BYBBB
+>   sight, 1
+1616,1617c1594,1601
+<   BBBYY
+<   naive, 1
+---
+>  BYYGY
+>  alter, 1
+>   GGGGG
+>   DONE
+>  BGBYY
+>  bathe, 1.6666666666666665
+>   BGYYY
+>   earth, 1
+1620,1621c1604,1605
+<   YBBBY
+<   dance, 1
+---
+>   BGYYG
+>   haute, 1
+1624,1625c1608,1611
+<   BBBYB
+<   waive, 1
+---
+>  GBYGB
+>  sleek, 1.6666666666666665
+>   GGGGB
+>   sleep, 1
+1628,1637c1614,1615
+<   GBBBB
+<   carve, 1.5
+<    GGBBG
+<    cache, 1
+<     GGGGG
+<     DONE
+<  GBGBB
+<  silky, 1.7999999999999998
+<   GBGBG
+<   sully, 1
+---
+>   GYBGB
+>   spiel, 1
+1640,1641c1618,1625
+<   GBGGG
+<   sulky, 1
+---
+>  BYBGY
+>  after, 1
+>   GGGGG
+>   DONE
+>  YBBYG
+>  quich, 1.9999999999999996
+>   BBBYB
+>   crest, 1
+1644,1645c1628,1629
+<   GGGBG
+<   silly, 1
+---
+>   BBBBB
+>   wrest, 1
+1648,1649c1632,1633
+<   GYGBB
+<   solid, 1
+---
+>   BBBYY
+>   chest, 1
+1652,1655c1636,1637
+<  BYYBY
+<  rotal, 2.1428571428571423
+<   YBGGY
+<   altar, 1
+---
+>   BGBBB
+>   guest, 1
+1658,1659c1640,1641
+<   BBGGG
+<   vital, 1
+---
+>   GGBBB
+>   quest, 1
+1662,1663c1644,1645
+<   BGGGG
+<   total, 1
+---
+>   BBGBB
+>   exist, 1
+1666,1667c1648,1649
+<   BYGGG
+<   octal, 1
+---
+>   BBGBY
+>   heist, 1
+1670,1671c1652,1659
+<   YBYGG
+<   trial, 1
+---
+>  YBGGG
+>  islet, 1
+>   GGGGG
+>   DONE
+>  GYBYY
+>  gryke, 2.2222222222222223
+>   BBBGG
+>   stake, 1
+1674,1675c1662,1663
+<   BBGYY
+<   aptly, 1
+---
+>   BBBYY
+>   steak, 1
+1678,1679c1666,1673
+<   BGYGG
+<   tonal, 1
+---
+>   BBBBG
+>   state, 1.5
+>    GGGBG
+>    stave, 1
+>     GGGGG
+>     DONE
+>   BBBYG
+>   skate, 1
+1682,1683c1676,1677
+<   BGYYY
+<   loath, 1
+---
+>   YBBBG
+>   stage, 1
+1686,1695c1680,1683
+<   YBYYG
+<   trawl, 1.5
+<    GGGBG
+<    trail, 1
+<     GGGGG
+<     DONE
+<   BBYGG
+<   tidal, 1.5
+<    GBBGG
+<    tubal, 1
+---
+>   BBBBY
+>   stead, 1.5
+>    GGGGB
+>    steam, 1
+1698,1699c1686,1687
+<   BYYYG
+<   atoll, 1
+---
+>   BYBBG
+>   stare, 1
+1702,1703c1690,1693
+<   YBGYY
+<   ultra, 1
+---
+>  GGBGB
+>  safer, 1.5
+>   GGBGG
+>   saner, 1
+1706,1709c1696,1699
+<  GBYYB
+<  chemo, 2.2000000000000006
+<   BBGYB
+<   smell, 1
+---
+>  GBYBG
+>  spilt, 1.5
+>   GBGGG
+>   stilt, 1
+1712,1719c1702,1705
+<   BBGBB
+<   spell, 1.5
+<    GBGGG
+<    swell, 1
+<     GGGGG
+<     DONE
+<   BBYYB
+<   smile, 1
+---
+>  GBGBB
+>  silly, 1.7999999999999998
+>   GYGBB
+>   solid, 1
+1722,1729c1708,1709
+<   BGGBB
+<   shelf, 1.5
+<    GGGGB
+<    shell, 1
+<     GGGGG
+<     DONE
+<   BBYGB
+<   slime, 1
+---
+>   GBGGG
+>   sully, 1
+1732,1733c1712,1713
+<   BBYBB
+<   slide, 1
+---
+>   GBGBG
+>   sulky, 1
+1736,1737c1716,1717
+<   YBYBB
+<   slice, 1
+---
+>   GGGBG
+>   silky, 1
+1740,1741c1720,1729
+<   BBYBY
+<   slope, 1
+---
+>  BGBGY
+>  tamer, 2.4000000000000004
+>   GGBGG
+>   taker, 1.5
+>    GGBGG
+>    taper, 1
+>     GGGGG
+>     DONE
+>   GGBGB
+>   taken, 1
+1744,1747c1732,1733
+<  GBBGG
+<  sheet, 1.5
+<   GBGGG
+<   sweet, 1
+---
+>   YGBGB
+>   eaten, 1
+1750,1755c1736,1739
+<  BBGBB
+<  fugly, 2.4814814814814814
+<   BBBYY
+<   nylon, 1.5
+<    BYGYB
+<    polyp, 1
+---
+>   YGBGG
+>   welch, 2
+>    GYBBB
+>    water, 1
+1758,1761c1742,1743
+<   BGBYG
+<   bulky, 1.5
+<    BGGBG
+<    pulpy, 1
+---
+>    BYBBY
+>    hater, 1
+1764,1771c1746,1747
+<   BBYGG
+<   golly, 1
+<    GGGGG
+<    DONE
+<   BBBYB
+<   color, 1.5
+<    GGGGB
+<    colon, 1
+---
+>    BYBYB
+>    cater, 1
+1774,1775c1750,1755
+<   BGYYB
+<   gulch, 1
+---
+>    BYBBB
+>    eater, 1
+>     GGGGG
+>     DONE
+>   YGYGB
+>   matey, 1
+1778,1779c1758,1773
+<   BGYGG
+<   gully, 1
+---
+>  YGGBB
+>  palsy, 1
+>   GGGGG
+>   DONE
+>  GBGYB
+>  solve, 1
+>   GGGGG
+>   DONE
+>  YGYYB
+>  lapse, 1
+>   GGGGG
+>   DONE
+>  BGGGB
+>  baler, 1.5
+>   BGGGG
+>   paler, 1
+1782,1783c1776,1779
+<   GBBYB
+<   folio, 1
+---
+>  GBBBY
+>  pinko, 2.3846153846153846
+>   BYBBY
+>   stoic, 1
+1786,1787c1782,1783
+<   GGBGG
+<   fully, 1
+---
+>   BBBYB
+>   stuck, 1
+1790,1793c1786,1789
+<   BBBGG
+<   dhows, 1.9999999999999996
+<    GBYBB
+<    dolly, 1
+---
+>   BBBBY
+>   story, 1.8333333333333337
+>    GYGBB
+>    sooth, 1
+1796,1797c1792,1793
+<    GBBBB
+<    dilly, 1
+---
+>    GYYBB
+>    south, 1
+1800,1801c1796,1797
+<    BYBBB
+<    hilly, 1
+---
+>    GGGGB
+>    storm, 1
+1804,1805c1800,1801
+<    BBBBB
+<    billy, 1
+---
+>    GGGBB
+>    stood, 1
+1808,1809c1804,1805
+<    BBYBB
+<    jolly, 1
+---
+>    GYGBG
+>    sooty, 1
+1812,1813c1808,1819
+<    BYYBB
+<    holly, 1
+---
+>   BYBYB
+>   stick, 1
+>    GGGGG
+>    DONE
+>   YBBBB
+>   stump, 1
+>    GGGGG
+>    DONE
+>   BGBBB
+>   sixty, 1.5
+>    GGGGB
+>    sixth, 1
+1816,1817c1822,1829
+<    BBBYB
+<    willy, 1
+---
+>   BBYBB
+>   stung, 1
+>    GGGGG
+>    DONE
+>   BYBBB
+>   stiff, 1.5
+>    GYGBB
+>    smith, 1
+1820,1821c1832,1833
+<   GBBYG
+<   filmy, 1
+---
+>   YYBBB
+>   strip, 1
+1824,1827c1836,1839
+<   BGBGG
+<   dully, 1.5
+<    BGGGG
+<    bully, 1
+---
+>   BBBYY
+>   stock, 1.5
+>    GGGBG
+>    stork, 1
+1830,1831c1842,1843
+<   BGBYB
+<   mulch, 1
+---
+>   BYYYB
+>   stink, 1
+1834,1835c1846,1847
+<   BBYYB
+<   igloo, 1
+---
+>   BYYBB
+>   sting, 1
+1838,1841c1850,1857
+<   GBBGG
+<   filly, 1.5
+<    GBGGG
+<    folly, 1
+---
+>   BBYBY
+>   stony, 1
+>    GGGGG
+>    DONE
+>   BBBBB
+>   stuff, 1.5
+>    GGGBB
+>    study, 1
+1844,1847c1860,1863
+<   BBBYG
+<   milky, 1.5
+<    GBGBG
+<    moldy, 1
+---
+>   YBBBY
+>   stoop, 1.5
+>    GGGBG
+>    stomp, 1
+1850,1861c1866,1867
+<  GGYBB
+<  sadly, 1
+<   GGGGG
+<   DONE
+<  GYYYY
+<  steal, 1.6666666666666665
+<   GGYYY
+<   stale, 1
+<    GGGGG
+<    DONE
+<   GYYYY
+<   slate, 1
+---
+>   BBYYB
+>   stunk, 1
+1864,1867c1870,1873
+<  BYGYB
+<  relay, 1.75
+<   BGGGG
+<   delay, 1
+---
+>  BGBYB
+>  cumin, 2.2777777777777772
+>   BBBYB
+>   waive, 1
+1870,1871c1876,1877
+<   GGGGB
+<   relax, 1
+---
+>   GBBBY
+>   canoe, 1
+1874,1875c1880,1881
+<   BGGYB
+<   fella, 1
+---
+>   BBBBY
+>   range, 1
+1878,1923c1884,1885
+<  BYBBB
+<  brond, 2.5544554455445554
+<   BBYYB
+<   axion, 1.6666666666666665
+<    YBBYG
+<    woman, 1
+<     GGGGG
+<     DONE
+<    GBBGY
+<    annoy, 1
+<     GGGGG
+<     DONE
+<   BGBBB
+<   crazy, 2
+<    BGYBG
+<    array, 1
+<     GGGGG
+<     DONE
+<    BGGBB
+<    graph, 1
+<     GGGGG
+<     DONE
+<    BGYBB
+<    friar, 1
+<     GGGGG
+<     DONE
+<    YGGBB
+<    wrack, 1
+<     GGGGG
+<     DONE
+<    GGGBB
+<    cramp, 1.5
+<     GGGBB
+<     crack, 1
+<      GGGGG
+<      DONE
+<    BGGBG
+<    gravy, 1
+<     GGGGG
+<     DONE
+<   BBYBB
+<   cocoa, 1.8333333333333337
+<    BBBGY
+<    axiom, 1
+<     GGGGG
+<     DONE
+---
+>   GBBBB
+>   cache, 1.5
+1925c1887
+<    comma, 1
+---
+>    carve, 1
+1928,1963c1890,1893
+<    BGGBG
+<    mocha, 1
+<     GGGGG
+<     DONE
+<    GGYBY
+<    coach, 1
+<     GGGGG
+<     DONE
+<    BGBBY
+<    foamy, 1
+<     GGGGG
+<     DONE
+<   BYBBB
+<   chair, 1.875
+<    GGGBY
+<    charm, 1
+<     GGGGG
+<     DONE
+<    GBYYY
+<    circa, 1
+<     GGGGG
+<     DONE
+<    BBGBY
+<    quark, 1
+<     GGGGG
+<     DONE
+<    YBYYG
+<    vicar, 1
+<     GGGGG
+<     DONE
+<    BBYBG
+<    augur, 1
+<     GGGGG
+<     DONE
+<    GBYYG
+<    cigar, 1
+---
+>   BBBBB
+>   barge, 1.6666666666666665
+>    BGBYG
+>    gaffe, 1
+1966,1967c1896,1897
+<    BGGBY
+<    wharf, 1
+---
+>    GGBGG
+>    badge, 1
+1971,1973c1901,1907
+<   roach, 1.6666666666666665
+<    YGYBB
+<    foray, 1
+---
+>   mauve, 1
+>    GGGGG
+>    DONE
+>   BYBBB
+>   gauze, 1.6666666666666665
+>    YGYBG
+>    vague, 1
+1976,1977c1910,1911
+<    YYGBB
+<    ovary, 1
+---
+>    GGGBG
+>    gauge, 1
+1979a1914,1917
+>   BBYBY
+>   mange, 1
+>    GGGGG
+>    DONE
+1981c1919
+<   admin, 1
+---
+>   naive, 1
+1984,1985c1922,1923
+<   YGYBB
+<   arbor, 1
+---
+>   BBYBB
+>   maybe, 1
+1988,1989c1926,1927
+<   BBBBG
+<   aphid, 1
+---
+>   YBBBY
+>   dance, 1
+1992,1993c1930,1931
+<   BGBBG
+<   fraud, 1
+---
+>   BBYYB
+>   maize, 1
+1996,1997c1934,1935
+<   YGBYB
+<   urban, 1
+---
+>   YBBBB
+>   farce, 1
+2000,2001c1938,1941
+<   BGYYB
+<   organ, 1
+---
+>  YYYBB
+>  hucks, 2
+>   BYBBY
+>   usual, 1
+2004,2011c1944,1945
+<   BBGGB
+<   among, 1.5
+<    GBGGY
+<    agony, 1
+<     GGGGG
+<     DONE
+<   BBGBG
+<   avoid, 1
+---
+>   BBBYY
+>   flask, 1
+2014,2015c1948,1949
+<   BYBYB
+<   angry, 1
+---
+>   BBYBG
+>   class, 1
+2018,2035c1952,1953
+<   BBYYG
+<   gonad, 1.5
+<    BGYGG
+<    nomad, 1
+<     GGGGG
+<     DONE
+<   BBBGB
+<   aging, 1.6666666666666665
+<    YBGGB
+<    china, 1
+<     GGGGG
+<     DONE
+<    GBGGG
+<    aping, 1
+<     GGGGG
+<     DONE
+<   BGBBY
+<   drama, 1
+---
+>   BBBBG
+>   glass, 1
+2038,2081c1956,1957
+<   BGYBB
+<   arrow, 1.5
+<    GGYGB
+<    armor, 1
+<     GGGGG
+<     DONE
+<   BBBBB
+<   chaff, 1.875
+<    YGGBB
+<    whack, 1
+<     GGGGG
+<     DONE
+<    BBGBB
+<    guava, 1
+<     GGGGG
+<     DONE
+<    BGGBB
+<    khaki, 1
+<     GGGGG
+<     DONE
+<    GGGBB
+<    champ, 1
+<     GGGGG
+<     DONE
+<    BBYBB
+<    pizza, 1
+<     GGGGG
+<     DONE
+<    YBGBB
+<    quack, 1
+<     GGGGG
+<     DONE
+<    BBYYB
+<    affix, 1
+<     GGGGG
+<     DONE
+<   BYBBY
+<   dwarf, 1.5
+<    GBGGB
+<    diary, 1
+<     GGGGG
+<     DONE
+<   GGBBB
+<   briar, 1
+---
+>   BBBBY
+>   psalm, 1
+2084,2085c1960,1961
+<   GGBBG
+<   braid, 1
+---
+>   YBYBY
+>   clash, 1
+2088,2089c1964,1965
+<   BGYBY
+<   ardor, 1
+---
+>   YBBBY
+>   flash, 1
+2092,2093c1968,1969
+<   GYYBG
+<   board, 1
+---
+>   BBYBY
+>   clasp, 1
+2096,2097c1972,1975
+<   BGBGY
+<   drank, 1
+---
+>  BBGGG
+>  filet, 1.5
+>   BYGGG
+>   inlet, 1
+2100,2101c1978,1981
+<   BYGYY
+<   adorn, 1
+---
+>  GBYYB
+>  chemo, 2.2000000000000006
+>   BBYBB
+>   slide, 1
+2104,2105c1984,1985
+<   GGYBB
+<   bravo, 1
+---
+>   YBYBB
+>   slice, 1
+2108,2109c1988,1989
+<   GYYBB
+<   borax, 1
+---
+>   BBYYB
+>   smile, 1
+2112,2113c1992,1993
+<   GGGBG
+<   broad, 1
+---
+>   BBYBY
+>   slope, 1
+2116,2117c1996,1997
+<   BYYBG
+<   hoard, 1
+---
+>   BBYGB
+>   slime, 1
+2120,2131c2000,2003
+<   BGBGB
+<   prank, 2
+<    BGGGG
+<    crank, 1.5
+<     BGGGG
+<     frank, 1
+<      GGGGG
+<      DONE
+<   BGGBB
+<   aroma, 1.5
+<    YGGBB
+<    croak, 1
+---
+>   BBGBB
+>   spell, 1.5
+>    GBGGG
+>    swell, 1
+2134,2135c2006,2007
+<   GGBGG
+<   brand, 1
+---
+>   BBGYB
+>   smell, 1
+2138,2141c2010,2013
+<   YYYBB
+<   cobra, 1.5
+<    BYYYY
+<    abhor, 1
+---
+>   BGGBB
+>   shelf, 1.5
+>    GGGGB
+>    shell, 1
+2144,2145c2016,2023
+<   BBYGB
+<   piano, 1
+---
+>  YBYGB
+>  loser, 1
+>   GGGGG
+>   DONE
+>  BYGGB
+>  abled, 1.5
+>   GBGGB
+>   alley, 1
+2148,2161c2026,2073
+<   BGBYB
+<   grain, 1.5
+<    BGGBG
+<    prawn, 1
+<     GGGGG
+<     DONE
+<   BYBBG
+<   acrid, 1.75
+<    YBYBG
+<    guard, 1
+<     GGGGG
+<     DONE
+<    GBYBG
+<    award, 1
+---
+>  BYYGB
+>  angel, 1.5
+>   GYBGY
+>   alien, 1
+>    GGGGG
+>    DONE
+>  YYBBY
+>  trash, 1.6666666666666665
+>   YGYGB
+>   artsy, 1
+>    GGGGG
+>    DONE
+>   YBYYB
+>   vista, 1
+>    GGGGG
+>    DONE
+>  BGYBY
+>  natal, 1.6666666666666665
+>   BGGBY
+>   latch, 1
+>    GGGGG
+>    DONE
+>   BGGGG
+>   fatal, 1
+>    GGGGG
+>    DONE
+>  YBYBY
+>  lusty, 1
+>   GGGGG
+>   DONE
+>  YBBYB
+>  rhone, 2.394736842105264
+>   GBBYG
+>   rinse, 1
+>    GGGGG
+>    DONE
+>   YYBBY
+>   fresh, 1
+>    GGGGG
+>    DONE
+>   YBYBG
+>   worse, 1
+>    GGGGG
+>    DONE
+>   YBBBG
+>   purse, 1.6666666666666665
+>    BBGGG
+>    verse, 1
+2164,2165c2076,2077
+<    YYYBG
+<    chard, 1
+---
+>    BGGGG
+>    curse, 1
+2168,2171c2080,2083
+<   BGBYY
+<   drain, 1.5
+<    GGGBG
+<    drawn, 1
+---
+>   BBBYG
+>   dense, 1.5
+>    BYYYG
+>    ensue, 1
+2174,2177c2086,2097
+<   GGBYB
+<   brain, 1.5
+<    GGGBG
+<    brawn, 1
+---
+>   YBBBY
+>   dress, 2
+>    BGGGG
+>    cress, 1.5
+>     BGGGG
+>     press, 1
+>      GGGGG
+>      DONE
+>   BBBBY
+>   pesky, 1.5
+>    BYYBB
+>    guess, 1
+2180,2181c2100,2101
+<   BYGYB
+<   acorn, 1
+---
+>   GBYBG
+>   rouse, 1
+2184,2201c2104,2107
+<   BBYBY
+<   dogma, 1.6666666666666665
+<    YYBBY
+<    audio, 1
+<     GGGGG
+<     DONE
+<    YGBBG
+<    vodka, 1
+<     GGGGG
+<     DONE
+<   BBBYB
+<   chain, 1.8333333333333337
+<    BYYBG
+<    human, 1
+<     GGGGG
+<     DONE
+<    BBYYG
+<    avian, 1
+---
+>   BBYBG
+>   poise, 1.7999999999999998
+>    BGBGG
+>    mouse, 1
+2204,2205c2110,2111
+<    YBGBY
+<    knack, 1
+---
+>    GGBGG
+>    posse, 1
+2208,2209c2114,2115
+<    BBGGG
+<    again, 1
+---
+>    YGBGG
+>    copse, 1
+2212,2213c2118,2119
+<    BBYYY
+<    ninja, 1
+---
+>    BYBGG
+>    obese, 1
+2216,2235c2122,2125
+<   BYYYB
+<   apron, 1
+<    GGGGG
+<    DONE
+<   BGGYB
+<   groan, 1
+<    GGGGG
+<    DONE
+<   BGBGG
+<   grand, 1
+<    GGGGG
+<    DONE
+<   YBBBB
+<   aback, 1
+<    GGGGG
+<    DONE
+<   YYBBB
+<   rumba, 1.5
+<    YYYYG
+<    umbra, 1
+---
+>   BBGBG
+>   moose, 1.5
+>    BGGGG
+>    goose, 1
+2238,2245c2128,2129
+<  BYYGY
+<  alter, 1
+<   GGGGG
+<   DONE
+<  BBGBG
+<  unlit, 1.5
+<   BBGYG
+<   pilot, 1
+---
+>   YYYBG
+>   horse, 1
+2248,2255c2132,2133
+<  GGBYY
+<  saute, 1
+<   GGGGG
+<   DONE
+<  YBYBB
+<  floss, 2
+<   BYBBG
+<   lupus, 1
+---
+>   YBGBG
+>   prose, 1
+2258,2259c2136,2137
+<   GGBGB
+<   flush, 1
+---
+>   BBYYG
+>   noise, 1
+2262,2263c2140,2141
+<   BGBGG
+<   bliss, 1
+---
+>   YBYBY
+>   verso, 1
+2266,2267c2144,2145
+<   BGBGB
+<   plush, 1.5
+---
+>   BGGBG
+>   chose, 1.5
+2269c2147
+<    blush, 1
+---
+>    whose, 1
+2272,2273c2150,2151
+<   BYYGB
+<   lousy, 1
+---
+>   BGBBY
+>   chess, 1
+2276,2277c2154,2155
+<   BGGGG
+<   gloss, 1
+---
+>   GBBBG
+>   reuse, 1
+2280,2281c2158,2159
+<   BYYBG
+<   locus, 1
+---
+>   GBBYY
+>   resin, 1
+2284,2287c2162,2163
+<  GBYYY
+<  style, 1.5
+<   GGBGG
+<   stole, 1
+---
+>   YBBYG
+>   nurse, 1
+2290,2297c2166,2167
+<  GBGBG
+<  split, 1
+<   GGGGG
+<   DONE
+<  BYGGB
+<  abled, 1.5
+<   GBGGB
+<   alley, 1
+---
+>   BBGYG
+>   noose, 1
+2300,2303c2170,2181
+<  BYBYG
+<  dearn, 2.1538461538461533
+<   BYYBY
+<   agent, 1
+---
+>   BBBBG
+>   issue, 1.6666666666666665
+>    YYBYG
+>    guise, 1
+>     GGGGG
+>     DONE
+>    BYBBG
+>    geese, 1
+>     GGGGG
+>     DONE
+>   BBYBY
+>   poesy, 1
+2306,2307c2184,2185
+<   BGGBY
+<   meant, 1
+---
+>   BYYBG
+>   house, 1
+2310,2311c2188,2189
+<   BGGGB
+<   heart, 1
+---
+>   GBBBY
+>   rebus, 1
+2313a2192,2199
+>  BGBBB
+>  corny, 2.5731707317073185
+>   YBBBB
+>   magic, 1.5
+>    GGBBY
+>    macaw, 1
+>     GGGGG
+>     DONE
+2315,2317c2201,2209
+<   cheat, 1.5
+<    BGGGG
+<    wheat, 1
+---
+>   favor, 2
+>    BGBGG
+>    major, 1.5
+>     BGBGG
+>     razor, 1
+>      GGGGG
+>      DONE
+>    BGBYY
+>    radio, 1
+2320,2321c2212,2227
+<   BGYBB
+<   begat, 1
+---
+>    BGYGG
+>    vapor, 1
+>     GGGGG
+>     DONE
+>   BYBYB
+>   banjo, 1.6666666666666665
+>    BGYBY
+>    wagon, 1
+>     GGGGG
+>     DONE
+>    BGGBG
+>    mango, 1
+>     GGGGG
+>     DONE
+>   BYYYY
+>   rayon, 1
+2324,2325c2230,2231
+<   BYYGB
+<   avert, 1
+---
+>   GBBYB
+>   cabin, 1
+2328,2329c2234,2235
+<   BYGBY
+<   enact, 1
+---
+>   BYYBY
+>   mayor, 1
+2332,2333c2238,2239
+<   YYYBB
+<   adept, 1
+---
+>   YYBYB
+>   bacon, 1
+2336,2337c2242,2243
+<   BGGYB
+<   react, 1
+---
+>   YBBBG
+>   wacky, 1
+2340,2341c2246,2269
+<   BYGBB
+<   exact, 1
+---
+>   BBYBB
+>   rabid, 1.8333333333333337
+>    GGBBY
+>    radar, 1
+>     GGGGG
+>     DONE
+>    GGBGY
+>    radii, 1
+>     GGGGG
+>     DONE
+>    GGGYB
+>    rabbi, 1
+>     GGGGG
+>     DONE
+>    GGBGG
+>    rapid, 1
+>     GGGGG
+>     DONE
+>    GGBBB
+>    rajah, 1
+>     GGGGG
+>     DONE
+>   BBBGB
+>   fauna, 1
+2344,2345c2272,2283
+<   BYYYB
+<   treat, 1.5
+---
+>   GBBBG
+>   cabby, 1.5
+>    GGBBG
+>    caddy, 1
+>     GGGGG
+>     DONE
+>   BBBBB
+>   mamma, 1.875
+>    GGYBB
+>    maxim, 1
+>     GGGGG
+>     DONE
+2347c2285
+<    great, 1
+---
+>    gamma, 1
+2350,2373c2288,2289
+<  BGBYY
+<  earth, 1.6666666666666665
+<   YGBYY
+<   bathe, 1
+<    GGGGG
+<    DONE
+<   YGBGY
+<   haute, 1
+<    GGGGG
+<    DONE
+<  BGGGG
+<  valet, 1
+<   GGGGG
+<   DONE
+<  GYBYB
+<  hepar, 2.3809523809523805
+<   YYBGG
+<   shear, 1
+<    GGGGG
+<    DONE
+<   YYBYB
+<   dumky, 2
+<    YBBBB
+<    shade, 1
+---
+>    BGBBB
+>    vapid, 1
+2376,2377c2292,2293
+<    BBBGB
+<    shake, 1
+---
+>    GGYBY
+>    madam, 1
+2380,2381c2296,2297
+<    BBBBB
+<    shave, 1
+---
+>    BGBBG
+>    kappa, 1
+2384,2385c2300,2301
+<    BBYBB
+<    shame, 1
+---
+>    GGBBG
+>    mafia, 1
+2388,2411c2304,2305
+<   BYBGB
+<   sneak, 1
+<    GGGGG
+<    DONE
+<   BYYYY
+<   spare, 1
+<    GGGGG
+<    DONE
+<   BYYGG
+<   spear, 1
+<    GGGGG
+<    DONE
+<   YYYYB
+<   shape, 1
+<    GGGGG
+<    DONE
+<   BGGYB
+<   sepia, 1
+<    GGGGG
+<    DONE
+<   BYYYB
+<   space, 1.5
+<    GGGBG
+<    spade, 1
+---
+>    GGBGG
+>    magma, 1
+2414,2415c2308,2309
+<   BYYGB
+<   speak, 1
+---
+>   BYBBY
+>   bayou, 1
+2418,2419c2312,2313
+<   YYBYY
+<   share, 1
+---
+>   GBBYG
+>   candy, 1
+2422,2425c2316,2319
+<   BYBGG
+<   swear, 1.5
+<    GBGGG
+<    smear, 1
+---
+>   BBBYG
+>   handy, 1.6666666666666665
+>    BGGBG
+>    mangy, 1
+2428,2431c2322,2323
+<   BYBYY
+<   scare, 1.5
+<    GBGGG
+<    snare, 1
+---
+>    BGGGG
+>    dandy, 1
+2434,2441c2326,2329
+<   BGBGB
+<   sedan, 1
+<    GGGGG
+<    DONE
+<   BYBYB
+<   suave, 1.5
+<    GBGBG
+<    snake, 1
+---
+>   BBBGG
+>   nanny, 1.5
+>    BGGGG
+>    fanny, 1
+2444,2451c2332,2333
+<  BGBGB
+<  gormy, 2.5
+<   BYBBB
+<   oaken, 1
+<    GGGGG
+<    DONE
+<   BBYBY
+<   payer, 1
+---
+>   BYYYB
+>   manor, 1
+2454,2455c2336,2337
+<   BBGYB
+<   harem, 1
+---
+>   GYGBB
+>   cargo, 1
+2458,2461c2340,2343
+<   YBYBB
+<   wager, 1.5
+<    BGGGG
+<    eager, 1
+---
+>   BBBBG
+>   podgy, 2.111111111111111
+>    BBYYG
+>    gaudy, 1
+2464,2467c2346,2347
+<   BBGBB
+<   rarer, 1.5
+<    BGGGG
+<    parer, 1
+---
+>    GBGBG
+>    paddy, 1
+2470,2479c2350,2353
+<   BBYBB
+<   caper, 2.142857142857143
+<    BGBGG
+<    waver, 1.6666666666666665
+<     GGBGG
+<     wafer, 1
+<      GGGGG
+<      DONE
+<     BGBGG
+<     baker, 1
+---
+>    BBBBG
+>    mammy, 1.5
+>     BGBBG
+>     jazzy, 1
+2482,2483c2356,2357
+<    YGBGG
+<    racer, 1
+---
+>    BBBYG
+>    gawky, 1
+2486,2487c2360,2361
+<    BGGGG
+<    paper, 1
+---
+>    YBBBG
+>    happy, 1
+2490,2491c2364,2365
+<    BGBGY
+<    raven, 1
+---
+>    BBYBG
+>    bawdy, 1
+2494,2513c2368,2369
+<   GBYBB
+<   gazer, 1
+<    GGGGG
+<    DONE
+<   YBBBG
+<   cagey, 1
+<    GGGGG
+<    DONE
+<   BYBYB
+<   cameo, 1
+<    GGGGG
+<    DONE
+<   GBYBY
+<   gayer, 1
+<    GGGGG
+<    DONE
+<   BBBBB
+<   waxen, 1.5
+<    BGBGG
+<    haven, 1
+---
+>    BBGBG
+>    daddy, 1
+2516,2519c2372,2373
+<   BBYYB
+<   ramen, 1.5
+<    YGYGB
+<    maker, 1
+---
+>    BBBGG
+>    baggy, 1
+2522,2527c2376,2377
+<   BBBBY
+<   payee, 1
+<    GGGGG
+<    DONE
+<   GBYYB
+<   gamer, 1
+---
+>   GBBGG
+>   canny, 1
+2530,2535d2379
+<  YYYYG
+<  least, 1
+<   GGGGG
+<   DONE
+<  YGBBB
+<  ricin, 2.1000000000000005
+2537,2541c2381
+<   daisy, 1
+<    GGGGG
+<    DONE
+<   BBBBB
+<   gassy, 1
+---
+>   mambo, 1
+2544,2545c2384,2385
+<   BBBGG
+<   basin, 1
+---
+>   GYBYB
+>   canon, 1
+2548,2549c2388,2389
+<   YBBBB
+<   harsh, 1.5
+---
+>   YBBYB
+>   manic, 1.5
+2551c2391
+<    marsh, 1
+---
+>    panic, 1
+2555c2395
+<   pansy, 1
+---
+>   kayak, 1
+2558,2559c2398,2399
+<   BBYGB
+<   basic, 1
+---
+>   BBYYG
+>   randy, 1
+2562,2563c2402,2403
+<   GBBBB
+<   raspy, 1
+---
+>   GBYYB
+>   cairn, 1
+2566,2567c2406,2415
+<   BBBBG
+<   mason, 1
+---
+>   BBYBG
+>   hairy, 2
+>    BGGGG
+>    dairy, 1.5
+>     BGGGG
+>     fairy, 1
+>      GGGGG
+>      DONE
+>   YBYYB
+>   ranch, 1
+2570,2571c2418,2419
+<   BBBGB
+<   basis, 1
+---
+>   GYBBB
+>   cacao, 1
+2574,2579c2422,2425
+<  YBYYB
+<  bless, 2
+<   BYYGB
+<   louse, 1.5
+<    GGBGG
+<    loose, 1
+---
+>   BBBYB
+>   manga, 1.6666666666666665
+>    BGYYY
+>    pagan, 1
+2582,2605c2428,2449
+<   BGGGB
+<   flesh, 1
+<    GGGGG
+<    DONE
+<   BGYGB
+<   close, 1
+<    GGGGG
+<    DONE
+<  YBBBY
+<  durgy, 2.0000000000000004
+<   BBGBB
+<   torso, 1
+<    GGGGG
+<    DONE
+<   BGBYB
+<   gusto, 1
+<    GGGGG
+<    DONE
+<   BGYBG
+<   rusty, 1
+<    GGGGG
+<    DONE
+<   BGBBG
+<   musty, 1
+---
+>    GGGBG
+>    mania, 1
+>     GGGGG
+>     DONE
+>   BBGBG
+>   harpy, 2
+>    BGGYG
+>    parry, 1
+>     GGGGG
+>     DONE
+>    BGGBG
+>    marry, 1
+>     GGGGG
+>     DONE
+>    GGGBG
+>    hardy, 1.5
+>     GGGBG
+>     harry, 1
+>      GGGGG
+>      DONE
+>   BYGYB
+>   baron, 1
+2608,2609c2452,2459
+<   BYYBB
+<   truss, 1
+---
+>   YYBBB
+>   macho, 1.5
+>    BGYYY
+>    havoc, 1
+>     GGGGG
+>     DONE
+>   GBGBG
+>   carry, 1
+2612,2613c2462,2463
+<   BYGBB
+<   torus, 1
+---
+>   YBBYG
+>   fancy, 1
+2616,2617c2466,2473
+<   BGBYG
+<   gusty, 1
+---
+>   BBGBB
+>   parka, 1.5
+>    BGGYG
+>    karma, 1
+>     GGGGG
+>     DONE
+>   YBGBB
+>   march, 1
+2620,2621c2476,2477
+<   GGBBG
+<   dusty, 1
+---
+>   BBYYB
+>   nadir, 1
+2624,2625c2480,2481
+<   BBBBG
+<   tipsy, 1
+---
+>   BBYGG
+>   rainy, 1
+2628,2631c2484,2485
+<  YBGYB
+<  welsh, 1.5
+<   BYGGB
+<   pulse, 1
+---
+>   YYYBB
+>   macro, 1
+2633a2488,2491
+>  BBYGG
+>  fleet, 1
+>   GGGGG
+>   DONE
+2636,2637c2494,2495
+<   BBBGG
+<   tabby, 1
+---
+>   BBYBG
+>   ratty, 1
+2640,2641c2498,2499
+<   BBYBB
+<   tapir, 1
+---
+>   BBBYG
+>   batty, 1
+2643a2502,2507
+>   BYBYB
+>   taboo, 1.5
+>    YGYGB
+>    baton, 1
+>     GGGGG
+>     DONE
+2645c2509
+<   warty, 1.6666666666666665
+---
+>   party, 1.6666666666666665
+2651c2515
+<    party, 1
+---
+>    warty, 1
+2654,2655c2518,2519
+<   BBBYG
+<   batty, 1
+---
+>   GBBBG
+>   catty, 1
+2658,2665c2522,2523
+<   BBBBB
+<   faith, 1.5
+<    BGBYB
+<    datum, 1
+<     GGGGG
+<     DONE
+<   BBYBG
+<   ratty, 1
+---
+>   YBBYB
+>   batch, 1
+2675,2679c2533,2537
+<   tangy, 2.1666666666666665
+<    YGBBG
+<    fatty, 1.5
+<     BGGGG
+<     patty, 1
+---
+>   tawny, 2.1666666666666665
+>    GGBBG
+>    taffy, 1.5
+>     GGBBG
+>     tatty, 1
+2682,2683c2540,2541
+<    GGYBG
+<    tawny, 1
+---
+>    GGBYG
+>    tangy, 1
+2686,2689c2544,2547
+<    GGBBG
+<    tatty, 1.5
+<     GGBBG
+<     taffy, 1
+---
+>    YGBBG
+>    fatty, 1.5
+>     BGGGG
+>     patty, 1
+2695a2554,2559
+>   BBBBB
+>   datum, 1.5
+>    BGYBB
+>    faith, 1
+>     GGGGG
+>     DONE
+2700,2705c2564,2565
+<   GBBBG
+<   catty, 1
+<    GGGGG
+<    DONE
+<   YBBYB
+<   batch, 1
+---
+>   BBBGG
+>   tabby, 1
+2708,2713d2567
+<   BYBYB
+<   baton, 1.5
+<    YGYGB
+<    taboo, 1
+<     GGGGG
+<     DONE
+2715,2717c2569,2571
+<   patio, 1.5
+<    BGYBG
+<    tango, 1
+---
+>   tango, 1.5
+>    YGBBG
+>    patio, 1
+2719a2574,2577
+>   BBYBB
+>   tapir, 1
+>    GGGGG
+>    DONE
+2721,2723c2579,2581
+<   humpy, 2
+<    YBYBB
+<    match, 1
+---
+>   humps, 2
+>    YBBYB
+>    patch, 1
+2734,2757c2592,2593
+<    YBBYB
+<    patch, 1
+<     GGGGG
+<     DONE
+<  GYBBY
+<  prink, 2.214285714285714
+<   BYBBB
+<   straw, 1.5
+<    GGGGB
+<    stray, 1
+<     GGGGG
+<     DONE
+<   BBYYB
+<   stain, 1
+<    GGGGG
+<    DONE
+<   BBBBB
+<   swath, 1.6666666666666665
+<    GBGYG
+<    stash, 1
+<     GGGGG
+<     DONE
+<    GBGYB
+<    staff, 1
+---
+>    YBYBB
+>    match, 1
+2760,2765c2596,2599
+<   BBBGB
+<   stand, 1
+<    GGGGG
+<    DONE
+<   YYBBB
+<   strap, 1
+---
+>  GBYYG
+>  spelt, 1.6666666666666665
+>   GYGYG
+>   slept, 1
+2768,2769c2602,2603
+<   BBBGG
+<   stank, 1
+---
+>   GBGGG
+>   smelt, 1
+2772,2773c2606,2613
+<   BYYBB
+<   stair, 1
+---
+>  GGBBG
+>  saint, 1
+>   GGGGG
+>   DONE
+>  YGBYB
+>  pause, 2
+>   GGBGG
+>   parse, 1
+2776,2777c2616,2623
+<   BYBBG
+<   stark, 1
+---
+>   BGBGG
+>   raise, 1.5
+>    BGBGG
+>    masse, 1
+>     GGGGG
+>     DONE
+>   BGGGG
+>   cause, 1
+2780,2781c2626,2629
+<   YBBBB
+<   stamp, 1
+---
+>  BBBBG
+>  groin, 2.27027027027027
+>   BGBYB
+>   drift, 1
+2784,2785c2632,2633
+<   BBBBG
+<   stack, 1
+---
+>   BGBGB
+>   fruit, 1
+2788,2789c2636,2637
+<   BBYBB
+<   staid, 1
+---
+>   BGGBB
+>   trout, 1
+2792,2815c2640,2641
+<  YGYGB
+<  easel, 1
+<   GGGGG
+<   DONE
+<  GYGBG
+<  splat, 1
+<   GGGGG
+<   DONE
+<  GYYBB
+<  child, 2.3076923076923075
+<   BBBYB
+<   slang, 1.5
+<    GYGYB
+<    snarl, 1
+<     GGGGG
+<     DONE
+<   YBBGB
+<   scaly, 1.5
+<    GGGGB
+<    scalp, 1
+<     GGGGG
+<     DONE
+<   BBBGB
+<   small, 1
+---
+>   BBBGY
+>   unfit, 1
+2818,2821c2644,2647
+<   BGBYB
+<   shoal, 1.5
+<    GGBYG
+<    shawl, 1
+---
+>   BYYBB
+>   court, 1.5
+>    BGBYG
+>    robot, 1
+2824,2829c2650,2651
+<   YBBGG
+<   scald, 1
+<    GGGGG
+<    DONE
+<   BYBYB
+<   slash, 1
+---
+>   BBBYB
+>   twixt, 1
+2832,2833c2654,2655
+<   YBBYB
+<   slack, 1
+---
+>   YBBGB
+>   digit, 1
+2836,2843c2658,2659
+<   BBYYB
+<   slain, 1.5
+<    GYGGY
+<    snail, 1
+<     GGGGG
+<     DONE
+<   BGBGB
+<   shall, 1
+---
+>   BGYGB
+>   orbit, 1
+2846,2857c2662,2663
+<  YYBYG
+<  beast, 2
+<   BGGGG
+<   yeast, 1.5
+<    BGGGG
+<    feast, 1
+<     GGGGG
+<     DONE
+<  GBBGB
+<  hewer, 2.304347826086956
+<   BBBGB
+<   spied, 1
+---
+>   BBYGB
+>   vomit, 1
+2860,2861c2666,2667
+<   BBYGB
+<   sinew, 1
+---
+>   YYBYB
+>   right, 1
+2864,2865c2670,2671
+<   BBYGY
+<   screw, 1
+---
+>   BBBBY
+>   uncut, 1
+2868,2869c2674,2675
+<   YBBGB
+<   shied, 1
+---
+>   BGBYY
+>   print, 1
+2872,2873c2678,2679
+<   BGBGG
+<   sever, 1
+---
+>   GGGBB
+>   grout, 1
+2876,2885c2682,2685
+<   YYBGB
+<   sheen, 1.5
+<    GGGGB
+<    sheep, 1
+<     GGGGG
+<     DONE
+<   BGBGB
+<   seven, 1.5
+<    GGBGG
+<    semen, 1
+---
+>   YBBYB
+>   twits, 2.25
+>    GBYYB
+>    tight, 1
+2888,2895c2688,2689
+<   BBGGG
+<   sower, 1
+<    GGGGG
+<    DONE
+<   BYBGY
+<   spree, 1.5
+<    GBGGG
+<    scree, 1
+---
+>    YYYBB
+>    wight, 1
+2898,2903c2692,2695
+<   BBBGG
+<   surer, 2
+<    GBBGG
+<    skier, 1.5
+<     GBBGG
+<     sober, 1
+---
+>    YBYBB
+>    might, 1.5
+>     BGGGG
+>     fight, 1
+2906,2907c2698,2705
+<    GGBGG
+<    super, 1
+---
+>   BBBYY
+>   input, 1
+>    GGGGG
+>    DONE
+>   BBYYB
+>   idiot, 1.5
+>    YBBGG
+>    pivot, 1
+2910,2911c2708,2709
+<   BGGGG
+<   sewer, 1
+---
+>   YBBYY
+>   night, 1
+2914,2915c2712,2713
+<   BYBGB
+<   speed, 1
+---
+>   YBYBB
+>   ought, 1
+2918,2919c2716,2717
+<   BYBGG
+<   sneer, 1
+---
+>   YBYYB
+>   bigot, 1
+2922,2923c2720,2721
+<   YYBGG
+<   sheer, 1
+---
+>   BGGBY
+>   front, 1
+2926,2927c2724,2725
+<   YBYGY
+<   shrew, 1
+---
+>   BYBBY
+>   burnt, 1
+2930,2931c2728,2729
+<   BYYGB
+<   sweep, 1
+---
+>   BGBBB
+>   crypt, 1
+2934,2935c2732,2733
+<   BBBGY
+<   siren, 1
+---
+>   BGGGB
+>   droit, 1
+2938,2947c2736,2737
+<  BBBGY
+<  mohur, 2.3333333333333326
+<   BBYBY
+<   threw, 1.5
+<    GGGGB
+<    three, 1
+<     GGGGG
+<     DONE
+<   BYBBB
+<   often, 1
+---
+>   GGBBY
+>   grunt, 1
+2950,2951c2740,2741
+<   BBYBB
+<   thief, 1
+---
+>   BGBBY
+>   brunt, 1
+2954,2955c2744,2755
+<   BYBBG
+<   otter, 1
+---
+>   BBYBY
+>   mount, 1.6666666666666665
+>    BGYYG
+>    donut, 1
+>     GGGGG
+>     DONE
+>    BGGGG
+>    count, 1
+>     GGGGG
+>     DONE
+>   BBYBB
+>   doubt, 1
+2958,2959c2758,2759
+<   BBBBY
+<   tried, 1
+---
+>   YBYYY
+>   ingot, 1
+2962,2965c2762,2765
+<   BBBBB
+<   tweed, 1.5
+<    GBYGB
+<    tepee, 1
+---
+>   BBYYY
+>   joint, 1.5
+>    BGGGG
+>    point, 1
+2968,2969c2768,2777
+<   BGBBB
+<   token, 1
+---
+>  BGYBB
+>  bingy, 2.2777777777777772
+>   YBBBB
+>   cabal, 1.5
+>    BGGBY
+>    labor, 1
+>     GGGGG
+>     DONE
+>   BBBGB
+>   laugh, 1
+2972,2973c2780,2781
+<   BYBYG
+<   outer, 1
+---
+>   BYBBB
+>   cavil, 1
+2976,2977c2784,2785
+<   BBGBG
+<   ether, 1
+---
+>   BBGBB
+>   canal, 1
+2980,2981c2788,2793
+<   BYGBG
+<   other, 1
+---
+>   BYBBG
+>   daily, 1
+>    GGGGG
+>    DONE
+>   BYBYG
+>   gaily, 1
+2985c2797
+<   meter, 1
+---
+>   badly, 1
+2988,2991c2800,2807
+<   BBBBG
+<   deter, 1.75
+<    BBGGG
+<    inter, 1
+---
+>   GBGBB
+>   banal, 1
+>    GGGGG
+>    DONE
+>   BBGBG
+>   manly, 1.5
+>    BGGYG
+>    lanky, 1
+2994,2995c2810,2813
+<    BBYGG
+<    tiger, 1
+---
+>   BBBBB
+>   papal, 1.75
+>    BGBBY
+>    caulk, 1
+2998,2999c2816,2817
+<    BYGGG
+<    enter, 1
+---
+>    BGBYY
+>    larva, 1
+3002,3005c2820,2821
+<   BGBBG
+<   tower, 1.5
+<    YGBGG
+<    voter, 1
+---
+>    BGBBG
+>    carol, 1
+3008,3009c2824,2825
+<   YGBBB
+<   totem, 1
+---
+>   BBYBB
+>   naval, 1
+3013,3023c2829
+<   truer, 1.6666666666666665
+<    YBYGG
+<    utter, 1
+<     GGGGG
+<     DONE
+<    GBYGG
+<    tuber, 1
+<     GGGGG
+<     DONE
+<   YBBBG
+<   timer, 1
+---
+>   gayly, 1
+3026,3033c2832,2833
+<  YBGGG
+<  islet, 1
+<   GGGGG
+<   DONE
+<  BYYYG
+<  leapt, 2.125
+<   YGGBG
+<   dealt, 1
+---
+>   BBBBG
+>   madly, 1
+3036,3037c2836,2839
+<   YYGBG
+<   exalt, 1
+---
+>  GBYYY
+>  style, 1.5
+>   GGBGG
+>   stole, 1
+3040,3041c2842,2859
+<   YYYBG
+<   cleat, 1.6666666666666665
+---
+>  BYYYB
+>  gnarl, 2.6122448979591812
+>   GBGBY
+>   glade, 1.5
+>    GGGBG
+>    glaze, 1
+>     GGGGG
+>     DONE
+>   BBYBG
+>   pedal, 1.8333333333333337
+>    BYYGG
+>    ideal, 1
+>     GGGGG
+>     DONE
+>    BGYGG
+>    decal, 1
+>     GGGGG
+>     DONE
+3043c2861
+<    bleat, 1
+---
+>    medal, 1
+3046,3047c2864,2865
+<    BGGYG
+<    alert, 1
+---
+>    BYBGG
+>    equal, 1
+3050,3051c2868,2873
+<   YYYYG
+<   pleat, 1
+---
+>    BGBGG
+>    fecal, 1
+>     GGGGG
+>     DONE
+>   BBGYY
+>   realm, 1
+3054,3055c2876,2877
+<   GGGBG
+<   leant, 1
+---
+>   BBYYY
+>   clear, 1
+3058,3061c2880,2881
+<  BYGBB
+<  allay, 1.9999999999999993
+<   BBGGY
+<   bylaw, 1
+---
+>   BYYYG
+>   renal, 1
+3064,3065c2884,2885
+<   GGGBG
+<   alloy, 1
+---
+>   BBGGG
+>   pearl, 1
+3068,3069c2888,2889
+<   YYGBB
+<   villa, 1
+---
+>   BGYBY
+>   ankle, 1
+3072,3073c2892,2899
+<   YBGBB
+<   polka, 1
+---
+>   BYYBY
+>   clean, 1.5
+>    BGYYY
+>    alone, 1
+>     GGGGG
+>     DONE
+>   BYGBY
+>   plane, 1
+3076,3077c2902,2903
+<   GBGBB
+<   aglow, 1
+---
+>   YBYYG
+>   regal, 1
+3080,3081c2906,2907
+<   BBGGG
+<   inlay, 1
+---
+>   BYYBG
+>   penal, 1
+3084,3085c2910,2911
+<   GGGBB
+<   allow, 1
+---
+>   BYGGY
+>   learn, 1
+3088,3089c2914,2915
+<   BYGGB
+<   lilac, 1
+---
+>   YGYBY
+>   angle, 1
+3092,3101c2918,2919
+<   BBGGB
+<   polar, 1.5
+<    BGGGG
+<    molar, 1
+<     GGGGG
+<     DONE
+<  YGBBY
+<  patty, 2.1666666666666665
+<   GGBGG
+<   pasty, 1
+---
+>   YBYBG
+>   legal, 1
+3104,3105c2922,2923
+<   BGYGG
+<   tasty, 1
+---
+>   GYYBY
+>   glean, 1
+3108,3111c2926,2935
+<   BGBGG
+<   hasty, 1.5
+<    BGGGG
+<    nasty, 1
+---
+>   BBYBY
+>   apple, 1.9999999999999998
+>    GBBYG
+>    alike, 1.5
+>     GGGBG
+>     alive, 1
+>      GGGGG
+>      DONE
+>    GBGGG
+>    ample, 1
+3114,3131c2938,2939
+<   GGGBG
+<   patsy, 1
+<    GGGGG
+<    DONE
+<   GGBGB
+<   pasta, 1
+<    GGGGG
+<    DONE
+<  YBBGY
+<  ester, 1
+<   GGGGG
+<   DONE
+<  GBBYB
+<  prink, 2.378378378378379
+<   YYBBB
+<   sperm, 1.5
+<    GGYGB
+<    spore, 1
+---
+>    YBBYY
+>    bleak, 1
+3134,3137c2942,2943
+<   BBYBB
+<   siege, 1.5
+<    GGGBG
+<    sieve, 1
+---
+>    YYBYY
+>    plead, 1
+3140,3163c2946,2947
+<   BBGBB
+<   seize, 1
+<    GGGGG
+<    DONE
+<   YBBBY
+<   spoke, 1
+<    GGGGG
+<    DONE
+<   YBGYB
+<   snipe, 1
+<    GGGGG
+<    DONE
+<   BBBBY
+<   smoke, 1
+<    GGGGG
+<    DONE
+<   YBGGB
+<   spine, 1
+<    GGGGG
+<    DONE
+<   BYBBB
+<   choux, 2.0000000000000004
+<    BBBYB
+<    surge, 1
+---
+>    GBBGG
+>    amble, 1
+3166,3167c2950,2953
+<    BGGBB
+<    shore, 1
+---
+>   BBGBY
+>   fehme, 2.1666666666666665
+>    BBBGG
+>    blame, 1
+3170,3171c2956,2957
+<    BBBGB
+<    serum, 1
+---
+>    BBYBG
+>    whale, 1
+3174,3175c2960,2961
+<    YBGBB
+<    score, 1
+---
+>    YGBBB
+>    leafy, 1
+3178,3179c2964,2965
+<    BBBBB
+<    serve, 1
+---
+>    BGBBB
+>    leaky, 1
+3182,3183c2968,2969
+<    BBGBB
+<    swore, 1
+---
+>    BGBBG
+>    leave, 1
+3186,3187c2972,3005
+<   YBBGB
+<   spend, 1
+---
+>    GBBGG
+>    flame, 1
+>     GGGGG
+>     DONE
+>    BGBYB
+>    mealy, 1
+>     GGGGG
+>     DONE
+>    GBBBG
+>    flake, 1
+>     GGGGG
+>     DONE
+>    BGYBB
+>    leach, 1
+>     GGGGG
+>     DONE
+>    BBBBG
+>    blade, 1.6666666666666665
+>     GGGBG
+>     blaze, 1
+>      GGGGG
+>      DONE
+>     BGGBG
+>     place, 1
+>      GGGGG
+>      DONE
+>   BBGGY
+>   flare, 1.5
+>    BGGGG
+>    blare, 1
+>     GGGGG
+>     DONE
+>   BBGBG
+>   email, 1
+3190,3191c3008,3009
+<   YBBBB
+<   scope, 1
+---
+>   BBYYG
+>   feral, 1
+3194,3195c3012,3013
+<   BYYBB
+<   serif, 1
+---
+>   GBGGY
+>   glare, 1
+3198,3199c3016,3017
+<   YYGBB
+<   spire, 1
+---
+>   GBYBY
+>   gleam, 1
+3202,3203c3020,3029
+<   BBYBG
+<   sheik, 1
+---
+>   YBYBY
+>   agile, 1.5
+>    GYBYG
+>    algae, 1
+>     GGGGG
+>     DONE
+>  GBBGG
+>  sweet, 1.5
+>   GBGGG
+>   sheet, 1
+3206,3207c3032,3047
+<   BBGGB
+<   swine, 1.5
+---
+>  BBBGB
+>  rownd, 2.822429906542054
+>   BGYYB
+>   women, 2
+>    GGBGG
+>    woven, 1.5
+>     GGBGG
+>     woken, 1
+>      GGGGG
+>      DONE
+>   YGYBB
+>   wooer, 1
+>    GGGGG
+>    DONE
+>   YYBBY
+>   order, 1.5
+3209c3049
+<    shine, 1
+---
+>    odder, 1
+3212,3213c3052,3053
+<   BBGYB
+<   snide, 1
+---
+>   YBGBB
+>   fewer, 1
+3215a3056,3067
+>   BBBYG
+>   kneed, 1.5
+>    BGBGG
+>    unfed, 1
+>     GGGGG
+>     DONE
+>   YBBYY
+>   under, 1.5
+>    BYYGG
+>    diner, 1
+>     GGGGG
+>     DONE
+3217,3219c3069,3071
+<   segue, 1.6666666666666665
+<    GBBBG
+<    shove, 1
+---
+>   bicep, 1.75
+>    BBGGB
+>    emcee, 1
+3222,3223c3074,3075
+<    GGBBY
+<    seedy, 1
+---
+>    BBYGB
+>    cheek, 1
+3226,3231c3078,3101
+<   YBGBY
+<   spike, 1
+<    GGGGG
+<    DONE
+<   BYBYB
+<   snore, 1
+---
+>    BYYGB
+>    chief, 1
+>     GGGGG
+>     DONE
+>   BGBBY
+>   modem, 1.5
+>    BGYGB
+>    dopey, 1
+>     GGGGG
+>     DONE
+>   BGBYB
+>   honey, 2
+>    BGYGB
+>    coven, 1
+>     GGGGG
+>     DONE
+>    BGGGG
+>    money, 1.5
+>     BGGGG
+>     boney, 1
+>      GGGGG
+>      DONE
+>   BBBBG
+>   embed, 1
+3234,3235c3104,3105
+<   YBBBG
+<   speck, 1
+---
+>   YYYYB
+>   owner, 1
+3238,3241c3108,3111
+<   BBBGB
+<   scone, 1.6666666666666665
+<    GGBGG
+<    scene, 1
+---
+>   YBBYB
+>   miner, 2
+>    BGGGG
+>    finer, 1
+3244,3245c3114,3121
+<    GBGGG
+<    shone, 1
+---
+>    BBYGY
+>    green, 1.5
+>     BGGGG
+>     preen, 1
+>      GGGGG
+>      DONE
+>    BYYGG
+>    infer, 1
+3248,3249c3124,3137
+<   YBGBB
+<   spice, 1
+---
+>    BBYGG
+>    never, 1
+>     GGGGG
+>     DONE
+>    BYGGG
+>    inner, 1
+>     GGGGG
+>     DONE
+>    BGYGG
+>    nicer, 1
+>     GGGGG
+>     DONE
+>   YGBYB
+>   goner, 1
+3252,3253c3140,3141
+<   BYGBB
+<   shire, 1
+---
+>   GGBBY
+>   rodeo, 1
+3256,3257c3144,3145
+<   BBBYB
+<   sense, 1
+---
+>   BBGYG
+>   unwed, 1
+3260,3281c3148,3149
+<   BBYYB
+<   singe, 1.5
+<    GGGBG
+<    since, 1
+<     GGGGG
+<     DONE
+<  GBYGY
+<  steel, 1
+<   GGGGG
+<   DONE
+<  BGYGY
+<  later, 1
+<   GGGGG
+<   DONE
+<  YYBYY
+<  tease, 1
+<   GGGGG
+<   DONE
+<  BGBGY
+<  tamer, 2.4
+<   GGBGB
+<   taken, 1
+---
+>   GGGBB
+>   rower, 1
+3284,3287c3152,3155
+<   YGBGG
+<   wecht, 2
+<    BYBYY
+<    hater, 1
+---
+>   BGBBB
+>   gooey, 1.5
+>    BGBGG
+>    covey, 1
+3290,3291c3158,3161
+<    BYBBY
+<    eater, 1
+---
+>   YBBBG
+>   fecit, 2.25
+>    BYYYB
+>    cried, 1
+3294,3295c3164,3171
+<    BYYBY
+<    cater, 1
+---
+>    BYBYB
+>    dried, 1.5
+>     BGGGG
+>     pried, 1
+>      GGGGG
+>      DONE
+>    BYYBB
+>    creed, 1
+3298,3299c3174,3195
+<    GYBBY
+<    water, 1
+---
+>    GYBBB
+>    freed, 1
+>     GGGGG
+>     DONE
+>    GYBYB
+>    fried, 1
+>     GGGGG
+>     DONE
+>    BYBBB
+>    greed, 1.5
+>     BGGGG
+>     breed, 1
+>      GGGGG
+>      DONE
+>   GBBBB
+>   river, 1.75
+>    GBBGB
+>    rupee, 1
+>     GGGGG
+>     DONE
+>    GBBGG
+>    refer, 1
+3302,3307d3197
+<   YGBGB
+<   eaten, 1
+<    GGGGG
+<    DONE
+<   GGBGG
+<   taker, 1.5
+3309c3199
+<    taper, 1
+---
+>    riper, 1
+3312,3313c3202,3203
+<   YGYGB
+<   matey, 1
+---
+>   BYBBY
+>   video, 1
+3316,3319c3206,3223
+<  GGBBY
+<  satyr, 1.5
+<   GGGBB
+<   satin, 1
+---
+>   BBBYB
+>   given, 2
+>    BGYGG
+>    vixen, 1
+>     GGGGG
+>     DONE
+>    BBBGG
+>    queen, 1.5
+>     BBBGG
+>     hymen, 1
+>      GGGGG
+>      DONE
+>    BGBGY
+>    piney, 1
+>     GGGGG
+>     DONE
+>   BBBBY
+>   dicey, 1
+3322,3325c3226,3227
+<  BGGBY
+<  tally, 1.6666666666666665
+<   GGGBB
+<   talon, 1
+---
+>   GBYYB
+>   renew, 1
+3328,3329c3230,3231
+<   YGGBB
+<   waltz, 1
+---
+>   YYBBB
+>   offer, 1
+3332,3341c3234,3235
+<  YBBBG
+<  jorum, 2.3
+<   BBYYB
+<   crust, 1.5
+<    BGGGG
+<    trust, 1
+<     GGGGG
+<     DONE
+<   BGBBY
+<   moist, 1
+---
+>   YBYBY
+>   wider, 1
+3344,3345c3238,3247
+<   BGYBB
+<   roost, 1
+---
+>   YGGBB
+>   mower, 2
+>    BGGGG
+>    cower, 1.5
+>     BGGGG
+>     power, 1
+>      GGGGG
+>      DONE
+>   BGBYY
+>   dozen, 1
+3349,3353c3251,3257
+<   joist, 1
+<    GGGGG
+<    DONE
+<   BYYBB
+<   frost, 1
+---
+>   rover, 1.5
+>    GGBGG
+>    roger, 1
+>     GGGGG
+>     DONE
+>   BBBYY
+>   index, 1
+3356,3357c3260,3267
+<   GGBYB
+<   joust, 1
+---
+>   GBBBY
+>   ruder, 1.5
+>    GBGGG
+>    rider, 1
+>     GGGGG
+>     DONE
+>   YBGYB
+>   newer, 1
+3360,3361c3270,3271
+<   BGGBB
+<   worst, 1
+---
+>   BBYYY
+>   widen, 1
+3364,3367c3274,3277
+<   BGBBB
+<   foist, 1.75
+<    BGBGG
+<    boost, 1
+---
+>   YBBBY
+>   drier, 1.8333333333333337
+>    YBBGG
+>    udder, 1
+3370,3371c3280,3281
+<    BGYYG
+<    posit, 1
+---
+>    GBBGG
+>    defer, 1
+3374,3375c3284,3285
+<    BGGGG
+<    hoist, 1
+---
+>    GBYGG
+>    diver, 1
+3378,3379c3288,3333
+<   BBGYB
+<   burst, 1
+---
+>    YBYGG
+>    cider, 1
+>     GGGGG
+>     DONE
+>    GGBGG
+>    dryer, 1
+>     GGGGG
+>     DONE
+>   YGBBB
+>   chivy, 2.2222222222222223
+>    BBBBY
+>    foyer, 1
+>     GGGGG
+>     DONE
+>    GBBYB
+>    cover, 1
+>     GGGGG
+>     DONE
+>    BYBBB
+>    homer, 1
+>     GGGGG
+>     DONE
+>    GBBBB
+>    corer, 1
+>     GGGGG
+>     DONE
+>    BBBBB
+>    poker, 1.6666666666666665
+>     BGBGG
+>     boxer, 1
+>      GGGGG
+>      DONE
+>     BGGGG
+>     joker, 1
+>      GGGGG
+>      DONE
+>    BBBYB
+>    mover, 1
+>     GGGGG
+>     DONE
+>    BYBYB
+>    hover, 1
+>     GGGGG
+>     DONE
+>   GBBYB
+>   ripen, 1
+3382,3385c3336,3345
+<   BBBBB
+<   visit, 1.5
+<    BYYBG
+<    twist, 1
+---
+>   YBBBB
+>   pubic, 2.2380952380952377
+>    BBBBB
+>    freer, 1.5
+>     GBYGG
+>     fever, 1
+>      GGGGG
+>      DONE
+>    BBBYY
+>    crier, 1
+3388,3391c3348,3349
+<   BBYBB
+<   wrist, 1.5
+<    BGBGG
+<    tryst, 1
+---
+>    BBYYB
+>    brief, 1
+3394,3395c3352,3421
+<   BBBBY
+<   midst, 1
+---
+>    YYBBB
+>    upper, 1
+>     GGGGG
+>     DONE
+>    BBBYB
+>    grief, 1.6666666666666665
+>     BYYGY
+>     fixer, 1
+>      GGGGG
+>      DONE
+>     GYYGB
+>     giver, 1
+>      GGGGG
+>      DONE
+>    BGBBB
+>    queer, 1
+>     GGGGG
+>     DONE
+>    GBBYB
+>    piper, 1
+>     GGGGG
+>     DONE
+>    BBGBY
+>    cyber, 1
+>     GGGGG
+>     DONE
+>    YBBBY
+>    creep, 1
+>     GGGGG
+>     DONE
+>    YBBYB
+>    viper, 1
+>     GGGGG
+>     DONE
+>    BBGBB
+>    ember, 1
+>     GGGGG
+>     DONE
+>    BBBBY
+>    cheer, 1.5
+>     GBGGY
+>     creek, 1
+>      GGGGG
+>      DONE
+>    GGBBB
+>    purer, 1.5
+>     GGGGB
+>     puree, 1
+>      GGGGG
+>      DONE
+>    BGYBB
+>    buyer, 1
+>     GGGGG
+>     DONE
+>    YBBBB
+>    hyper, 1
+>     GGGGG
+>     DONE
+>    BBGYB
+>    fiber, 1
+>     GGGGG
+>     DONE
+>  GBYGG
+>  sleet, 1
+>   GGGGG
+>   DONE
+>  YYBBB
+>  crags, 2.176470588235294
+>   BGGYG
+>   grass, 1
+3398,3399c3424,3425
+<   BYBBB
+<   ghost, 1
+---
+>   BGGBY
+>   brash, 1
+3402,3403c3428,3429
+<   BBGBB
+<   first, 1
+---
+>   BBYBY
+>   assay, 1
+3406,3413c3432,3439
+<  YYBGG
+<  asset, 1
+<   GGGGG
+<   DONE
+<  GBYBG
+<  stilt, 1.5
+<   GBGGG
+<   spilt, 1
+---
+>   BBYBG
+>   abyss, 1.5
+>    GBBGG
+>    amiss, 1
+>     GGGGG
+>     DONE
+>   BGGBG
+>   brass, 1
+3416,3423c3442,3453
+<  BYBGY
+<  after, 1
+<   GGGGG
+<   DONE
+<  BGYBB
+<  bingy, 2.2777777777777772
+<   BYBYG
+<   gaily, 1
+---
+>   BBGBY
+>   quash, 1.6666666666666665
+>    BBGGG
+>    awash, 1
+>     GGGGG
+>     DONE
+>    GGGGB
+>    quasi, 1
+>     GGGGG
+>     DONE
+>   BBGYY
+>   gnash, 1
+3426,3427c3456,3457
+<   BBBBG
+<   madly, 1
+---
+>   BGYBY
+>   arson, 1
+3430,3437c3460,3461
+<   YBBBB
+<   cabal, 1.5
+<    BGGBY
+<    labor, 1
+<     GGGGG
+<     DONE
+<   GBBBG
+<   badly, 1
+---
+>   GBGBG
+>   chaos, 1
+3440,3441c3464,3465
+<   BYBBB
+<   cavil, 1
+---
+>   GBGBY
+>   chasm, 1
+3444,3445c3468,3469
+<   GBGBB
+<   banal, 1
+---
+>   BBGBG
+>   amass, 1
+3448,3449c3472,3473
+<   BBBGB
+<   laugh, 1
+---
+>   GGGBY
+>   crash, 1
+3452,3453c3476,3477
+<   BBGBB
+<   canal, 1
+---
+>   BGGYY
+>   grasp, 1
+3456,3457c3480,3481
+<   BBYBB
+<   naval, 1
+---
+>   GGGBG
+>   crass, 1
+3460,3463c3484,3489
+<   BBBBB
+<   papal, 1.75
+<    BGBBG
+<    carol, 1
+---
+>  BBBYB
+>  drone, 2.71165644171779
+>   BYYBG
+>   forge, 1.8333333333333337
+>    BGGGG
+>    gorge, 1
+3466,3467c3492,3493
+<    BGBBY
+<    caulk, 1
+---
+>    BGYYG
+>    rogue, 1
+3470,3471c3496,3497
+<    BGBYY
+<    larva, 1
+---
+>    GGGBG
+>    force, 1
+3474,3481c3500,3501
+<   BBBYG
+<   gayly, 1
+<    GGGGG
+<    DONE
+<   BBGBG
+<   manly, 1.5
+<    BGGYG
+<    lanky, 1
+---
+>    BGYGG
+>    rouge, 1
+3484,3485c3504,3509
+<   BYBBG
+<   daily, 1
+---
+>    BYYBG
+>    ombre, 1
+>     GGGGG
+>     DONE
+>   BGBBY
+>   wreck, 1
+3488,3491c3512,3513
+<  BYYGB
+<  alien, 1.5
+<   GYBGY
+<   angel, 1
+---
+>   BGYBY
+>   error, 1
+3494,3499c3516,3519
+<  BBBYB
+<  drone, 2.7116564417177895
+<   BBBGG
+<   penne, 1.5
+<    BBBGG
+<    whine, 1
+---
+>   BYBYG
+>   nerve, 1.5
+>    YGYBG
+>    genre, 1
+3504,3513c3524,3525
+<    BBBYY
+<    prize, 1
+<     GGGGG
+<     DONE
+<    GBYBY
+<    crime, 1
+<     GGGGG
+<     DONE
+<    BBBBY
+<    bribe, 1
+---
+>    GBBGB
+>    crepe, 1
+3516,3517c3528,3529
+<    GBYBB
+<    creme, 1
+---
+>    BBBGY
+>    gripe, 1
+3528,3529c3540,3541
+<    BBBGY
+<    gripe, 1
+---
+>    BBBBY
+>    bribe, 1
+3532,3533c3544,3549
+<    GBBGB
+<    crepe, 1
+---
+>    GBYBY
+>    crime, 1
+>     GGGGG
+>     DONE
+>    BBBYY
+>    prize, 1
+3540,3541c3556,3561
+<   YBBGY
+<   fiend, 1
+---
+>    GBYBB
+>    creme, 1
+>     GGGGG
+>     DONE
+>   GYYBY
+>   decor, 1
+3544,3547c3564,3571
+<   BBBGY
+<   eking, 1.75
+<    YBGGG
+<    being, 1
+---
+>   YBBYY
+>   needy, 1
+>    GGGGG
+>    DONE
+>   BBYBG
+>   coupe, 1.7999999999999998
+>    BGBBG
+>    movie, 1
+3550,3551c3574,3575
+<    GBGGG
+<    eying, 1
+---
+>    YGBBG
+>    voice, 1
+3554,3555c3578,3579
+<    YBBGB
+<    penny, 1
+---
+>    BGYBG
+>    vogue, 1
+3558,3561c3582,3583
+<   BYBBY
+<   pubic, 2.249999999999999
+<    BGBBB
+<    query, 1
+---
+>    BGGBG
+>    gouge, 1
+3564,3565c3586,3597
+<    BBBBY
+<    mercy, 1
+---
+>   GGBBG
+>   drive, 1
+>    GGGGG
+>    DONE
+>   GBYYY
+>   demon, 1
+>    GGGGG
+>    DONE
+>   YBBBY
+>   medic, 1.6666666666666665
+>    BGYBB
+>    weedy, 1
+3568,3569c3600,3601
+<    BYBBB
+<    femur, 1
+---
+>    BYYYB
+>    edify, 1
+3572,3573c3604,3611
+<    GBBBY
+<    perch, 1
+---
+>   BBGGY
+>   ebony, 1
+>    GGGGG
+>    DONE
+>   BBBBY
+>   beech, 1.8333333333333337
+>    BGBBG
+>    weigh, 1
+3576,3577c3614,3615
+<    BBBYB
+<    fiery, 1
+---
+>    BYBBB
+>    equip, 1
+3580,3581c3618,3619
+<    BBYBB
+<    berry, 1
+---
+>    BBGGY
+>    check, 1
+3584,3585c3622,3623
+<    GBBBB
+<    perky, 1
+---
+>    BGGBB
+>    geeky, 1
+3588,3603c3626,3627
+<    BBBBB
+<    merry, 1.75
+<     BGGBG
+<     jerky, 1
+<      GGGGG
+<      DONE
+<     BGGGG
+<     ferry, 1
+<      GGGGG
+<      DONE
+<     BYBGG
+<     every, 1
+<      GGGGG
+<      DONE
+<    BYBBY
+<    recur, 1
+---
+>    GGGBB
+>    beefy, 1
+3606,3609c3630,3633
+<   BBBYG
+<   winch, 2.0833333333333326
+<    BBGGY
+<    hence, 1
+---
+>   YBBYG
+>   nudge, 1.5
+>    YYGBG
+>    undue, 1
+3612,3613c3636,3639
+<    BGYGB
+<    niece, 1
+---
+>   BYBYY
+>   rerun, 1.5
+>    GGBBG
+>    reign, 1
+3616,3617c3642,3645
+<    BGGGB
+<    mince, 1
+---
+>   BBGGG
+>   ozone, 1.5
+>    BBGGG
+>    phone, 1
+3620,3621c3648,3651
+<    BBGBB
+<    venue, 1
+---
+>   BBBYY
+>   neigh, 1.8571428571428568
+>    YYBBB
+>    enemy, 1
+3624,3631c3654,3655
+<    BBGGB
+<    pence, 1.5
+<     BGGGG
+<     fence, 1
+<      GGGGG
+<      DONE
+<    BGGBY
+<    hinge, 1
+---
+>    YGBYB
+>    begun, 1
+3634,3635c3658,3659
+<    BYYBB
+<    knife, 1
+---
+>    YYYBB
+>    ennui, 1
+3638,3639c3662,3663
+<    BYGBB
+<    genie, 1
+---
+>    YGGGB
+>    feign, 1
+3642,3643c3666,3667
+<    BGYYY
+<    niche, 1
+---
+>    YGYYB
+>    begin, 1
+3646,3647c3670,3671
+<    GGGGB
+<    wince, 1
+---
+>    YGBBG
+>    bench, 1
+3650,3651c3674,3677
+<    BGGBB
+<    binge, 1
+---
+>   GBBYY
+>   denim, 1.5
+>    GGYYB
+>    deign, 1
+3654,3657c3680,3683
+<   BYBBG
+<   verge, 1.8888888888888893
+<    BGGGG
+<    merge, 1
+---
+>   BBYYY
+>   venom, 1.6666666666666665
+>    BYYGB
+>    enjoy, 1
+3660,3661c3686,3687
+<    BBYBG
+<    rhyme, 1
+---
+>    YYYGB
+>    envoy, 1
+3664,3665c3690,3703
+<    YBGBG
+<    curve, 1
+---
+>   BBGYG
+>   gnome, 1
+>    GGGGG
+>    DONE
+>   BBBBG
+>   pique, 2
+>    GGBBG
+>    piece, 1.5
+>     GGBBG
+>     pixie, 1
+>      GGGGG
+>      DONE
+>    BBYGG
+>    queue, 1
+3668,3669c3706,3707
+<    GGGBG
+<    verve, 1
+---
+>    BBBGG
+>    fugue, 1
+3672,3673c3710,3711
+<    BBGGG
+<    purge, 1
+---
+>    BBBBG
+>    femme, 1
+3676,3677c3714,3715
+<    YGYBG
+<    revue, 1
+---
+>    BYBYG
+>    juice, 1
+3680,3681c3718,3719
+<    BGGBG
+<    eerie, 1
+---
+>    BYBGG
+>    imbue, 1
+3684,3685c3722,3723
+<    BYYBG
+<    where, 1
+---
+>    BYBBG
+>    chime, 1
+3688,3695c3726,3729
+<   BGYBY
+<   error, 1
+<    GGGGG
+<    DONE
+<   YBBYG
+<   nudge, 1.5
+<    YYGBG
+<    undue, 1
+---
+>   BBBGG
+>   whine, 1.5
+>    BBBGG
+>    penne, 1
+3698,3703c3732,3733
+<   GYYBY
+<   decor, 1
+<    GGGGG
+<    DONE
+<   BBYYG
+<   ounce, 1
+---
+>   GYBBG
+>   dirge, 1
+3710,3713c3740,3743
+<   GBBYY
+<   deign, 1.5
+<    GGYBY
+<    denim, 1
+---
+>   YYBBY
+>   weird, 1.5
+>    BGBYY
+>    reedy, 1
+3716,3717c3746,3755
+<   GGGBG
+<   drove, 1
+---
+>   YBYBG
+>   oxide, 1
+>    GGGGG
+>    DONE
+>   GBYBY
+>   decoy, 1
+>    GGGGG
+>    DONE
+>   YBYYY
+>   endow, 1
+3721a3760,3763
+>    BGYGG
+>    urine, 1
+>     GGGGG
+>     DONE
+3726,3727c3768,3771
+<    BGYGG
+<    urine, 1
+---
+>   BBYGG
+>   ovine, 1.5
+>    GBGGG
+>    opine, 1
+3730,3731c3774,3775
+<   YBBYY
+<   needy, 1
+---
+>   YGYBY
+>   credo, 1
+3734,3735c3778,3855
+<   YYBYY
+<   nerdy, 1
+---
+>   YGBBG
+>   pride, 1.75
+>    GGBGG
+>    prude, 1
+>     GGGGG
+>     DONE
+>    BGGGG
+>    bride, 1
+>     GGGGG
+>     DONE
+>    BGBGG
+>    crude, 1
+>     GGGGG
+>     DONE
+>   YGGBG
+>   erode, 1
+>    GGGGG
+>    DONE
+>   BGGGG
+>   crone, 1.5
+>    BGGGG
+>    prone, 1
+>     GGGGG
+>     DONE
+>   BBBYG
+>   pinch, 2.0833333333333326
+>    BGGGB
+>    wince, 1.5
+>     BGGGG
+>     mince, 1
+>      GGGGG
+>      DONE
+>    BYGBB
+>    genie, 1
+>     GGGGG
+>     DONE
+>    BBGGY
+>    hence, 1
+>     GGGGG
+>     DONE
+>    BGYYY
+>    niche, 1
+>     GGGGG
+>     DONE
+>    BGGBY
+>    hinge, 1
+>     GGGGG
+>     DONE
+>    BGYGB
+>    niece, 1
+>     GGGGG
+>     DONE
+>    BBGBB
+>    venue, 1
+>     GGGGG
+>     DONE
+>    GBGGB
+>    pence, 1
+>     GGGGG
+>     DONE
+>    BBGGB
+>    fence, 1
+>     GGGGG
+>     DONE
+>    BGGBB
+>    binge, 1
+>     GGGGG
+>     DONE
+>    BYYBB
+>    knife, 1
+>     GGGGG
+>     DONE
+>   YYBBG
+>   ridge, 1
+>    GGGGG
+>    DONE
+>   GBBBG
+>   deuce, 1
+3739c3859
+<   biome, 2
+---
+>   booze, 2
+3747,3753c3867
+<    booze, 1
+<     GGGGG
+<     DONE
+<   YYBBY
+<   reedy, 1.5
+<    YGBYB
+<    weird, 1
+---
+>    biome, 1
+3757a3872,3875
+>    BBBYB
+>    fudge, 1
+>     GGGGG
+>     DONE
+3761a3880,3887
+>    BBYBB
+>    midge, 1
+>     GGGGG
+>     DONE
+>    BBGBB
+>    guide, 1
+>     GGGGG
+>     DONE
+3772,3775d3897
+<    BBGBB
+<    guide, 1
+<     GGGGG
+<     DONE
+3780,3781c3902,3911
+<    BBYBB
+<    midge, 1
+---
+>   BGGBG
+>   prove, 2
+>    BGGBG
+>    froze, 1.5
+>     BGGBG
+>     broke, 1
+>      GGGGG
+>      DONE
+>    GGGBG
+>    probe, 1
+3784,3785c3914,3915
+<    BBBYB
+<    fudge, 1
+---
+>    BGGGG
+>    grove, 1
+3788,3799c3918,3919
+<   YGYBY
+<   credo, 1
+<    GGGGG
+<    DONE
+<   BBYBY
+<   gecko, 1
+<    GGGGG
+<    DONE
+<   BBGBY
+<   epoxy, 1.5
+<    GGGBB
+<    epoch, 1
+---
+>    YGGBG
+>    grope, 1
+3802,3803c3922,3923
+<   BYYGG
+<   borne, 1
+---
+>   BYYYY
+>   heron, 1
+3806,3809c3926,3929
+<   YBBBY
+<   weedy, 1.6666666666666665
+<    BYBYG
+<    edify, 1
+---
+>   BBBGY
+>   eying, 1.75
+>    YYBGB
+>    penny, 1
+3812,3813c3932,3933
+<    BGBYB
+<    medic, 1
+---
+>    YBGGG
+>    being, 1
+3816,3817c3936,3941
+<   BGBBY
+<   wreck, 1
+---
+>    GBGGG
+>    eking, 1
+>     GGGGG
+>     DONE
+>   YBBGY
+>   fiend, 1
+3824,3827c3948,3963
+<   BBYBG
+<   vogue, 1.7999999999999998
+<    BGYYG
+<    gouge, 1
+---
+>   BBYBY
+>   gecko, 1
+>    GGGGG
+>    DONE
+>   BYGBG
+>   chore, 1
+>    GGGGG
+>    DONE
+>   GBGBG
+>   diode, 1
+>    GGGGG
+>    DONE
+>   GYBBY
+>   decry, 1.6666666666666665
+>    GGBYB
+>    demur, 1
+3830,3831c3966,3967
+<    YGBBG
+<    movie, 1
+---
+>    GGBYG
+>    derby, 1
+3834,3835c3970,3985
+<    BGBYG
+<    coupe, 1
+---
+>   BYBBY
+>   ferry, 2.2499999999999996
+>    BYBGG
+>    query, 1.5
+>     BBGGG
+>     every, 1
+>      GGGGG
+>      DONE
+>    BGGGG
+>    berry, 1.5
+>     BGGGG
+>     merry, 1
+>      GGGGG
+>      DONE
+>    BGGBB
+>    perch, 1
+3838,3839c3988,3999
+<    GGBBG
+<    voice, 1
+---
+>    BGGBG
+>    perky, 1.6666666666666665
+>     BGGBG
+>     mercy, 1
+>      GGGGG
+>      DONE
+>     BGGGG
+>     jerky, 1
+>      GGGGG
+>      DONE
+>    BGYBB
+>    recur, 1
+3842,3845c4002,4003
+<   BGGGG
+<   crone, 1.5
+<    BGGGG
+<    prone, 1
+---
+>    GGYBB
+>    femur, 1
+3848,3849c4006,4011
+<   YBYBG
+<   oxide, 1
+---
+>    GYBGG
+>    fiery, 1
+>     GGGGG
+>     DONE
+>   GGGBG
+>   drove, 1
+3852,3855c4014,4017
+<   BBYYY
+<   venom, 1.6666666666666665
+<    YYYGB
+<    envoy, 1
+---
+>   BYBBG
+>   verge, 1.8888888888888893
+>    BGGBG
+>    eerie, 1
+3858,3859c4020,4021
+<    BYYGB
+<    enjoy, 1
+---
+>    BBGGG
+>    purge, 1
+3862,3873c4024,4025
+<   BBGGY
+<   ebony, 1
+<    GGGGG
+<    DONE
+<   YYBBG
+<   ridge, 1
+<    GGGGG
+<    DONE
+<   BBBBY
+<   weigh, 1.8333333333333337
+<    BYYBB
+<    equip, 1
+---
+>    YBGBG
+>    curve, 1
+3876,3877c4028,4029
+<    BGBYB
+<    geeky, 1
+---
+>    BBYBG
+>    rhyme, 1
+3880,3881c4032,4033
+<    BYBBY
+<    check, 1
+---
+>    GGGBG
+>    verve, 1
+3884,3885c4036,4037
+<    BGBBG
+<    beech, 1
+---
+>    BGGGG
+>    merge, 1
+3888,3889c4040,4045
+<    BGBBB
+<    beefy, 1
+---
+>    YGYBG
+>    revue, 1
+>     GGGGG
+>     DONE
+>    BYYBG
+>    where, 1
+3891a4048,4051
+>   GBBYG
+>   dunce, 1
+>    GGGGG
+>    DONE
+3896,3897c4056,4057
+<   BYYYY
+<   heron, 1
+---
+>   YYBYY
+>   nerdy, 1
+3900,3903c4060,4071
+<   YGBBG
+<   pride, 1.75
+<    BGGGG
+<    bride, 1
+---
+>   BBYYG
+>   ounce, 1
+>    GGGGG
+>    DONE
+>   BYYGG
+>   borne, 1
+>    GGGGG
+>    DONE
+>   BBGBY
+>   epoxy, 1.5
+>    GGGBB
+>    epoch, 1
+3906,3907c4074,4105
+<    BGBGG
+<    crude, 1
+---
+>  GYYBY
+>  stalk, 1.5
+>   GGGGB
+>   stall, 1
+>    GGGGG
+>    DONE
+>  BGGBY
+>  tally, 1.6666666666666665
+>   GGGBB
+>   talon, 1
+>    GGGGG
+>    DONE
+>   YGGBB
+>   waltz, 1
+>    GGGGG
+>    DONE
+>  BBGBY
+>  filth, 1.5
+>   BYGYB
+>   tulip, 1
+>    GGGGG
+>    DONE
+>  BYBYB
+>  beard, 2.6144578313253017
+>   GGYBB
+>   began, 1
+>    GGGGG
+>    DONE
+>   BYGYY
+>   drake, 1.6666666666666665
+>    GGGBG
+>    drape, 1
+3910,3911c4108,4109
+<    GGBGG
+<    prude, 1
+---
+>    YGGBG
+>    grade, 1
+3914,3919c4112,4113
+<   GYBBG
+<   dirge, 1
+<    GGGGG
+<    DONE
+<   GBBYG
+<   dunce, 1
+---
+>   BGGYB
+>   reach, 1
+3922,3923c4116,4117
+<   GBBBG
+<   deuce, 1
+---
+>   BYGGB
+>   aware, 1
+3926,3927c4120,4121
+<   GBYBY
+<   decoy, 1
+---
+>   BYYGY
+>   adore, 1
+3930,3933c4124,4127
+<   GYBBY
+<   decry, 1.6666666666666665
+<    GGBYG
+<    derby, 1
+---
+>   YYYBY
+>   abode, 1.6666666666666665
+>    GGBGG
+>    abide, 1
+3936,3937c4130,4131
+<    GGBYB
+<    demur, 1
+---
+>    GYGYG
+>    adobe, 1
+3940,3943c4134,4137
+<   BBYGG
+<   opine, 1.5
+<    GBGGG
+<    ovine, 1
+---
+>   YGYYB
+>   rebar, 1.5
+>    GGYGB
+>    rehab, 1
+3946,3949c4140,4143
+<   BGGBG
+<   probe, 2
+<    YGGBG
+<    grope, 1
+---
+>   BGYYB
+>   repay, 1.5
+>    GGYGB
+>    recap, 1
+3952,3953c4146,4149
+<    BGGYG
+<    broke, 1
+---
+>   BYYYB
+>   creak, 2
+>    BGYYB
+>    argue, 1
+3956,3959c4152,4159
+<    BGGBG
+<    grove, 1.5
+<     BGGBG
+<     froze, 1
+---
+>    BGGYB
+>    arena, 1
+>     GGGGG
+>     DONE
+>    BGGGG
+>    freak, 1.5
+>     BGGGG
+>     wreak, 1
+3962,3963c4162,4163
+<    GGGBG
+<    prove, 1
+---
+>    GGGGB
+>    cream, 1
+3966,3969c4166,4173
+<   BYBYY
+<   reign, 1.5
+<    GGBBG
+<    rerun, 1
+---
+>   BYYYY
+>   dream, 1
+>    GGGGG
+>    DONE
+>   BYYBB
+>   omega, 1.8571428571428568
+>    BBGBG
+>    hyena, 1
+3972,3973c4176,4197
+<   GBYYY
+<   demon, 1
+---
+>    BBGBY
+>    cheap, 1
+>     GGGGG
+>     DONE
+>    YBYBY
+>    awoke, 1
+>     GGGGG
+>     DONE
+>    GBGBY
+>    ocean, 1
+>     GGGGG
+>     DONE
+>    BYGBG
+>    enema, 1
+>     GGGGG
+>     DONE
+>    BYYBY
+>    anime, 1
+>     GGGGG
+>     DONE
+>   BGGBY
+>   heady, 1
+3976,3977c4200,4211
+<   BBGYG
+<   gnome, 1
+---
+>   BGYBB
+>   mecca, 1.6666666666666665
+>    BGGBY
+>    pecan, 1
+>     GGGGG
+>     DONE
+>    BGBBY
+>    vegan, 1
+>     GGGGG
+>     DONE
+>   GGGBY
+>   beady, 1
+3980,3983c4214,4217
+<   BBBBG
+<   queue, 2
+<    YBBGG
+<    pique, 1
+---
+>   BYYBG
+>   ahead, 1.6666666666666665
+>    BBGGG
+>    knead, 1
+3986,3987c4220,4221
+<    BBYBG
+<    femme, 1
+---
+>    GBGBG
+>    amend, 1
+3990,3991c4224,4227
+<    BGBBG
+<    juice, 1
+---
+>   BGYBY
+>   media, 1.5
+>    BGYBY
+>    decay, 1
+3994,3995c4230,4233
+<    BBGBG
+<    piece, 1
+---
+>   BYYGB
+>   afire, 1.6666666666666665
+>    GBBGG
+>    azure, 1
+3998,4001c4236,4257
+<    BBBBG
+<    pixie, 1.5
+<     BYBBG
+<     chime, 1
+---
+>    YBBGY
+>    opera, 1
+>     GGGGG
+>     DONE
+>   BGGGG
+>   heard, 1
+>    GGGGG
+>    DONE
+>   GGGBB
+>   beach, 1
+>    GGGGG
+>    DONE
+>   GYYYG
+>   bread, 1
+>    GGGGG
+>    DONE
+>   GYGYB
+>   brave, 2
+>    GGGBG
+>    brake, 1.5
+>     GGGBG
+>     brace, 1
+4004,4005c4260,4263
+<    BGBGG
+<    fugue, 1
+---
+>   BYGBY
+>   adage, 1.5
+>    BYGBG
+>    evade, 1
+4008,4009c4266,4277
+<    BBBGG
+<    imbue, 1
+---
+>   YGYBB
+>   kebab, 1
+>    GGGGG
+>    DONE
+>   YGYGB
+>   zebra, 1
+>    GGGGG
+>    DONE
+>   BYGBB
+>   amuck, 2
+>    GBBBY
+>    awake, 1
+4012,4013c4280,4309
+<   GBGBG
+<   diode, 1
+---
+>    YBYBY
+>    quake, 1
+>     GGGGG
+>     DONE
+>    YBBYB
+>    chafe, 1
+>     GGGGG
+>     DONE
+>    YGBBB
+>    image, 1
+>     GGGGG
+>     DONE
+>    YBBBB
+>    inane, 1
+>     GGGGG
+>     DONE
+>    GGBBB
+>    amaze, 1
+>     GGGGG
+>     DONE
+>    YBBBY
+>    knave, 1
+>     GGGGG
+>     DONE
+>    GBBBB
+>    agape, 1
+>     GGGGG
+>     DONE
+>   BGYYY
+>   cedar, 1
+4016,4019c4312,4315
+<   BBGGG
+<   phone, 1.5
+<    BBGGG
+<    ozone, 1
+---
+>   BGGGB
+>   weary, 1.6666666666666665
+>    BGGGB
+>    rearm, 1
+4022,4023c4318,4323
+<   YBYYY
+<   endow, 1
+---
+>    BGGGY
+>    yearn, 1
+>     GGGGG
+>     DONE
+>   BYYYG
+>   dread, 1
+4026,4029c4326,4337
+<   BYYBG
+<   forge, 1.8333333333333337
+<    BYYBG
+<    ombre, 1
+---
+>   YYYBB
+>   above, 1
+>    GGGGG
+>    DONE
+>   YGYYY
+>   debar, 1
+>    GGGGG
+>    DONE
+>   BYGYB
+>   cezve, 2.125
+>    GBBBG
+>    crane, 1
+4032,4033c4340,4347
+<    GGGBG
+<    force, 1
+---
+>    BBBBG
+>    frame, 1.5
+>     BGGBG
+>     grape, 1
+>      GGGGG
+>      DONE
+>    BBBGG
+>    grave, 1
+4036,4037c4350,4351
+<    BGYYG
+<    rogue, 1
+---
+>    GBYBG
+>    craze, 1
+4040,4041c4354,4355
+<    BGGGG
+<    gorge, 1
+---
+>    BBYBG
+>    graze, 1
+4044,4045c4358,4359
+<    BGYGG
+<    rouge, 1
+---
+>    GBBGG
+>    crave, 1
+4048,4051c4362,4363
+<   BYBYG
+<   nerve, 1.5
+<    YGYBG
+<    genre, 1
+---
+>    YBBBG
+>    grace, 1
+4054,4055c4366,4367
+<   GGBBG
+<   drive, 1
+---
+>   BGGYY
+>   ready, 1
+4058,4059c4370,4371
+<   YGGBG
+<   erode, 1
+---
+>   BYYBY
+>   anode, 1
+4062,4063c4374,4375
+<   BYGBG
+<   chore, 1
+---
+>   GYYYB
+>   break, 1
+4065a4378,4401
+>   BGGBB
+>   heavy, 1.7999999999999998
+>    YGGBB
+>    peach, 1
+>     GGGGG
+>     DONE
+>    BGGGB
+>    weave, 1
+>     GGGGG
+>     DONE
+>    BGGBB
+>    peace, 1
+>     GGGGG
+>     DONE
+>    GGGGB
+>    heave, 1
+>     GGGGG
+>     DONE
+>  YYBYY
+>  tease, 1
+>   GGGGG
+>   DONE
+>  BBBBY
+>  north, 2.569767441860466
+4067,4069c4403,4405
+<   neigh, 1.8571428571428568
+<    YGYYB
+<    begin, 1
+---
+>   pithy, 1.7999999999999998
+>    YBYYB
+>    thump, 1
+4072,4073c4408,4409
+<    YGGGB
+<    feign, 1
+---
+>    BYYGG
+>    itchy, 1
+4076,4077c4412,4413
+<    YGBYB
+<    begun, 1
+---
+>    BBYYB
+>    thumb, 1
+4080,4081c4416,4417
+<    YYYBB
+<    ennui, 1
+---
+>    BYYYB
+>    thick, 1
+4084,4085c4420,4423
+<    YGBBG
+<    bench, 1
+---
+>   BGBYG
+>   touch, 1.6666666666666665
+>    GGGBG
+>    tough, 1
+4088,4089c4426,4427
+<    YYBBB
+<    enemy, 1
+---
+>    YGBGG
+>    botch, 1
+4092,4095c4430,4431
+<  YYBYB
+<  arise, 2.2499999999999996
+<   YBBYG
+<   usage, 1
+---
+>   BBYGG
+>   truth, 1
+4098,4099c4434,4435
+<   YBBYY
+<   essay, 1
+---
+>   YYYYB
+>   intro, 1
+4102,4103c4438,4439
+<   YGBGG
+<   erase, 1
+---
+>   BYBGB
+>   ditto, 1
+4106,4107c4442,4449
+<   GGBGG
+<   arose, 1
+---
+>   BGGGG
+>   worth, 1.5
+>    BGGGG
+>    forth, 1
+>     GGGGG
+>     DONE
+>   BGGGB
+>   forty, 1
+4110,4113c4452,4469
+<   GBBGG
+<   abuse, 1.6666666666666665
+<    GBGGG
+<    amuse, 1
+---
+>   YBBGB
+>   unity, 1.5
+>    BYYGG
+>    minty, 1
+>     GGGGG
+>     DONE
+>   GBBGB
+>   nutty, 1
+>    GGGGG
+>    DONE
+>   YGBGG
+>   month, 1
+>    GGGGG
+>    DONE
+>   YYBGB
+>   pinto, 1.5
+>    BBGGG
+>    junto, 1
+4115a4472,4479
+>   YBBYY
+>   thing, 1.5
+>    GGGGB
+>    think, 1
+>     GGGGG
+>     DONE
+>   BYYYB
+>   tutor, 1.6666666666666665
+4117c4481,4485
+<    abase, 1
+---
+>    tumor, 1
+>     GGGGG
+>     DONE
+>    GBBGY
+>    troop, 1
+4120,4121c4488,4489
+<   GBGYG
+<   aside, 1
+---
+>   BBGYY
+>   thrum, 1
+4124,4127c4492,4495
+<   YBBGG
+<   cease, 1.6666666666666665
+<    BBGGG
+<    phase, 1
+---
+>   BYGYY
+>   throw, 1.5
+>    GGGGB
+>    throb, 1
+4130,4131c4498,4501
+<    GBGGG
+<    chase, 1
+---
+>   YBBYB
+>   tying, 1.5
+>    GBYYB
+>    tunic, 1
+4134,4137c4504,4515
+<  BBGBY
+<  tulip, 1.5
+<   YBGYB
+<   filth, 1
+---
+>   BYBYB
+>   outgo, 1.6666666666666665
+>    GBGBB
+>    optic, 1
+>     GGGGG
+>     DONE
+>    GGGBG
+>    outdo, 1
+>     GGGGG
+>     DONE
+>   YBYYB
+>   trunk, 1
+4140,4143c4518,4581
+<  BGBBB
+<  corny, 2.5731707317073185
+<   YBBYG
+<   fancy, 1
+---
+>   BBBGB
+>   kited, 2.1666666666666665
+>    BGGBB
+>    witty, 1.5
+>     BGGGG
+>     bitty, 1
+>      GGGGG
+>      DONE
+>    BGYBB
+>    fifty, 1
+>     GGGGG
+>     DONE
+>    BBGBB
+>    putty, 1
+>     GGGGG
+>     DONE
+>    BGGBY
+>    ditty, 1
+>     GGGGG
+>     DONE
+>    GGGBB
+>    kitty, 1
+>     GGGGG
+>     DONE
+>   BGYYB
+>   motor, 1.5
+>    BGGGG
+>    rotor, 1
+>     GGGGG
+>     DONE
+>   BBBYG
+>   hired, 2.125
+>    GGBBB
+>    hitch, 1
+>     GGGGG
+>     DONE
+>    YYBBB
+>    thigh, 1
+>     GGGGG
+>     DONE
+>    GBBBB
+>    hutch, 1
+>     GGGGG
+>     DONE
+>    YBBBB
+>    butch, 1
+>     GGGGG
+>     DONE
+>    YGBBY
+>    ditch, 1
+>     GGGGG
+>     DONE
+>    YGBBB
+>    pitch, 1.5
+>     BGGGG
+>     witch, 1
+>      GGGGG
+>      DONE
+>    YBBBY
+>    dutch, 1
+>     GGGGG
+>     DONE
+>   YYBYY
+>   thong, 1
+4146,4147c4584,4611
+<   YYBYB
+<   bacon, 1
+---
+>   GGBYG
+>   notch, 1
+>    GGGGG
+>    DONE
+>   BGBYB
+>   toxic, 1.75
+>    GGBGG
+>    topic, 1
+>     GGGGG
+>     DONE
+>    YGBGB
+>    motif, 1
+>     GGGGG
+>     DONE
+>    GGBBB
+>    toddy, 1
+>     GGGGG
+>     DONE
+>   BBBYB
+>   timid, 1
+>    GGGGG
+>    DONE
+>   BBYGB
+>   fritz, 1
+>    GGGGG
+>    DONE
+>   BYGYB
+>   turbo, 1
+4151,4153c4615,4617
+<   fanny, 1.5
+<    BGGGG
+<    nanny, 1
+---
+>   fifth, 1.5
+>    BGBGG
+>    width, 1
+4156,4159c4620,4631
+<   YYBBB
+<   macho, 1.5
+<    BGYYY
+<    havoc, 1
+---
+>   BBYYY
+>   third, 1
+>    GGGGG
+>    DONE
+>   GBBGG
+>   ninth, 1
+>    GGGGG
+>    DONE
+>   BGBGB
+>   booty, 1.6666666666666665
+>    BGBGG
+>    pouty, 1
+4162,4163c4634,4645
+<   YBBBG
+<   wacky, 1
+---
+>    BGYGB
+>    motto, 1
+>     GGGGG
+>     DONE
+>   YGBYB
+>   tonic, 1.5
+>    GGYGB
+>    toxin, 1
+>     GGGGG
+>     DONE
+>   BYBGY
+>   photo, 1
+4166,4167c4648,4649
+<   GBYYB
+<   cairn, 1
+---
+>   YYYYY
+>   thorn, 1
+4170,4171c4652,4653
+<   BYBBY
+<   bayou, 1
+---
+>   BBGGB
+>   dirty, 1
+4174,4175c4656,4657
+<   BYGYB
+<   baron, 1
+---
+>   BGGYG
+>   torch, 1
+4178,4179c4660,4697
+<   YBGBB
+<   march, 1
+---
+>   BBYYB
+>   trump, 1.6666666666666665
+>    GGBBB
+>    trick, 1
+>     GGGGG
+>     DONE
+>    GGGBB
+>    truck, 1
+>     GGGGG
+>     DONE
+>   BBGGG
+>   birth, 2
+>    BGGGG
+>    girth, 1.5
+>     BGGGG
+>     mirth, 1
+>      GGGGG
+>      DONE
+>   BGBGG
+>   booth, 2
+>    BGBGG
+>    mouth, 1.5
+>     BGGGG
+>     youth, 1
+>      GGGGG
+>      DONE
+>    BGGGG
+>    tooth, 1
+>     GGGGG
+>     DONE
+>   BYYGG
+>   froth, 1.5
+>    BGGGG
+>    broth, 1
+>     GGGGG
+>     DONE
+>   BYBGG
+>   quoth, 1
+4182,4183c4700,4703
+<   BYYYB
+<   manor, 1
+---
+>  GYYBG
+>  slant, 1.5
+>   GYGBG
+>   shalt, 1
+4186,4187c4706,4715
+<   BYBBB
+<   mambo, 1
+---
+>  GYBBG
+>  smart, 2
+>   GBGBG
+>   scant, 1.5
+>    GBGBG
+>    shaft, 1
+>     GGGGG
+>     DONE
+>   GBYBG
+>   squat, 1
+4190,4191c4718,4719
+<   BBYYG
+<   randy, 1
+---
+>   GBGGG
+>   start, 1
+4194,4195c4722,4725
+<   GBBYB
+<   cabin, 1
+---
+>  GGBBY
+>  satyr, 1.5
+>   GGGBB
+>   satin, 1
+4198,4199c4728,4731
+<   YYYBB
+<   macro, 1
+---
+>  GYBYB
+>  pharm, 2.3809523809523805
+>   BGGBY
+>   shame, 1
+4202,4205c4734,4741
+<   BBBYG
+<   handy, 1.6666666666666665
+<    BGGBG
+<    mangy, 1
+---
+>   YBGGB
+>   spare, 1
+>    GGGGG
+>    DONE
+>   BBYBB
+>   sneak, 1.5
+>    GYYGB
+>    sedan, 1
+4208,4209c4744,4747
+<    BGGGG
+<    dandy, 1
+---
+>   YBYBB
+>   sepia, 1.5
+>    GYYBY
+>    speak, 1
+4212,4213c4750,4751
+<   BYYYY
+<   rayon, 1
+---
+>   YGGBB
+>   shape, 1
+4216,4217c4754,4755
+<   GYGBB
+<   cargo, 1
+---
+>   BGYYB
+>   shear, 1
+4220,4221c4758,4759
+<   GYBBB
+<   cacao, 1
+---
+>   BBYYB
+>   swear, 1
+4224,4233c4762,4763
+<   BBYBG
+<   fairy, 2
+<    BGGGG
+<    hairy, 1.5
+<     BGGGG
+<     dairy, 1
+<      GGGGG
+<      DONE
+<   GBBYG
+<   candy, 1
+---
+>   BBYYY
+>   smear, 1
+4236,4237c4766,4777
+<   BBBBY
+<   kayak, 1
+---
+>   BGGGB
+>   share, 1
+>    GGGGG
+>    DONE
+>   BBGGB
+>   snare, 1.5
+>    GBGGG
+>    scare, 1
+>     GGGGG
+>     DONE
+>   YBYYB
+>   spear, 1
+4241,4243c4781,4783
+<   karma, 1.5
+<    YGGBG
+<    parka, 1
+---
+>   suave, 1.5
+>    GBGBG
+>    snake, 1
+4245a4786,4809
+>   BGGBB
+>   shade, 2
+>    GGGBG
+>    shake, 1.5
+>     GGGBG
+>     shave, 1
+>      GGGGG
+>      DONE
+>   YBGBB
+>   space, 1.5
+>    GGGBG
+>    spade, 1
+>     GGGGG
+>     DONE
+>  BBBGG
+>  crumb, 2.2307692307692304
+>   BGBBB
+>   greet, 1
+>    GGGGG
+>    DONE
+>   GBBBB
+>   covet, 1
+>    GGGGG
+>    DONE
+4247c4811
+<   nadir, 1
+---
+>   unmet, 1
+4250,4251c4814,4815
+<   GYBYB
+<   canon, 1
+---
+>   YBBBB
+>   octet, 1
+4254,4255c4818,4819
+<   GBGBG
+<   carry, 1
+---
+>   GBBYB
+>   comet, 1
+4258,4261c4822,4825
+<   BBBBG
+<   pudge, 2.111111111111111
+<    GBGBB
+<    paddy, 1
+---
+>   BBBBB
+>   tenet, 1.5
+>    GYBGG
+>    tweet, 1
+4264,4265c4828,4835
+<    BBGBB
+<    daddy, 1
+---
+>   BYBBY
+>   beret, 1
+>    GGGGG
+>    DONE
+>   BBYBB
+>   quiet, 1.5
+>    BGBGG
+>    duvet, 1
+4268,4269c4838,4841
+<    BBYBB
+<    bawdy, 1
+---
+>   BYBBB
+>   egret, 1.5
+>    BBYGG
+>    rivet, 1
+4272,4273c4844,4853
+<    BYYYB
+<    gaudy, 1
+---
+>   BBBBY
+>   beget, 1
+>    GGGGG
+>    DONE
+>  BBBGY
+>  mohur, 2.333333333333333
+>   BBBYG
+>   truer, 1.6666666666666665
+>    GBYGG
+>    tuber, 1
+4276,4277c4856,4857
+<    YBBBB
+<    happy, 1
+---
+>    YBYGG
+>    utter, 1
+4280,4281c4860,4863
+<    BBBGB
+<    baggy, 1
+---
+>   BGBBG
+>   tower, 1.5
+>    YGBGG
+>    voter, 1
+4284,4285c4866,4869
+<    BBBYB
+<    gawky, 1
+---
+>   BBBBG
+>   inter, 1.75
+>    BGGGG
+>    enter, 1
+4288,4297c4872,4873
+<    BBBBB
+<    mammy, 1.5
+<     BGBBG
+<     jazzy, 1
+<      GGGGG
+<      DONE
+<   BYBYB
+<   mango, 1.6666666666666665
+<    BGGBG
+<    banjo, 1
+---
+>    YBYGG
+>    tiger, 1
+4300,4301c4876,4877
+<    BGYYY
+<    wagon, 1
+---
+>    BBGGG
+>    deter, 1
+4304,4307c4880,4911
+<   YBBYB
+<   panic, 1.5
+<    BGGGG
+<    manic, 1
+---
+>   BBGBG
+>   ether, 1
+>    GGGGG
+>    DONE
+>   GBBBG
+>   meter, 1
+>    GGGGG
+>    DONE
+>   BBYBB
+>   thief, 1
+>    GGGGG
+>    DONE
+>   BBBBY
+>   tried, 1
+>    GGGGG
+>    DONE
+>   YGBBB
+>   totem, 1
+>    GGGGG
+>    DONE
+>   BYBYG
+>   outer, 1
+>    GGGGG
+>    DONE
+>   BGBBB
+>   token, 1
+>    GGGGG
+>    DONE
+>   BBBBB
+>   tepee, 1.5
+>    GYBGB
+>    tweed, 1
+4310,4311c4914,4915
+<   BBBGB
+<   fauna, 1
+---
+>   YBBBG
+>   timer, 1
+4314,4323c4918,4921
+<   BBGBG
+<   harpy, 2
+<    GGGBG
+<    harry, 1.5
+<     GGGBG
+<     hardy, 1
+<      GGGGG
+<      DONE
+<    BGGYG
+<    parry, 1
+---
+>   BBYBY
+>   three, 1.5
+>    GGGGB
+>    threw, 1
+4326,4327c4924,4959
+<    BGGBG
+<    marry, 1
+---
+>   BYBBG
+>   otter, 1
+>    GGGGG
+>    DONE
+>   BYBBB
+>   often, 1
+>    GGGGG
+>    DONE
+>   BYGBG
+>   other, 1
+>    GGGGG
+>    DONE
+>  BYGYB
+>  delay, 1.75
+>   BGGGG
+>   relay, 1
+>    GGGGG
+>    DONE
+>   BGGYB
+>   fella, 1
+>    GGGGG
+>    DONE
+>   BGGGB
+>   relax, 1
+>    GGGGG
+>    DONE
+>  GBBBB
+>  unrip, 2.4999999999999987
+>   BYBBY
+>   spoon, 1
+>    GGGGG
+>    DONE
+>   BYBBB
+>   swoon, 1.6666666666666665
+>    GYGBG
+>    shown, 1
+4330,4333c4962,4963
+<   BBBYB
+<   mania, 1.6666666666666665
+<    GGGBG
+<    manga, 1
+---
+>    GBBGY
+>    synod, 1
+4336,4337c4966,4969
+<    BGYBY
+<    pagan, 1
+---
+>   BYBYB
+>   shiny, 1.6666666666666665
+>    GBGYB
+>    scion, 1
+4340,4343c4972,4973
+<   GBBBG
+<   cabby, 1.5
+<    GGBBG
+<    caddy, 1
+---
+>    GBGGB
+>    swing, 1
+4346,4347c4976,4977
+<   BYYBY
+<   mayor, 1
+---
+>   YYYBY
+>   spurn, 1
+4350,4351c4980,4981
+<   GBBGG
+<   canny, 1
+---
+>   YBYBB
+>   scour, 1
+4354,4355c4984,4997
+<   YBYYB
+<   ranch, 1
+---
+>   YYBBB
+>   sound, 2
+>    GBYGB
+>    sunny, 1
+>     GGGGG
+>     DONE
+>    GBGGB
+>    swung, 1.5
+>     GBGGB
+>     skunk, 1
+>      GGGGG
+>      DONE
+>   BBGGY
+>   sprig, 1
+4358,4359c5000,5023
+<   BBYGG
+<   rainy, 1
+---
+>   YBBGB
+>   squib, 1
+>    GGGGG
+>    DONE
+>   BBYYB
+>   shirk, 1.5
+>    GBGGG
+>    smirk, 1
+>     GGGGG
+>     DONE
+>   YBGBG
+>   syrup, 1
+>    GGGGG
+>    DONE
+>   BBBYG
+>   skimp, 1
+>    GGGGG
+>    DONE
+>   BYBYY
+>   spiny, 1
+>    GGGGG
+>    DONE
+>   BBGBB
+>   sorry, 1
+4363,4365c5027,5041
+<   rapid, 1.8333333333333337
+<    GGBGY
+<    radii, 1
+---
+>   sword, 1
+>    GGGGG
+>    DONE
+>   YYBBY
+>   spunk, 1
+>    GGGGG
+>    DONE
+>   YBBYB
+>   sushi, 1
+>    GGGGG
+>    DONE
+>   BBBBG
+>   swoop, 1.5
+>    GBGGG
+>    scoop, 1
+4368,4369c5044,5047
+<    GGBBB
+<    rajah, 1
+---
+>   YBGBB
+>   shrub, 1.75
+>    GGGGB
+>    shrug, 1
+4372,4373c5050,5051
+<    GGBBY
+<    radar, 1
+---
+>    GBGGB
+>    scrum, 1
+4376,4377c5054,5055
+<    GGBGG
+<    rabid, 1
+---
+>    GBGGG
+>    scrub, 1
+4380,4381c5058,5061
+<    GGBYB
+<    rabbi, 1
+---
+>   YBBBB
+>   shush, 1.5
+>    GGGBB
+>    shuck, 1
+4384,4387c5064,5071
+<   BYYBB
+<   favor, 2
+<    BGYGG
+<    vapor, 1
+---
+>   BGBYB
+>   sniff, 1
+>    GGGGG
+>    DONE
+>   BBBYB
+>   skiff, 1.6666666666666665
+>    GBGBB
+>    swish, 1
+4390,4391c5074,5075
+<    BGBYY
+<    radio, 1
+---
+>    GBYBB
+>    sissy, 1
+4394,4403c5078,5081
+<    BGBGG
+<    razor, 1.5
+<     BGBGG
+<     major, 1
+<      GGGGG
+<      DONE
+<   YBBBB
+<   magic, 1.5
+<    GGBBY
+<    macaw, 1
+---
+>   BBBBY
+>   spoof, 1.5
+>    GGGGB
+>    spook, 1
+4407,4409c5085,5087
+<   mamma, 1.875
+<    GGBBG
+<    mafia, 1
+---
+>   shook, 1.8571428571428568
+>    GGGBB
+>    showy, 1
+4412,4413c5090,5091
+<    BGGGG
+<    gamma, 1
+---
+>    GBGBB
+>    scoff, 1
+4416,4417c5094,5095
+<    GGYBY
+<    madam, 1
+---
+>    GBGBG
+>    smock, 1
+4420,4421c5098,5099
+<    BGBBG
+<    kappa, 1
+---
+>    GGGBG
+>    shock, 1
+4424,4425c5102,5103
+<    GGBGG
+<    magma, 1
+---
+>    GBYBB
+>    soggy, 1
+4428,4429c5106,5107
+<    BGBBB
+<    vapid, 1
+---
+>    GBGBY
+>    smoky, 1
+4432,4433c5110,5129
+<    GGYBB
+<    maxim, 1
+---
+>   YYBYB
+>   suing, 1
+>    GGGGG
+>    DONE
+>   BYYBB
+>   scorn, 2
+>    GBGGG
+>    sworn, 1.5
+>     GBGGG
+>     shorn, 1
+>      GGGGG
+>      DONE
+>   BYBGB
+>   sonic, 1
+>    GGGGG
+>    DONE
+>   BBBYY
+>   spiky, 1.5
+>    GGGBG
+>    spicy, 1
+4436,4439c5132,5133
+<  YBBYB
+<  rhone, 2.3947368421052646
+<   YBYBG
+<   worse, 1
+---
+>   BGBBG
+>   snoop, 1
+4442,4443c5136,5143
+<   BBGYG
+<   noose, 1
+---
+>   YGBBB
+>   snuck, 1.5
+>    GGGBB
+>    snuff, 1
+>     GGGGG
+>     DONE
+>   BGBBB
+>   snowy, 1
+4446,4447c5146,5165
+<   YBBBG
+<   curse, 1.6666666666666665
+---
+>  BBYGB
+>  bevor, 2.558139534883721
+>   BGBBY
+>   repel, 1
+>    GGGGG
+>    DONE
+>   BGGBB
+>   level, 1
+>    GGGGG
+>    DONE
+>   YYBBB
+>   libel, 1
+>    GGGGG
+>    DONE
+>   BGBBG
+>   leper, 1
+>    GGGGG
+>    DONE
+>   BYGYB
+>   hovel, 1.5
+4449c5167
+<    purse, 1
+---
+>    novel, 1
+4452,4453c5170,5173
+<    BBGGG
+<    verse, 1
+---
+>   BYBBY
+>   gruel, 1.5
+>    BGGGG
+>    cruel, 1
+4456,4457c5176,5177
+<   YYBBY
+<   fresh, 1
+---
+>   GGBBB
+>   bezel, 1
+4460,4463c5180,5183
+<   BGGBG
+<   chose, 1.5
+<    BGGGG
+<    whose, 1
+---
+>   BYBBB
+>   pinup, 2.09090909090909
+>    BBBYB
+>    clued, 1
+4466,4467c5186,5225
+<   BGBBY
+<   chess, 1
+---
+>    BGGBB
+>    linen, 1
+>     GGGGG
+>     DONE
+>    GYBBB
+>    plied, 1
+>     GGGGG
+>     DONE
+>    GGBBB
+>    pixel, 1
+>     GGGGG
+>     DONE
+>    BBYBB
+>    kneel, 1
+>     GGGGG
+>     DONE
+>    BBBBB
+>    wheel, 1.5
+>     BBYGG
+>     excel, 1
+>      GGGGG
+>      DONE
+>    YBBBB
+>    expel, 1
+>     GGGGG
+>     DONE
+>    YYBBB
+>    impel, 1
+>     GGGGG
+>     DONE
+>    BGYBB
+>    liken, 1
+>     GGGGG
+>     DONE
+>    BBYYB
+>    lumen, 1
+>     GGGGG
+>     DONE
+>   BYGBG
+>   liver, 1
+4470,4471c5228,5229
+<   BBYBY
+<   poesy, 1
+---
+>   BYYYB
+>   vowel, 1
+4474,4475c5232,5233
+<   YBBYG
+<   nurse, 1
+---
+>   BYGYG
+>   lover, 1
+4478,4479c5236,5237
+<   GBBBY
+<   rebus, 1
+---
+>   BGGBG
+>   lever, 1
+4482,4489c5240,5243
+<   BBYBG
+<   poise, 1.7999999999999998
+<    BYBGG
+<    obese, 1
+<     GGGGG
+<     DONE
+<    GGBGG
+<    posse, 1
+---
+>   BYBYB
+>   olden, 1.6666666666666665
+>    YYYGB
+>    dowel, 1
+4492,4493c5246,5247
+<    BGBGG
+<    mouse, 1
+---
+>    YYGGB
+>    model, 1
+4496,4497c5250,5253
+<    YGBGG
+<    copse, 1
+---
+>   BYBYG
+>   lower, 1.5
+>    YYBGG
+>    older, 1
+4500,4501c5256,5257
+<   BBYYG
+<   noise, 1
+---
+>   GGGBB
+>   bevel, 1
+4504,4505c5260,5261
+<   YBYBY
+<   verso, 1
+---
+>   BGGBY
+>   revel, 1
+4508,4515c5264,5265
+<   BBBBY
+<   guess, 1.5
+<    BBYYB
+<    pesky, 1
+<     GGGGG
+<     DONE
+<   GBBYG
+<   rinse, 1
+---
+>   BGBBB
+>   jewel, 1
+4518,4519c5268,5269
+<   YBBBY
+<   cress, 2
+---
+>   BYBBG
+>   flier, 2
+4521,4533c5271
+<    press, 1.5
+<     BGGGG
+<     dress, 1
+<      GGGGG
+<      DONE
+<   GBBYY
+<   resin, 1
+<    GGGGG
+<    DONE
+<   BBBBG
+<   guise, 1.6666666666666665
+<    BYYYG
+<    issue, 1
+---
+>    plier, 1
+4536,4537c5274,5275
+<    GBBGG
+<    geese, 1
+---
+>    BYYGG
+>    liner, 1
+4540,4543c5278,5279
+<   BBBYG
+<   ensue, 1.5
+<    YYYBG
+<    dense, 1
+---
+>    GGBGG
+>    flyer, 1
+4546,4547c5282,5289
+<   BYYBG
+<   house, 1
+---
+>    BGBGG
+>    ulcer, 1.5
+>     BGBGG
+>     elder, 1
+>      GGGGG
+>      DONE
+>   YGBBY
+>   rebel, 1
+4550,4553c5292,5295
+<   BBGBG
+<   goose, 1.5
+<    BGGGG
+<    moose, 1
+---
+>   GYBBB
+>   bleep, 1.5
+>    GGGGB
+>    bleed, 1
+4556,4557c5298,5299
+<   GBBBG
+<   reuse, 1
+---
+>   GYBBG
+>   bluer, 1
+4560,4561c5302,5303
+<   YBGBG
+<   prose, 1
+---
+>   GYBYB
+>   bowel, 1
+4564,4565c5306,5309
+<   YYYBG
+<   horse, 1
+---
+>  BGGBB
+>  rally, 1.8333333333333337
+>   GGGBB
+>   ralph, 1
+4568,4569c5312,5313
+<   GBYBG
+<   rouse, 1
+---
+>   BGGBG
+>   balmy, 1
+4572,4575c5316,5317
+<  YBBGG
+<  snubs, 1.9999999999999998
+<   YGBBB
+<   onset, 1
+---
+>   BGGGG
+>   dally, 1
+4578,4579c5320,5321
+<   YBYBB
+<   upset, 1
+---
+>   YGGBB
+>   valor, 1
+4582,4583c5324,5325
+<   YBBBB
+<   reset, 1
+---
+>   BGGBB
+>   valid, 1
+4586,4587c5328,5331
+<   YGYBB
+<   unset, 1
+---
+>  GBBYG
+>  scent, 1.6666666666666665
+>   GBGGG
+>   spent, 1
+4590,4591c5334,5335
+<   YBBYB
+<   beset, 1
+---
+>   GBGBG
+>   swept, 1
+4594,4597c5338,5341
+<  BBYYG
+<  knelt, 2
+<   BBGGG
+<   dwelt, 1
+---
+>  YGBBB
+>  rinds, 2.1000000000000005
+>   GBBBY
+>   raspy, 1
+4600,4601c5344,5345
+<   BBYGG
+<   exult, 1
+---
+>   BYYBY
+>   basin, 1
+4604,4613c5348,5349
+<   BBGYG
+<   cleft, 1.5
+<    YGGBG
+<    elect, 1
+<     GGGGG
+<     DONE
+<  BGGGB
+<  baler, 1.5
+<   BGGGG
+<   paler, 1
+---
+>   BYBYY
+>   daisy, 1
+4616,4619c5352,5353
+<  BYYYB
+<  gnarl, 2.6122448979591812
+<   YBYYG
+<   regal, 1
+---
+>   BYBBY
+>   basic, 1
+4622,4623c5356,5357
+<   YBYBG
+<   legal, 1
+---
+>   BBGBY
+>   pansy, 1
+4626,4627c5360,5361
+<   BYGBY
+<   plane, 1
+---
+>   BBYBY
+>   mason, 1
+4630,4631c5364,5365
+<   BBGYY
+<   realm, 1
+---
+>   BBBBY
+>   gassy, 1
+4634,4635c5368,5369
+<   BBYYY
+<   clear, 1
+---
+>   BYBBG
+>   basis, 1
+4638,4639c5372,5381
+<   BBGBG
+<   email, 1
+---
+>   YBBBY
+>   marsh, 1.5
+>    BGGGG
+>    harsh, 1
+>     GGGGG
+>     DONE
+>  BBYYB
+>  doing, 2.5306122448979584
+>   BGBBB
+>   boule, 1
+4642,4643c5384,5395
+<   YGYBY
+<   angle, 1
+---
+>   BBBBY
+>   elegy, 1.6666666666666665
+>    YYBGG
+>    leggy, 1
+>     GGGGG
+>     DONE
+>    YYBYB
+>    bugle, 1
+>     GGGGG
+>     DONE
+>   YBBBY
+>   ledge, 1
+4646,4647c5398,5399
+<   BBGGG
+<   pearl, 1
+---
+>   BBYBY
+>   liege, 1
+4650,4657c5402,5405
+<   BBYBG
+<   medal, 1.8333333333333337
+<    BGGGG
+<    pedal, 1
+<     GGGGG
+<     DONE
+<    BGYGG
+<    decal, 1
+---
+>   BYBBB
+>   elbow, 1.7999999999999998
+>    YGYYB
+>    bloke, 1
+4660,4661c5408,5409
+<    BGBGG
+<    fecal, 1
+---
+>    YYBYY
+>    whole, 1
+4664,4665c5412,5413
+<    BYBGG
+<    equal, 1
+---
+>    GGBYB
+>    elope, 1
+4668,4669c5416,5417
+<    BYYGG
+<    ideal, 1
+---
+>    YGBYB
+>    clove, 1
+4672,4673c5420,5421
+<   GBYBY
+<   gleam, 1
+---
+>   YGBBY
+>   lodge, 1
+4676,4677c5424,5425
+<   GBGBY
+<   glaze, 1.5
+---
+>   BYBBY
+>   globe, 1.5
+4679c5427
+<    glade, 1
+---
+>    glove, 1
+4682,4691c5430,5443
+<   BBGBY
+<   fehme, 2.1666666666666665
+<    BBBBG
+<    blaze, 1.6666666666666665
+<     GGGBG
+<     blade, 1
+<      GGGGG
+<      DONE
+<     BGGBG
+<     place, 1
+---
+>   YBGBY
+>   glide, 1
+>    GGGGG
+>    DONE
+>   GBYBB
+>   devil, 1
+>    GGGGG
+>    DONE
+>   YBYBB
+>   wield, 2
+>    BGGGG
+>    yield, 1.5
+>     BGGGG
+>     field, 1
+4694,4695c5446,5465
+<    YGBBB
+<    leafy, 1
+---
+>   BGBYB
+>   noble, 1
+>    GGGGG
+>    DONE
+>   BYGBB
+>   olive, 1
+>    GGGGG
+>    DONE
+>   BYBGB
+>   clone, 1
+>    GGGGG
+>    DONE
+>   YBGBB
+>   elide, 1
+>    GGGGG
+>    DONE
+>   BBBYB
+>   newly, 1.5
+>    YYBGB
+>    uncle, 1
+4698,4699c5468,5475
+<    GBBBG
+<    flake, 1
+---
+>   YBBBB
+>   elude, 1
+>    GGGGG
+>    DONE
+>   BBYBB
+>   rifle, 1.6666666666666665
+>    BGBGG
+>    bible, 1
+4702,4703c5478,5479
+<    BGBYB
+<    mealy, 1
+---
+>    YYBYY
+>    peril, 1
+4706,4707c5482,5497
+<    BGBBB
+<    leaky, 1
+---
+>   GBBBB
+>   dwell, 1
+>    GGGGG
+>    DONE
+>   YBBGB
+>   blend, 1
+>    GGGGG
+>    DONE
+>   BYBYB
+>   lemon, 1
+>    GGGGG
+>    DONE
+>   BBGBB
+>   while, 1.5
+>    BBGGG
+>    exile, 1
+4710,4711c5500,5511
+<    BBBGG
+<    blame, 1
+---
+>   BBGBY
+>   guile, 1
+>    GGGGG
+>    DONE
+>   BBBYY
+>   lunge, 1
+>    GGGGG
+>    DONE
+>   BBBBB
+>   clump, 1.9999999999999991
+>    YGBBB
+>    fleck, 1
+4714,4715c5514,5515
+<    GBBGG
+<    flame, 1
+---
+>    BYYYB
+>    lemur, 1
+4718,4719c5518,5519
+<    BGBBG
+<    leave, 1
+---
+>    BGGGY
+>    plume, 1
+4722,4723c5522,5523
+<    BBYBG
+<    whale, 1
+---
+>    GGBBB
+>    clerk, 1
+4726,4727c5526,5527
+<    BGYBB
+<    leach, 1
+---
+>    BGGGB
+>    flume, 1
+4730,4733c5530,5531
+<   BYYBY
+<   clean, 1.5
+<    BGYYY
+<    alone, 1
+---
+>    BYBBB
+>    leery, 1
+4736,4747c5534,5535
+<   BYGGY
+<   learn, 1
+<    GGGGG
+<    DONE
+<   BYYBG
+<   penal, 1
+<    GGGGG
+<    DONE
+<   BBGGY
+<   flare, 1.5
+<    BGGGG
+<    blare, 1
+---
+>    YYBBB
+>    leech, 1
+4750,4761c5538,5539
+<   BBYYG
+<   feral, 1
+<    GGGGG
+<    DONE
+<   BGYBY
+<   ankle, 1
+<    GGGGG
+<    DONE
+<   YBYBY
+<   algae, 1.5
+<    GYYBG
+<    agile, 1
+---
+>    BYYBB
+>    quell, 1
+4764,4767c5542,5543
+<   BBYBY
+<   apple, 1.9999999999999998
+<    YBBYY
+<    bleak, 1
+---
+>    BGGBB
+>    fluke, 1
+4770,4777c5546,5547
+<    GBBYG
+<    alike, 1.5
+<     GGGBG
+<     alive, 1
+<      GGGGG
+<      DONE
+<    YYBYY
+<    plead, 1
+---
+>    BYBBG
+>    whelp, 1
+4780,4781c5550,5551
+<    GBGGG
+<    ample, 1
+---
+>    BYBBY
+>    reply, 1
+4784,4785c5554,5555
+<    GBBGG
+<    amble, 1
+---
+>    GYBBB
+>    cycle, 1
+4788,4789c5558,5559
+<   BYYYG
+<   renal, 1
+---
+>   BBYYB
+>   elfin, 1
+4792,4793c5562,5565
+<   GYYBY
+<   glean, 1
+---
+>  BBYBG
+>  flung, 2.076923076923076
+>   BGBGY
+>   glint, 1
+4796,4797c5568,5569
+<   GBGGY
+<   glare, 1
+---
+>   BYBBY
+>   light, 1
+4800,4819c5572,5575
+<  GGGBY
+<  salty, 1
+<   GGGGG
+<   DONE
+<  YGGYB
+<  false, 1
+<   GGGGG
+<   DONE
+<  GBBYY
+<  mourn, 2.181818181818181
+<   BYBBB
+<   stoke, 1.5
+<    GGGBG
+<    stove, 1
+<     GGGGG
+<     DONE
+<   BBYBB
+<   setup, 1.5
+<    GYYYB
+<    suite, 1
+---
+>   BYYBB
+>   quilt, 1.5
+>    BGGGG
+>    built, 1
+4822,4823c5578,5579
+<   BBBBB
+<   spite, 1
+---
+>   BYGBB
+>   moult, 1
+4826,4827c5582,5583
+<   YYBBB
+<   smote, 1
+---
+>   BYBBB
+>   limit, 1
+4830,4831c5586,5587
+<   BBBGG
+<   stern, 1
+---
+>   BYYBY
+>   guilt, 1
+4834,4835c5590,5591
+<   BYBGB
+<   store, 1
+---
+>   GGBBB
+>   flirt, 1
+4838,4839c5594,5595
+<   BBBBG
+<   stein, 1
+---
+>   GGYBB
+>   flout, 1
+4842,4843c5598,5599
+<   BYBBY
+<   stone, 1
+---
+>   BGGGB
+>   blunt, 1
+4846,4847c5602,5603
+<   YBBBB
+<   smite, 1
+---
+>   GGBGB
+>   flint, 1
+4850,4857c5606,5607
+<  GBGYB
+<  solve, 1
+<   GGGGG
+<   DONE
+<  BGYYY
+<  latte, 1.6666666666666665
+<   GGGBG
+<   lathe, 1
+---
+>   BGGBB
+>   blurt, 1
+4860,4861c5610,5611
+<   YGYBG
+<   table, 1
+---
+>   BGYBB
+>   clout, 1
+4864,4867c5614,5617
+<  GYBYY
+<  gryke, 2.2222222222222223
+<   YBBBG
+<   stage, 1
+---
+>  YYYYB
+>  leash, 1.6666666666666665
+>   GGGGB
+>   lease, 1
+4870,4871c5620,5621
+<   BBBYY
+<   steak, 1
+---
+>   YYYYB
+>   aisle, 1
+4874,4875c5624,5627
+<   BBBBY
+<   steam, 1.5
+---
+>  GYBBY
+>  prink, 2.2142857142857144
+>   BYBBB
+>   straw, 1.5
+4877c5629
+<    stead, 1
+---
+>    stray, 1
+4881,4901c5633
+<   stare, 1
+<    GGGGG
+<    DONE
+<   BBBGG
+<   stake, 1
+<    GGGGG
+<    DONE
+<   BBBYG
+<   skate, 1
+<    GGGGG
+<    DONE
+<   BBBBG
+<   stave, 1.5
+<    GGGBG
+<    state, 1
+<     GGGGG
+<     DONE
+<  GGBBB
+<  copsy, 2.125
+<   BBBYB
+<   sauna, 1
+---
+>   stark, 1
+4904,4905c5636,5637
+<   BYBYB
+<   savor, 1
+---
+>   BYYBB
+>   stair, 1
+4908,4909c5640,5641
+<   BYBYG
+<   savoy, 1
+---
+>   BBBGB
+>   stand, 1
+4912,4913c5644,5645
+<   BBBGG
+<   sassy, 1
+---
+>   YBBBB
+>   stamp, 1
+4916,4919c5648,5651
+<   BBBYG
+<   savvy, 1.5
+<    GGBBG
+<    sandy, 1
+---
+>   BBBBB
+>   stash, 1.6666666666666665
+>    GGGBB
+>    staff, 1
+4922,4943c5654,5659
+<   BBGYG
+<   sappy, 1
+<    GGGGG
+<    DONE
+<   YBBYG
+<   saucy, 1
+<    GGGGG
+<    DONE
+<  GBBYG
+<  scent, 1.6666666666666665
+<   GBGGG
+<   spent, 1
+<    GGGGG
+<    DONE
+<   GBGBG
+<   swept, 1
+<    GGGGG
+<    DONE
+<  BGYBG
+<  fault, 1.5
+<   BGGGG
+<   vault, 1
+---
+>    GYGBG
+>    swath, 1
+>     GGGGG
+>     DONE
+>   BBBGG
+>   stank, 1
+4946,4953c5662,5663
+<  GGGYB
+<  salve, 1
+<   GGGGG
+<   DONE
+<  BGGBB
+<  rally, 1.8333333333333337
+<   BGGBB
+<   valid, 1
+---
+>   BBYBB
+>   staid, 1
+4956,4957c5666,5667
+<   BGGGG
+<   dally, 1
+---
+>   BBYYB
+>   stain, 1
+4960,4961c5670,5671
+<   GGGBB
+<   ralph, 1
+---
+>   YYBBB
+>   strap, 1
+4964,4965c5674,5675
+<   BGGBG
+<   balmy, 1
+---
+>   BBBBG
+>   stack, 1
+4968,4969c5678,5681
+<   YGGBB
+<   valor, 1
+---
+>  YYBYB
+>  brach, 2.249999999999999
+>   BBGYB
+>   cease, 1
+4972,4975c5684,5685
+<  BBBBG
+<  groin, 2.27027027027027
+<   BBBYY
+<   input, 1
+---
+>   YBGBB
+>   abase, 1
+4978,4979c5688,5689
+<   BGBYY
+<   print, 1
+---
+>   YBYBB
+>   abuse, 1
+4982,4983c5692,5693
+<   YBBYY
+<   night, 1
+---
+>   BBGBY
+>   phase, 1
+4986,4987c5696,5697
+<   BYBBY
+<   burnt, 1
+---
+>   BGGBB
+>   erase, 1
+4990,4993c5700,5703
+<   BBYYY
+<   joint, 1.5
+<    BGGGG
+<    point, 1
+---
+>   BBYBB
+>   essay, 1.6666666666666665
+>    YGBYB
+>    aside, 1
+4996,5001c5706,5711
+<   BGBYB
+<   drift, 1
+<    GGGGG
+<    DONE
+<   BGYGB
+<   orbit, 1
+---
+>    YYBYB
+>    amuse, 1
+>     GGGGG
+>     DONE
+>   BBGYY
+>   chase, 1
+5004,5005c5714,5715
+<   BBBGY
+<   unfit, 1
+---
+>   BBGBB
+>   usage, 1
+5008,5011c5718,5721
+<   BYYBB
+<   court, 1.5
+<    BGBYG
+<    robot, 1
+---
+>   BGYBB
+>   arose, 1.5
+>    GGBGG
+>    arise, 1
+5014,5015c5724,5731
+<   BGGBY
+<   front, 1
+---
+>  YYBGG
+>  asset, 1
+>   GGGGG
+>   DONE
+>  BBGGB
+>  filer, 2
+>   BBGGG
+>   ruler, 1
+5018,5019c5734,5735
+<   BGBGB
+<   fruit, 1
+---
+>   BYGGG
+>   idler, 1
+5022,5031c5738,5741
+<   YBBYB
+<   embow, 2.25
+<    BBBBB
+<    fight, 1.5
+<     BGGGG
+<     tight, 1
+<      GGGGG
+<      DONE
+<    BYBBB
+<    might, 1
+---
+>   BBGGB
+>   golem, 1.5
+>    BBGGY
+>    melee, 1
+5034,5035c5744,5749
+<    BBBBY
+<    wight, 1
+---
+>  YBBBG
+>  moria, 2.299999999999999
+>   BGBBB
+>   boost, 1.5
+>    BGBGG
+>    joust, 1
+5038,5043c5752,5753
+<   BBBBY
+<   uncut, 1
+<    GGGGG
+<    DONE
+<   YYBYB
+<   right, 1
+---
+>   BYYBB
+>   frost, 1
+5047,5057c5757,5759
+<   doubt, 1
+<    GGGGG
+<    DONE
+<   BBBYB
+<   twixt, 1
+<    GGGGG
+<    DONE
+<   BBYBY
+<   count, 1.6666666666666665
+<    BGYYG
+<    donut, 1
+---
+>   crust, 1.6666666666666665
+>    BGBGG
+>    tryst, 1
+5061c5763
+<    mount, 1
+---
+>    trust, 1
+5064,5065c5766,5767
+<   YBBGB
+<   digit, 1
+---
+>   BGYBB
+>   roost, 1
+5068,5069c5770,5771
+<   YBYYY
+<   ingot, 1
+---
+>   GBBYB
+>   midst, 1
+5072,5073c5774,5775
+<   BGGBB
+<   trout, 1
+---
+>   BBGBB
+>   burst, 1
+5076,5077c5778,5787
+<   GGGBB
+<   grout, 1
+---
+>   BGBYB
+>   joist, 2
+>    BGGGG
+>    hoist, 1.5
+>     BGGGG
+>     foist, 1
+>      GGGGG
+>      DONE
+>   BBBGB
+>   visit, 1
+5080,5087c5790,5791
+<   BBYYB
+<   idiot, 1.5
+<    YBBGG
+<    pivot, 1
+<     GGGGG
+<     DONE
+<   BGBBB
+<   crypt, 1
+---
+>   BBBYB
+>   twist, 1
+5090,5091c5794,5795
+<   BGBBY
+<   brunt, 1
+---
+>   GGBYB
+>   moist, 1
+5094,5095c5798,5799
+<   BBYGB
+<   vomit, 1
+---
+>   BYBBB
+>   ghost, 1
+5098,5099c5802,5803
+<   GGBBY
+<   grunt, 1
+---
+>   BGGBB
+>   worst, 1
+5102,5103c5806,5807
+<   YBYYB
+<   bigot, 1
+---
+>   BBGYB
+>   first, 1
+5106,5107c5810,5811
+<   BGGGB
+<   droit, 1
+---
+>   BGBGB
+>   posit, 1
+5110,5111c5814,5815
+<   YBYBB
+<   ought, 1
+---
+>   BBYYB
+>   wrist, 1
+5114,5117c5818,5821
+<  BGYYB
+<  creme, 2.125
+<   BBYBG
+<   eagle, 1
+---
+>  BBYYG
+>  cleft, 2
+>   YGGBG
+>   elect, 1
+5120,5121c5824,5825
+<   GBBBG
+<   cable, 1
+---
+>   BYYBG
+>   exult, 1
+5124,5127c5828,5831
+<   BBBBG
+<   fable, 1.5
+<    BGBGG
+<    ladle, 1
+---
+>   BYGBG
+>   knelt, 1.5
+>    BBGGG
+>    dwelt, 1
+5130,5131c5834,5837
+<   BYBBG
+<   large, 1
+---
+>  YGYBB
+>  nasal, 1.75
+>   BGGBY
+>   lasso, 1
+5134,5135c5840,5841
+<   YBBBG
+<   lance, 1
+---
+>   BGGGG
+>   basal, 1
+5138,5139c5844,5845
+<   BYYBB
+<   early, 1
+---
+>   BGGBG
+>   basil, 1
+5142,5143c5848,5851
+<   BBBYG
+<   maple, 1
+---
+>  YBBBY
+>  durgy, 2.0000000000000004
+>   BGYBG
+>   rusty, 1
+5146,5149c5854,5855
+<  YBBYY
+<  troth, 2.0000000000000004
+<   GBBBB
+<   tense, 1
+---
+>   BYYBB
+>   truss, 1
+5152,5153c5858,5859
+<   GBBGB
+<   testy, 1
+---
+>   BBGBB
+>   torso, 1
+5156,5157c5862,5863
+<   YBBBB
+<   fetus, 1
+---
+>   GGBBG
+>   dusty, 1
+5160,5161c5866,5867
+<   GBGBY
+<   those, 1
+---
+>   BBBBG
+>   tipsy, 1
+5164,5165c5870,5871
+<   YBYBY
+<   ethos, 1
+---
+>   BGBBG
+>   musty, 1
+5168,5169c5874,5875
+<   GBBBY
+<   these, 1
+---
+>   BGBYG
+>   gusty, 1
+5172,5173c5878,5879
+<   BBYGB
+<   pesto, 1
+---
+>   BYGBB
+>   torus, 1
+5176,5177c5882,5883
+<   BBBGB
+<   zesty, 1
+---
+>   BGBYB
+>   gusto, 1
+5180,5181c5886,5893
+<   GYBBB
+<   terse, 1
+---
+>  GGGBY
+>  salty, 1
+>   GGGGG
+>   DONE
+>  BYGBB
+>  allay, 1.9999999999999993
+>   BYGGB
+>   lilac, 1
+5184,5187c5896,5897
+<  GYYBY
+<  stalk, 1.5
+<   GGGGB
+<   stall, 1
+---
+>   GGGBB
+>   allow, 1
+5190,5205c5900,5901
+<  GBBBB
+<  unrip, 2.4999999999999987
+<   YYBBB
+<   swung, 2
+<    GBYGB
+<    sunny, 1
+<     GGGGG
+<     DONE
+<    GBGGB
+<    sound, 1.5
+<     GBGGB
+<     skunk, 1
+<      GGGGG
+<      DONE
+<   YBBYB
+<   sushi, 1
+---
+>   YYGBB
+>   villa, 1
+5208,5209c5904,5905
+<   BBBYG
+<   skimp, 1
+---
+>   GBGBB
+>   aglow, 1
+5212,5213c5908,5909
+<   BGBBG
+<   snoop, 1
+---
+>   BBGGG
+>   inlay, 1
+5216,5217c5912,5913
+<   YBGBG
+<   syrup, 1
+---
+>   GGGBG
+>   alloy, 1
+5220,5235c5916,5917
+<   YBGBB
+<   scrub, 1.75
+<    GBGGG
+<    shrub, 1
+<     GGGGG
+<     DONE
+<    GGGGB
+<    scrum, 1
+<     GGGGG
+<     DONE
+<    GBGGB
+<    shrug, 1
+<     GGGGG
+<     DONE
+<   YYBYB
+<   suing, 1
+---
+>   BBGGY
+>   bylaw, 1
+5238,5245c5920,5923
+<   BBBYB
+<   skiff, 1.6666666666666665
+<    GBGBB
+<    swish, 1
+<     GGGGG
+<     DONE
+<    GBYBB
+<    sissy, 1
+---
+>   BBGGB
+>   polar, 1.5
+>    BGGGG
+>    molar, 1
+5248,5249c5926,5927
+<   BGBYB
+<   sniff, 1
+---
+>   YBGBB
+>   polka, 1
+5252,5253c5930,5933
+<   YYBBY
+<   spunk, 1
+---
+>  BYBYY
+>  grate, 2.2499999999999996
+>   BBYGG
+>   acute, 1
+5256,5259c5936,5939
+<   YGBBB
+<   snuff, 1.5
+<    GGGBB
+<    snuck, 1
+---
+>   BGGGG
+>   crate, 1.5
+>    BGGGG
+>    irate, 1
+5262,5267c5942,5943
+<   YYYBY
+<   spurn, 1
+<    GGGGG
+<    DONE
+<   YBYBB
+<   scour, 1
+---
+>   BBYYY
+>   tweak, 1
+5270,5281c5946,5947
+<   BYBBB
+<   swoon, 1.6666666666666665
+<    GBBGY
+<    synod, 1
+<     GGGGG
+<     DONE
+<    GYGBG
+<    shown, 1
+<     GGGGG
+<     DONE
+<   BYBYY
+<   spiny, 1
+---
+>   BBGYY
+>   teach, 1
+5284,5305c5950,5951
+<   BYYBB
+<   shorn, 2
+<    GBGGG
+<    scorn, 1.5
+<     GBGGG
+<     sworn, 1
+<      GGGGG
+<      DONE
+<   BBBBG
+<   swoop, 1.5
+<    GBGGG
+<    scoop, 1
+<     GGGGG
+<     DONE
+<   YBBBB
+<   shuck, 1.5
+<    GGGBB
+<    shush, 1
+<     GGGGG
+<     DONE
+<   BBYBB
+<   sword, 1
+---
+>   BBYGY
+>   theta, 1
+5308,5309c5954,5955
+<   BBGGY
+<   sprig, 1
+---
+>   BYGYY
+>   teary, 1
+5312,5315c5958,5961
+<   BBBBY
+<   spoof, 1.5
+<    GGGGB
+<    spook, 1
+---
+>   BBGGG
+>   abate, 1.5
+>    BBGGG
+>    ovate, 1
+5318,5319c5964,5965
+<   BBGBB
+<   sorry, 1
+---
+>   YBGGG
+>   agate, 1
+5322,5337c5968,5971
+<   BBBBB
+<   shook, 1.8571428571428568
+<    GBGBB
+<    scoff, 1
+<     GGGGG
+<     DONE
+<    GBGBG
+<    smock, 1
+<     GGGGG
+<     DONE
+<    GBGBY
+<    smoky, 1
+<     GGGGG
+<     DONE
+<    GBYBB
+<    soggy, 1
+---
+>   BBGGY
+>   heath, 1.6666666666666665
+>    BGGGG
+>    death, 1
+5340,5341c5974,5975
+<    GGGBB
+<    showy, 1
+---
+>    BGGGB
+>    meaty, 1
+5344,5345c5978,5981
+<    GGGBG
+<    shock, 1
+---
+>   BYYYY
+>   extra, 1.5
+>    YBYGG
+>    terra, 1
+5348,5349c5984,5985
+<   BYBBY
+<   spoon, 1
+---
+>   BGYYY
+>   tread, 1
+5352,5353c5988,5993
+<   BBBYY
+<   spiky, 1.5
+---
+>   BBYYG
+>   atone, 1
+>    GGGGG
+>    DONE
+>   BGGYG
+>   trace, 1.5
+5355c5995
+<    spicy, 1
+---
+>    trade, 1
+5358,5361c5998,6009
+<   BYBYB
+<   shiny, 1.6666666666666665
+<    GBGYB
+<    scion, 1
+---
+>  BGBGG
+>  cadet, 1.5
+>   YGBGG
+>   facet, 1
+>    GGGGG
+>    DONE
+>  BBGYB
+>  himbo, 2.1875
+>   BBBYB
+>   belly, 1.6666666666666665
+>    GGGGB
+>    belle, 1
+5364,5365c6012,6013
+<    GBGGB
+<    swing, 1
+---
+>    GYGBB
+>    bulge, 1
+5368,5369c6016,6017
+<   YBBGB
+<   squib, 1
+---
+>   BGBYB
+>   bilge, 1
+5372,5373c6020,6021
+<   BGBBB
+<   snowy, 1
+---
+>   GYBBB
+>   helix, 1
+5376,5377c6024,6025
+<   BYBGB
+<   sonic, 1
+---
+>   YBBYB
+>   belch, 1
+5380,5389c6028,6029
+<   BBYYB
+<   smirk, 1.5
+<    GBGGG
+<    shirk, 1
+<     GGGGG
+<     DONE
+<  GYBBB
+<  cramp, 2.3125
+<   YBYYB
+<   sumac, 1
+---
+>   BBBBY
+>   felon, 1
+5392,5393c6032,6033
+<   BBYBB
+<   squad, 1
+---
+>   BBBYY
+>   below, 1
+5396,5397c6036,6037
+<   BYYBY
+<   spray, 1
+---
+>   GBBBG
+>   hello, 1
+5400,5401c6040,6041
+<   YBYBB
+<   scuba, 1
+---
+>   BYBYB
+>   belie, 1
+5404,5411c6044,6045
+<   BYGBB
+<   shark, 1.5
+<    GGGGB
+<    shard, 1
+<     GGGGG
+<     DONE
+<   BYGYB
+<   swarm, 1
+---
+>   BYBBB
+>   relic, 1
+5414,5415c6048,6049
+<   BBGGB
+<   swami, 1
+---
+>   YBBBB
+>   welch, 1
+5418,5425c6052,6053
+<   YYGBB
+<   scary, 1.5
+<    GGGGB
+<    scarf, 1
+<     GGGGG
+<     DONE
+<   BYGBY
+<   spark, 1
+---
+>   BBYBY
+>   melon, 1
+5428,5431c6056,6063
+<   YBGBB
+<   snack, 1.5
+<    GBGGG
+<    shack, 1
+---
+>   BBBBG
+>   cello, 1
+>    GGGGG
+>    DONE
+>   BBBBB
+>   delve, 1.5
+>    BGGBB
+>    jelly, 1
+5434,5435c6066,6069
+<   YBGYB
+<   smack, 1
+---
+>  YYBBG
+>  corby, 2.0000000000000004
+>   BBBBB
+>   angst, 1
+5438,5439c6072,6073
+<   BYGBG
+<   sharp, 1
+---
+>   BGBYB
+>   boast, 1
+5442,5449c6076,6077
+<   BYYBB
+<   sonar, 1.5
+<    GBBGG
+<    sugar, 1
+<     GGGGG
+<     DONE
+<   BBGYY
+<   spasm, 1
+---
+>   GGBBB
+>   coast, 1
+5452,5471c6080,6081
+<   BBGBB
+<   shank, 1.7999999999999998
+<    GGGBY
+<    shaky, 1
+<     GGGGG
+<     DONE
+<    GGGBB
+<    shady, 1
+<     GGGGG
+<     DONE
+<    GBGYY
+<    snaky, 1
+<     GGGGG
+<     DONE
+<    GYGBB
+<    swash, 1
+<     GGGGG
+<     DONE
+<   YBGGG
+<   scamp, 1
+---
+>   BGYBB
+>   roast, 1
+5474,5475c6084,6085
+<   BBGYB
+<   smash, 1
+---
+>   BGBBB
+>   toast, 1
+5478,5479c6088,6089
+<   YYYBG
+<   scrap, 1
+---
+>   YYBBB
+>   ascot, 1
+5482,5483c6092,6099
+<   YYYYB
+<   scram, 1
+---
+>  BGYGY
+>  later, 1
+>   GGGGG
+>   DONE
+>  BBYGY
+>  hotel, 1.75
+>   BGGGG
+>   motel, 1
+5486,5497c6102,6103
+<   BBGBY
+<   spank, 1.6666666666666665
+<    GGGYB
+<    spawn, 1
+<     GGGGG
+<     DONE
+<    GYGBB
+<    soapy, 1
+<     GGGGG
+<     DONE
+<   BBGGG
+<   swamp, 1
+---
+>   BGYGG
+>   towel, 1
+5500,5501c6106,6107
+<   BBYGB
+<   sigma, 1
+---
+>   BBGGG
+>   betel, 1
+5504,5507c6110,6117
+<  GGBGB
+<  safer, 1.5
+<   GGBGG
+<   saner, 1
+---
+>  YYYBG
+>  blast, 1
+>   GGGGG
+>   DONE
+>  BBYYY
+>  title, 1.8571428571428568
+>   YYBYG
+>   elite, 1
+5510,5513c6120,6121
+<  YYBGB
+<  askew, 1.5
+<   GGBGB
+<   ashen, 1
+---
+>   BGGYG
+>   lithe, 1
+5516,5519c6124,6125
+<  GBYGB
+<  sleep, 1.6666666666666665
+<   GYBGY
+<   spiel, 1
+---
+>   YYBGG
+>   utile, 1
+5522,5523c6128,6129
+<   GGGGB
+<   sleek, 1
+---
+>   YBBYY
+>   lefty, 1
+5526,5539c6132,6133
+<  GYBYG
+<  sweat, 1
+<   GGGGG
+<   DONE
+<  BBBYG
+<  runic, 2.2727272727272716
+<   BBBGB
+<   befit, 1.5
+<    YGBGG
+<    debit, 1
+<     GGGGG
+<     DONE
+<   YBBGB
+<   merit, 1
+---
+>   YBBYG
+>   flute, 1
+5542,5549c6136,6137
+<   GBBGB
+<   remit, 1.5
+<    GGBGG
+<    refit, 1
+<     GGGGG
+<     DONE
+<   BBBBY
+<   eject, 1
+---
+>   BBGYY
+>   extol, 1
+5552,5559c6140,6143
+<   BBBYY
+<   evict, 1.5
+<    GBGGG
+<    edict, 1
+<     GGGGG
+<     DONE
+<   BBYYB
+<   inept, 1
+---
+>  BYBYG
+>  cedar, 2.1538461538461537
+>   YGBYY
+>   react, 1
+5562,5569c6146,6147
+<   BBBBB
+<   theft, 1.5
+<    BBYBG
+<    depot, 1
+<     GGGGG
+<     DONE
+<   YYBBB
+<   erupt, 1
+---
+>   GYBGB
+>   cheat, 1
+5572,5579c6150,6151
+<   YBBBY
+<   crept, 1.5
+<    YGGBG
+<    erect, 1
+<     GGGGG
+<     DONE
+<   BYBBB
+<   debut, 1
+---
+>   BGBGB
+>   begat, 1
+5582,5583c6154,6155
+<   GYBBY
+<   recut, 1
+---
+>   BGBYY
+>   heart, 1
+5586,5587c6158,6159
+<   BBBYB
+<   eight, 1
+---
+>   BYBGB
+>   wheat, 1
+5590,5593c6162,6165
+<   YBBBB
+<   overt, 1.5
+<    BBGGG
+<    exert, 1
+---
+>   BYBGY
+>   great, 1.5
+>    BGGGG
+>    treat, 1
+5596,5597c6168,6175
+<   YBYYB
+<   inert, 1
+---
+>   YYBYB
+>   enact, 1.5
+>    GBGGG
+>    exact, 1
+>     GGGGG
+>     DONE
+>   BYBYB
+>   agent, 1
+5600,5601c6178,6179
+<   GYBBB
+<   rebut, 1
+---
+>   BGBYB
+>   meant, 1
+5604,5605c6182,6183
+<   BBYBB
+<   event, 1
+---
+>   BYYYB
+>   adept, 1
+5608,5611c6186,6193
+<  BGYGB
+<  ghyll, 2.272727272727272
+<   YBBBG
+<   bagel, 1
+---
+>   BYBYY
+>   avert, 1
+>    GGGGG
+>    DONE
+>  BGYYB
+>  perce, 2.125
+>   BYGBB
+>   early, 1
+5615c6197
+<   navel, 1.6666666666666665
+---
+>   ladle, 1.5
+5617c6199
+<    camel, 1
+---
+>    fable, 1
+5620,5625c6202,6207
+<    YGBGG
+<    panel, 1
+<     GGGGG
+<     DONE
+<   BBBYB
+<   laden, 1
+---
+>   YBBBG
+>   maple, 1
+>    GGGGG
+>    DONE
+>   BBBYG
+>   cable, 1
+5629c6211
+<   hazel, 1
+---
+>   eagle, 1
+5632,5633c6214,6215
+<   GBBBG
+<   gavel, 1
+---
+>   BBGBG
+>   large, 1
+5636,5637c6218,6219
+<   BBGYB
+<   layer, 1
+---
+>   BBBGG
+>   lance, 1
+5640,5647c6222,6241
+<   BBBYG
+<   label, 1.5
+<    GGBGG
+<    lapel, 1
+<     GGGGG
+<     DONE
+<   YBBYB
+<   lager, 1
+---
+>  BGGGG
+>  valet, 1
+>   GGGGG
+>   DONE
+>  BYGYY
+>  delta, 1
+>   GGGGG
+>   DONE
+>  BYGYG
+>  eclat, 1
+>   GGGGG
+>   DONE
+>  YYYYG
+>  least, 1
+>   GGGGG
+>   DONE
+>  GYYYB
+>  scale, 1.5
+>   GBGGG
+>   shale, 1
+5650,5667c6244,6255
+<  BYBBG
+<  croup, 2.2499999999999996
+<   BGBBB
+<   graft, 1.75
+<    BGGBG
+<    trait, 1
+<     GGGGG
+<     DONE
+<    BGGGG
+<    draft, 1
+<     GGGGG
+<     DONE
+<    GGGBG
+<    grant, 1
+<     GGGGG
+<     DONE
+<   BBGBY
+<   adopt, 1
+---
+>  GGGYB
+>  salve, 1
+>   GGGGG
+>   DONE
+>  GBYGY
+>  steel, 1
+>   GGGGG
+>   DONE
+>  BBGBG
+>  unlit, 1.5
+>   BBGYG
+>   pilot, 1
+5670,5671c6258,6265
+<   YGBBB
+<   tract, 1
+---
+>  GGBYB
+>  sauce, 1
+>   GGGGG
+>   DONE
+>  BYBBG
+>  croup, 2.25
+>   BYGBB
+>   abort, 1
+5674,5675c6268,6269
+<   GGBBB
+<   craft, 1
+---
+>   BYBBY
+>   apart, 1
+5682,5687c6276,6277
+<   GYBBB
+<   chart, 1
+<    GGGGG
+<    DONE
+<   BBGGB
+<   about, 1
+---
+>   GGBBB
+>   craft, 1
+5694,5705d6283
+<   BBBBY
+<   adapt, 1
+<    GGGGG
+<    DONE
+<   GBBBB
+<   chant, 1
+<    GGGGG
+<    DONE
+<   BYGBB
+<   abort, 1
+<    GGGGG
+<    DONE
+5709a6288,6297
+>   BBBBB
+>   await, 1.6666666666666665
+>    GBBGG
+>    admit, 1
+>     GGGGG
+>     DONE
+>    BBGYG
+>    giant, 1
+>     GGGGG
+>     DONE
+5714,5721c6302,6305
+<   BYBBY
+<   apart, 1
+<    GGGGG
+<    DONE
+<   BBBBB
+<   giant, 1.6666666666666665
+<    BYGBG
+<    await, 1
+---
+>   BGBBB
+>   graft, 1.75
+>    BGGBG
+>    trait, 1
+5724,5725c6308,6309
+<    BYYBG
+<    admit, 1
+---
+>    BGGGG
+>    draft, 1
+5728,5733c6312,6313
+<  BBBGG
+<  guiro, 2.2307692307692304
+<   BBBBB
+<   tweet, 1.5
+<    GBYGG
+<    tenet, 1
+---
+>    GGGBG
+>    grant, 1
+5736,5741c6316,6317
+<   GBBYB
+<   greet, 1
+<    GGGGG
+<    DONE
+<   BGGBB
+<   quiet, 1
+---
+>   BBGBY
+>   adopt, 1
+5744,5745c6320,6321
+<   YBBYB
+<   egret, 1
+---
+>   GBBBB
+>   chant, 1
+5748,5749c6324,6325
+<   YBBBB
+<   beget, 1
+---
+>   YGBBB
+>   tract, 1
+5752,5753c6328,6329
+<   BBYYB
+<   rivet, 1
+---
+>   GYBBB
+>   chart, 1
+5756,5757c6332,6333
+<   BGBBB
+<   duvet, 1
+---
+>   BBGGB
+>   about, 1
+5761,5775c6337
+<   comet, 1.6666666666666665
+<    YYBGG
+<    octet, 1
+<     GGGGG
+<     DONE
+<    GGBGG
+<    covet, 1
+<     GGGGG
+<     DONE
+<   BYBBB
+<   unmet, 1
+<    GGGGG
+<    DONE
+<   BBBYB
+<   beret, 1
+---
+>   adapt, 1
+5778,5779c6340,6341
+<  BYYBB
+<  corni, 2.606060606060605
+---
+>  BYBBB
+>  brond, 2.554455445544556
+5781,5831c6343,6345
+<   brawl, 1.6666666666666665
+<    BYGBY
+<    alarm, 1
+<     GGGGG
+<     DONE
+<    BGGGG
+<    drawl, 1
+<     GGGGG
+<     DONE
+<   BGBBB
+<   modal, 1.75
+<    YGBYY
+<    loamy, 1
+<     GGGGG
+<     DONE
+<    BGBGG
+<    loyal, 1
+<     GGGGG
+<     DONE
+<    BGBYY
+<    koala, 1
+<     GGGGG
+<     DONE
+<   BBYYB
+<   lunar, 1
+<    GGGGG
+<    DONE
+<   YGBBB
+<   vocal, 2
+<    BGGGG
+<    focal, 1.5
+<     BGGGG
+<     local, 1
+<      GGGGG
+<      DONE
+<   YBBBB
+<   flack, 1.5
+<    BGGGG
+<    black, 1
+<     GGGGG
+<     DONE
+<   BBBBY
+<   avail, 2
+<    BBGGG
+<    flail, 1.5
+<     BBGGG
+<     quail, 1
+<      GGGGG
+<      DONE
+<    BBGGY
+<    plaid, 1
+---
+>   cocoa, 1.8333333333333337
+>    GGBBG
+>    comma, 1
+5834,5835c6348,6349
+<    GBYYG
+<    axial, 1
+---
+>    BGGBG
+>    mocha, 1
+5838,5841c6352,6353
+<   BYBBB
+<   afoul, 1.75
+<    YGYBG
+<    offal, 1
+---
+>    BGBBY
+>    foamy, 1
+5844,5845c6356,6357
+<    GBGGY
+<    aloud, 1
+---
+>    BBBGY
+>    axiom, 1
+5848,5849c6360,6361
+<    GYGBY
+<    aloof, 1
+---
+>    GGYBY
+>    coach, 1
+5852,5853c6364,6365
+<   YBBBY
+<   iliac, 1
+---
+>   GGBGG
+>   brand, 1
+5856,5859c6368,6371
+<   BBBGB
+<   blank, 2
+<    GGGGB
+<    bland, 1
+---
+>   BYYBB
+>   ovary, 1.6666666666666665
+>    YBGYB
+>    roach, 1
+5862,5863c6374,6375
+<    BGGGB
+<    gland, 1
+---
+>    YBYYG
+>    foray, 1
+5866,5873c6378,6379
+<    BGGGG
+<    flank, 1.5
+<     BGGGG
+<     plank, 1
+<      GGGGG
+<      DONE
+<   BBBBG
+<   alibi, 1
+---
+>   BYBYB
+>   angry, 1
+5876,5877c6382,6383
+<   BBGBY
+<   viral, 1
+---
+>   GGGBG
+>   broad, 1
+5880,5887c6386,6389
+<   GBBBB
+<   clamp, 1.6666666666666665
+<    GGGBB
+<    clack, 1
+<     GGGGG
+<     DONE
+<    GYGBB
+<    chalk, 1
+---
+>   BYBBY
+>   diary, 1.5
+>    GBGGB
+>    dwarf, 1
+5890,5891c6392,6393
+<   BYYBB
+<   flora, 1
+---
+>   BYGYB
+>   acorn, 1
+5894,5895c6396,6397
+<   GBBBY
+<   claim, 1
+---
+>   BGBGY
+>   drank, 1
+5898,5913c6400,6407
+<   BBBBB
+<   amply, 1.8888888888888893
+<    GYBYB
+<    album, 1
+<     GGGGG
+<     DONE
+<    GBGYB
+<    alpha, 1
+<     GGGGG
+<     DONE
+<    YBBYG
+<    flaky, 1
+<     GGGGG
+<     DONE
+<    YYBGB
+<    qualm, 1
+---
+>   BYGYY
+>   adorn, 1
+>    GGGGG
+>    DONE
+>   BBYYB
+>   annoy, 1.6666666666666665
+>    GYBGB
+>    axion, 1
+5917,5929c6411
+<    llama, 1
+<     GGGGG
+<     DONE
+<    YBYYB
+<    plaza, 1
+<     GGGGG
+<     DONE
+<    GBBYB
+<    awful, 1
+<     GGGGG
+<     DONE
+<    GBGGG
+<    apply, 1
+---
+>    woman, 1
+5932,5935c6414,6417
+<   BBYBY
+<   frail, 1.75
+<    BYYYG
+<    rival, 1
+---
+>   BGBYY
+>   drain, 1.5
+>    GGGBG
+>    drawn, 1
+5938,5939c6420,6423
+<    GYGGY
+<    flair, 1
+---
+>   BGYBB
+>   arrow, 1.5
+>    GGYGB
+>    armor, 1
+5942,5943c6426,6429
+<    BGGGG
+<    grail, 1
+---
+>   YYYBB
+>   abhor, 1.5
+>    YYBYY
+>    cobra, 1
+5946,5953d6431
+<   GGGBB
+<   coral, 1
+<    GGGGG
+<    DONE
+<   GBYBB
+<   crawl, 1
+<    GGGGG
+<    DONE
+5955,5961c6433,6435
+<   zonal, 1
+<    GGGGG
+<    DONE
+<   BBGBB
+<   rural, 1.5
+<    BGGGG
+<    mural, 1
+---
+>   grain, 1.5
+>    BGGBG
+>    prawn, 1
+5964,5965c6438,6439
+<   GYBBB
+<   cloak, 1
+---
+>   BBYGB
+>   piano, 1
+5968,5975c6442,6443
+<   GBBGB
+<   clang, 1.5
+<    GGGGB
+<    clank, 1
+<     GGGGG
+<     DONE
+<   BBBYB
+<   annul, 1
+---
+>   BYYBG
+>   hoard, 1
+5978,5979c6446,6447
+<   BGYBB
+<   royal, 1
+---
+>   BBBYY
+>   admin, 1
+5982,5993c6450,6453
+<   BBBYY
+<   align, 1.75
+<    YGYBG
+<    plain, 1
+<     GGGGG
+<     DONE
+<    GYYBY
+<    anvil, 1
+<     GGGGG
+<     DONE
+<    YYYBY
+<    final, 1
+---
+>   BBYYG
+>   nomad, 1.5
+>    YGBGG
+>    gonad, 1
+5996,6005c6456,6457
+<   BGGBB
+<   moral, 1
+<    GGGGG
+<    DONE
+<   BGBBY
+<   voila, 1
+<    GGGGG
+<    DONE
+<   BYBBY
+<   viola, 1
+---
+>   GGBBB
+>   briar, 1
+6008,6009c6460,6461
+<   BYBGB
+<   along, 1
+---
+>   GYYBG
+>   board, 1
+6012,6015c6464,6465
+<  YYYBB
+<  chaps, 2
+<   BBYBY
+<   usual, 1
+---
+>   BYYYB
+>   apron, 1
+6018,6019c6468,6469
+<   BBGYY
+<   psalm, 1
+---
+>   BGGYB
+>   groan, 1
+6022,6023c6472,6473
+<   GYGBY
+<   clash, 1
+---
+>   BGBBY
+>   drama, 1
+6026,6027c6476,6477
+<   BBGBY
+<   flask, 1
+---
+>   GYYBB
+>   borax, 1
+6030,6031c6480,6481
+<   GBGYY
+<   clasp, 1
+---
+>   YGYBB
+>   arbor, 1
+6034,6035c6484,6485
+<   BYGBY
+<   flash, 1
+---
+>   BBBBG
+>   aphid, 1
+6038,6039c6488,6517
+<   GBGBG
+<   class, 1
+---
+>   BGBBB
+>   crazy, 2
+>    BGYBG
+>    array, 1
+>     GGGGG
+>     DONE
+>    BGGBG
+>    gravy, 1
+>     GGGGG
+>     DONE
+>    BGYBB
+>    friar, 1
+>     GGGGG
+>     DONE
+>    GGGBB
+>    crack, 1.5
+>     GGGBB
+>     cramp, 1
+>      GGGGG
+>      DONE
+>    BGGBB
+>    graph, 1
+>     GGGGG
+>     DONE
+>    YGGBB
+>    wrack, 1
+>     GGGGG
+>     DONE
+>   BBGBG
+>   avoid, 1
+6042,6043c6520,6521
+<   BBGBG
+<   glass, 1
+---
+>   YGBYB
+>   urban, 1
+6046,6049c6524,6525
+<  BBYGY
+<  motel, 1.75
+<   BGYGG
+<   towel, 1
+---
+>   GGYBB
+>   bravo, 1
+6052,6053c6528,6529
+<   BGGGG
+<   hotel, 1
+---
+>   BGBGG
+>   grand, 1
+6056,6057c6532,6555
+<   BBGGG
+<   betel, 1
+---
+>   BBBYB
+>   chain, 1.8333333333333337
+>    YBGBY
+>    knack, 1
+>     GGGGG
+>     DONE
+>    BBYYG
+>    avian, 1
+>     GGGGG
+>     DONE
+>    BBGGG
+>    again, 1
+>     GGGGG
+>     DONE
+>    BBYYY
+>    ninja, 1
+>     GGGGG
+>     DONE
+>    BYYBG
+>    human, 1
+>     GGGGG
+>     DONE
+>   BGYYB
+>   organ, 1
+6060,6063c6558,6559
+<  BBBBB
+<  courd, 2.7556561085972837
+<   BGGYB
+<   rough, 1
+---
+>   BGYBY
+>   ardor, 1
+6066,6069c6562,6565
+<   YBBBB
+<   pinch, 1.9999999999999998
+<    BGBYB
+<    mimic, 1
+---
+>   BGGBB
+>   croak, 1.5
+>    BGGYB
+>    aroma, 1
+6072,6073c6568,6571
+<    GGBYB
+<    picky, 1
+---
+>   BBBGB
+>   aging, 1.6666666666666665
+>    GBGGG
+>    aping, 1
+6076,6077c6574,6575
+<    BYYYB
+<    icing, 1
+---
+>    YBGGB
+>    china, 1
+6080,6081c6578,6581
+<    BYBGG
+<    which, 1
+---
+>   YYBBB
+>   umbra, 1.5
+>    YYYYG
+>    rumba, 1
+6083a6584,6585
+>   BGBGB
+>   crank, 2
+6085c6587
+<    finch, 1.5
+---
+>    prank, 1.5
+6087c6589
+<     winch, 1
+---
+>     frank, 1
+6090,6103c6592,6603
+<   BGBGY
+<   dowry, 1
+<    GGGGG
+<    DONE
+<   BGGYG
+<   round, 1
+<    GGGGG
+<    DONE
+<   BYBGG
+<   fjord, 1
+<    GGGGG
+<    DONE
+<   GBBGB
+<   chirp, 1
+---
+>   BBYBY
+>   dogma, 1.6666666666666665
+>    YYBBY
+>    audio, 1
+>     GGGGG
+>     DONE
+>    YGBBG
+>    vodka, 1
+>     GGGGG
+>     DONE
+>   YBBBB
+>   aback, 1
+6106,6109c6606,6609
+<   BBBBB
+<   nymph, 1.9999999999999996
+<    YGBBB
+<    vying, 1
+---
+>   BYBBG
+>   acrid, 1.75
+>    YBYBG
+>    guard, 1
+6112,6113c6612,6613
+<    YBYBB
+<    minim, 1
+---
+>    GBYBG
+>    award, 1
+6116,6117c6616,6617
+<    BYGGB
+<    wimpy, 1
+---
+>    YYYBG
+>    chard, 1
+6120,6121c6620,6623
+<    YYBBY
+<    whiny, 1
+---
+>   GGBYB
+>   brain, 1.5
+>    GGGBG
+>    brawn, 1
+6124,6125c6626,6633
+<    GYBBB
+<    ninny, 1
+---
+>   BGBBG
+>   fraud, 1
+>    GGGGG
+>    DONE
+>   BYBBB
+>   chair, 1.875
+>    GBYYG
+>    cigar, 1
+6128,6129c6636,6637
+<    YYBBB
+<    kinky, 1
+---
+>    BBYBG
+>    augur, 1
+6132,6133c6640,6641
+<    BGYYB
+<    pygmy, 1
+---
+>    GBYYY
+>    circa, 1
+6136,6137c6644,6645
+<    YYBYB
+<    pinky, 1
+---
+>    GGGBY
+>    charm, 1
+6140,6141c6648,6649
+<    BYBGY
+<    hippy, 1
+---
+>    YBYYG
+>    vicar, 1
+6144,6145c6652,6653
+<    BBBBY
+<    whiff, 1
+---
+>    BBGBY
+>    quark, 1
+6148,6155c6656,6657
+<    BYBBB
+<    fizzy, 1.5
+<     YGBBG
+<     jiffy, 1
+<      GGGGG
+<      DONE
+<    BYBYB
+<    piggy, 1
+---
+>    BGGBY
+>    wharf, 1
+6158,6165c6660,6663
+<   BGBGB
+<   worry, 1
+<    GGGGG
+<    DONE
+<   BYYYB
+<   juror, 1.7999999999999998
+<    BGBGG
+<    humor, 1
+---
+>   BBGGB
+>   among, 1.5
+>    GBGGY
+>    agony, 1
+6168,6169c6666,6669
+<    BYYYB
+<    group, 1
+---
+>   BBBBB
+>   champ, 1.875
+>    BBGBB
+>    guava, 1
+6172,6173c6672,6673
+<    BGYGG
+<    rumor, 1
+---
+>    YGGBB
+>    whack, 1
+6176,6177c6676,6677
+<    BGGGG
+<    furor, 1
+---
+>    BGGBB
+>    khaki, 1
+6180,6187c6680,6681
+<   BGGGB
+<   mourn, 1
+<    GGGGG
+<    DONE
+<   BYBBY
+<   idiom, 1.6666666666666665
+<    YYBYB
+<    dingo, 1
+---
+>    BBYBY
+>    pizza, 1
+6190,6191c6684,6685
+<    YYBGB
+<    widow, 1
+---
+>    BBYBB
+>    affix, 1
+6194,6197c6688,6689
+<   GBGYB
+<   crump, 1.5
+<    GGGGB
+<    crumb, 1
+---
+>    GGGBB
+>    chaff, 1
+6200,6201c6692,6697
+<   GYBYG
+<   crowd, 1
+---
+>    YBGBB
+>    quack, 1
+>     GGGGG
+>     DONE
+>   GGBBG
+>   braid, 1
+6204,6205c6700,6711
+<   BYBGB
+<   ivory, 1
+---
+>  YYBYG
+>  yeast, 2
+>   BGGGG
+>   beast, 1.5
+>    BGGGG
+>    feast, 1
+>     GGGGG
+>     DONE
+>  BBBBB
+>  courd, 2.7556561085972824
+>   YYYYB
+>   occur, 1
+6208,6209c6714,6715
+<   BBBGB
+<   myrrh, 1
+---
+>   BBBYY
+>   drink, 1
+6212,6219c6718,6721
+<   YBBYB
+<   birch, 1.6666666666666665
+<    BYYGB
+<    prick, 1
+<     GGGGG
+<     DONE
+<    GYYGB
+<    brick, 1
+---
+>   BYBYY
+>   droop, 1.5
+>    GGGBB
+>    drown, 1
+6222,6227c6724,6725
+<   GYBGG
+<   chord, 1
+<    GGGGG
+<    DONE
+<   YBYBY
+<   duchy, 1
+---
+>   BGGGB
+>   mourn, 1
+6235c6733
+<   frond, 1.5
+---
+>   brood, 1.5
+6237c6735
+<    brood, 1
+---
+>    frond, 1
+6240,6241c6738,6743
+<   YYBGB
+<   micro, 1
+---
+>   GBYYB
+>   curvy, 1
+>    GGGGG
+>    DONE
+>   BGGBY
+>   dough, 1
+6243a6746,6755
+>   BGBYY
+>   rowdy, 1.6666666666666665
+>    YGYGG
+>    wordy, 1
+>     GGGGG
+>     DONE
+>    YGBYB
+>    donor, 1
+>     GGGGG
+>     DONE
+6249a6762,6769
+>    BBGGG
+>    jumpy, 1
+>     GGGGG
+>     DONE
+>    BBGGB
+>    humph, 1
+>     GGGGG
+>     DONE
+6251,6253c6771,6773
+<    funky, 1.7999999999999998
+<     GGGBG
+<     funny, 1
+---
+>    funny, 1.7999999999999998
+>     GGBBG
+>     fuzzy, 1
+6256c6776
+<     BGGBG
+---
+>     BGGGG
+6260c6780
+<     BGGGG
+---
+>     BGGBG
+6264,6265c6784,6785
+<     GGBBG
+<     fuzzy, 1
+---
+>     GGGBG
+>     funky, 1
+6268,6273c6788,6789
+<    BBGBG
+<    mummy, 1
+<     GGGGG
+<     DONE
+<    BBGGB
+<    humph, 1
+---
+>    YYBBB
+>    fungi, 1
+6280,6281c6796,6801
+<    YYBBB
+<    fungi, 1
+---
+>    BBBGG
+>    puppy, 1
+>     GGGGG
+>     DONE
+>    BYBBG
+>    unify, 1
+6288,6289c6808,6809
+<    BYBBG
+<    unify, 1
+---
+>    BBGBG
+>    mummy, 1
+6292,6293c6812,6813
+<    BBGGG
+<    jumpy, 1
+---
+>    GBBGG
+>    guppy, 1
+6300,6301c6820,6823
+<    BBBGG
+<    puppy, 1
+---
+>   YBBBB
+>   pinch, 1.9999999999999998
+>    BGBYB
+>    mimic, 1
+6304,6305c6826,6827
+<    GBBGG
+<    guppy, 1
+---
+>    BYYYB
+>    icing, 1
+6308,6311c6830,6831
+<   BYBYY
+<   drown, 1.5
+<    GGGBB
+<    droop, 1
+---
+>    GGBYB
+>    picky, 1
+6314,6319c6834,6845
+<   BBYYY
+<   ruddy, 1
+<    GGGGG
+<    DONE
+<   YBYYB
+<   incur, 1
+---
+>    BYBGG
+>    which, 1
+>     GGGGG
+>     DONE
+>    BGGGG
+>    finch, 1.5
+>     BGGGG
+>     winch, 1
+>      GGGGG
+>      DONE
+>   BYBGG
+>   fjord, 1
+6322,6323c6848,6849
+<   BGGBY
+<   dough, 1
+---
+>   YYBYB
+>   frock, 1
+6326,6327c6852,6853
+<   BBGYG
+<   druid, 1
+---
+>   BYBBG
+>   ovoid, 1
+6330,6333c6856,6859
+<   BYYBB
+<   gumbo, 1.7999999999999998
+<    BGGGG
+<    jumbo, 1
+---
+>   GGBBB
+>   conch, 1.75
+>    GGGYB
+>    conic, 1
+6336,6337c6862,6863
+<    BYBBY
+<    union, 1
+---
+>    GGBBB
+>    comfy, 1
+6340,6341c6866,6867
+<    BGYYY
+<    buxom, 1
+---
+>    GGBYB
+>    comic, 1
+6344,6345c6870,6873
+<    BYYBY
+<    opium, 1
+---
+>   BYBBB
+>   inbox, 1.875
+>    BYBYB
+>    phony, 1
+6348,6351c6876,6877
+<   YGGBB
+<   vouch, 1.5
+<    BGGGG
+<    pouch, 1
+---
+>    YYBYB
+>    owing, 1
+6354,6365c6880,6881
+<   BYBBG
+<   ovoid, 1
+<    GGGGG
+<    DONE
+<   YYBBB
+<   knock, 1
+<    GGGGG
+<    DONE
+<   BBGYB
+<   gruff, 1.5
+<    YGGBB
+<    wrung, 1
+---
+>    YYYYB
+>    bingo, 1
+6368,6369c6884,6901
+<   YYYYB
+<   occur, 1
+---
+>    BBBGB
+>    whoop, 1
+>     GGGGG
+>     DONE
+>    YGBGB
+>    onion, 1
+>     GGGGG
+>     DONE
+>    BGBYB
+>    known, 1
+>     GGGGG
+>     DONE
+>    YBBYB
+>    hippo, 1
+>     GGGGG
+>     DONE
+>   BBBBG
+>   vivid, 1
+6372,6375c6904,6907
+<   GGBBB
+<   conic, 1.75
+<    GGBBB
+<    comfy, 1
+---
+>   BGGBB
+>   young, 1.5
+>    BGGBY
+>    bough, 1
+6378,6379c6910,6913
+<    GGGBY
+<    conch, 1
+---
+>   BGBYB
+>   moron, 1.8571428571428568
+>    YGYYB
+>    roomy, 1
+6382,6383c6916,6917
+<    GGBGG
+<    comic, 1
+---
+>    BGYGY
+>    honor, 1
+6386,6395c6920,6921
+<   GYBYB
+<   crock, 2
+<    GGGBB
+<    crony, 1.5
+<     GGGYB
+<     crown, 1
+<      GGGGG
+<      DONE
+<    GYGBB
+<    choir, 1
+---
+>    BGGBY
+>    horny, 1
+6398,6399c6924,6925
+<    GGGBG
+<    crook, 1
+---
+>    GGGBB
+>    morph, 1
+6402,6405c6928,6929
+<   BGBYY
+<   wordy, 1.6666666666666665
+<    BGYYB
+<    donor, 1
+---
+>    BGYBG
+>    robin, 1
+6408,6409c6932,6933
+<    YGYGG
+<    rowdy, 1
+---
+>    BGGYB
+>    forgo, 1
+6412,6413c6936,6937
+<   GYBBB
+<   chock, 1
+---
+>   GBBGB
+>   chirp, 1
+6418,6421d6941
+<    BGGBY
+<    grimy, 1
+<     GGGGG
+<     DONE
+6426,6429d6945
+<    BGGBB
+<    privy, 1
+<     GGGGG
+<     DONE
+6431c6947
+<    briny, 1.5
+---
+>    brink, 1.5
+6433c6949
+<     brink, 1
+---
+>     briny, 1
+6436,6439c6952,6953
+<   BGGBG
+<   bumph, 2.1666666666666665
+<    BYBBY
+<    hound, 1
+---
+>    BGGBB
+>    privy, 1
+6442,6449c6956,6957
+<    BYBBB
+<    found, 1.5
+<     BGGGG
+<     wound, 1
+<      GGGGG
+<      DONE
+<    BYBYB
+<    pound, 1
+---
+>    BGGBY
+>    grimy, 1
+6452,6453c6960,6967
+<    GYBBB
+<    bound, 1
+---
+>   YBYBY
+>   duchy, 1
+>    GGGGG
+>    DONE
+>   BYYBB
+>   gumbo, 1.7999999999999998
+>    BGYYY
+>    buxom, 1
+6456,6457c6970,6971
+<    BYYBB
+<    mound, 1
+---
+>    BGGGG
+>    jumbo, 1
+6460,6471c6974,6975
+<   GGBYB
+<   corny, 1
+<    GGGGG
+<    DONE
+<   GGBBY
+<   condo, 1
+<    GGGGG
+<    DONE
+<   GBGBB
+<   chunk, 1.6666666666666665
+<    GGGBB
+<    chump, 1
+---
+>    BYBBY
+>    union, 1
+6474,6475c6978,6979
+<    GGGBG
+<    chuck, 1
+---
+>    BYYBY
+>    opium, 1
+6478,6485c6982,6985
+<   BBGYY
+<   drunk, 1
+<    GGGGG
+<    DONE
+<   BBYYB
+<   murky, 1.5
+<    BGYBG
+<    rugby, 1
+---
+>   BBBBB
+>   nymph, 1.9999999999999996
+>    YBYBB
+>    minim, 1
+6488,6499c6988,6989
+<   GBYYB
+<   curvy, 1
+<    GGGGG
+<    DONE
+<   BBBYY
+<   drink, 1
+<    GGGGG
+<    DONE
+<   BGBBB
+<   boozy, 2.0000000000000004
+<    BGGGG
+<    woozy, 1
+---
+>    BYBYB
+>    piggy, 1
+6502,6503c6992,6993
+<    BGGBG
+<    goofy, 1
+---
+>    GYBBB
+>    ninny, 1
+6506,6507c6996,6997
+<    YGBBG
+<    hobby, 1
+---
+>    BGYYB
+>    pygmy, 1
+6510,6517c7000,7001
+<    BGBBG
+<    poppy, 1.5
+<     BGBBG
+<     foggy, 1
+<      GGGGG
+<      DONE
+<    GGYBB
+<    bongo, 1
+---
+>    BYGGB
+>    wimpy, 1
+6520,6521c7004,7005
+<    BGBBB
+<    going, 1
+---
+>    YGBBB
+>    vying, 1
+6524,6525c7008,7009
+<    GGBBG
+<    bobby, 1
+---
+>    YYBYB
+>    pinky, 1
+6528,6529c7012,7013
+<    GGGBG
+<    booby, 1
+---
+>    BBBBY
+>    whiff, 1
+6532,6535c7016,7023
+<   YGBYB
+<   porch, 1.5
+<    BGYYB
+<    rocky, 1
+---
+>    BYBBB
+>    jiffy, 1.5
+>     BGYBG
+>     fizzy, 1
+>      GGGGG
+>      DONE
+>    YYBBY
+>    whiny, 1
+6538,6541c7026,7031
+<   BBYBG
+<   undid, 1.5
+<    YBBGG
+<    humid, 1
+---
+>    BYBGY
+>    hippy, 1
+>     GGGGG
+>     DONE
+>    YYBBB
+>    kinky, 1
+6544,6547d7033
+<   BGYYB
+<   forum, 1
+<    GGGGG
+<    DONE
+6554,6561c7040,7043
+<   BBBBY
+<   dingy, 1.8333333333333337
+<    YGGBG
+<    windy, 1
+<     GGGGG
+<     DONE
+<    GYYYY
+<    dying, 1
+---
+>   GGGBB
+>   couch, 1.5
+>    GGGBG
+>    cough, 1
+6564,6565c7046,7049
+<    YGBYG
+<    giddy, 1
+---
+>   GYBYB
+>   crock, 2
+>    GYGBB
+>    choir, 1
+6568,6569c7052,7053
+<    YGBBG
+<    biddy, 1
+---
+>    GGGBG
+>    crook, 1
+6572,6573c7056,7065
+<    GGBBG
+<    dizzy, 1
+---
+>    GGGBB
+>    crown, 1.5
+>     GGGBY
+>     crony, 1
+>      GGGGG
+>      DONE
+>   BBYBG
+>   undid, 1.5
+>    YBBGG
+>    humid, 1
+6576,6579c7068,7083
+<   BYBBB
+<   whoop, 1.875
+<    YBYBB
+<    owing, 1
+---
+>   BGYYB
+>   forum, 1
+>    GGGGG
+>    DONE
+>   BYYYG
+>   proud, 1
+>    GGGGG
+>    DONE
+>   BBYYY
+>   ruddy, 1
+>    GGGGG
+>    DONE
+>   YBBYB
+>   prick, 1.6666666666666665
+>    BYYGB
+>    birch, 1
+6582,6583c7086,7087
+<    BBBGB
+<    inbox, 1
+---
+>    BGGGG
+>    brick, 1
+6586,6587c7090,7097
+<    BBYGB
+<    onion, 1
+---
+>   BGBGB
+>   worry, 1
+>    GGGGG
+>    DONE
+>   BBGYB
+>   wrung, 1.5
+>    BGGBY
+>    gruff, 1
+6590,6591c7100,7107
+<    BGGBY
+<    phony, 1
+---
+>   BGBGY
+>   dowry, 1
+>    GGGGG
+>    DONE
+>   BYYYB
+>   juror, 1.7999999999999998
+>    BGBGG
+>    humor, 1
+6594,6595c7110,7111
+<    BBYBB
+<    bingo, 1
+---
+>    BYYYB
+>    group, 1
+6598,6599c7114,7115
+<    BYYBY
+<    hippo, 1
+---
+>    BGGGG
+>    furor, 1
+6602,6603c7118,7119
+<    YBGBB
+<    known, 1
+---
+>    BGYGG
+>    rumor, 1
+6606,6609c7122,7129
+<   YGBBB
+<   pooch, 1.5
+<    BGBYB
+<    ionic, 1
+---
+>   YYBBB
+>   knock, 1
+>    GGGGG
+>    DONE
+>   BBBBY
+>   dingy, 1.8333333333333337
+>    YGGBG
+>    windy, 1
+6612,6615c7132,7133
+<   BYBYB
+<   gimpy, 2.166666666666667
+<    GBYBB
+<    groom, 1
+---
+>    GYYYY
+>    dying, 1
+6618,6619c7136,7137
+<    BBYBB
+<    broom, 1
+---
+>    GGBBG
+>    dizzy, 1
+6622,6623c7140,7141
+<    BYYYB
+<    primo, 1
+---
+>    YGBYG
+>    giddy, 1
+6626,6627c7144,7145
+<    BYBBG
+<    irony, 1
+---
+>    YGBBG
+>    biddy, 1
+6630,6637c7148,7151
+<    YGBBB
+<    vigor, 1.5
+<     BGGGG
+<     rigor, 1
+<      GGGGG
+<      DONE
+<    BGYBB
+<    minor, 1
+---
+>   GBBBB
+>   civic, 1.75
+>    GBBGG
+>    cynic, 1
+6640,6641c7154,7155
+<    BYBYB
+<    prior, 1
+---
+>    GGBBY
+>    cinch, 1
+6644,6645c7158,7159
+<    YBBYB
+<    prong, 1
+---
+>    GYBBY
+>    chick, 1
+6648,6649c7162,7173
+<    YBBBB
+<    wrong, 1
+---
+>   BGGYG
+>   round, 1
+>    GGGGG
+>    DONE
+>   GYBGG
+>   chord, 1
+>    GGGGG
+>    DONE
+>   BBYYB
+>   rugby, 1.5
+>    YGBBG
+>    murky, 1
+6652,6653c7176,7179
+<    GYBBB
+<    groin, 1
+---
+>   YGGBB
+>   pouch, 1.5
+>    BGGGG
+>    vouch, 1
+6656,6657c7182,7193
+<    BBBYB
+<    proof, 1
+---
+>   BYBGB
+>   ivory, 1
+>    GGGGG
+>    DONE
+>   YBYYB
+>   incur, 1
+>    GGGGG
+>    DONE
+>   YGBBB
+>   ionic, 1.5
+>    BGBBY
+>    pooch, 1
+6660,6661c7196,7199
+<    BBBYG
+<    proxy, 1
+---
+>   YGBYB
+>   rocky, 1.5
+>    YGYBB
+>    porch, 1
+6664,6675c7202,7205
+<    BBBBB
+<    brown, 1.6666666666666665
+<     GGGBB
+<     brook, 1
+<      GGGGG
+<      DONE
+<     BGGGG
+<     frown, 1
+<      GGGGG
+<      DONE
+<    GBBBB
+<    grown, 1
+---
+>   BBYGB
+>   hurry, 1.6666666666666665
+>    BGGGG
+>    furry, 1
+6678,6679c7208,7209
+<    BYBBB
+<    rhino, 1
+---
+>    BGBGB
+>    quirk, 1
+6688,6691c7218,7225
+<   GBBBB
+<   civic, 1.75
+<    GYBBY
+<    chick, 1
+---
+>   GGBYB
+>   corny, 1
+>    GGGGG
+>    DONE
+>   GBBYB
+>   crimp, 1.5
+>    GGGBB
+>    crick, 1
+6694,6695c7228,7231
+<    GGBBY
+<    cinch, 1
+---
+>   BBYBY
+>   dumpy, 1.7999999999999998
+>    YGBYG
+>    pudgy, 1
+6698,6699c7234,7235
+<    GBBGG
+<    cynic, 1
+---
+>    YGBBG
+>    buddy, 1
+6702,6705c7238,7239
+<   BBYGB
+<   furry, 1.6666666666666665
+<    BGBGB
+<    quirk, 1
+---
+>    YGYBG
+>    muddy, 1
+6708,6709c7242,7243
+<    BGGGG
+<    hurry, 1
+---
+>    GGGBG
+>    dummy, 1
+6712,6719c7246,7249
+<   BBBBG
+<   vivid, 1
+<    GGGGG
+<    DONE
+<   BGGBB
+<   bough, 1.5
+<    BGGYB
+<    young, 1
+---
+>   BYBBY
+>   idiom, 1.6666666666666665
+>    YYBYB
+>    dingo, 1
+6722,6725c7252,7259
+<   GGGBB
+<   couch, 1.5
+<    GGGBG
+<    cough, 1
+---
+>    YYBGB
+>    widow, 1
+>     GGGGG
+>     DONE
+>   GBGYB
+>   crump, 1.5
+>    GGGGB
+>    crumb, 1
+6728,6735d7261
+<   YYBYB
+<   frock, 1
+<    GGGGG
+<    DONE
+<   BYYYG
+<   proud, 1
+<    GGGGG
+<    DONE
+6738,6739c7264,7265
+<    GGBGB
+<    doing, 1
+---
+>    YGGBG
+>    howdy, 1
+6746,6747c7272,7281
+<    YGGBG
+<    howdy, 1
+---
+>    YGYBG
+>    woody, 1
+>     GGGGG
+>     DONE
+>    GGBBG
+>    dodgy, 1
+>     GGGGG
+>     DONE
+>    GGBGB
+>    doing, 1
+6756,6757c7290,7305
+<    GGBBG
+<    dodgy, 1
+---
+>   GYBBB
+>   chock, 1
+>    GGGGG
+>    DONE
+>   BBGYY
+>   drunk, 1
+>    GGGGG
+>    DONE
+>   GYBYG
+>   crowd, 1
+>    GGGGG
+>    DONE
+>   BGBBB
+>   boozy, 2.0000000000000004
+>    BGGBG
+>    goofy, 1
+6760,6761c7308,7309
+<    YGYBG
+<    woody, 1
+---
+>    BGGGG
+>    woozy, 1
+6764,6767c7312,7319
+<   BBYBY
+<   dumpy, 1.7999999999999998
+<    YGYBG
+<    muddy, 1
+---
+>    BGBBG
+>    foggy, 1.5
+>     BGBBG
+>     poppy, 1
+>      GGGGG
+>      DONE
+>    GGGBG
+>    booby, 1
+6770,6771c7322,7323
+<    GGGBG
+<    dummy, 1
+---
+>    BGBBB
+>    going, 1
+6775c7327
+<    buddy, 1
+---
+>    hobby, 1
+6778,6779c7330,7331
+<    YGBYG
+<    pudgy, 1
+---
+>    GGYBB
+>    bongo, 1
+6782,6783c7334,7339
+<   GBBYB
+<   crick, 1.5
+---
+>    GGBBG
+>    bobby, 1
+>     GGGGG
+>     DONE
+>   GBGBB
+>   chunk, 1.6666666666666665
+6785c7341,7345
+<    crimp, 1
+---
+>    chump, 1
+>     GGGGG
+>     DONE
+>    GGGBG
+>    chuck, 1
+6787a7348,7351
+>   YYBGB
+>   micro, 1
+>    GGGGG
+>    DONE
+6795,6797c7359,7361
+<   humpy, 2
+<    BGBYB
+<    pubic, 1
+---
+>   hempy, 2
+>    BBYBG
+>    mucky, 1
+6800,6801c7364,7365
+<    BGBBB
+<    quick, 1
+---
+>    BBBYB
+>    pubic, 1
+6804,6805c7368,7369
+<    BGYBG
+<    mucky, 1
+---
+>    YBBYB
+>    punch, 1
+6808,6809c7372,7373
+<    BGBBG
+<    juicy, 1
+---
+>    YBBBB
+>    bunch, 1
+6812,6813c7376,7377
+<    YGBYB
+<    punch, 1
+---
+>    YBYBB
+>    munch, 1
+6816,6817c7380,7381
+<    YGBBB
+<    bunch, 1
+---
+>    BBBBG
+>    juicy, 1
+6820c7384
+<    GGBBB
+---
+>    GBBBB
+6824,6825c7388,7389
+<    YGYBB
+<    munch, 1
+---
+>    BBBBB
+>    quick, 1
+6828,6829c7392,7393
+<   BGGGG
+<   gourd, 1
+---
+>   BBGYG
+>   druid, 1
+6836,6843c7400,7403
+<   GBGGB
+<   churn, 1
+<    GGGGG
+<    DONE
+<   BGBYB
+<   horny, 1.8571428571428568
+<    BGYBG
+<    roomy, 1
+---
+>   BYBYB
+>   gimpy, 2.1666666666666665
+>    GYBBB
+>    groin, 1
+6846,6847c7406,7407
+<    YGGBB
+<    morph, 1
+---
+>    BYBYB
+>    prior, 1
+6850,6851c7410,7411
+<    GGYYB
+<    honor, 1
+---
+>    BGYBB
+>    minor, 1
+6854,6855c7414,7425
+<    BGYYB
+<    robin, 1
+---
+>    BBBBB
+>    brown, 1.6666666666666665
+>     BGGGG
+>     frown, 1
+>      GGGGG
+>      DONE
+>     GGGBB
+>     brook, 1
+>      GGGGG
+>      DONE
+>    YBBYB
+>    prong, 1
+6858,6859c7428,7429
+<    BGGYB
+<    moron, 1
+---
+>    BYYYB
+>    primo, 1
+6862,6863c7432,7439
+<    BGGBB
+<    forgo, 1
+---
+>    YGBBB
+>    rigor, 1.5
+>     BGGGG
+>     vigor, 1
+>      GGGGG
+>      DONE
+>    BBBYG
+>    proxy, 1
+6866,6875c7442,7443
+<  GBBBG
+<  churn, 2.2105263157894735
+<   BBBBY
+<   stint, 1
+<    GGGGG
+<    DONE
+<   BBBGB
+<   sport, 1.5
+<    GBBGG
+<    skirt, 1
+---
+>    BYBBB
+>    rhino, 1
+6878,6881c7446,7447
+<   BGBBB
+<   shoot, 1.5
+<    GGBBG
+<    shift, 1
+---
+>    YBBBB
+>    wrong, 1
+6884,6885c7450,7471
+<   BGGBY
+<   shunt, 1
+---
+>    BYBBG
+>    irony, 1
+>     GGGGG
+>     DONE
+>    BBBYB
+>    proof, 1
+>     GGGGG
+>     DONE
+>    BBYBB
+>    broom, 1
+>     GGGGG
+>     DONE
+>    GBYBB
+>    groom, 1
+>     GGGGG
+>     DONE
+>    GBBBB
+>    grown, 1
+>     GGGGG
+>     DONE
+>   BGGGG
+>   gourd, 1
+6888,6889c7474,7475
+<   BBGGB
+<   spurt, 1
+---
+>   BBBGB
+>   myrrh, 1
+6892,6893c7478,7479
+<   BGYBB
+<   shout, 1
+---
+>   BGGYB
+>   rough, 1
+6896,6897c7482,7483
+<   BBYYB
+<   strut, 1
+---
+>   GBGGB
+>   churn, 1
+6900,6903c7486,7495
+<   BGBGB
+<   short, 1.5
+<    GGBGG
+<    shirt, 1
+---
+>   BGGBG
+>   whump, 2.1666666666666665
+>    BBGBB
+>    found, 1.5
+>     BGGGG
+>     bound, 1
+>      GGGGG
+>      DONE
+>    BYGBB
+>    hound, 1
+6906,6907c7498,7511
+<   BBBBB
+<   swift, 1
+---
+>    BBGBY
+>    pound, 1
+>     GGGGG
+>     DONE
+>    GBGBB
+>    wound, 1
+>     GGGGG
+>     DONE
+>    BBGYB
+>    mound, 1
+>     GGGGG
+>     DONE
+>   GGBBY
+>   condo, 1
+6910,6911c7514,7517
+<   BYBBB
+<   sight, 1
+---
+>  YBYYB
+>  flesh, 2
+>   BGYGB
+>   close, 1
+6914,6915c7520,7527
+<   BBGBY
+<   stunt, 1
+---
+>   BYYGB
+>   loose, 1.5
+>    GGBGG
+>    louse, 1
+>     GGGGG
+>     DONE
+>   BGGGB
+>   bless, 1
+6918,6919c7530,7533
+<   BBYBY
+<   snout, 1
+---
+>  YBBGG
+>  unset, 2
+>   GBGGG
+>   upset, 1
+6922,6923c7536,7543
+<   BBBGY
+<   snort, 1
+---
+>   BBGGG
+>   reset, 1.5
+>    BGGGG
+>    beset, 1
+>     GGGGG
+>     DONE
+>   BGGGG
+>   onset, 1
+6926,6927c7546,7555
+<   YBYBB
+<   scout, 1
+---
+>  BBGBB
+>  fugly, 2.4814814814814814
+>   BGBYG
+>   bulky, 1.5
+>    BGGBG
+>    pulpy, 1
+>     GGGGG
+>     DONE
+>   BBYYB
+>   igloo, 1
+6930,6931c7558,7559
+<   BBYBB
+<   stout, 1.5
+---
+>   GBBGG
+>   filly, 1.5
+6933c7561
+<    spout, 1
+---
+>    folly, 1
+6936,6945c7564,7567
+<  YGYYB
+<  lapse, 1
+<   GGGGG
+<   DONE
+<  GBBGY
+<  steep, 2
+<   GGGGB
+<   steed, 1.5
+<    GGGGB
+<    steer, 1
+---
+>   BBBGG
+>   whids, 1.9999999999999996
+>    BYBBB
+>    holly, 1
+6948,6957c7570,7571
+<  GBBBY
+<  pinko, 2.384615384615385
+<   YYBBB
+<   strip, 1
+<    GGGGG
+<    DONE
+<   BYBBB
+<   smith, 1.5
+<    GBGYB
+<    stiff, 1
+---
+>    BYYBB
+>    hilly, 1
+6960,6963c7574,7575
+<   BBBBB
+<   stuff, 1.5
+<    GGGBB
+<    study, 1
+---
+>    BBYYB
+>    dilly, 1
+6966,6969c7578,7579
+<   BBBBY
+<   story, 1.8333333333333337
+<    GGGBB
+<    stood, 1
+---
+>    BBBYB
+>    dolly, 1
+6972,6973c7582,7583
+<    GYYBB
+<    south, 1
+---
+>    GBYBB
+>    willy, 1
+6976,6977c7586,7587
+<    GGGGB
+<    storm, 1
+---
+>    BBYBB
+>    billy, 1
+6980,6981c7590,7591
+<    GYGBG
+<    sooty, 1
+---
+>    BBBBB
+>    jolly, 1
+6984,6985c7594,7597
+<    GYGBB
+<    sooth, 1
+---
+>   BGBGG
+>   dully, 1.5
+>    BGGGG
+>    bully, 1
+6988,6989c7600,7601
+<   BYYYB
+<   stink, 1
+---
+>   BGYGG
+>   gully, 1
+6993,7001c7605
+<   stuck, 1
+<    GGGGG
+<    DONE
+<   BBYBY
+<   stony, 1
+<    GGGGG
+<    DONE
+<   BGBBB
+<   sixth, 1.5
+---
+>   colon, 1.5
+7003,7013c7607
+<    sixty, 1
+<     GGGGG
+<     DONE
+<   BBYBB
+<   stung, 1
+<    GGGGG
+<    DONE
+<   BBBYY
+<   stork, 1.5
+<    GGGBG
+<    stock, 1
+---
+>    color, 1
+7016,7017c7610,7611
+<   YBBBB
+<   stump, 1
+---
+>   BBYGG
+>   golly, 1
+7020,7021c7614,7615
+<   BBYYB
+<   stunk, 1
+---
+>   GGBGG
+>   fully, 1
+7024,7025c7618,7619
+<   BYYBB
+<   sting, 1
+---
+>   GBBYB
+>   folio, 1
+7028,7035c7622,7623
+<   YBBBY
+<   stoop, 1.5
+<    GGGBG
+<    stomp, 1
+<     GGGGG
+<     DONE
+<   BYBBY
+<   stoic, 1
+---
+>   GBBYG
+>   filmy, 1
+7038,7039c7626,7627
+<   BYBYB
+<   stick, 1
+---
+>   BGYYB
+>   gulch, 1
+7042,7045c7630,7631
+<  GYBBG
+<  start, 2
+<   GBGBG
+<   scant, 1.5
+---
+>   BBBYG
+>   milky, 1.5
+7047c7633
+<    shaft, 1
+---
+>    moldy, 1
+7050,7103c7636,7637
+<   GBYBG
+<   squat, 1
+<    GGGGG
+<    DONE
+<   GBGGG
+<   smart, 1
+<    GGGGG
+<    DONE
+<  YGGBB
+<  palsy, 1
+<   GGGGG
+<   DONE
+<  YGYBB
+<  basil, 1.75
+<   BGGBG
+<   nasal, 1
+<    GGGGG
+<    DONE
+<   GGGBG
+<   basal, 1
+<    GGGGG
+<    DONE
+<   BGGBY
+<   lasso, 1
+<    GGGGG
+<    DONE
+<  YYYBG
+<  blast, 1
+<   GGGGG
+<   DONE
+<  BBYBY
+<  troll, 1.875
+<   YBGYB
+<   cloth, 1
+<    GGGGG
+<    DONE
+<   GYBBG
+<   twirl, 1
+<    GGGGG
+<    DONE
+<   GGBGB
+<   truly, 1
+<    GGGGG
+<    DONE
+<   YBYYB
+<   lofty, 1
+<    GGGGG
+<    DONE
+<   YBBBG
+<   until, 1
+<    GGGGG
+<    DONE
+<   YBBYB
+<   blitz, 1
+---
+>   BGBYB
+>   mulch, 1
+7106,7107c7640,7649
+<   YBYGB
+<   hotly, 1
+---
+>   BBBYY
+>   nylon, 1.5
+>    BYGYB
+>    polyp, 1
+>     GGGGG
+>     DONE
+>  BGYBG
+>  vault, 1.5
+>   BGGGG
+>   fault, 1
+7110,7111c7652,7653
+<  BBYGG
+<  fleet, 1
+---
+>  GYBYG
+>  sweat, 1
+7114,7127c7656,7659
+<  YYBBY
+<  artsy, 1.6666666666666665
+<   YBYYB
+<   vista, 1
+<    GGGGG
+<    DONE
+<   YGYGB
+<   trash, 1
+<    GGGGG
+<    DONE
+<  BBGYB
+<  himbo, 2.1875
+<   GBBBG
+<   hello, 1
+---
+>  GBYBB
+>  plink, 2.3333333333333335
+>   BGGGB
+>   sling, 1
+7130,7131c7662,7663
+<   BBYBY
+<   melon, 1
+---
+>   BGBGG
+>   slunk, 1
+7134,7137c7666,7669
+<   BBBBB
+<   delve, 1.5
+<    BGGBB
+<    jelly, 1
+---
+>   BYBBB
+>   shyly, 1.75
+>    GBBYB
+>    scowl, 1
+7140,7143c7672,7673
+<   BBBYB
+<   belle, 1.6666666666666665
+<    GBGBG
+<    bulge, 1
+---
+>    GBBGG
+>    surly, 1
+7146,7147c7676,7677
+<    GGGGB
+<    belly, 1
+---
+>    GBBGB
+>    scold, 1
+7150,7155c7680,7681
+<   BBBBG
+<   cello, 1
+<    GGGGG
+<    DONE
+<   YBBBB
+<   welch, 1
+---
+>   BYBBY
+>   skull, 1
+7158,7159c7684,7695
+<   BBBYY
+<   below, 1
+---
+>   BGBBB
+>   slush, 1.6666666666666665
+>    GGBBB
+>    slyly, 1
+>     GGGGG
+>     DONE
+>    GGBGG
+>    slosh, 1
+>     GGGGG
+>     DONE
+>   BYGBY
+>   skill, 1
+7162,7163c7698,7705
+<   BBBBY
+<   felon, 1
+---
+>   BYGBB
+>   swirl, 1.5
+>    GGGBG
+>    swill, 1
+>     GGGGG
+>     DONE
+>   YYYBB
+>   spoil, 1
+7166,7167c7708,7709
+<   BGBYB
+<   bilge, 1
+---
+>   YYGBB
+>   spill, 1
+7170,7171c7712,7713
+<   YBBYB
+<   belch, 1
+---
+>   BGBGB
+>   slung, 1
+7174,7175c7716,7717
+<   BYBYB
+<   belie, 1
+---
+>   BGGBG
+>   slick, 1
+7178,7179c7720,7721
+<   BYBBB
+<   relic, 1
+---
+>   BGGGG
+>   slink, 1
+7182,7183c7724,7725
+<   GYBBB
+<   helix, 1
+---
+>   YYBBB
+>   spool, 1
+7186,7189c7728,7729
+<  BBBYY
+<  trite, 2.442307692307691
+<   BBYGY
+<   piety, 1
+---
+>   BGGBB
+>   slimy, 1
+7192,7219c7732,7733
+<   GBBBG
+<   thyme, 1.5
+<    GGBGG
+<    theme, 1
+<     GGGGG
+<     DONE
+<   YBBBY
+<   detox, 1.5
+<    BGGBB
+<    fetch, 1
+<     GGGGG
+<     DONE
+<   GBBBY
+<   tempo, 1.5
+<    GGBBB
+<    teddy, 1
+<     GGGGG
+<     DONE
+<   GGGBG
+<   tribe, 2
+<    GGGBG
+<    trice, 1.5
+<     GGGBG
+<     tripe, 1
+<      GGGGG
+<      DONE
+<   BGGGG
+<   write, 1
+---
+>   BYBBG
+>   skulk, 1
+7222,7223c7736,7737
+<   GGBBG
+<   trove, 1.6666666666666665
+---
+>   YGBBB
+>   slump, 1.6666666666666665
+7225c7739
+<    trope, 1
+---
+>    slurp, 1
+7229,7235c7743
+<    truce, 1
+<     GGGGG
+<     DONE
+<   YBYBY
+<   fetid, 1.5
+<    BYYGB
+<    ethic, 1
+---
+>    sloop, 1
+7238,7251c7746,7749
+<   BBGGY
+<   deity, 1
+<    GGGGG
+<    DONE
+<   YBBGG
+<   butte, 1
+<    GGGGG
+<    DONE
+<   GYBBG
+<   there, 1
+<    GGGGG
+<    DONE
+<   GYYBY
+<   their, 1
+---
+>  GBBGB
+>  thrip, 2.3043478260869565
+>   BBGBY
+>   spree, 1
+7254,7255c7752,7753
+<   GBYYG
+<   tithe, 1
+---
+>   BGBBB
+>   sheen, 1
+7258,7265c7756,7757
+<   BYBGG
+<   route, 1.5
+<    YGBGG
+<    forte, 1
+<     GGGGG
+<     DONE
+<   GYBBY
+<   tenor, 1
+---
+>   BBBYB
+>   sinew, 1
+7268,7281c7760,7763
+<   BBGGG
+<   unite, 1.6666666666666665
+<    YBGGG
+<    quite, 1
+<     GGGGG
+<     DONE
+<    BBGGG
+<    white, 1
+<     GGGGG
+<     DONE
+<   YYBBY
+<   metro, 1.7999999999999998
+<    BYGGB
+<    entry, 1
+---
+>   BBGBB
+>   screw, 1.6666666666666665
+>    GGGGB
+>    scree, 1
+7284,7285c7766,7767
+<    BGGGB
+<    retry, 1
+---
+>    GBGGB
+>    surer, 1
+7288,7289c7770,7777
+<    BGGYB
+<    retch, 1
+---
+>   BBBBG
+>   sweep, 1
+>    GGGGG
+>    DONE
+>   BBYBB
+>   sewer, 1.7999999999999998
+>    GYBGG
+>    sneer, 1
+7292,7293c7780,7781
+<    BGGGG
+<    retro, 1
+---
+>    GBGGG
+>    sower, 1
+7296,7299c7784,7785
+<   GBGBG
+<   twice, 1.5
+<    GGGBG
+<    twine, 1
+---
+>    GBBGG
+>    sober, 1
+7302,7303d7787
+<   GBBGY
+<   teeth, 1.5
+7305,7315c7789
+<    tenth, 1
+<     GGGGG
+<     DONE
+<   YBBBG
+<   etude, 1
+<    GGGGG
+<    DONE
+<   BBBGG
+<   chute, 1.5
+<    BBYGG
+<    quote, 1
+---
+>    sever, 1
+7318,7321c7792,7795
+<   YBYBG
+<   cutie, 1.5
+<    BYGGG
+<    untie, 1
+---
+>   BBBBB
+>   seven, 1.5
+>    GGBGG
+>    semen, 1
+7324,7325c7798,7799
+<   GGBBY
+<   trend, 1
+---
+>   BGBBG
+>   sheep, 1
+7328,7329c7802,7803
+<   BYBGY
+<   berth, 1
+---
+>   BBYYB
+>   skier, 1
+7332,7345c7806,7807
+<   BGBGG
+<   wrote, 1.5
+<    BGBGG
+<    brute, 1
+<     GGGGG
+<     DONE
+<   YBBGY
+<   jetty, 1.5
+<    BGGGG
+<    petty, 1
+<     GGGGG
+<     DONE
+<   GBYBY
+<   tepid, 1
+---
+>   BBYBY
+>   super, 1
+7348,7367c7810,7811
+<   BBBGY
+<   depth, 1.6666666666666665
+<    BYGGB
+<    empty, 1
+<     GGGGG
+<     DONE
+<    BGBGY
+<    hefty, 1
+<     GGGGG
+<     DONE
+<  BYYYY
+<  petal, 2
+<   BGGGG
+<   metal, 1.5
+<    BGGGG
+<    fetal, 1
+<     GGGGG
+<     DONE
+<   GYYYY
+<   plate, 1
+---
+>   BBBYY
+>   spied, 1
+7370,7371c7814,7815
+<   BYYYY
+<   elate, 1
+---
+>   BBBBY
+>   speed, 1
+7374,7383c7818,7819
+<  BBYBB
+<  courd, 2.612244897959181
+<   BBBBY
+<   idyll, 1.5
+<    YYYGB
+<    dimly, 1
+<     GGGGG
+<     DONE
+<   GGGBG
+<   could, 1
+---
+>   BGYBB
+>   sheer, 1
+7386,7401c7822,7823
+<   BBYBG
+<   build, 1.5
+<    BGGGG
+<    guild, 1
+<     GGGGG
+<     DONE
+<   GBGBB
+<   cluck, 2
+<    GGGBB
+<    clung, 1.5
+<     GGGBB
+<     clump, 1
+<      GGGGG
+<      DONE
+<   BGGBG
+<   would, 1
+---
+>   BGGBB
+>   shrew, 1
+7404,7405c7826,7827
+<   GGBBB
+<   coyly, 1
+---
+>   BGBYB
+>   shied, 1
+7408,7409c7830,7831
+<   BBYYB
+<   burly, 1
+---
+>   BBGYB
+>   siren, 1
+7412,7413c7834,7837
+<   YBYBG
+<   lucid, 1
+---
+>  GBYBY
+>  still, 1.6666666666666665
+>   GGBBG
+>   stool, 1
+7416,7417c7840,7841
+<   BYBGB
+<   glory, 1
+---
+>   GYBYB
+>   sloth, 1
+7420,7421c7844,7851
+<   BYYBB
+<   ghoul, 1
+---
+>  GYGBG
+>  splat, 1
+>   GGGGG
+>   DONE
+>  BGGYB
+>  halve, 1.6666666666666665
+>   BGGGG
+>   valve, 1
+7424,7425c7854,7855
+<   GBYYB
+<   curly, 1
+---
+>   BGGYG
+>   value, 1
+7428,7481c7858,7865
+<   GBBBB
+<   clink, 2.125
+<    GYYBB
+<    civil, 1
+<     GGGGG
+<     DONE
+<    GGGBG
+<    click, 1
+<     GGGGG
+<     DONE
+<    GGGBB
+<    climb, 1.5
+<     GGGBB
+<     cliff, 1
+<      GGGGG
+<      DONE
+<    GYGBB
+<    chili, 1.5
+<     GGGGB
+<     chill, 1
+<      GGGGG
+<      DONE
+<    GGGGB
+<    cling, 1
+<     GGGGG
+<     DONE
+<   BYBBB
+<   bloom, 1.8571428571428568
+<    YYYBY
+<    limbo, 1
+<     GGGGG
+<     DONE
+<    BGGBB
+<    flown, 1
+<     GGGGG
+<     DONE
+<    BGGGG
+<    gloom, 1
+<     GGGGG
+<     DONE
+<    GGGBB
+<    blown, 1
+<     GGGGG
+<     DONE
+<    BYGBB
+<    knoll, 1
+<     GGGGG
+<     DONE
+<    BYYBB
+<    lingo, 1
+<     GGGGG
+<     DONE
+<   YBGBB
+<   pluck, 1
+---
+>  GGBYY
+>  saute, 1
+>   GGGGG
+>   DONE
+>  YBBYY
+>  troth, 2.0000000000000004
+>   GBGBY
+>   those, 1
+7484,7491c7868,7869
+<   YYBBB
+<   block, 1.5
+<    BGGGG
+<    flock, 1
+<     GGGGG
+<     DONE
+<   BYBBY
+<   oddly, 1
+---
+>   BBBGB
+>   zesty, 1
+7494,7517c7872,7873
+<   BGBBB
+<   wooly, 1.8333333333333337
+<    BGBYG
+<    lobby, 1
+<     GGGGG
+<     DONE
+<    BGGYG
+<    loopy, 1
+<     GGGGG
+<     DONE
+<    BGBYB
+<    login, 1
+<     GGGGG
+<     DONE
+<    YGBGG
+<    lowly, 1
+<     GGGGG
+<     DONE
+<    BGBGG
+<    nobly, 1
+<     GGGGG
+<     DONE
+<   BBGGB
+<   blurb, 1
+---
+>   GBBBY
+>   these, 1
+7520,7521c7876,7877
+<   YGBBB
+<   logic, 1
+---
+>   YBBBB
+>   fetus, 1
+7524,7549c7880,7881
+<   BBGBB
+<   flunk, 1.9999999999999998
+<    BGGBB
+<    plumb, 1.5
+<     GGGGB
+<     plump, 1
+<      GGGGG
+<      DONE
+<    BGGGG
+<    plunk, 1
+<     GGGGG
+<     DONE
+<    YGGBB
+<    bluff, 1
+<     GGGGG
+<     DONE
+<    GGGGB
+<    flung, 1
+<     GGGGG
+<     DONE
+<    GGGBB
+<    fluff, 1
+<     GGGGG
+<     DONE
+<   BBYYG
+<   lurid, 1
+---
+>   GYBBB
+>   terse, 1
+7552,7559c7884,7885
+<   YBYBB
+<   lunch, 1.5
+<    GGBYB
+<    lucky, 1
+<     GGGGG
+<     DONE
+<   GYYBG
+<   cloud, 1
+---
+>   BBYGB
+>   pesto, 1
+7562,7563c7888,7889
+<   YBYYB
+<   lurch, 1
+---
+>   YBYBY
+>   ethos, 1
+7566,7577c7892,7893
+<   BYBBG
+<   blond, 1.6666666666666665
+<    GGGBG
+<    blood, 1
+<     GGGGG
+<     DONE
+<    BGGBG
+<    flood, 1
+<     GGGGG
+<     DONE
+<   GBBBG
+<   child, 1
+---
+>   GBBBB
+>   tense, 1
+7580,7611c7896,7897
+<   BYBYB
+<   growl, 1.75
+<    BGGBG
+<    broil, 1
+<     GGGGG
+<     DONE
+<    BYGBY
+<    floor, 1
+<     GGGGG
+<     DONE
+<    BGGGG
+<    prowl, 1
+<     GGGGG
+<     DONE
+<   BBBBG
+<   livid, 1.6666666666666665
+<    GGBGG
+<    lipid, 1
+<     GGGGG
+<     DONE
+<    YYBBG
+<    blind, 1
+<     GGGGG
+<     DONE
+<   BBBYY
+<   dryly, 1.5
+<    GGBGB
+<    drill, 1
+<     GGGGG
+<     DONE
+<   BGBGB
+<   lorry, 1
+---
+>   GBBGB
+>   testy, 1
+7614,7615c7900,7903
+<   BGYBB
+<   mogul, 1
+---
+>  BYYYY
+>  petal, 2
+>   GYYYY
+>   plate, 1
+7618,7621c7906,7909
+<   BYBYY
+<   droll, 1.5
+<    GGGBG
+<    drool, 1
+---
+>   BGGGG
+>   fetal, 1.5
+>    BGGGG
+>    metal, 1
+7624,7629c7912,7913
+<   BGBYG
+<   world, 1
+<    GGGGG
+<    DONE
+<   BBGBG
+<   fluid, 1
+---
+>   BYYYY
+>   elate, 1
+7632,7635c7916,7921
+<   BBYBB
+<   quill, 1.6666666666666665
+<    BGYBG
+<    pupil, 1
+---
+>  BYYBB
+>  corni, 2.606060606060605
+>   BGBBB
+>   modal, 1.75
+>    YGBYY
+>    loamy, 1
+7638,7639c7924,7925
+<    BGBYB
+<    lumpy, 1
+---
+>    BGBGG
+>    loyal, 1
+7642,7645c7928,7929
+<   GYBBB
+<   clown, 1.5
+<    GGGBB
+<    clock, 1
+---
+>    BGBYY
+>    koala, 1
+7648,7655d7931
+<   BGBBY
+<   godly, 1
+<    GGGGG
+<    DONE
+<   YBBYB
+<   lyric, 1
+<    GGGGG
+<    DONE
+7657,7673c7933
+<   girly, 2
+<    BYYGB
+<    krill, 1.5
+<     BGGGG
+<     frill, 1
+<      GGGGG
+<      DONE
+<    BBYGG
+<    wryly, 1
+<     GGGGG
+<     DONE
+<    GYYGB
+<    grill, 1
+<     GGGGG
+<     DONE
+<   BBBGB
+<   whirl, 1
+---
+>   annul, 1
+7676,7683c7936,7939
+<   BBBBB
+<   glyph, 1.8888888888888893
+<    BYYBB
+<    vinyl, 1
+<     GGGGG
+<     DONE
+<    BYYYB
+<    imply, 1
+---
+>   BBBYY
+>   anvil, 1.75
+>    YYBYG
+>    final, 1
+7686,7687c7942,7943
+<    BYYGG
+<    lymph, 1
+---
+>    YYBGY
+>    plain, 1
+7690,7691c7946,7947
+<    YYYBB
+<    lying, 1
+---
+>    GYBYY
+>    align, 1
+7694,7695c7950,7957
+<    YYBBB
+<    vigil, 1
+---
+>   GBYBB
+>   crawl, 1
+>    GGGGG
+>    DONE
+>   BBGBB
+>   mural, 1.5
+>    BGGGG
+>    rural, 1
+7698,7699c7960,7963
+<    BGBBB
+<    blink, 1
+---
+>   GBBBB
+>   chalk, 1.6666666666666665
+>    GBGYB
+>    clamp, 1
+7702,7703c7966,7967
+<    BGBYB
+<    blimp, 1
+---
+>    GBGYG
+>    clack, 1
+7706,7707c7970,7981
+<    YGBBB
+<    fling, 1
+---
+>   YGBBB
+>   focal, 2
+>    BGGGG
+>    local, 1.5
+>     BGGGG
+>     vocal, 1
+>      GGGGG
+>      DONE
+>   BYBBB
+>   afoul, 1.75
+>    YGYBG
+>    offal, 1
+7710,7717c7984,7985
+<   BYYYB
+<   flour, 1
+<    GGGGG
+<    DONE
+<   YBBBB
+<   flick, 1.5
+<    BYGYB
+<    icily, 1
+---
+>    GYGBY
+>    aloof, 1
+7720,7725c7988,7989
+<  YBBBB
+<  mucho, 2.380952380952379
+<   BGBGB
+<   pushy, 1.5
+<    BGGGG
+<    bushy, 1
+---
+>    GBGGY
+>    aloud, 1
+7728,7729c7992,7993
+<   YBBBB
+<   prism, 1
+---
+>   BYBBY
+>   viola, 1
+7732,7733c7996,7997
+<   BYBBY
+<   bonus, 1
+---
+>   BBGBY
+>   viral, 1
+7736,7739c8000,8007
+<   BGBYB
+<   husky, 1.5
+<    GGGBG
+<    hussy, 1
+---
+>   BBYBB
+>   drawl, 1.6666666666666665
+>    BGGGG
+>    brawl, 1
+>     GGGGG
+>     DONE
+>    BYGBY
+>    alarm, 1
+7743c8011
+<   mossy, 1
+---
+>   claim, 1
+7746,7749c8014,8021
+<   BBBBB
+<   brisk, 1.8333333333333337
+<    BBYYB
+<    wispy, 1
+---
+>   YBBBY
+>   iliac, 1
+>    GGGGG
+>    DONE
+>   BBBGB
+>   bland, 2
+>    BGGGG
+>    gland, 1
+7752,7753c8024,8031
+<    BBYGB
+<    gipsy, 1
+---
+>    BGGGB
+>    flank, 1.5
+>     BGGGG
+>     plank, 1
+>      GGGGG
+>      DONE
+>    GGGGB
+>    blank, 1
+7756,7757c8034,8037
+<    BBBGB
+<    gypsy, 1
+---
+>   BBYBY
+>   grail, 1.75
+>    BYGGY
+>    flair, 1
+7760,7761c8040,8041
+<    BYYYY
+<    risky, 1
+---
+>    BYYYG
+>    rival, 1
+7765c8045
+<    frisk, 1
+---
+>    frail, 1
+7768,7777c8048,8049
+<   GYBBB
+<   minus, 1
+<    GGGGG
+<    DONE
+<   BYGBB
+<   ficus, 1
+<    GGGGG
+<    DONE
+<   BYGBY
+<   focus, 1
+---
+>   BGBBY
+>   voila, 1
+7780,7783c8052,8055
+<   BGBBB
+<   dusky, 1.5
+<    BGGBG
+<    fussy, 1
+---
+>   YBBBB
+>   black, 1.5
+>    BGGGG
+>    flack, 1
+7786,7787c8058,8059
+<   YBBBY
+<   bosom, 1
+---
+>   BGBYB
+>   zonal, 1
+7790,7791c8062,8063
+<   YGBYB
+<   humus, 1
+---
+>   BGGBB
+>   moral, 1
+7794,7795c8066,8067
+<   GGGBB
+<   mucus, 1
+---
+>   BBYYB
+>   lunar, 1
+7798,7799c8070,8071
+<   GGBBB
+<   musky, 1
+---
+>   BGYBB
+>   royal, 1
+7802,7803c8074,8075
+<   BYBYB
+<   brush, 1
+---
+>   BYYBB
+>   flora, 1
+7806,7809c8078,8091
+<   BYBBB
+<   using, 1.6666666666666665
+<    YYYBB
+<    virus, 1
+---
+>   BBBBG
+>   alibi, 1
+>    GGGGG
+>    DONE
+>   BBBBY
+>   avail, 2
+>    BBGGG
+>    quail, 1.5
+>     BBGGG
+>     flail, 1
+>      GGGGG
+>      DONE
+>    GBYYG
+>    axial, 1
+7812,7813c8094,8095
+<    GGBBB
+<    usurp, 1
+---
+>    BBGGY
+>    plaid, 1
+7816,7825c8098,8099
+<   GGYBB
+<   music, 1
+<    GGGGG
+<    DONE
+<   BYYYB
+<   crush, 1
+<    GGGGG
+<    DONE
+<   BBBGB
+<   fishy, 1
+---
+>   GYBBB
+>   cloak, 1
+7828,7829c8102,8109
+<   BBYBY
+<   cross, 1
+---
+>   GBBGB
+>   clang, 1.5
+>    GGGGB
+>    clank, 1
+>     GGGGG
+>     DONE
+>   BYBGB
+>   along, 1
+7832,7833c8112,8113
+<   GGBGB
+<   mushy, 1
+---
+>   GGGBB
+>   coral, 1
+7836,7843c8116,8119
+<   BBBBY
+<   dross, 1.8571428571428568
+<    BBYGB
+<    noisy, 1
+<     GGGGG
+<     DONE
+<    BYYYB
+<    visor, 1
+---
+>   BBBBB
+>   amply, 1.8888888888888893
+>    GBGYB
+>    alpha, 1
+7846,7847c8122,8123
+<    BBYGY
+<    bossy, 1
+---
+>    YYBYB
+>    llama, 1
+7850,7851c8126,8127
+<    BGGGG
+<    gross, 1
+---
+>    GBBYB
+>    awful, 1
+7854,7855c8130,8131
+<    BBYYB
+<    bison, 1
+---
+>    YBBYG
+>    flaky, 1
+7858,7859c8134,8135
+<    BBGGB
+<    kiosk, 1
+---
+>    GYBYB
+>    album, 1
+7862,7903c8138,8139
+<   BBBYB
+<   whisk, 1
+<    GGGGG
+<    DONE
+<   BBYBB
+<   crisp, 1
+<    GGGGG
+<    DONE
+<   BBYBG
+<   disco, 1
+<    GGGGG
+<    DONE
+<   GBBBB
+<   missy, 1
+<    GGGGG
+<    DONE
+<  YYBBB
+<  crags, 2.1764705882352935
+<   BGGBY
+<   brash, 1
+<    GGGGG
+<    DONE
+<   BBGBG
+<   amass, 1
+<    GGGGG
+<    DONE
+<   GGGBY
+<   crash, 1
+<    GGGGG
+<    DONE
+<   BGGYY
+<   grasp, 1
+<    GGGGG
+<    DONE
+<   GBGBY
+<   chasm, 1
+<    GGGGG
+<    DONE
+<   BBGBY
+<   quasi, 1.6666666666666665
+<    BBGGB
+<    awash, 1
+---
+>    YYBGB
+>    qualm, 1
+7906,7907c8142,8143
+<    GGGGB
+<    quash, 1
+---
+>    GBGGG
+>    apply, 1
+7910,7913c8146,8147
+<   BBYBG
+<   amiss, 1.5
+<    GBBGG
+<    abyss, 1
+---
+>    YBYYB
+>    plaza, 1
+7916,7941c8150,8153
+<   BGGBG
+<   brass, 1
+<    GGGGG
+<    DONE
+<   BBGYY
+<   gnash, 1
+<    GGGGG
+<    DONE
+<   GBGBG
+<   chaos, 1
+<    GGGGG
+<    DONE
+<   BGGYG
+<   grass, 1
+<    GGGGG
+<    DONE
+<   BGYBY
+<   arson, 1
+<    GGGGG
+<    DONE
+<   GGGBG
+<   crass, 1
+<    GGGGG
+<    DONE
+<   BBYBY
+<   assay, 1
+---
+>  BGBBG
+>  thing, 2.3125
+>   GBBGB
+>   taunt, 1
+7944,7947c8156,8157
+<  BBBBY
+<  north, 2.569767441860467
+<   BGGGB
+<   forty, 1
+---
+>   YYBBB
+>   yacht, 1
+7950,7951c8160,8161
+<   BBYGG
+<   truth, 1
+---
+>   YYBGB
+>   haunt, 1
+7954,7955c8164,8165
+<   YYYYY
+<   thorn, 1
+---
+>   GBGGB
+>   taint, 1
+7958,7961c8168,8171
+<   BBBGB
+<   kited, 2.1666666666666665
+<    BGGBY
+<    ditty, 1
+---
+>   YBBBB
+>   carat, 1.5
+>    GGBBG
+>    caput, 1
+7964,7965c8174,8177
+<    BGGBB
+<    witty, 1.5
+---
+>   YBBGB
+>   daunt, 2
+>    BGGGG
+>    vaunt, 1.5
+7967c8179
+<     bitty, 1
+---
+>     jaunt, 1
+7970,7983c8182,8183
+<    BBGBB
+<    putty, 1
+<     GGGGG
+<     DONE
+<    BGYBB
+<    fifty, 1
+<     GGGGG
+<     DONE
+<    GGGBB
+<    kitty, 1
+<     GGGGG
+<     DONE
+<   BGGYG
+<   torch, 1
+---
+>   YBBGY
+>   gaunt, 1
+7986,7993c8186,8187
+<   BGYYB
+<   rotor, 1.5
+<    BGGGG
+<    motor, 1
+<     GGGGG
+<     DONE
+<   BYBGY
+<   photo, 1
+---
+>   YBBBY
+>   gamut, 1
+7996,7997c8190,8191
+<   BBGYY
+<   thrum, 1
+---
+>   YYYBB
+>   habit, 1
+8000,8009c8194,8195
+<   BBGGG
+<   birth, 2
+<    BGGGG
+<    mirth, 1.5
+<     BGGGG
+<     girth, 1
+<      GGGGG
+<      DONE
+<   BGGGG
+<   forth, 1.5
+---
+>   YBGGB
+>   paint, 1.5
+8011,8033c8197
+<    worth, 1
+<     GGGGG
+<     DONE
+<   GGBYG
+<   notch, 1
+<    GGGGG
+<    DONE
+<   BBBYY
+<   thump, 1.7999999999999998
+<    GGGGB
+<    thumb, 1
+<     GGGGG
+<     DONE
+<    YYBBY
+<    pithy, 1
+<     GGGGG
+<     DONE
+<    YYBBB
+<    itchy, 1
+<     GGGGG
+<     DONE
+<    GGBBB
+<    thick, 1
+---
+>    faint, 1
+8036,8049c8200,8201
+<   GBBGG
+<   ninth, 1
+<    GGGGG
+<    DONE
+<   BBGGB
+<   dirty, 1
+<    GGGGG
+<    DONE
+<   BYGYB
+<   turbo, 1
+<    GGGGG
+<    DONE
+<   YYBYY
+<   thong, 1
+---
+>   GBYBB
+>   tacit, 1
+8052,8053c8204,8205
+<   YGBGG
+<   month, 1
+---
+>   GBBBB
+>   tarot, 1
+8056,8057c8208,8211
+<   GBBGB
+<   nutty, 1
+---
+>  BYYBY
+>  trial, 2.142857142857143
+>   GGBYG
+>   trawl, 1
+8060,8061c8214,8215
+<   YBYYB
+<   trunk, 1
+---
+>   YBBGG
+>   octal, 1
+8064,8065c8218,8219
+<   BBYGB
+<   fritz, 1
+---
+>   YBBYG
+>   atoll, 1
+8068,8073c8222,8223
+<   BYYYB
+<   tutor, 1.6666666666666665
+<    GBBGY
+<    troop, 1
+<     GGGGG
+<     DONE
+---
+>   GBBGG
+>   total, 1.6666666666666665
+8075,8091c8225
+<    tumor, 1
+<     GGGGG
+<     DONE
+<   YBBYB
+<   tying, 1.5
+<    GBYYB
+<    tunic, 1
+<     GGGGG
+<     DONE
+<   BGBGB
+<   booty, 1.6666666666666665
+<    BGBGG
+<    pouty, 1
+<     GGGGG
+<     DONE
+<    BGYGB
+<    motto, 1
+---
+>    tonal, 1
+8094,8103c8228,8229
+<   BGBGG
+<   booth, 2
+<    BGBGG
+<    mouth, 1.5
+<     BGGGG
+<     youth, 1
+<      GGGGG
+<      DONE
+<    BGGGG
+<    tooth, 1
+---
+>    GBBGG
+>    tubal, 1
+8107,8201c8233,8235
+<   think, 1.5
+<    GGGGB
+<    thing, 1
+<     GGGGG
+<     DONE
+<   BBBYG
+<   bipod, 2.125
+<    BBBBY
+<    dutch, 1
+<     GGGGG
+<     DONE
+<    BBBBB
+<    hutch, 1
+<     GGGGG
+<     DONE
+<    BGYBB
+<    pitch, 1
+<     GGGGG
+<     DONE
+<    GBBBB
+<    butch, 1
+<     GGGGG
+<     DONE
+<    BGBBB
+<    hitch, 1.5
+<     BGGGG
+<     witch, 1
+<      GGGGG
+<      DONE
+<    BYBBB
+<    thigh, 1
+<     GGGGG
+<     DONE
+<    BGBBY
+<    ditch, 1
+<     GGGGG
+<     DONE
+<   BGBYB
+<   toxic, 1.75
+<    GGBBB
+<    toddy, 1
+<     GGGGG
+<     DONE
+<    YGBGB
+<    motif, 1
+<     GGGGG
+<     DONE
+<    GGBGG
+<    topic, 1
+<     GGGGG
+<     DONE
+<   BBYYB
+<   trick, 1.6666666666666665
+<    GGBBB
+<    trump, 1
+<     GGGGG
+<     DONE
+<    GGBGG
+<    truck, 1
+<     GGGGG
+<     DONE
+<   BYBGG
+<   quoth, 1
+<    GGGGG
+<    DONE
+<   BGBYG
+<   touch, 1.6666666666666665
+<    YGBGG
+<    botch, 1
+<     GGGGG
+<     DONE
+<    GGGBG
+<    tough, 1
+<     GGGGG
+<     DONE
+<   BBBYB
+<   timid, 1
+<    GGGGG
+<    DONE
+<   BBBGG
+<   fifth, 1.5
+<    BGBGG
+<    width, 1
+<     GGGGG
+<     DONE
+<   YGBYB
+<   toxin, 1.5
+<    GGBGY
+<    tonic, 1
+<     GGGGG
+<     DONE
+<   YYBGB
+<   pinto, 1.5
+<    BBGGG
+<    junto, 1
+---
+>   aptly, 1.5
+>    YBYYB
+>    loath, 1
+8204,8205c8238,8239
+<   BBYYY
+<   third, 1
+---
+>   YBYGG
+>   vital, 1
+8208,8237c8242,8243
+<   BYGYY
+<   throb, 1.5
+<    GGGGB
+<    throw, 1
+<     GGGGG
+<     DONE
+<   BYYGG
+<   broth, 1.5
+<    BGGGG
+<    froth, 1
+<     GGGGG
+<     DONE
+<   YBBGB
+<   minty, 1.5
+<    BYYGG
+<    unity, 1
+<     GGGGG
+<     DONE
+<   BYBYB
+<   outgo, 1.6666666666666665
+<    GBGBB
+<    optic, 1
+<     GGGGG
+<     DONE
+<    GGGBG
+<    outdo, 1
+<     GGGGG
+<     DONE
+<   YYYYB
+<   intro, 1
+---
+>   GBYGG
+>   tidal, 1
+8240,8241c8246,8247
+<   BYBGB
+<   ditto, 1
+---
+>   GGYYG
+>   trail, 1
+8244,8247c8250,8251
+<  BYBGB
+<  anger, 1.9999999999999998
+<   GBYGY
+<   agree, 1
+---
+>   YYBGY
+>   altar, 1
+8250,8251c8254,8255
+<   GBBGB
+<   abbey, 1
+---
+>   YYBYY
+>   ultra, 1
+8254,8255c8258,8261
+<   GYBGB
+<   apnea, 1
+---
+>  GYYBB
+>  chill, 2.3076923076923075
+>   BBBYB
+>   slang, 1
+8258,8259c8264,8265
+<   GGBGB
+<   annex, 1
+---
+>   BGBGG
+>   shall, 1
+8262,8271c8268,8269
+<   GBBGG
+<   amber, 1.5
+<    GBBGG
+<    aider, 1
+<     GGGGG
+<     DONE
+<  BYYBG
+<  fungo, 1.9999999999999996
+<   YBBBY
+<   aloft, 1
+---
+>   BBYYB
+>   slain, 1
+8274,8275c8272,8273
+<   BYBBB
+<   adult, 1
+---
+>   BYBYB
+>   slash, 1
+8278,8279c8276,8277
+<   BBBYY
+<   gloat, 1
+---
+>   BBBBG
+>   snarl, 1
+8282,8283c8280,8281
+<   BBBBB
+<   plait, 1
+---
+>   BBYBG
+>   snail, 1
+8286,8287c8284,8285
+<   BBYBB
+<   plant, 1
+---
+>   YBBYB
+>   slack, 1
+8290,8291c8288,8295
+<   BBBBY
+<   bloat, 1
+---
+>   BGBBG
+>   shoal, 1.5
+>    GGBYG
+>    shawl, 1
+>     GGGGG
+>     DONE
+>   BBBGG
+>   small, 1
+8294,8295c8298,8309
+<   GBBBY
+<   float, 1
+---
+>   YBBGB
+>   scald, 2
+>    GGGGB
+>    scalp, 1.5
+>     GGGGB
+>     scaly, 1
+>      GGGGG
+>      DONE
+>  GGBBB
+>  poncy, 2.125
+>   BBBGG
+>   saucy, 1
+8298,8301c8312,8313
+<  YBBYG
+<  quich, 1.9999999999999996
+<   BBGBB
+<   exist, 1
+---
+>   YBBBG
+>   sappy, 1
+8304,8305c8316,8323
+<   BBBYB
+<   crest, 1
+---
+>   BBBBG
+>   savvy, 1.5
+>    GGBBG
+>    sassy, 1
+>     GGGGG
+>     DONE
+>   BYBBB
+>   savor, 1
+8308,8309c8326,8327
+<   BBBYY
+<   chest, 1
+---
+>   BBGBG
+>   sandy, 1
+8312,8313c8330,8331
+<   BBGBY
+<   heist, 1
+---
+>   BYBBG
+>   savoy, 1
+8316,8317c8334,8335
+<   BGBBB
+<   guest, 1
+---
+>   BBYBB
+>   sauna, 1
+8320,8321c8338,8345
+<   GGBBB
+<   quest, 1
+---
+>  YGBBG
+>  waist, 1
+>   GGGGG
+>   DONE
+>  BYYBG
+>  flong, 1.9999999999999996
+>   BGGBB
+>   bloat, 1
+8324,8325c8348,8349
+<   BBBBB
+<   wrest, 1
+---
+>   YGGBB
+>   aloft, 1
+8328,8331c8352,8353
+<  BYBBY
+<  crony, 2.1904761904761902
+<   YBBBB
+<   attic, 1
+---
+>   BGGBY
+>   gloat, 1
+8334,8335c8356,8357
+<   BGBYB
+<   train, 1
+---
+>   GGGBB
+>   float, 1
+8338,8339c8360,8361
+<   BBBBG
+<   amity, 1
+---
+>   BGBGB
+>   plant, 1
+8342,8343c8364,8365
+<   YGBBB
+<   track, 1
+---
+>   BGBBB
+>   plait, 1
+8347,8361c8369
+<   tiara, 1
+<    GGGGG
+<    DONE
+<   BBBGB
+<   twang, 1.5
+<    GBGGB
+<    thank, 1
+<     GGGGG
+<     DONE
+<   YYYBB
+<   actor, 1
+<    GGGGG
+<    DONE
+<   BBYYB
+<   tonga, 1
+---
+>   adult, 1
+8363a8372,8373
+>  GGGBB
+>  yojan, 1.9999999999999998
+8365,8377c8375
+<   antic, 1
+<    GGGGG
+<    DONE
+<   BBYBG
+<   today, 1
+<    GGGGG
+<    DONE
+<   BBBYG
+<   aunty, 1
+<    GGGGG
+<    DONE
+<   BYYBB
+<   aorta, 1
+---
+>   sally, 1
+8380,8381c8378,8379
+<   BBBBB
+<   tibia, 1
+---
+>   BBBGB
+>   salad, 1
+8384,8395c8382,8383
+<   BGBBB
+<   tramp, 1.6666666666666665
+<    YGGBB
+<    wrath, 1
+<     GGGGG
+<     DONE
+<    GGYBB
+<    triad, 1
+<     GGGGG
+<     DONE
+<   BBYBB
+<   topaz, 1
+---
+>   BYBYB
+>   salvo, 1
+8399,8405c8387
+<   junta, 1.5
+<    BBYYY
+<    titan, 1
+<     GGGGG
+<     DONE
+<   BBGBB
+<   quota, 1
+---
+>   salsa, 1
+8408,8411c8390,8391
+<  GYYBG
+<  shalt, 1.5
+<   GBGYG
+<   slant, 1
+---
+>   BYBYG
+>   salon, 1
