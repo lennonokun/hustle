@@ -4,8 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [profile.release]
+opt-level = 3
 # debug = true
 
 [dependencies]
+rayon = "1.5.3"
+rand = "0.8.5"
 # plotlib = "0.5.1"
 # rusty-machine = "0.5.4"
