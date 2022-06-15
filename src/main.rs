@@ -22,7 +22,7 @@ fn main() {
 	// let hr_mut = Mutex::new(HRec::new());
 	// let w = Word::from(&String::from("reast")).unwrap();
 	let mut game = Game::new(&gws, &awarr, io::stdin(), io::stdout());
-	game.start(3);
+	game.start(8);
 	// let dt = solve_given(w, &gws, &aws, 6, &hd, &hr_mut).unwrap();
 	// println!("{}", dt.get_eval());
 

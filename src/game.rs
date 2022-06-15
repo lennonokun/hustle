@@ -25,8 +25,9 @@ impl AnswerCol {
 	}
 
 	// adds to disp and returns colored word
-	fn guess(&mut self, gw: Word) -> Option<&String> {
-		if self.done {return None}
+	// (newly finished, colored word)
+	fn guess(&mut self, gw: Word) -> (bool, Option<&String>) {
+		if self.done {return (false, None)}
 		let fb = Feedback::from(gw, self.ans);
 		let mut s = String::new();
 		for i in 0..NLETS {
@@ -42,7 +43,7 @@ impl AnswerCol {
 		s.push_str(XCODE);
 		self.disp.push(s);
 		self.done = gw == self.ans;
-		return self.disp.last();
+		return (gw == self.ans, self.disp.last());
 	}
 }
 
@@ -86,8 +87,9 @@ impl <'a, R:Read, W:Write> Game<'a, R, W> {
 				if self.gws.contains(&w) {
 					for (j, col) in &mut self.cols.iter_mut().enumerate() {
 						match col.guess(w) {
-							None => self.ndone += 1,
-							Some(row) => {
+							(b, None) => self.ndone += b as i32,
+							(b, Some(row)) => {
+								self.ndone += b as i32;
 								write!(self.stdout, "{}{}",
 											cursor::Goto((6*j+1) as u16, (self.i+1) as u16),
 											row);
@@ -103,10 +105,11 @@ impl <'a, R:Read, W:Write> Game<'a, R, W> {
 			write!(self.stdout, "{}{}",
 						 cursor::Goto(1, (self.i+1) as u16),
 						 clear::AfterCursor);
+			// println!("ndone: {}", self.ndone)
 		}
 
 		if self.ndone == n as i32 {
-			writeln!(self.stdout,"won in {}!", self.i);
+			writeln!(self.stdout, "won in {}!", self.i);
 		} else {
 			writeln!(self.stdout, "answers were:");
 			for (i, col) in self.cols.iter().enumerate() {
