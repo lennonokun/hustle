@@ -13,6 +13,7 @@ use crate::solve::*;
 // best found: salet, 3.42052836
 // out1: salet.BBBYB.drone.BGGBG didnt find prove?
 // out2: reast/BYYYY not finding whelk?
+// fix bug where non words are displayed if you guess them on turn 1
 fn main() {
 	let gws = get_words("data/guess_words").unwrap();
 	let aws = get_words("data/answer_words").unwrap();
@@ -21,7 +22,7 @@ fn main() {
 	// let hr_mut = Mutex::new(HRec::new());
 	// let w = Word::from(&String::from("reast")).unwrap();
 	let mut game = Game::new(&gws, &awarr, io::stdin(), io::stdout());
-	game.start();
+	game.start(3);
 	// let dt = solve_given(w, &gws, &aws, 6, &hd, &hr_mut).unwrap();
 	// println!("{}", dt.get_eval());
 
