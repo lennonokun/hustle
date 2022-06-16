@@ -65,10 +65,6 @@ pub fn get_awarr<P>(p: P) -> Result<WArr, Error> where P: AsRef<Path> {
 		.expect("expected results of length NWORDS"))
 }
 
-// pub struct WTable {
-	// cts: [u64; NWORDS]
-// }
-
 #[derive(Debug)]
 #[derive(Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 pub struct Feedback {

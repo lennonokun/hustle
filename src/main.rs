@@ -1,14 +1,17 @@
-use std::sync::Mutex;
-use std::io;
+#![allow(dead_code, unused_variables, unused_must_use)]
+// TODO actually fix
+
+// use std::sync::Mutex;
+// use std::io;
 
 mod analysis;
-use crate::analysis::{HData, HRec};
+// use crate::analysis::{HData, HRec};
 mod ds;
 use crate::ds::*;
 mod game;
 use crate::game::Game;
 mod solve;
-use crate::solve::*;
+// use crate::solve::*;
 
 // best found: salet, 3.42052836
 // out1: salet.BBBYB.drone.BGGBG didnt find prove?
@@ -21,8 +24,8 @@ fn main() {
 	// let hd = HData::load("data/happrox.csv").unwrap();
 	// let hr_mut = Mutex::new(HRec::new());
 	// let w = Word::from(&String::from("reast")).unwrap();
-	let mut game = Game::new(&gws, &awarr, io::stdin(), io::stdout());
-	game.start(8);
+	let mut game = Game::new(&gws, &awarr);
+	game.start(32);
 	// let dt = solve_given(w, &gws, &aws, 6, &hd, &hr_mut).unwrap();
 	// println!("{}", dt.get_eval());
 
