@@ -27,9 +27,9 @@ fn main() {
 	let awarr = get_awarr("data/answer_words").unwrap();
 	// let hd = HData::load("data/happrox.csv").unwrap();
 	// let hr_mut = Mutex::new(HRec::new());
-	// let w = Word::from(&String::from("reast")).unwrap();
+	// let w = Word::from(&String::from("SALET")).unwrap();
 	let mut game = Game::new(&gws, &awarr);
-	game.start(16);
+	game.start(32);
 	// let dt = solve_given(w, &gws, &aws, 6, &hd, &hr_mut).unwrap();
 	// println!("{}", dt.get_eval());
 

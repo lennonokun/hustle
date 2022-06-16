@@ -78,6 +78,7 @@ pub struct Game<'a, R, W> {
 	empty_string: String,
 	t_start: Instant,
 	cols: Vec<FeedbackCol>,
+	answers: Vec<Word>,
 }
 
 impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
@@ -100,6 +101,7 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 			empty_string: String::new(),
 			t_start: Instant::now(),
 			cols: Vec::new(),
+			answers: Vec::new(),
 		}
 	}
 
@@ -136,7 +138,7 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 	
 	fn draw_fbc_row(&mut self, ncol: u16, nrow: u16) {
 		let goto = cursor::Goto(ncol*(NLETS as u16 + 1) + 2, nrow + 2);
-		let s =  self.cols.get((self.ncols * self.scroll + ncol) as usize)
+		let s = self.cols.get((self.ncols * self.scroll + ncol) as usize)
 			.and_then(|fbc| fbc.rows.get(nrow as usize))
 			.unwrap_or(&self.empty_string);
 		write!(self.stdout, "{}{}", goto, s);
@@ -151,13 +153,15 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		self.stdout.flush();
 	}
 	
+	fn draw_empty_col(&mut self, ncol: u16) {
+		for nrow in 0..self.turn {
+			let goto = cursor::Goto(ncol*(NLETS as u16 + 1) + 2, nrow + 2);
+			write!(self.stdout, "{}{}", goto, self.empty_string);
+		}
+	}
+
 	// TODO: add removing cleared cols?
 	pub fn start(&mut self, nwords: u16) {
-		self.cols = self.aws
-			.choose_multiple(&mut rand::thread_rng(), nwords.into())
-			.cloned()
-			.map(|ans| FeedbackCol::new(ans))
-			.collect();
 
 		self.nwords = nwords;
 		let termsz = terminal_size().ok();
@@ -167,16 +171,27 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		self.nrows = (self.nwords - 1) / self.ncols + 1;
 		for _ in 0..NEXTRA {
 			self.empty_string.push(' ');
+		} if self.nwords + NEXTRA as u16 > self.height - 4 {
+			writeln!(self.stdout, "{}{}Window is not tall enough!{}",
+							 clear::All, cursor::Goto(1,1), cursor::Goto(1,1));
+			return;
 		}
 
 		let mut cont = true;
 		
 		while cont {
-			self.draw_base();
-			if self.nwords + NEXTRA as u16 > self.height - 4 {
-				return;
-			}
+			self.ndone = 0;
+			self.turn = 0;
+			self.scroll = 0;
+			self.answers = self.aws
+				.choose_multiple(&mut rand::thread_rng(), nwords.into())
+				.cloned()
+				.collect();
+			self.cols = self.answers.iter()
+				.map(|ans| FeedbackCol::new(*ans))
+				.collect();
 
+			self.draw_base();
 			let limit = nwords + NEXTRA;
 			let mut quit = false;
 			let mut guess = String::new();
@@ -186,11 +201,15 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 				self.stdout.flush();
 				match self.stdin.next().unwrap().unwrap() {
 					Key::Char(c) => if 'a' <= c && c <= 'z' {
-						guess.push(c);
-						write!(self.stdout, "{}", c.to_string());
+						let c2 = (c as u8 - 32) as char;
+						guess.push(c2);
+						write!(self.stdout, "{}{}",
+									 cursor::Goto(guess.len() as u16 + 1, self.height-1),
+									 c2.to_string());
 					} Key::Backspace => {
 						guess.pop();
-						self.stdout.write(" ".as_bytes());
+						write!(self.stdout, "{} ",
+									 cursor::Goto(guess.len() as u16 + 2, self.height-1));
 					} Key::Esc => {
 						quit = true;
 					} Key::Up => {
@@ -206,15 +225,22 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 					let gw = Word::from(&guess).unwrap();
 					if self.gws.contains(&gw) {
 						if self.turn == 0 {self.t_start = Instant::now()}
-						for col in &mut self.cols.iter_mut() {
-							if col.guess(gw) {
-								self.ndone += 1;
+						let mut i_done: Option<usize> = None;
+						for (i, c) in self.cols.iter_mut().enumerate() {
+							if c.guess(gw) {i_done = Some(i)}
+						}
+
+						self.turn += 1;
+						if let Some(i) = i_done {
+							// remove finished column and redraw entirely
+							self.cols.remove(i);
+							self.redraw_fbcols();
+						} else {
+							// or just draw guesses
+							for i in 0..self.ncols {
+								self.draw_fbc_row(i, self.turn-1);
 							}
 						}
-						for ncol in 0..self.ncols {
-							self.draw_fbc_row(ncol, self.turn as u16);
-						}
-						self.turn += 1;
 					}
 					guess = String::new();
 					let goto = cursor::Goto(2, self.height - 1);
@@ -225,16 +251,15 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 			self.draw_base();
 			write!(self.stdout, "{}", cursor::Goto(2,2));
 			if self.ndone == self.nwords {
-				write!(self.stdout, "won in {}/{}, {:.3}!", self.turn,
+				write!(self.stdout, "Won in {}/{}, {:.3}!", self.turn,
 								self.nwords + NEXTRA as u16,
 								self.t_start.elapsed().as_millis() as f64 / 1000.);
 			} else {
-				write!(self.stdout, "answers were:");
-				for (i, col) in self.cols.iter().enumerate() {
+				write!(self.stdout, "Answers were:");
+				for (i, ans) in self.answers.iter().enumerate() {
 					write!(self.stdout, "{}{}. {}",
 								cursor::Goto(2, i as u16 + 3),
-								i,
-								col.ans.to_string());
+								i + 1, ans.to_string());
 				}
 			}
 
