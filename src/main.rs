@@ -1,6 +1,4 @@
 #![allow(dead_code, unused_variables, unused_must_use)]
-// TODO actually fix
-
 // use std::sync::Mutex;
 // use std::io;
 
@@ -12,6 +10,12 @@ mod game;
 use crate::game::Game;
 mod solve;
 // use crate::solve::*;
+
+// TODO:
+// fix warnings fixed by allow
+// make start + end screen
+// allow for deletion of completed fbcols 
+// generally refactor
 
 // best found: salet, 3.42052836
 // out1: salet.BBBYB.drone.BGGBG didnt find prove?
@@ -25,7 +29,7 @@ fn main() {
 	// let hr_mut = Mutex::new(HRec::new());
 	// let w = Word::from(&String::from("reast")).unwrap();
 	let mut game = Game::new(&gws, &awarr);
-	game.start(32);
+	game.start(16);
 	// let dt = solve_given(w, &gws, &aws, 6, &hd, &hr_mut).unwrap();
 	// println!("{}", dt.get_eval());
 
