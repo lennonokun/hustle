@@ -2,7 +2,7 @@ use rand::prelude::*;
 use std::io::{self, Write, StdinLock, StdoutLock};
 use std::time::Instant;
 
-use termion::{terminal_size, clear, cursor, color};
+use termion::{terminal_size, clear, cursor, color, style};
 use termion::raw::{IntoRawMode,RawTerminal};
 use termion::input::{TermRead,Keys};
 use termion::event::Key;
@@ -12,7 +12,6 @@ use crate::ds::*;
 const NEXTRA: u16 = 5;
 // space
 const EMPTY: &'static str = " ";
-const EMPTYWD: &'static str = "     ";
 // edges
 const HORZE: &'static str = "─";
 const VERTE: &'static str = "│";
@@ -104,12 +103,8 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		}
 	}
 
-	fn setup(&mut self) {
-		let termsz = terminal_size().ok();
-		self.width = termsz.map(|(w,_)| w).unwrap();
-		self.height = termsz.map(|(_,h)| h).unwrap();
-
-		write!(self.stdout, "{}", clear::All);
+	fn draw_base(&mut self) {
+		write!(self.stdout, "{}{}", clear::All, cursor::Goto(1,1));
 
 		// top edge
 		self.stdout.write(ULC.as_bytes()).unwrap();
@@ -137,11 +132,6 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		self.stdout.write(BRC.as_bytes()).unwrap();
 
 		self.stdout.flush().unwrap();
-		self.ncols = (self.width - 1) / (NLETS + 1) as u16;
-		self.nrows = (self.nwords - 1) / self.ncols + 1;
-		for _ in 0..NEXTRA {
-			self.empty_string.push(' ');
-		}
 	}
 	
 	fn draw_fbc_row(&mut self, ncol: u16, nrow: u16) {
@@ -170,71 +160,97 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 			.collect();
 
 		self.nwords = nwords;
-		self.setup();
-		if self.nwords + NEXTRA as u16 > self.height - 4 {
-			return;
+		let termsz = terminal_size().ok();
+		self.width = termsz.map(|(w,_)| w).unwrap();
+		self.height = termsz.map(|(_,h)| h).unwrap();
+		self.ncols = (self.width - 1) / (NLETS + 1) as u16;
+		self.nrows = (self.nwords - 1) / self.ncols + 1;
+		for _ in 0..NEXTRA {
+			self.empty_string.push(' ');
 		}
-			
-		let limit = nwords + NEXTRA;
-		let mut quit = false;
-		let mut guess = String::new();
 
-		while self.turn < limit && self.ndone < nwords as u16 && !quit {
-			// go back to guessing zone
-			write!(self.stdout, "{}",
-						 cursor::Goto(2, (self.turn+2) as u16));
-			self.stdout.flush().unwrap();
-			match self.stdin.next().unwrap().unwrap() {
-				Key::Char(c) => if 'a' <= c && c <= 'z' {
-					guess.push(c);
-					let goto = cursor::Goto(guess.len() as u16 + 1, self.height-1);
-					write!(self.stdout, "{}{}", goto, c.to_string());
-				} Key::Backspace => {
-					let goto = cursor::Goto(guess.len() as u16 + 1, self.height-1);
-					write!(self.stdout, "{} ", goto);
-					guess.pop();
-				} Key::Esc => {
-					quit = true;
-				} Key::Up => {
-					self.scroll = (self.scroll + self.nrows - 1) % self.nrows;
-					self.redraw_fbcols();
-				} Key::Down => {
-					self.scroll = (self.scroll + 1) % self.nrows;
-					self.redraw_fbcols();
-				} _ => {}
+		let mut cont = true;
+		
+		while cont {
+			self.draw_base();
+			if self.nwords + NEXTRA as u16 > self.height - 4 {
+				return;
 			}
 
-			if guess.len() == NLETS {
-				let gw = Word::from(&guess).unwrap();
-				if self.gws.contains(&gw) {
-					if self.turn == 0 {self.t_start = Instant::now()}
-					for col in &mut self.cols.iter_mut() {
-						if col.guess(gw) {
-							self.ndone += 1;
-						}
-					}
-					for ncol in 0..self.ncols {
-						self.draw_fbc_row(ncol, self.turn as u16);
-					}
-					self.turn += 1;
+			let limit = nwords + NEXTRA;
+			let mut quit = false;
+			let mut guess = String::new();
+
+			while self.turn < limit && self.ndone < nwords as u16 && !quit {
+				write!(self.stdout, "{}", cursor::Goto(guess.len() as u16 + 2, self.height-1));
+				self.stdout.flush();
+				match self.stdin.next().unwrap().unwrap() {
+					Key::Char(c) => if 'a' <= c && c <= 'z' {
+						guess.push(c);
+						write!(self.stdout, "{}", c.to_string());
+					} Key::Backspace => {
+						guess.pop();
+						self.stdout.write(" ".as_bytes());
+					} Key::Esc => {
+						quit = true;
+					} Key::Up => {
+						self.scroll = (self.scroll + self.nrows - 1) % self.nrows;
+						self.redraw_fbcols();
+					} Key::Down => {
+						self.scroll = (self.scroll + 1) % self.nrows;
+						self.redraw_fbcols();
+					} _ => {}
 				}
-				guess = String::new();
-				let goto = cursor::Goto(2, self.height - 1);
-				write!(self.stdout, "{}{}", goto, self.empty_string);
-			}
-			//self.stdout.flush().unwrap();
-		}
 
-		write!(self.stdout, "{}", clear::All);
-		if self.ndone == self.nwords {
-			println!("won in {}/{}, {:.3}!", self.turn,
-							 self.nwords + NEXTRA as u16,
-							 self.t_start.elapsed().as_millis() as f64 / 1000.);
-		} else {
-			println!("answers were:");
-			for (i, col) in self.cols.iter().enumerate() {
-				println!("{}. {}", i, col.ans.to_string());
+				if guess.len() == NLETS {
+					let gw = Word::from(&guess).unwrap();
+					if self.gws.contains(&gw) {
+						if self.turn == 0 {self.t_start = Instant::now()}
+						for col in &mut self.cols.iter_mut() {
+							if col.guess(gw) {
+								self.ndone += 1;
+							}
+						}
+						for ncol in 0..self.ncols {
+							self.draw_fbc_row(ncol, self.turn as u16);
+						}
+						self.turn += 1;
+					}
+					guess = String::new();
+					let goto = cursor::Goto(2, self.height - 1);
+					write!(self.stdout, "{}{}", goto, self.empty_string);
+				}
 			}
+
+			self.draw_base();
+			write!(self.stdout, "{}", cursor::Goto(2,2));
+			if self.ndone == self.nwords {
+				write!(self.stdout, "won in {}/{}, {:.3}!", self.turn,
+								self.nwords + NEXTRA as u16,
+								self.t_start.elapsed().as_millis() as f64 / 1000.);
+			} else {
+				write!(self.stdout, "answers were:");
+				for (i, col) in self.cols.iter().enumerate() {
+					write!(self.stdout, "{}{}. {}",
+								cursor::Goto(2, i as u16 + 3),
+								i,
+								col.ans.to_string());
+				}
+			}
+
+			self.stdout.flush();
+			let mut quit = false;
+			let mut restart = false;
+			while !quit && !restart {
+				match self.stdin.next().unwrap().unwrap() {
+					Key::Char(c) => {
+						quit = c == 'q';
+						restart = c == 'r';
+					}, _ => {}
+				}
+			}
+			cont = restart;
 		}
+		write!(self.stdout, "{}{}{}", clear::All, style::Reset, cursor::Goto(1,1));
 	}
 }
