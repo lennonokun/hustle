@@ -5,13 +5,8 @@ use rayon::prelude::*;
 use crate::ds::{Word, Feedback, DTree, WSet, FbMap, NLETS};
 use crate::analysis::{HData, HRec};
 
-const NTOPS: usize = 20;
-const ENDGCUTOFF: usize = 20;
-
-// TODO:
-// better understand borrowing
-// are inf counts useful?
-// keep track of n for hdata?
+const NTOPS: usize = 10;
+const ENDGCUTOFF: usize = 15;
 
 // get feedback partitions
 pub fn fb_partition(gw: Word, aws: &WSet) -> FbMap<WSet> {
@@ -124,7 +119,7 @@ pub fn solve_state(gws: &WSet, aws: &WSet, n: i32,
 	let alen = aws.len();
 	if alen == 1 {
 		// 100% chance for one guess
-		hrm.lock().unwrap().record(1, 1.0);
+		hrm.lock().unwrap().record(n as usize, 1, 1.0);
 		return Some(DTree::Node{
 			eval: 1.0, 
 			word: *aws.iter().next().unwrap(),
@@ -175,7 +170,8 @@ pub fn solve_state(gws: &WSet, aws: &WSet, n: i32,
 	// dont bother checking other words if a 2 was found
 	if sd.lock().unwrap().eval < 2.001 {
 		// cringe?
-		hrm.lock().unwrap().record(alen, sd.lock().unwrap().eval); 
+		hrm.lock().unwrap().record(n as usize, alen,
+															 sd.lock().unwrap().eval); 
 		return sd.into_inner().unwrap().dt;
 	}
 
@@ -211,7 +207,7 @@ pub fn solve_state(gws: &WSet, aws: &WSet, n: i32,
 		hrm.lock().unwrap().record_inf(n as usize);
 		return None;
 	} else {
-		hrm.lock().unwrap().record(alen, sd2.eval);
+		hrm.lock().unwrap().record(n as usize, alen, sd2.eval);
 		return sd2.dt;
 	}
 }

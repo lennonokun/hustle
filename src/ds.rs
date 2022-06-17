@@ -5,6 +5,7 @@ use std::collections::{HashSet, HashMap};
 use std::mem::MaybeUninit;
 
 pub const NLETS: usize = 5;
+pub const NGUESSES: usize = 6;
 // pub const NAlPH: usize = 26;
 pub const NWORDS: usize = 2309;
 
