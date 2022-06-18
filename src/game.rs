@@ -2,6 +2,7 @@ use rand::prelude::*;
 use std::io::{self, Write, StdinLock, StdoutLock};
 use std::time::Instant;
 use std::process::Command;
+use std::cmp;
 
 use termion::{terminal_size, clear, cursor, color, style};
 use termion::raw::{IntoRawMode,RawTerminal};
@@ -36,7 +37,6 @@ const MENUSCREEN: [&'static str; MENUHEIGHT as usize] = [
 	"└────────────────┘",
 ];
 
-// #[derive(Debug)]
 struct FeedbackCol {
 	ans: Word,
 	rows: Vec<String>,
@@ -86,6 +86,7 @@ pub struct Game<'a, R, W> {
 	height: u16,
 	nrows: u16,
 	ncols: u16,
+	maxrow: u16,
 	nwords: u16,
 	scroll: u16,
 	turn: u16,
@@ -107,6 +108,7 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 			stdout: stdout,
 			width: 0,
 			height: 0,
+			maxrow: 0,
 			nwords: 0,
 			ncols: 0,
 			nrows: 0,
@@ -189,6 +191,46 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 
 		self.nwords = s.parse().unwrap();
 	}
+
+	fn end_screen(&mut self) -> (bool, bool) {
+		self.draw_base();
+		write!(self.stdout, "{}", cursor::Goto(2,2));
+		if self.ndone == self.nwords {
+			write!(self.stdout, "Won n={} in {}/{}, {:.3}!",
+							self.nwords,
+							self.turn,
+							self.nwords + NEXTRA as u16,
+							self.t_start.elapsed().as_millis() as f64 / 1000.);
+		} else {
+			write!(self.stdout, "Answers were:");
+			for (i, ans) in self.answers.iter().enumerate() {
+				write!(self.stdout, "{}{}. {}",
+							cursor::Goto(2, i as u16 + 3),
+							i + 1, ans.to_string());
+			}
+		}
+
+		write!(self.stdout,
+						"{}'r': restart, 's': change settings, 'q'/Esc: quit",
+						cursor::Goto(2, self.height-1));
+
+		self.stdout.flush();
+		let mut quit = false;
+		let mut restart = false;
+		let mut menu = false;
+		while !quit && !restart {
+			match self.stdin.next().unwrap().unwrap() {
+				Key::Char(c) => {
+					quit = c == 'q';
+					restart = c == 'r' || c == 's';
+					menu = c == 's';
+				}, Key::Esc => {
+					quit = true;
+				} _ => {}
+			}
+		}
+		return (restart, menu);
+	}
 	
 	fn draw_fbc_row(&mut self, ncol: u16, nrow: u16) {
 		let goto = cursor::Goto(ncol*(NLETS as u16 + 1) + 2, nrow + 2);
@@ -199,7 +241,7 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 	}
 	
 	fn redraw_fbcols(&mut self) {
-		for nrow in 0..self.turn {
+		for nrow in 0..cmp::min(self.turn, self.maxrow) {
 			for ncol in 0..self.ncols {
 				self.draw_fbc_row(ncol, nrow as u16)
 			}
@@ -208,7 +250,7 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 	}
 	
 	fn draw_empty_col(&mut self, ncol: u16) {
-		for nrow in 0..self.turn {
+		for nrow in 0..cmp::min(self.turn, self.maxrow) {
 			let goto = cursor::Goto(ncol*(NLETS as u16 + 1) + 2, nrow + 2);
 			write!(self.stdout, "{}{}", goto, self.empty_string);
 		}
@@ -218,9 +260,10 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		let termsz = terminal_size().ok();
 		self.width = termsz.map(|(w,_)| w).unwrap();
 		self.height = termsz.map(|(_,h)| h).unwrap();
+		self.maxrow = self.height - 3;
 
-		let mut menu = true;
 		let mut cont = true;
+		let mut menu = true;
 		
 		while cont {
 			self.draw_base();
@@ -228,12 +271,9 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 
 			self.ncols = (self.width - 1) / (NLETS + 1) as u16;
 			self.nrows = (self.nwords - 1) / self.ncols + 1;
+			self.empty_string = String::new();
 			for _ in 0..NEXTRA {
 				self.empty_string.push(' ');
-			} if self.nwords + NEXTRA as u16 > self.height - 4 {
-				writeln!(self.stdout, "{}{}Window is not tall enough!{}",
-								clear::All, cursor::Goto(1,1), cursor::Goto(1,1));
-				return;
 			}
 			
 			self.ndone = 0;
@@ -297,7 +337,7 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 							// remove finished column and redraw entirely
 							self.cols.remove(i);
 							self.redraw_fbcols();
-						} else {
+						} else if self.turn <= self.maxrow {
 							// or just draw guesses
 							for i in 0..self.ncols {
 								self.draw_fbc_row(i, self.turn-1);
@@ -311,41 +351,7 @@ impl <'a> Game<'a, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 			}
 
 			self.draw_base();
-			write!(self.stdout, "{}", cursor::Goto(2,2));
-			if self.ndone == self.nwords {
-				write!(self.stdout, "Won n={} in {}/{}, {:.3}!",
-							 self.nwords,
-							 self.turn,
-							 self.nwords + NEXTRA as u16,
-							 self.t_start.elapsed().as_millis() as f64 / 1000.);
-			} else {
-				write!(self.stdout, "Answers were:");
-				for (i, ans) in self.answers.iter().enumerate() {
-					write!(self.stdout, "{}{}. {}",
-								cursor::Goto(2, i as u16 + 3),
-								i + 1, ans.to_string());
-				}
-			}
-
-			write!(self.stdout,
-						 "{}'r': restart, 's': change settings, 'q'/Esc: quit",
-						 cursor::Goto(2, self.height-1));
-			
-			self.stdout.flush();
-			let mut quit = false;
-			let mut restart = false;
-			while !quit && !restart {
-				match self.stdin.next().unwrap().unwrap() {
-					Key::Char(c) => {
-						quit = c == 'q';
-						restart = c == 'r' || c == 's';
-						menu = c == 's';
-					}, Key::Esc => {
-						quit = true;
-					} _ => {}
-				}
-			}
-			cont = restart;
+			(cont, menu) = self.end_screen();
 		}
 		write!(self.stdout, "{}{}{}", clear::All, style::Reset, cursor::Goto(1,1));
 	}

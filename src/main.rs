@@ -18,8 +18,8 @@ use crate::solve::*;
 
 // TODO:
 // fix warnings fixed by allow
-// make start + end screen
-// allow for deletion of completed fbcols 
+// overdrawing still?
+// improve end screen + fix overdrawing
 // generally refactor
 
 // best found: salet, 3.42052836
