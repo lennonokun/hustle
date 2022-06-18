@@ -86,10 +86,6 @@ fn main() -> MainResult {
 			mode = Some("gen");
 		} "play" => {
 			mode = Some("play");
-			play_n = Some(args.next()
-										.expect("'play' requires a secondary argument")
-										.parse::<u16>()
-										.expect("'play' requires a secondary u16 argument"));
 		} "solve" => {
 			mode = Some("solve");
 			// should no argument just mean solve root?
@@ -120,7 +116,7 @@ fn main() -> MainResult {
 			gen_data(&gws, &aws, &hd, 100);
 		}, "play" => {
 			let mut game = Game::new(&gws, &awarr);
-			game.start(play_n.unwrap());
+			game.start();
 		}, "solve" => {
 			let dt = solve_given(w, &gws, &aws, NGUESSES as i32, &hd, &hrm);
 			dt.unwrap().pprint(&String::from(""), 0)
