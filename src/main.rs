@@ -16,12 +16,6 @@ use crate::game::Game;
 mod solve;
 use crate::solve::*;
 
-// TODO:
-// fix warnings fixed by allow
-// overdrawing still?
-// improve end screen + fix overdrawing
-// generally refactor
-
 // best found: salet, 3.42052836
 // out1: salet.BBBYB.drone.BGGBG didnt find prove?
 // out2: reast/BYYYY not finding whelk?
