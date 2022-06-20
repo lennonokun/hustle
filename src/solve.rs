@@ -4,7 +4,7 @@ use rayon::prelude::*;
 use crate::ds::*;
 use crate::analysis::{HData, HRec};
 
-const NTOPS: usize = 5;
+const NTOPS: usize = 15;
 const ENDGCUTOFF: usize = 15;
 
 // get feedback partitions
@@ -69,6 +69,12 @@ pub fn reduce_words(gw: Word, gwb: &WBank) -> WBank {
 	WBank {data:data2, wlen:gwb.wlen}
 }
 
+struct GivenData {
+	fbmap: FbMap<DTree>,
+	eval: f64,
+	stop: bool,
+}
+
 // get upper bound for minimum mean guesses at state given guess
 pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank, n: i32,
 							 hd: &HData, hrm: &Mutex<HRec>) -> Option<DTree> {
@@ -80,29 +86,38 @@ pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank, n: i32,
 		return None
 	}
 
-	let mut eval = 1.0;
-	let mut fbmap = FbMap::new();
-	for (fb, wb) in fb_partition(gw, awb) {
+	let gd = Mutex::new(GivenData{
+		fbmap: FbMap::new(),
+		eval: 1.0,
+		stop: false,
+	});
+
+	fb_partition(gw, awb).into_par_iter().for_each(|(fb, wb)| {
+		if gd.lock().unwrap().stop {return}
 		if !fb.is_correct() {
-			let dt2 = solve_state(&gwb, &wb, n-1, hd, hrm);
-			// let dt2 = if alen > ENDGCUTOFF {
-				// solve_state(&reduce_words(gw, &gwb), &set, n-1, hd)
-			// } else {
-				// solve_state(&gwb, &set, n-1, hd)
-			// };
+			let dt2 = if alen > ENDGCUTOFF {
+				solve_state(&reduce_words(gw, &gwb), &wb, n-1, hd, hrm)
+			} else {
+				solve_state(&gwb, &wb, n-1, hd, hrm)
+			};
+			if gd.lock().unwrap().stop {return}
+			let mut gd2 = gd.lock().unwrap();
 			match dt2 {
 				None => {
-					return None;
+					gd2.stop = true;
 				} Some(dt2) => {
-					eval += (wb.data.len() as f64/alen as f64) * dt2.get_eval();
-					fbmap.insert(fb, dt2);
+					gd2.eval += (wb.data.len() as f64/alen as f64)
+						* dt2.get_eval();
+					gd2.fbmap.insert(fb, dt2);
 				}
 			}
 		} 
-	}
+	});
 
+	let gd2 = gd.into_inner().unwrap();
+	if gd2.stop {return None}
 	return Some(DTree::Node{
-		eval:eval, word:gw, fbmap:fbmap
+		eval: gd2.eval, word: gw, fbmap: gd2.fbmap
 	});
 }
 

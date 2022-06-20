@@ -4,7 +4,6 @@ use std::sync::Mutex;
 use std::time::Instant;
 use std::path::Path;
 use std::io::{self, Error, ErrorKind};
-use std::mem;
 use main_error::{MainError, MainResult};
 use std::env;
 
