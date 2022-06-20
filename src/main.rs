@@ -75,7 +75,6 @@ fn main() -> MainResult {
 	let mut solve_str = None::<String>;
 
 	// let mut first = true;
-	eprintln!("sizeof word: {}", mem::size_of::<Word>());
 	let first = args.next().expect("Expected an argument!");
 	match first.as_str() {
 		"gen" => {
@@ -102,8 +101,8 @@ fn main() -> MainResult {
 
 	let wlen = 5; // FOR NOW
 	let w = Word::from_str("SALET").expect("couldn't make word");
-	let gwb = WBank::from(&gwp, 5).expect("couldn't find gws!");
-	let awb = WBank::from(&awp, 5).expect("couldn't find gws!");
+	let gwb = WBank::from(&gwp, wlen).expect("couldn't find gwb!");
+	let awb = WBank::from(&awp, wlen).expect("couldn't find awb!");
 	let hd = HData::load(hdp_in).expect("couldn't find heuristic data!");
 	let hrm = Mutex::new(HRec::new());
 

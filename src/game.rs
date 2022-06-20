@@ -206,9 +206,10 @@ impl <'a, P: AsRef<Path>>
 		self.nwords = s_arr[0].parse().unwrap();
 
 		let wlen = s_arr[1].parse().unwrap();
-		if self.wlen != wlen {return}
+		if self.wlen == wlen {return}
 		self.gwb = WBank::from(&self.gwp, wlen).unwrap();
 		self.awb = WBank::from(&self.awp, wlen).unwrap();
+		eprintln!("wlen: {}, gwb len: {}", self.wlen, self.gwb.data.len());
 		self.wlen = wlen;
 	}
 
@@ -311,13 +312,6 @@ impl <'a, P: AsRef<Path>>
 			let mut guess = String::new();
 
 			while self.turn < limit && self.ndone < self.nwords as u16 && !quit {
-				eprintln!("nrows: {}, ncols: {}, height: {}, width: {}",
-									self.nrows,
-									self.ncols,
-									self.height,
-									self.width);
-				eprintln!("cols: {:?}", self.cols);
-				eprintln!("guess: {:?}", guess);
 				write!(self.stdout, "{}",
 							 cursor::Goto(guess.len() as u16 + 2, self.height-1));
 				self.stdout.flush();
