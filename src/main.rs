@@ -4,6 +4,7 @@ use std::sync::Mutex;
 use std::time::Instant;
 use std::path::Path;
 use std::io::{self, Error, ErrorKind};
+use std::mem;
 use main_error::{MainError, MainResult};
 use std::env;
 
@@ -20,13 +21,13 @@ use crate::solve::*;
 // out1: salet.BBBYB.drone.BGGBG didnt find prove?
 // out2: reast/BYYYY not finding whelk?
 // fix bug where non words are displayed if you guess them on turn 1
-fn gen_data(gws: &WSet, aws: &WSet, hd: &HData, n: i32) {
+fn gen_data(gwb: &WBank, awb: &WBank, hd: &HData, n: i32) {
 	let hrm = Mutex::new(HRec::new());
-	let gws2 = top_words(&gws, &aws, &hd, n as usize);
+	let gws2 = top_words(&gwb, &awb, &hd, n as usize);
 	for (i, w) in gws2.iter().enumerate() {
 		print!("{}. {}: ", i+1, w.to_string());
 		let inst = Instant::now();
-		let dt = solve_given(*w, &gws, &aws, 6, &hd, &hrm);
+		let dt = solve_given(*w, &gwb, &awb, 6, &hd, &hrm);
 		let dur = inst.elapsed().as_millis();
 		println!("{}, {:.3}s", dt.unwrap().get_eval(),
 						 dur as f64 / 1_000.);
@@ -35,18 +36,18 @@ fn gen_data(gws: &WSet, aws: &WSet, hd: &HData, n: i32) {
 		.save("data/hdata.csv", "data/hinfs.csv").unwrap();
 }
 
-fn solve_word<P>(s: String, gwp: P, awp: P, hdp: P)
+fn solve_word<P>(s: String, wlen: u8, gwp: P, awp: P, hdp: P)
 	-> io::Result<DTree> where P: AsRef<Path>  {
-	let w = Word::from(&s)
+	let w = Word::from(s)
 		.expect("couldn't make word");
-	let gws = get_words(gwp)
+	let gwb = WBank::from(&gwp, wlen)
 		.expect("couldn't find guess words!");
-	let aws = get_words(awp)
+	let awb = WBank::from(&awp, wlen)
 		.expect("couldn't find answer words!");
 	let hd = HData::load(hdp)
 		.expect("couldn't find heuristic data!");
 	let hrm = Mutex::new(HRec::new());
-	solve_given(w, &gws, &aws, NGUESSES as i32, &hd, &hrm)
+	solve_given(w, &gwb, &awb, NGUESSES as i32, &hd, &hrm)
 		.ok_or(Error::new(ErrorKind::Other, "couldn't make dtree!"))
 }
 
@@ -63,8 +64,8 @@ fn main() -> MainResult {
 	// let mut stdin = io::stdin().lock();
 	// let mut stdout = io::stdout().lock();
 	// let mut stderr = io::stderr().lock();
-	let gwp = "data/guess_words";
-	let awp = "data/answer_words";
+	let gwp = "data/guess_words2";
+	let awp = "data/answer_words2";
 	let hdp_in = "data/happrox.csv";
 	let hdp_out1 = "data/hdata.csv";
 	let hdp_out2 = "data/hinfs.csv";
@@ -74,6 +75,7 @@ fn main() -> MainResult {
 	let mut solve_str = None::<String>;
 
 	// let mut first = true;
+	eprintln!("sizeof word: {}", mem::size_of::<Word>());
 	let first = args.next().expect("Expected an argument!");
 	match first.as_str() {
 		"gen" => {
@@ -98,23 +100,23 @@ fn main() -> MainResult {
 								 format!("Extraneous argument '{}' found", s))));
 	}
 
+	let wlen = 5; // FOR NOW
 	let w = Word::from_str("SALET").expect("couldn't make word");
-	let gws = get_words(gwp).expect("couldn't find gws!");
-	let aws = get_words(awp).expect("couldn't find aws!");
-	let awarr = get_awarr(awp).expect("couldn't find gwp!");
+	let gwb = WBank::from(&gwp, 5).expect("couldn't find gws!");
+	let awb = WBank::from(&awp, 5).expect("couldn't find gws!");
 	let hd = HData::load(hdp_in).expect("couldn't find heuristic data!");
 	let hrm = Mutex::new(HRec::new());
 
 	match mode.unwrap() {
 		"gen" => {
-			gen_data(&gws, &aws, &hd, 100);
-		}, "play" => {
-			let mut game = Game::new(&gws, &awarr);
+			gen_data(&gwb, &awb, &hd, 100);
+		} "play" => {
+			let mut game = Game::new(gwp, awp);
 			game.start();
-		}, "solve" => {
-			let dt = solve_given(w, &gws, &aws, NGUESSES as i32, &hd, &hrm);
+		} "solve" => {
+			let dt = solve_given(w, &gwb, &awb, NGUESSES as i32, &hd, &hrm);
 			dt.unwrap().pprint(&String::from(""), 0)
-		}, _ => {}
+		} _ => {}
 	}
 
 	Ok(())
