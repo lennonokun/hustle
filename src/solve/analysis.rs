@@ -1,15 +1,16 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader, Write, Result};
 use std::path::Path;
+use std::sync::Mutex;
 
 use crate::ds::*;
 
 // loaded heuristic data
 // let ht[0] be zero to make indexing easier, so +1
 // does this really need to be f64
-#[derive(Debug)]
 pub struct HData {
 	approx: [f64; NWORDS+1],
+	pub hrm: Mutex<HRec>,
 }
 
 // records heuristic data 
@@ -29,7 +30,7 @@ impl HData {
 			.filter_map(|s| s.ok()?.parse::<f64>().ok())
 			.collect::<Vec<f64>>()
 			.try_into().expect("expected NWORDS+1 lines in heuristic cache");
-		Ok(Self {approx})
+		Ok(Self {approx: approx, hrm: Mutex::new(HRec::new())})
 	}
 
 	#[inline]

@@ -24,10 +24,8 @@ const BRC: &'static str = "┘";
 
 const MENUWIDTH: u16 = 17;
 const MENUHEIGHT: u16 = 8;
-const MENU_OFFX: [u16; 2] = [11, 11];
+const MENU_OFFX: [u16; 2] = [12, 12];
 const MENU_OFFY: [u16; 2] = [4, 5];
-const MENU_NX: u16 = 9;
-const MENU_NY: u16 = 4;
 const MENUSCREEN: [&'static str; MENUHEIGHT as usize] = [
 	"┌────────────────┐",
 	"│                │",
@@ -225,9 +223,13 @@ impl <'a, P: AsRef<Path>>
 		} else {
 			write!(self.stdout, "Answers were:");
 			for (i, ans) in self.answers.iter().enumerate() {
-				write!(self.stdout, "{}{}. {}",
-							cursor::Goto(2, i as u16 + 3),
-							i + 1, ans.to_string());
+				let col = i as u16 % self.ncols;
+				let row = i as u16 / self.ncols;
+				let x = (self.wlen as u16 + 1) * col + 2;
+				let y = row + 4;
+				write!(self.stdout, "{}{}",
+							cursor::Goto(x, y),
+							ans.to_string());
 			}
 		}
 
