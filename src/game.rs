@@ -21,6 +21,8 @@ const ULC: &'static str = "┌";
 const URC: &'static str = "┐";
 const BLC: &'static str = "└";
 const BRC: &'static str = "┘";
+const MLC: &'static str = "├";
+const MRC: &'static str = "┤";
 
 const MENUWIDTH: u16 = 24;
 const MENUHEIGHT: u16 = 9;
@@ -167,6 +169,47 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		// self.stdout.flush().unwrap();
 	}
 
+	fn draw_status_base(&mut self) {
+		write!(self.stdout, "{}", cursor::Goto(1,3));
+		self.stdout.write(MLC.as_bytes());
+		for _ in 1..self.width-1 {
+			self.stdout.write(HORZE.as_bytes()).unwrap();
+		}
+		self.stdout.write(MRC.as_bytes());
+	}
+
+	fn draw_status(&mut self) {
+		write!(self.stdout, "{}", cursor::Goto(2,2));
+		write!(self.stdout, "guesses: {}/{}, solved: {}/{}, scroll: {}/{}",
+					 self.turn, self.turn + NEXTRA,
+					 self.ndone, self.nwords,
+					 self.scroll + 1, self.nrows);
+	}
+	
+	fn draw_fbc_row(&mut self, ncol: u16, nrow: u16) {
+		let goto = cursor::Goto(ncol*(self.wlen as u16 + 1) + 2, nrow + 4);
+		let s = self.cols.get((self.ncols * self.scroll + ncol) as usize)
+			.and_then(|fbc| fbc.rows.get(nrow as usize))
+			.unwrap_or(&self.empty_string);
+		write!(self.stdout, "{}{}", goto, s);
+	}
+	
+	fn draw_fbcols(&mut self) {
+		for nrow in 0..cmp::min(self.turn, self.maxrow) {
+			for ncol in 0..self.ncols {
+				self.draw_fbc_row(ncol, nrow as u16)
+			}
+		}
+		self.stdout.flush();
+	}
+	
+	fn draw_empty_col(&mut self, ncol: u16) {
+		for nrow in 0..cmp::min(self.turn, self.maxrow) {
+			let goto = cursor::Goto(ncol*(self.wlen as u16 + 1) + 2, nrow + 2);
+			write!(self.stdout, "{}{}", goto, self.empty_string);
+		}
+	}
+
 	fn menu_screen(&mut self) {
 		let x0 = (self.width - MENUWIDTH) / 2;
 		let y0 = (self.height - MENUHEIGHT)/ 2;
@@ -265,30 +308,6 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		}
 		return (restart, menu);
 	}
-	
-	fn draw_fbc_row(&mut self, ncol: u16, nrow: u16) {
-		let goto = cursor::Goto(ncol*(self.wlen as u16 + 1) + 2, nrow + 2);
-		let s = self.cols.get((self.ncols * self.scroll + ncol) as usize)
-			.and_then(|fbc| fbc.rows.get(nrow as usize))
-			.unwrap_or(&self.empty_string);
-		write!(self.stdout, "{}{}", goto, s);
-	}
-	
-	fn redraw_fbcols(&mut self) {
-		for nrow in 0..cmp::min(self.turn, self.maxrow) {
-			for ncol in 0..self.ncols {
-				self.draw_fbc_row(ncol, nrow as u16)
-			}
-		}
-		self.stdout.flush();
-	}
-	
-	fn draw_empty_col(&mut self, ncol: u16) {
-		for nrow in 0..cmp::min(self.turn, self.maxrow) {
-			let goto = cursor::Goto(ncol*(self.wlen as u16 + 1) + 2, nrow + 2);
-			write!(self.stdout, "{}{}", goto, self.empty_string);
-		}
-	}
 
 	pub fn start(&mut self) {
 		let termsz = terminal_size().ok();
@@ -300,8 +319,10 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		let mut menu = true;
 		
 		while cont {
-			self.draw_base();
-			if menu {self.menu_screen()}
+			if menu {
+				self.draw_base();
+				self.menu_screen();
+			}
 
 			self.ncols = (self.width - 1) / (self.wlen + 1) as u16;
 			self.nrows = (self.nwords - 1) / self.ncols + 1;
@@ -318,13 +339,15 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 			self.cols = self.answers.iter()
 				.map(|ans| FeedbackCol::new(*ans))
 				.collect();
-
-			self.draw_base();
 			let limit = self.nwords + NEXTRA;
 			let mut quit = false;
 			let mut guess = String::new();
+			
+			self.draw_base();
+			self.draw_status_base();
 
 			while self.turn < limit && self.ndone < self.nwords as u16 && !quit {
+				self.draw_status();
 				write!(self.stdout, "{}",
 							 cursor::Goto(guess.len() as u16 + 2, self.height-1));
 				self.stdout.flush();
@@ -345,10 +368,10 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 						quit = true;
 					} Key::Up => {
 						self.scroll = (self.scroll + self.nrows - 1) % self.nrows;
-						self.redraw_fbcols();
+						self.draw_fbcols();
 					} Key::Down => {
 						self.scroll = (self.scroll + 1) % self.nrows;
-						self.redraw_fbcols();
+						self.draw_fbcols();
 					} _ => {}
 				}
 
@@ -368,7 +391,7 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 						if let Some(i) = i_done {
 							// remove finished column and redraw entirely
 							self.cols.remove(i);
-							self.redraw_fbcols();
+							self.draw_fbcols();
 						} else if self.turn <= self.maxrow {
 							// or just draw guesses
 							for i in 0..self.ncols {
