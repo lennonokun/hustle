@@ -1,6 +1,5 @@
 use std::io::{self, Write, StdinLock, StdoutLock};
 use std::time::Instant;
-use std::path::Path;
 use std::cmp;
 
 use termion::{terminal_size, clear, cursor, color, style};
@@ -11,6 +10,7 @@ use termion::event::Key;
 use crate::ds::*;
 
 const NEXTRA: u16 = 5;
+const MAXNWORDS: u16 = 2000;
 // space
 const EMPTY: &'static str = " ";
 // edges
@@ -22,19 +22,26 @@ const URC: &'static str = "┐";
 const BLC: &'static str = "└";
 const BRC: &'static str = "┘";
 
-const MENUWIDTH: u16 = 17;
-const MENUHEIGHT: u16 = 8;
-const MENU_OFFX: [u16; 2] = [12, 12];
-const MENU_OFFY: [u16; 2] = [4, 5];
+const MENUWIDTH: u16 = 24;
+const MENUHEIGHT: u16 = 9;
+const MENU_OFFX: [u16; 3] = [14, 14, 14];
+const MENU_OFFY: [u16; 3] = [4, 5, 6];
 const MENUSCREEN: [&'static str; MENUHEIGHT as usize] = [
-	"┌────────────────┐",
-	"│                │",
-	"│    WORDLERS    │",
-	"│                │",
-	"│   nwords:      │",
-	"│     wlen:      │",
-	"│                │",
-	"└────────────────┘",
+	"┌──────────────────────┐",
+	"│                      │",
+	"│       WORDLERS       │",
+	"│                      │",
+	"│     nwords:          │",
+	"│       wlen:          │",
+	"│       bank:          │",
+	"│                      │",
+	"└──────────────────────┘",
+];
+
+const NBANKS: u8 = 2;
+const WBPATHS: [[&'static str; 2]; 2] = [
+	["data/guess_words", "data/answer_words"],
+	["data/guess_words2", "data/answer_words2"],
 ];
 
 #[derive(Debug)]
@@ -81,9 +88,7 @@ impl FeedbackCol {
 	}
 }
 
-pub struct Game<P: AsRef<Path>, R, W> {
-	gwp: P,
-	awp: P,
+pub struct Game<R, W> {
 	gwb: WBank,
 	awb: WBank,
 	stdin: R,
@@ -104,14 +109,11 @@ pub struct Game<P: AsRef<Path>, R, W> {
 	answers: Vec<Word>,
 }
 
-impl <'a, P: AsRef<Path>>
-	Game<P, Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
-	pub fn new(gwp: P, awp: P) -> Self {
+impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
+	pub fn new() -> Self {
 		let stdin = io::stdin().lock().keys();
 		let stdout = io::stdout().lock().into_raw_mode().unwrap();
 		Game {
-			gwp: gwp,
-			awp: awp,
 			gwb: WBank {wlen: 0, data: Vec::new()},
 			awb: WBank {wlen: 0, data: Vec::new()},
 			stdin: stdin,
@@ -166,8 +168,8 @@ impl <'a, P: AsRef<Path>>
 	}
 
 	fn menu_screen(&mut self) {
-		let x0 = self.width / 2 - 8;
-		let y0 = self.height / 2 - 3;
+		let x0 = (self.width - MENUWIDTH) / 2;
+		let y0 = (self.height - MENUHEIGHT)/ 2;
 		for i in 0..MENUHEIGHT {
 			write!(self.stdout, "{}",
 						 cursor::Goto(x0, y0 + i));
@@ -176,14 +178,24 @@ impl <'a, P: AsRef<Path>>
 		self.stdout.flush();
 
 		let mut cont = true;
-		let mut s_arr = [String::new(), String::new()];
+		let mut s_arr = [String::new(), String::new(), String::new()];
 		let mut idx = 0usize;
+		let mut nwords: Option<u16> = None;
+		let mut wlen: Option<u8> = None;
+		let mut nbank: Option<u8> = None;
 		while cont {
 			let x = x0 + MENU_OFFX[idx];
 			let y = y0 + MENU_OFFY[idx];
 			match self.stdin.next().unwrap().unwrap() {
 				Key::Char('\n') => {
-					cont = false;
+					nwords = s_arr[0].parse().ok();
+					wlen = s_arr[1].parse().ok();
+					nbank = s_arr[2].parse().ok();
+					if let (Some(nwords), Some(wlen), Some(nbank)) = (nwords, wlen, nbank) {
+						cont = !((1..=MAXNWORDS).contains(&nwords) &&
+										 (MINWLEN..=MAXWLEN).contains(&(wlen as usize)) &&
+										 (0..=NBANKS).contains(&nbank));
+					}
 				} Key::Char(c) => if '0' <= c && c <= '9' {
 					write!(self.stdout, "{}{}",
 									cursor::Goto(x + s_arr[idx].len() as u16, y),
@@ -195,20 +207,19 @@ impl <'a, P: AsRef<Path>>
 					write!(self.stdout, "{} ",
 									cursor::Goto(x + s_arr[idx].len() as u16, y));
 					self.stdout.flush();
-				} Key::Up | Key::Down => {
-					idx = (idx + 1) % 2;
+				} Key::Up => {
+					idx = (idx - 1) % 3;
+				} Key::Down => {
+					idx = (idx + 1) % 3;
 				} _ => {}
 			}
 		}
 
-		self.nwords = s_arr[0].parse().unwrap();
-
-		let wlen = s_arr[1].parse().unwrap();
-		if self.wlen == wlen {return}
-		self.gwb = WBank::from(&self.gwp, wlen).unwrap();
-		self.awb = WBank::from(&self.awp, wlen).unwrap();
-		eprintln!("wlen: {}, gwb len: {}", self.wlen, self.gwb.data.len());
-		self.wlen = wlen;
+		let nbank = nbank.unwrap();
+		self.nwords = nwords.unwrap();
+		self.wlen = wlen.unwrap();
+		self.gwb = WBank::from(&WBPATHS[nbank as usize][0], self.wlen).unwrap();
+		self.awb = WBank::from(&WBPATHS[nbank as usize][1], self.wlen).unwrap();
 	}
 
 	fn end_screen(&mut self) -> (bool, bool) {
@@ -216,10 +227,10 @@ impl <'a, P: AsRef<Path>>
 		write!(self.stdout, "{}", cursor::Goto(2,2));
 		if self.ndone == self.nwords {
 			write!(self.stdout, "Won n={} in {}/{}, {:.3}!",
-							self.nwords,
-							self.turn,
-							self.nwords + NEXTRA as u16,
-							self.t_start.elapsed().as_millis() as f64 / 1000.);
+						 self.nwords,
+						 self.turn,
+						 self.nwords + NEXTRA as u16,
+						 self.t_start.elapsed().as_millis() as f64 / 1000.);
 		} else {
 			write!(self.stdout, "Answers were:");
 			for (i, ans) in self.answers.iter().enumerate() {

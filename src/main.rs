@@ -107,7 +107,7 @@ fn main() -> MainResult {
 		"gen" => {
 			gen_data(&gwb, &awb, &hd, 100);
 		} "play" => {
-			let mut game = Game::new(gwp, awp);
+			let mut game = Game::new();
 			game.start();
 		} "solve" => {
 			let dt = solve_given(w, &gwb, &awb, NGUESSES as i32, &hd);
