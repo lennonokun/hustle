@@ -4,7 +4,12 @@
 wordlers is a terminal-based wordle clone and wordle solver written in rust.
 
 ## TODO
-* fix warnings fixed by allow
+* don't ignore warnings
 * improve end screen + fix overdrawing
 * generally refactor
-* add dictionary capabilities to learn the word
+* dictionary capabilities
+* show untested letters
+* syncing with wordle's daily
+* make installable
+  - PKGBUILD
+  - config file (colors, replacement method, etc)
