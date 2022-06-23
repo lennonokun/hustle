@@ -15,10 +15,6 @@ use crate::ds::*;
 mod game;
 use crate::game::Game;
 
-// best found: salet, 3.42052836
-// out1: salet.BBBYB.drone.BGGBG didnt find prove?
-// out2: reast/BYYYY not finding whelk?
-// diff: salet.bbbgg guesses CERED 29 not CERNE 28
 // fix bug where non words are displayed if you guess them on turn 1
 fn gen_data(gwb: &WBank, awb: &WBank, hd: &HData, n: i32) {
 	let hrm = Mutex::new(HRec::new());
@@ -121,11 +117,14 @@ fn main() -> MainResult {
 	}
 
 	let wlen = 5; // FOR NOW
-	let w = Word::from_str("SALET").expect("couldn't make word");
 	let gwb = WBank::from(&gwp, wlen).expect("couldn't find gwb!");
 	let awb = WBank::from(&awp, wlen).expect("couldn't find awb!");
 	let hd = HData::load(hdp_in).expect("couldn't find heuristic data!");
 
+	let w1 = Word::from_str("cerne").expect("couldn't make word");
+	let w2 = Word::from_str("tweet").expect("couldn't make word");
+	let fb = Feedback::from(w1, w2).unwrap();
+	println!("{}", fb.to_string());
 	match mode.unwrap() {
 		"gen" => {
 			gen_data(&gwb, &awb, &hd, 100);
@@ -133,10 +132,9 @@ fn main() -> MainResult {
 			let mut game = Game::new();
 			game.start();
 		} "solve" => {
+			// TODO add turns, and count number of words for eval
 			let dt = solve(solve_str.unwrap(), wlen, &gwp, &awp, &hdp_in)
 				.unwrap();
-			println!("SALET: {}/{} = {:.6}", dt.get_tot(), NWORDS,
-							 dt.get_tot() as f64 / NWORDS as f64);
 			dt.pprint(&String::from(""), 0)
 		} _ => {}
 	}

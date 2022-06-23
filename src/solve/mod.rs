@@ -8,7 +8,7 @@ use crate::solve::analysis::HData;
 pub mod util;
 use crate::solve::util::*;
 
-const NTOPS: usize = 7;
+const NTOPS: usize = 10;
 const ENDGCUTOFF: usize = 15;
 
 struct GivenData {

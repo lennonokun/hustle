@@ -86,6 +86,7 @@ impl Feedback {
 					if gw.data[i] == aw.data[j] && (use_bs & 1 << j == 0) {
 						fb.y_bs |= 1 << i;
 						use_bs |= 1 << j;
+						break;
 					}
 				}
 			}
