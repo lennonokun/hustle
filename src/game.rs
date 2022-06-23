@@ -210,7 +210,7 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		}
 	}
 
-	fn menu_screen(&mut self) {
+	fn menu_screen(&mut self) -> bool {
 		let x0 = (self.width - MENUWIDTH) / 2;
 		let y0 = (self.height - MENUHEIGHT)/ 2;
 		for i in 0..MENUHEIGHT {
@@ -221,7 +221,9 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		self.stdout.flush();
 
 		let mut cont = true;
+		let mut quit = false;
 		let mut s_arr = [String::new(), String::new(), String::new()];
+
 		let mut idx = 0usize;
 		let mut nwords: Option<u16> = None;
 		let mut wlen: Option<u8> = None;
@@ -254,15 +256,21 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 					idx = (idx - 1) % 3;
 				} Key::Down => {
 					idx = (idx + 1) % 3;
+				} Key::Esc => {
+					cont = false;
+					quit = true;
 				} _ => {}
 			}
 		}
+
+		if quit {return true}
 
 		let nbank = nbank.unwrap();
 		self.nwords = nwords.unwrap();
 		self.wlen = wlen.unwrap();
 		self.gwb = WBank::from(&WBPATHS[nbank as usize][0], self.wlen).unwrap();
 		self.awb = WBank::from(&WBPATHS[nbank as usize][1], self.wlen).unwrap();
+		return false;
 	}
 
 	fn end_screen(&mut self) -> (bool, bool) {
@@ -321,7 +329,7 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		while cont {
 			if menu {
 				self.draw_base();
-				self.menu_screen();
+				if self.menu_screen() {break};
 			}
 
 			self.ncols = (self.width - 1) / (self.wlen + 1) as u16;

@@ -1,14 +1,11 @@
 use std::io::{BufRead, BufReader, Error};
 use std::fs::File;
 use std::path::Path;
+use std::collections::HashMap;
 use rand::prelude::*;
-
-use std::collections::{HashSet, HashMap};
-use std::mem::MaybeUninit;
 
 pub const NLETS: usize = 5;
 pub const NGUESSES: usize = 6;
-// pub const NAlPH: usize = 26;
 pub const NWORDS: usize = 2309;
 pub const MINWLEN: usize = 4;
 pub const MAXWLEN: usize = 11;

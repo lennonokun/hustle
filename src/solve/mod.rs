@@ -8,7 +8,9 @@ use crate::solve::analysis::HData;
 pub mod util;
 use crate::solve::util::*;
 
+// number of top words to try
 const NTOPS: usize = 10;
+// number of remaining words makes it "endgame"
 const ENDGCUTOFF: usize = 15;
 
 struct GivenData {
@@ -21,9 +23,12 @@ struct GivenData {
 pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank,
 									 n: i32, hd: &HData) -> Option<DTree> { 
 	let alen = awb.data.len();
+
 	if alen == 1 && gw == *awb.data.iter().next().unwrap() {
+		// leaf if guessed
 		return Some(DTree::Leaf);
 	} else if n == 0 || (n == 1 && alen > 20) {
+		// impossible guesses
 		return None
 	}
 
@@ -37,10 +42,10 @@ pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank,
 		if gd.lock().unwrap().stop {return}
 		if fb.is_correct() {
 			let mut gd2 = gd.lock().unwrap();
-			// gd2.tot += 1;
 			gd2.fbmap.insert(Feedback::from_str("GGGGG").unwrap(),
 											 DTree::Leaf);
 		} else {
+			// worth?
 			let dt2 = if alen > ENDGCUTOFF {
 				solve_state(&reduce_words(gw, &gwb), &wb, n-1, hd)
 			} else {
@@ -50,6 +55,7 @@ pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank,
 			let mut gd2 = gd.lock().unwrap();
 			match dt2 {
 				None => {
+					// give up if inf
 					gd2.stop = true;
 				} Some(dt2) => {
 					gd2.tot += dt2.get_tot();
@@ -59,9 +65,8 @@ pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank,
 		} 
 	});
 
+	// construct dtree
 	let gd2 = gd.into_inner().unwrap();
-	// eprintln!("gw: {}, awb: {}\neval: {}",
-						// gw.to_string(), awb.to_string(), gd2.eval);
 	if gd2.stop {return None}
 	return Some(DTree::Node{
 		tot: gd2.tot, word: gw, fbmap: gd2.fbmap
@@ -77,11 +82,16 @@ struct SolveData {
 // get upper bound for mean guesses at state
 pub fn solve_state(gwb: &WBank, awb: &WBank,
 									 n: i32, hd: &HData) -> Option<DTree> {
-	// worth?
 	let alen = awb.data.len();
+
+	// inf when ran out of turns
+	if n == 0 {
+		hd.hrm.lock().unwrap().record_inf(n as usize);
+		return None
+	}
+
+	// one answer -> guess it
 	if alen == 1 {
-		// eprintln!("awb: {}, eval: {}", awb.to_string(), alen);
-		// 100% chance for one guess
 		hd.hrm.lock().unwrap().record(n as usize, 1, 1.0);
 		return Some(DTree::Node{
 			tot: 1, 
@@ -91,12 +101,6 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 		});
 	}
 
-	if n == 0 {
-		hd.hrm.lock().unwrap().record_inf(n as usize);
-		return None
-	}
-
-	// todo update comments for no above?
 	let sd = Mutex::new(SolveData{
 		dt: Some(DTree::Leaf),
 		tot: i32::MAX,
@@ -133,10 +137,8 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 	}
 	// dont bother checking other words if a 2 was found
 	if sd.lock().unwrap().tot == alen as i32 {
-		// cringe?
 		hd.hrm.lock().unwrap().record(n as usize, alen,
 																	sd.lock().unwrap().tot as f64); 
-		// eprintln!("awb: {}, eval: {}", awb.to_string(), alen);
 		return sd.into_inner().unwrap().dt;
 	}
 
@@ -155,10 +157,12 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 					if sd2.stop {
 						return;
 					} else if tot2 < alen as i32 {
+						// can't do better
 						sd2.dt = Some(dt2);
 						sd2.tot = tot2;
 						sd2.stop = true;
 					} else if tot2 < sd2.tot {
+						// update best
 						sd2.dt = Some(dt2);
 						sd2.tot = tot2;
 					}
@@ -173,7 +177,6 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 		return None;
 	} else {
 		hd.hrm.lock().unwrap().record(n as usize, alen, sd2.tot as f64);
-		// eprintln!("awb: {}, eval: {}", awb.to_string(), sd2.eval);
 		return sd2.dt;
 	}
 }

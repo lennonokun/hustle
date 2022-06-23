@@ -1,6 +1,5 @@
 #![allow(dead_code, unused_variables, unused_must_use)]
 use std::sync::Mutex;
-// use std::error::Error;
 use std::time::Instant;
 use std::path::Path;
 use std::io::{self, Error, ErrorKind};
@@ -15,7 +14,6 @@ use crate::ds::*;
 mod game;
 use crate::game::Game;
 
-// fix bug where non words are displayed if you guess them on turn 1
 fn gen_data(gwb: &WBank, awb: &WBank, hd: &HData, n: i32) {
 	let hrm = Mutex::new(HRec::new());
 	let gws2 = util::top_words(&gwb, &awb, &hd, n as usize);
