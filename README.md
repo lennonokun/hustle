@@ -7,8 +7,8 @@ wordlers is a terminal-based wordle clone and wordle solver written in
 arsetn rust, inspired by Alex Selby's article [The best strategies for
 Wordle](http://sonorouschocolate.com/notes/index.php/The_best_strategies_for_Wordle)
 and [code](https://github.com/alex1770/wordle), along with the many
-wordle spin-offs like [octordle](octordle.com) and
-[hellowordl](hellowordl.net).
+wordle spin-offs like [octordle](https://octordle.com) and
+[hellowordl](https://hellowordl.net).
 
 ## Running
 Either build the crate with `cargo build --release`, an executable
