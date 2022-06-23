@@ -4,7 +4,7 @@
 
 ## Overview
 wordlers is a terminal-based wordle clone and wordle solver written in
-arsetn rust, inspired by Alex Selby's article [The best strategies for
+rust, inspired by Alex Selby's article [The best strategies for
 Wordle](http://sonorouschocolate.com/notes/index.php/The_best_strategies_for_Wordle)
 and [code](https://github.com/alex1770/wordle), along with the many
 wordle spin-offs like [octordle](https://octordle.com) and
