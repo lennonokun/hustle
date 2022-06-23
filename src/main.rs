@@ -1,7 +1,8 @@
-#![allow(dead_code, unused_variables, unused_must_use)]
+#![allow(unused, unused_variables, unused_must_use)]
 use std::sync::Mutex;
 use std::time::Instant;
 use std::path::Path;
+use std::fs::File;
 use std::io::{self, Error, ErrorKind};
 use main_error::{MainError, MainResult};
 use std::env;
@@ -29,7 +30,8 @@ fn gen_data(gwb: &WBank, awb: &WBank, hd: &HData, n: i32) {
 		.save("data/hdata.csv", "data/hinfs.csv").unwrap();
 }
 
-fn solve<P>(s: String, wlen: u8, gwp: P, awp: P, hdp: P)
+fn solve<P>(s: String, wlen: u8, gwp: P, awp: P,
+						hdp: P, dtp: Option<String>)
 	-> io::Result<()> where P: AsRef<Path> {
 	let gwb = WBank::from(&gwp, wlen)
 		.expect("couldn't find guess words!");
@@ -62,39 +64,33 @@ fn solve<P>(s: String, wlen: u8, gwp: P, awp: P, hdp: P)
 	}.expect("couldn't make dtree!");
 
 	if let DTree::Node{tot, word, ref fbmap} = dt {
-		println!("found {}: {}/{}={:.6}\n",
+		println!("found {}: {}/{} = {:.6}",
 							word.to_string(), tot, awb.data.len(),
 							tot as f64 / awb.data.len() as f64);
-		dt.pprint(&"".into(), turn);
+		if let Some(dtp) = dtp {
+			let mut f = File::create(dtp)?;
+			dt.pprint(&mut f, &"".into(), turn);
+		}
 	}
 
 	Ok(())
 }
 
 // ./wordlers
-// (gen_data)|(play <n>)|(solve <str>)
-// [--(gwp|awp|hdp_in|hdp_out1|hdp_out2) <PATH>]*
+// (gen)|(play)|(solve <str>)
+// [--(dt|gwp|awp|hdp_in|hdp_out1|hdp_out2) <PATH>]*
 fn main() -> MainResult {
-	// let dt = solve_word(String::from("SALET"),
-										 // "data/guess_words",
-										 // "data/answer_words",
-										 // "data/happrox.csv");
-	// println!("{}", dt.unwrap().get_eval());
-
-	// let mut stdin = io::stdin().lock();
-	// let mut stdout = io::stdout().lock();
-	// let mut stderr = io::stderr().lock();
 	let gwp = "data/guess_words";
 	let awp = "data/answer_words";
 	let hdp_in = "data/happrox.csv";
 	let hdp_out1 = "data/hdata.csv";
 	let hdp_out2 = "data/hinfs.csv";
-	let mut args = env::args().skip(1);
 	let mut mode = None::<&str>;
-	let mut play_n = None::<u16>;
+	let mut dtree_out = None::<String>;
 	let mut solve_str = None::<String>;
+	let mut args = env::args().skip(1);
 
-	// let mut first = true;
+	// required
 	let first = args.next().expect("Expected an argument!");
 	match first.as_str() {
 		"gen" => {
@@ -104,19 +100,27 @@ fn main() -> MainResult {
 		} "solve" => {
 			mode = Some("solve");
 			// should no argument just mean solve root?
-			solve_str = Some(args.next()
-											 .expect("'solve' requires a secondary argument"));
+			solve_str = Some(args.next().expect(
+				"'solve' requires a secondary argument"));
 		} s => {
 			return Err(MainError::from(
 				Error::new(ErrorKind::Other,
 									format!("Invalid argument '{}' found", s))));
 		}
 	}
-	
-	if let Some(s) = args.next() {
-		return Err(MainError::from(
-			Error::new(ErrorKind::Other,
-								 format!("Extraneous argument '{}' found", s))));
+
+	// optional
+	while let Some(s) = args.next() {
+		match s.as_str() {
+			"--dt" => {
+				dtree_out = Some(args.next().expect(
+					"'--dt' requires a secondary argument"));
+			} s => {
+			return Err(MainError::from(
+				Error::new(ErrorKind::Other,
+									 format!("Invalid argument '{}' found", s))));
+			}
+		}
 	}
 
 	let wlen = 5; // FOR NOW
@@ -131,8 +135,8 @@ fn main() -> MainResult {
 			let mut game = Game::new();
 			game.start();
 		} "solve" => {
-			solve(solve_str.unwrap(), wlen, &gwp, &awp, &hdp_in)
-				.unwrap();
+			solve(solve_str.unwrap(), wlen, gwp, awp,
+						hdp_in, dtree_out).unwrap();
 		} _ => {}
 	}
 

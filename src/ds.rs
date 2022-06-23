@@ -1,4 +1,4 @@
-use std::io::{BufRead, BufReader, Error};
+use std::io::{BufRead, BufReader, Error, Write};
 use std::fs::File;
 use std::path::Path;
 use std::collections::HashMap;
@@ -213,19 +213,20 @@ impl DTree {
 		}
 	}
 
-	pub fn pprint(&self, indent: &String, n: i32) {
+	pub fn pprint<W>(&self, out: &mut W, indent: &String, n: i32)
+		where W: Write {
 		match self {
 			DTree::Leaf => {}
 			DTree::Node{tot, word, fbmap} => {
-				println!("{}{}, {}", indent, word.to_string(), tot);
+				writeln!(out, "{}{}, {}", indent, word.to_string(), tot);
 				let mut indent2 = indent.clone();
 				indent2.push(' ');
 				let mut items : Vec<(&Feedback, &DTree)> =
 					fbmap.iter().collect();
 				items.sort_by_key(|(_fb, dt)| -dt.get_tot());
 				for (fb, dt) in items {
-					println!("{}{}{}", indent2, fb.to_string(), n);
-					dt.pprint(&indent2,n+1);
+					writeln!(out, "{}{}{}", indent2, fb.to_string(), n);
+					dt.pprint(out, &indent2,n+1);
 				}
 			}
 		}
