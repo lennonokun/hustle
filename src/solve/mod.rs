@@ -8,12 +8,12 @@ use crate::solve::analysis::HData;
 pub mod util;
 use crate::solve::util::*;
 
-const NTOPS: usize = 15;
+const NTOPS: usize = 7;
 const ENDGCUTOFF: usize = 15;
 
 struct GivenData {
 	fbmap: FbMap<DTree>,
-	eval: f64,
+	tot: i32,
 	stop: bool,
 }
 
@@ -29,13 +29,18 @@ pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank,
 
 	let gd = Mutex::new(GivenData{
 		fbmap: FbMap::new(),
-		eval: 1.0,
+		tot: alen as i32,
 		stop: false,
 	});
 
 	fb_partition(gw, awb).into_par_iter().for_each(|(fb, wb)| {
 		if gd.lock().unwrap().stop {return}
-		if !fb.is_correct() {
+		if fb.is_correct() {
+			let mut gd2 = gd.lock().unwrap();
+			// gd2.tot += 1;
+			gd2.fbmap.insert(Feedback::from_str("GGGGG").unwrap(),
+											 DTree::Leaf);
+		} else {
 			let dt2 = if alen > ENDGCUTOFF {
 				solve_state(&reduce_words(gw, &gwb), &wb, n-1, hd)
 			} else {
@@ -47,8 +52,7 @@ pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank,
 				None => {
 					gd2.stop = true;
 				} Some(dt2) => {
-					gd2.eval += (wb.data.len() as f64/alen as f64)
-						* dt2.get_eval();
+					gd2.tot += dt2.get_tot();
 					gd2.fbmap.insert(fb, dt2);
 				}
 			}
@@ -56,15 +60,17 @@ pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank,
 	});
 
 	let gd2 = gd.into_inner().unwrap();
+	// eprintln!("gw: {}, awb: {}\neval: {}",
+						// gw.to_string(), awb.to_string(), gd2.eval);
 	if gd2.stop {return None}
 	return Some(DTree::Node{
-		eval: gd2.eval, word: gw, fbmap: gd2.fbmap
+		tot: gd2.tot, word: gw, fbmap: gd2.fbmap
 	});
 }
 
 struct SolveData {
 	dt: Option<DTree>,
-	eval: f64,
+	tot: i32,
 	stop: bool,
 }
 
@@ -74,10 +80,11 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 	// worth?
 	let alen = awb.data.len();
 	if alen == 1 {
+		// eprintln!("awb: {}, eval: {}", awb.to_string(), alen);
 		// 100% chance for one guess
 		hd.hrm.lock().unwrap().record(n as usize, 1, 1.0);
 		return Some(DTree::Node{
-			eval: 1.0, 
+			tot: 1, 
 			word: *awb.data.iter().next().unwrap(),
 			fbmap: [(Feedback::from_str("GGGGG").unwrap(),
 							 DTree::Leaf)].into()
@@ -92,7 +99,7 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 	// todo update comments for no above?
 	let sd = Mutex::new(SolveData{
 		dt: Some(DTree::Leaf),
-		eval: f64::INFINITY,
+		tot: i32::MAX,
 		stop: false,
 	});
 
@@ -108,27 +115,28 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 				Some(dt2) => {
 					// check stop
 					let mut sd2 = sd.lock().unwrap();
-					let eval2 = dt2.get_eval();
+					let tot2 = dt2.get_tot();
 					if sd2.stop {
 						return;
-					} else if eval2 < 1.999 {
-						// hd.record(alen, eval2); 
+					} else if tot2 < alen as i32 {
+						// hd.record(alen, tot2); 
 						sd2.dt = Some(dt2);
-						sd2.eval = eval2;
+						sd2.tot = tot2;
 						sd2.stop = true;
-					} else if eval2 < sd2.eval {
+					} else if tot2 < sd2.tot {
 						sd2.dt = Some(dt2);
-						sd2.eval = eval2;
+						sd2.tot = tot2;
 					}
 				}
 			}
 		});
 	}
 	// dont bother checking other words if a 2 was found
-	if sd.lock().unwrap().eval < 2.001 {
+	if sd.lock().unwrap().tot == alen as i32 {
 		// cringe?
 		hd.hrm.lock().unwrap().record(n as usize, alen,
-																	sd.lock().unwrap().eval); 
+																	sd.lock().unwrap().tot as f64); 
+		// eprintln!("awb: {}, eval: {}", awb.to_string(), alen);
 		return sd.into_inner().unwrap().dt;
 	}
 
@@ -143,28 +151,29 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 				None => {},
 				Some(dt2) => {
 					let mut sd2 = sd.lock().unwrap();
-					let eval2 = dt2.get_eval(); 
+					let tot2 = dt2.get_tot(); 
 					if sd2.stop {
 						return;
-					} else if eval2 < 2.001 {
+					} else if tot2 < alen as i32 {
 						sd2.dt = Some(dt2);
-						sd2.eval = eval2;
+						sd2.tot = tot2;
 						sd2.stop = true;
-					} else if eval2 < sd2.eval {
+					} else if tot2 < sd2.tot {
 						sd2.dt = Some(dt2);
-						sd2.eval = eval2;
+						sd2.tot = tot2;
 					}
 				}
 			};
 		});
 
 	let sd2 = sd.into_inner().unwrap();
-	if sd2.eval == f64::INFINITY {
+	if sd2.tot == i32::MAX {
 		// todo why inf?
 		hd.hrm.lock().unwrap().record_inf(n as usize);
 		return None;
 	} else {
-		hd.hrm.lock().unwrap().record(n as usize, alen, sd2.eval);
+		hd.hrm.lock().unwrap().record(n as usize, alen, sd2.tot as f64);
+		// eprintln!("awb: {}, eval: {}", awb.to_string(), sd2.eval);
 		return sd2.dt;
 	}
 }

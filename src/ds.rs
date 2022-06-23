@@ -134,6 +134,7 @@ impl Feedback {
 	}
 }
 
+#[derive(Debug)]
 pub struct WBank {
 	pub data: Vec<Word>,
 	pub wlen: u8,
@@ -166,6 +167,13 @@ impl WBank {
 			.cloned()
 			.collect()
 	}
+
+	pub fn to_string(&self) -> String {
+		let s = self.data.iter()
+			.map(|w| w.to_string())
+			.collect::<Vec<String>>().join(" ");
+		format!("[{s}]")
+	}
 }
 
 pub type FbMap<T> = HashMap<Feedback, T>; 
@@ -175,8 +183,8 @@ pub type FbMap<T> = HashMap<Feedback, T>;
 pub enum DTree {
 	Leaf,
 	Node {
-		// mean guesses to leaf
-		eval: f64,
+		// total leaf depth
+		tot: i32,
 		// word
 		word: Word,
 		// children per unique feedback
@@ -188,35 +196,34 @@ impl DTree {
 	pub fn follow(self: &Self, fb: Feedback) -> Option<&DTree> {
 		match self {
 			DTree::Leaf => None,
-			DTree::Node{eval, word, fbmap} => fbmap.get(&fb)
+			DTree::Node{tot, word, fbmap} => fbmap.get(&fb)
 		}
 	}
 
-	pub fn get_eval(self: &Self) -> f64 {
+	pub fn get_tot(self: &Self) -> i32 {
 		match self {
-			DTree::Leaf => 0.0,
-			DTree::Node{eval, word, fbmap} => *eval
+			DTree::Leaf => 0,
+			DTree::Node{tot, word, fbmap} => *tot
 		}
 	}
 
 	pub fn get_fbmap(self: &Self) -> Option<&FbMap<DTree>> {
 		match self {
 			DTree::Leaf => None,
-			DTree::Node{eval, word, fbmap} => Some(fbmap)
+			DTree::Node{tot, word, fbmap} => Some(fbmap)
 		}
 	}
 
 	pub fn pprint(self: &Self, indent: &String, n: i32) {
 		match self {
 			DTree::Leaf => {}
-			DTree::Node{eval, word, fbmap} => {
-				println!("{}{}, {}", indent, word.to_string(), eval);
+			DTree::Node{tot, word, fbmap} => {
+				println!("{}{}, {}", indent, word.to_string(), tot);
 				let mut indent2 = indent.clone();
 				indent2.push(' ');
 				let mut items : Vec<(&Feedback, &DTree)> =
 					fbmap.iter().collect();
-				items.sort_by(|(_, dt1), (_, dt2)|
-					dt1.get_eval().partial_cmp(&dt2.get_eval()).unwrap());
+				items.sort_by_key(|(_fb, dt)| -dt.get_tot());
 				for (fb, dt) in items {
 					println!("{}{}{}", indent2, fb.to_string(), n);
 					dt.pprint(&indent2,n+1);

@@ -18,6 +18,7 @@ use crate::game::Game;
 // best found: salet, 3.42052836
 // out1: salet.BBBYB.drone.BGGBG didnt find prove?
 // out2: reast/BYYYY not finding whelk?
+// diff: salet.bbbgg guesses CERED 29 not CERNE 28
 // fix bug where non words are displayed if you guess them on turn 1
 fn gen_data(gwb: &WBank, awb: &WBank, hd: &HData, n: i32) {
 	let hrm = Mutex::new(HRec::new());
@@ -27,7 +28,7 @@ fn gen_data(gwb: &WBank, awb: &WBank, hd: &HData, n: i32) {
 		let inst = Instant::now();
 		let dt = solve_given(*w, &gwb, &awb, 6, &hd);
 		let dur = inst.elapsed().as_millis();
-		println!("{}, {:.3}s", dt.unwrap().get_eval(),
+		println!("{}, {:.3}s", dt.unwrap().get_tot(),
 						 dur as f64 / 1_000.);
 	}
 	hrm.into_inner().unwrap()
@@ -110,19 +111,13 @@ fn main() -> MainResult {
 			let mut game = Game::new();
 			game.start();
 		} "solve" => {
-			let dt = solve_given(w, &gwb, &awb, NGUESSES as i32, &hd);
-			dt.unwrap().pprint(&String::from(""), 0)
+			let dt = solve_word("SALET".into(), wlen, &gwp, &awp, &hdp_in)
+				.unwrap();
+			println!("SALET: {}/{} = {:.6}", dt.get_tot(), NWORDS,
+							 dt.get_tot() as f64 / NWORDS as f64);
+			dt.pprint(&String::from(""), 0)
 		} _ => {}
 	}
 
 	Ok(())
-
-	// dt.unwrap().pprint(&String::from(""), 1);
-					
-	// gen_data(&gws, &aws, &hd, 300);
-	// let mut game = Game::new(&gws, &awarr);
-	// game.start(32);
-	// let dt = solve_given(w, &gws, &aws, 6, &hd, &hr_mut).unwrap();
-	// println!("{}", dt.get_eval());
-
 }
