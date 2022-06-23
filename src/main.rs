@@ -35,19 +35,41 @@ fn gen_data(gwb: &WBank, awb: &WBank, hd: &HData, n: i32) {
 		.save("data/hdata.csv", "data/hinfs.csv").unwrap();
 }
 
-fn solve_word<P>(s: String, wlen: u8, gwp: P, awp: P, hdp: P)
+fn solve<P>(s: String, wlen: u8, gwp: P, awp: P, hdp: P)
 	-> io::Result<DTree> where P: AsRef<Path>  {
-	let w = Word::from(s)
-		.expect("couldn't make word");
 	let gwb = WBank::from(&gwp, wlen)
 		.expect("couldn't find guess words!");
-	let awb = WBank::from(&awp, wlen)
+	let mut awb = WBank::from(&awp, wlen)
 		.expect("couldn't find answer words!");
 	let hd = HData::load(hdp)
 		.expect("couldn't find heuristic data!");
 	let hrm = Mutex::new(HRec::new());
-	solve_given(w, &gwb, &awb, NGUESSES as i32, &hd)
-		.ok_or(Error::new(ErrorKind::Other, "couldn't make dtree!"))
+
+	let mut given = true;
+	let mut fbm = FbMap::new();
+	let mut w = Word::from_str("aaaaa").unwrap();
+	let mut turn = 0;
+	for s in s.split(".") {
+		if given {
+			w = Word::from_str(s).unwrap();
+			fbm = util::fb_partition(w, &awb);
+			turn += 1;
+		} else {
+			let fb = Feedback::from_str(s).unwrap();
+			awb = fbm.get(&fb).unwrap().clone();
+		}
+		given = !given;
+	}
+
+	// println!("{:?}", awb);
+	
+	if given {
+		solve_state(&gwb, &awb, NGUESSES as i32 - turn, &hd)
+			.ok_or(Error::new(ErrorKind::Other, "couldn't make dtree!"))
+	} else {
+		solve_given(w, &gwb, &awb, NGUESSES as i32 - turn, &hd)
+			.ok_or(Error::new(ErrorKind::Other, "couldn't make dtree!"))
+	}
 }
 
 // ./wordlers
@@ -111,7 +133,7 @@ fn main() -> MainResult {
 			let mut game = Game::new();
 			game.start();
 		} "solve" => {
-			let dt = solve_word("SALET".into(), wlen, &gwp, &awp, &hdp_in)
+			let dt = solve(solve_str.unwrap(), wlen, &gwp, &awp, &hdp_in)
 				.unwrap();
 			println!("SALET: {}/{} = {:.6}", dt.get_tot(), NWORDS,
 							 dt.get_tot() as f64 / NWORDS as f64);

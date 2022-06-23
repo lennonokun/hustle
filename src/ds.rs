@@ -29,7 +29,7 @@ impl Word {
 			// MaybeUninit::uninit().assume_init()
 		// };
 		if s.len() > MAXWLEN {return None}
-		for (i,c) in s.chars().enumerate() {
+		for (i,c) in s.to_ascii_uppercase().chars().enumerate() {
 			data[i] = c as u8 - 'A' as u8;
 		}
 		Some(Word {data: data, wlen: wlen})
@@ -42,7 +42,7 @@ impl Word {
 			// MaybeUninit::uninit().assume_init()
 		// };
 		if s.len() > MAXWLEN {return None}
-		for (i,c) in s.chars().enumerate() {
+		for (i,c) in s.to_ascii_uppercase().chars().enumerate() {
 			data[i] = c as u8 - 'A' as u8;
 		}
 		Some(Word {data: data, wlen: wlen})
@@ -111,7 +111,8 @@ impl Feedback {
 		let wlen = s.len() as u8;
 		if wlen > MAXWLEN as u8 {return None}
 		let mut fb = Feedback{g_bs: 0, y_bs:0, wlen: wlen};
-		for (i,c) in s.chars().take(wlen as usize).enumerate() {
+		for (i,c) in s.to_ascii_uppercase().chars()
+			.take(wlen as usize).enumerate() {
 			if c == 'G' {
 				fb.g_bs |= 1 << i;
 			} else if c == 'Y' {
@@ -134,7 +135,7 @@ impl Feedback {
 	}
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct WBank {
 	pub data: Vec<Word>,
 	pub wlen: u8,
