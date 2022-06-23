@@ -192,28 +192,28 @@ pub enum DTree {
 }
 
 impl DTree {
-	pub fn follow(self: &Self, fb: Feedback) -> Option<&DTree> {
+	pub fn follow(&self, fb: Feedback) -> Option<&DTree> {
 		match self {
 			DTree::Leaf => None,
 			DTree::Node{tot, word, fbmap} => fbmap.get(&fb)
 		}
 	}
 
-	pub fn get_tot(self: &Self) -> i32 {
+	pub fn get_tot(&self) -> i32 {
 		match self {
 			DTree::Leaf => 0,
 			DTree::Node{tot, word, fbmap} => *tot
 		}
 	}
 
-	pub fn get_fbmap(self: &Self) -> Option<&FbMap<DTree>> {
+	pub fn get_fbmap(&self) -> Option<&FbMap<DTree>> {
 		match self {
 			DTree::Leaf => None,
 			DTree::Node{tot, word, fbmap} => Some(fbmap)
 		}
 	}
 
-	pub fn pprint(self: &Self, indent: &String, n: i32) {
+	pub fn pprint(&self, indent: &String, n: i32) {
 		match self {
 			DTree::Leaf => {}
 			DTree::Node{tot, word, fbmap} => {
