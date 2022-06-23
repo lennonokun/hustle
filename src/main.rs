@@ -30,7 +30,7 @@ fn gen_data(gwb: &WBank, awb: &WBank, hd: &HData, n: i32) {
 }
 
 fn solve<P>(s: String, wlen: u8, gwp: P, awp: P, hdp: P)
-	-> io::Result<DTree> where P: AsRef<Path>  {
+	-> io::Result<()> where P: AsRef<Path> {
 	let gwb = WBank::from(&gwp, wlen)
 		.expect("couldn't find guess words!");
 	let mut awb = WBank::from(&awp, wlen)
@@ -55,15 +55,20 @@ fn solve<P>(s: String, wlen: u8, gwp: P, awp: P, hdp: P)
 		given = !given;
 	}
 
-	// println!("{:?}", awb);
-	
-	if given {
+	let dt = if given {
 		solve_state(&gwb, &awb, NGUESSES as i32 - turn, &hd)
-			.ok_or(Error::new(ErrorKind::Other, "couldn't make dtree!"))
 	} else {
 		solve_given(w, &gwb, &awb, NGUESSES as i32 - turn, &hd)
-			.ok_or(Error::new(ErrorKind::Other, "couldn't make dtree!"))
+	}.expect("couldn't make dtree!");
+
+	if let DTree::Node{tot, word, ref fbmap} = dt {
+		println!("found {}: {}/{}={:.6}\n",
+							word.to_string(), tot, awb.data.len(),
+							tot as f64 / awb.data.len() as f64);
+		dt.pprint(&"".into(), turn);
 	}
+
+	Ok(())
 }
 
 // ./wordlers
@@ -119,10 +124,6 @@ fn main() -> MainResult {
 	let awb = WBank::from(&awp, wlen).expect("couldn't find awb!");
 	let hd = HData::load(hdp_in).expect("couldn't find heuristic data!");
 
-	let w1 = Word::from_str("cerne").expect("couldn't make word");
-	let w2 = Word::from_str("tweet").expect("couldn't make word");
-	let fb = Feedback::from(w1, w2).unwrap();
-	println!("{}", fb.to_string());
 	match mode.unwrap() {
 		"gen" => {
 			gen_data(&gwb, &awb, &hd, 100);
@@ -130,10 +131,8 @@ fn main() -> MainResult {
 			let mut game = Game::new();
 			game.start();
 		} "solve" => {
-			// TODO add turns, and count number of words for eval
-			let dt = solve(solve_str.unwrap(), wlen, &gwp, &awp, &hdp_in)
+			solve(solve_str.unwrap(), wlen, &gwp, &awp, &hdp_in)
 				.unwrap();
-			dt.pprint(&String::from(""), 0)
 		} _ => {}
 	}
 
