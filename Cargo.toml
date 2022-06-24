@@ -1,11 +1,20 @@
 [package]
 name = "hustle"
 version = "1.2.0"
+description = """
+Hustle is a terminal-based wordle clone and wordle solver written in
+rust, and geared towards speedrunning.
+"""
+categories = ["games"]
+keywords = ["wordle", "tui"]
+documentation = "https://github.com/lennonokun/hustle"
+homepage = "https://github.com/lennonokun/hustle"
+repository = "https://github.com/lennonokun/hustle"
+license = "MIT"
 edition = "2021"
 
 [profile.release]
 opt-level = 3
-# debug = true
 
 [dependencies]
 rayon = "1.5.3"
