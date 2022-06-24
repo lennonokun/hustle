@@ -9,19 +9,19 @@ pub mod util;
 use crate::solve::util::*;
 
 // number of top words to try
-const NTOPS: usize = 10;
+const NTOPS: usize = 1;
 // number of remaining words makes it "endgame"
 const ENDGCUTOFF: usize = 15;
 
 struct GivenData {
 	fbmap: FbMap<DTree>,
-	tot: i32,
+	tot: u32,
 	stop: bool,
 }
 
 // get upper bound for minimum mean guesses at state given guess
 pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank,
-									 n: i32, hd: &HData) -> Option<DTree> { 
+									 n: u32, hd: &HData) -> Option<DTree> { 
 	let alen = awb.data.len();
 
 	if alen == 1 && gw == *awb.data.iter().next().unwrap() {
@@ -34,7 +34,7 @@ pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank,
 
 	let gd = Mutex::new(GivenData{
 		fbmap: FbMap::new(),
-		tot: alen as i32,
+		tot: alen as u32,
 		stop: false,
 	});
 
@@ -75,24 +75,24 @@ pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank,
 
 struct SolveData {
 	dt: Option<DTree>,
-	tot: i32,
+	tot: u32,
 	stop: bool,
 }
 
 // get upper bound for mean guesses at state
 pub fn solve_state(gwb: &WBank, awb: &WBank,
-									 n: i32, hd: &HData) -> Option<DTree> {
+									 n: u32, hd: &HData) -> Option<DTree> {
 	let alen = awb.data.len();
 
 	// inf when ran out of turns
 	if n == 0 {
-		hd.hrm.lock().unwrap().record_inf(n as usize);
+		// hd.hrm.lock().unwrap().record_inf(n as usize);
 		return None
 	}
 
 	// one answer -> guess it
 	if alen == 1 {
-		hd.hrm.lock().unwrap().record(n as usize, 1, 1.0);
+		hd.hrm.lock().unwrap().record(alen as usize, 1);
 		return Some(DTree::Node{
 			tot: 1, 
 			word: *awb.data.iter().next().unwrap(),
@@ -103,7 +103,7 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 
 	let sd = Mutex::new(SolveData{
 		dt: Some(DTree::Leaf),
-		tot: i32::MAX,
+		tot: u32::MAX,
 		stop: false,
 	});
 
@@ -122,8 +122,7 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 					let tot2 = dt2.get_tot();
 					if sd2.stop {
 						return;
-					} else if tot2 < alen as i32 {
-						// hd.record(alen, tot2); 
+					} else if tot2 < alen as u32 {
 						sd2.dt = Some(dt2);
 						sd2.tot = tot2;
 						sd2.stop = true;
@@ -136,9 +135,9 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 		});
 	}
 	// dont bother checking other words if a 2 was found
-	if sd.lock().unwrap().tot == alen as i32 {
-		hd.hrm.lock().unwrap().record(n as usize, alen,
-																	sd.lock().unwrap().tot as f64); 
+	if sd.lock().unwrap().tot == alen as u32 {
+		hd.hrm.lock().unwrap().record(alen as usize,
+																	sd.lock().unwrap().tot); 
 		return sd.into_inner().unwrap().dt;
 	}
 
@@ -156,7 +155,7 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 					let tot2 = dt2.get_tot(); 
 					if sd2.stop {
 						return;
-					} else if tot2 < alen as i32 {
+					} else if tot2 < alen as u32 {
 						// can't do better
 						sd2.dt = Some(dt2);
 						sd2.tot = tot2;
@@ -171,12 +170,11 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 		});
 
 	let sd2 = sd.into_inner().unwrap();
-	if sd2.tot == i32::MAX {
+	if sd2.tot == u32::MAX {
 		// todo why inf?
-		hd.hrm.lock().unwrap().record_inf(n as usize);
 		return None;
 	} else {
-		hd.hrm.lock().unwrap().record(n as usize, alen, sd2.tot as f64);
+		hd.hrm.lock().unwrap().record(alen as usize, sd2.tot);
 		return sd2.dt;
 	}
 }

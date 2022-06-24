@@ -183,7 +183,7 @@ pub enum DTree {
 	Leaf,
 	Node {
 		// total leaf depth
-		tot: i32,
+		tot: u32,
 		// word
 		word: Word,
 		// children per unique feedback
@@ -199,7 +199,7 @@ impl DTree {
 		}
 	}
 
-	pub fn get_tot(&self) -> i32 {
+	pub fn get_tot(&self) -> u32 {
 		match self {
 			DTree::Leaf => 0,
 			DTree::Node{tot, word, fbmap} => *tot
@@ -213,7 +213,7 @@ impl DTree {
 		}
 	}
 
-	pub fn pprint<W>(&self, out: &mut W, indent: &String, n: i32)
+	pub fn pprint<W>(&self, out: &mut W, indent: &String, n: u32)
 		where W: Write {
 		match self {
 			DTree::Leaf => {}
@@ -223,7 +223,7 @@ impl DTree {
 				indent2.push(' ');
 				let mut items : Vec<(&Feedback, &DTree)> =
 					fbmap.iter().collect();
-				items.sort_by_key(|(_fb, dt)| -dt.get_tot());
+				items.sort_by_key(|(_fb, dt)| -(dt.get_tot() as i32));
 				for (fb, dt) in items {
 					writeln!(out, "{}{}{}", indent2, fb.to_string(), n);
 					dt.pprint(out, &indent2,n+1);
