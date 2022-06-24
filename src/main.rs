@@ -16,13 +16,13 @@ mod game;
 use crate::game::Game;
 
 fn gen_data<P>(gwb: &WBank, awb: &WBank, hd: HData,
-							 hdop1: P, hdop2: P, n: u32)
+							 hdop1: P, hdop2: P, cfg: Config, n: u32)
 where P: AsRef<Path> {
 	let gws2 = util::top_words(&gwb, &awb, &hd, n as usize);
 	for (i, w) in gws2.iter().enumerate() {
 		print!("{}. {}: ", i+1, w.to_string());
 		let inst = Instant::now();
-		let dt = solve_given(*w, &gwb, &awb, 6, &hd);
+		let dt = solve_given(*w, &gwb, &awb, 6, &hd, cfg);
 		let dur = inst.elapsed().as_millis();
 		println!("{}, {:.3}s", dt.unwrap().get_tot(),
 						 dur as f64 / 1_000.);
@@ -34,7 +34,8 @@ where P: AsRef<Path> {
 }
 
 fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
-						hd: &HData, dtp: Option<String>) -> io::Result<()>
+						hd: &HData, dtp: Option<String>, cfg: Config)
+						-> io::Result<()>
 where P: AsRef<Path> {
 	let hrm = Mutex::new(HRec::new());
 
@@ -56,9 +57,9 @@ where P: AsRef<Path> {
 	}
 
 	let dt = if given {
-		solve_state(&gwb, &awb2, NGUESSES as u32 - turn, &hd)
+		solve_state(&gwb, &awb2, NGUESSES as u32 - turn, &hd, cfg)
 	} else {
-		solve_given(w, &gwb, &awb2, NGUESSES as u32 - turn, &hd)
+		solve_given(w, &gwb, &awb2, NGUESSES as u32 - turn, &hd, cfg)
 	}.expect("couldn't make dtree!");
 
 	if let DTree::Node{tot, word, ref fbmap} = dt {
@@ -89,6 +90,7 @@ fn main() -> MainResult {
 	let mut dtree_out = None::<String>;
 	let mut solve_str = None::<String>;
 	let mut gen_num = None::<u32>;
+	let mut cfg = Config {ntops: 10, endgcutoff: 15};
 	let mut args = env::args().skip(1);
 
 	// parse required arguments
@@ -117,27 +119,35 @@ fn main() -> MainResult {
 	while let Some(s) = args.next() {
 		match s.as_str() {
 			"--wlen" => {
-				wlen = args.next().expect(
-					"'--wlen' requires a secondary argument")
+				wlen = args.next()
+					.expect("'--wlen' requires a secondary argument")
 					.parse().expect("could not parse wlen");
 			} "--dt" => {
 				dtree_out = Some(args.next().expect(
 					"'--dt' requires a secondary argument"));
 			} "--gwp" => {
-				gwp = args.next().expect(
-					"'--gwp' requires a secondary argument");
+				gwp = args.next()
+					.expect("'--gwp' requires a secondary argument");
 			} "--awp" => {
-				awp = args.next().expect(
-					"'--awp' requires a secondary argument");
+				awp = args.next()
+					.expect("'--awp' requires a secondary argument");
 			} "--hdp-in" => {
-				hdp_in = args.next().expect(
-					"'--hdp-in' requires a secondary argument");
+				hdp_in = args.next()
+					.expect("'--hdp-in' requires a secondary argument");
 			} "--hdp-out1" => {
-				hdp_out1 = args.next().expect(
-					"'--hdp-out1' requires a secondary argument");
+				hdp_out1 = args.next()
+					.expect("'--hdp-out1' requires a secondary argument");
 			} "--hdp-out2" => {
-				hdp_out2 = args.next().expect(
-					"'--hdp-out2' requires a secondary argument");
+				hdp_out2 = args.next()
+					.expect("'--hdp-out2' requires a secondary argument");
+			} "--ntops" => {
+				cfg.ntops = args.next()
+					.expect("'--ntops' requires a secondary argument")
+					.parse().expect("could not parse ntops");
+			} "--cutoff" => {
+				cfg.endgcutoff = args.next().expect(
+					"'--cutoff' requires a secondary argument")
+					.parse().expect("could not parse cutoff");
 			} s => {
 			return Err(MainError::from(
 				Error::new(ErrorKind::Other,
@@ -155,13 +165,14 @@ fn main() -> MainResult {
 
 	match mode.unwrap() {
 		"gen" => {
-			gen_data(&gwb, &awb, hd, hdp_out1, hdp_out2, gen_num.unwrap());
+			gen_data(&gwb, &awb, hd, hdp_out1, hdp_out2,
+							 cfg, gen_num.unwrap());
 		} "play" => {
 			let mut game = Game::new();
 			game.start();
 		} "solve" => {
 			solve::<String>(solve_str.unwrap(), wlen, &gwb, &awb,
-						&hd, dtree_out).unwrap();
+						&hd, dtree_out, cfg).unwrap();
 		} _ => {}
 	}
 

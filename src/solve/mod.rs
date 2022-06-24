@@ -8,10 +8,14 @@ use crate::solve::analysis::HData;
 pub mod util;
 use crate::solve::util::*;
 
-// number of top words to try
-const NTOPS: usize = 1;
-// number of remaining words makes it "endgame"
-const ENDGCUTOFF: usize = 15;
+
+#[derive(Clone, Copy)]
+pub struct Config {
+	// number of top words to try
+	pub ntops: u32,
+	// number of remaining words makes it "endgame"
+	pub endgcutoff: u32
+}
 
 struct GivenData {
 	fbmap: FbMap<DTree>,
@@ -21,7 +25,7 @@ struct GivenData {
 
 // get upper bound for minimum mean guesses at state given guess
 pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank,
-									 n: u32, hd: &HData) -> Option<DTree> { 
+									 n: u32, hd: &HData, cfg: Config) -> Option<DTree> { 
 	let alen = awb.data.len();
 
 	if alen == 1 && gw == *awb.data.iter().next().unwrap() {
@@ -46,10 +50,10 @@ pub fn solve_given(gw: Word, gwb: &WBank, awb: &WBank,
 											 DTree::Leaf);
 		} else {
 			// worth?
-			let dt2 = if alen > ENDGCUTOFF {
-				solve_state(&reduce_words(gw, &gwb), &wb, n-1, hd)
+			let dt2 = if alen > cfg.endgcutoff as usize {
+				solve_state(&reduce_words(gw, &gwb), &wb, n-1, hd, cfg)
 			} else {
-				solve_state(&gwb, &wb, n-1, hd)
+				solve_state(&gwb, &wb, n-1, hd, cfg)
 			};
 			if gd.lock().unwrap().stop {return}
 			let mut gd2 = gd.lock().unwrap();
@@ -80,8 +84,8 @@ struct SolveData {
 }
 
 // get upper bound for mean guesses at state
-pub fn solve_state(gwb: &WBank, awb: &WBank,
-									 n: u32, hd: &HData) -> Option<DTree> {
+pub fn solve_state(gwb: &WBank, awb: &WBank, n: u32,
+									 hd: &HData, cfg: Config) -> Option<DTree> {
 	let alen = awb.data.len();
 
 	// inf when ran out of turns
@@ -110,11 +114,11 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 	// in "endgame", check if guessing a possible
 	// answer guarantees correct next guess (score < 2)
 	// (so far alen = 15 is max i've found where this is possible)
-	if alen <= ENDGCUTOFF {
+	if alen <= cfg.endgcutoff as usize {
 		(&awb.data).into_par_iter().for_each(|aw| {
 			// check stop
 			if sd.lock().unwrap().stop {return}
-			match solve_given(*aw, gwb, awb, n, hd) {
+			match solve_given(*aw, gwb, awb, n, hd, cfg) {
 				None => {},
 				Some(dt2) => {
 					// check stop
@@ -143,11 +147,11 @@ pub fn solve_state(gwb: &WBank, awb: &WBank,
 
 	// search top heuristic words and stop
 	// on guaranteed next guess (score = 2)
-	top_words(gwb, awb, hd, NTOPS)
+	top_words(gwb, awb, hd, cfg.ntops as usize)
 		.into_par_iter()
 		.for_each(|gw| {
 			if sd.lock().unwrap().stop {return}
-			let dt2 = solve_given(gw, gwb, awb, n, hd);
+			let dt2 = solve_given(gw, gwb, awb, n, hd, cfg);
 			match dt2 {
 				None => {},
 				Some(dt2) => {
