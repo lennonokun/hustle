@@ -77,11 +77,10 @@ where P: AsRef<Path> {
 
 // ./hustle
 // (gen)|(play)|(solve <str>)
-// [--(dt|gwp|awp|hdp-in|hdp-out1|hdp-out2) <PATH>]*
+// [--(dt|wbp|hdp-in|hdp-out1|hdp-out2) <PATH>]*
 // [--wlen <WLEN>]
 fn main() -> MainResult {
-	let mut gwp = String::from("data/guess_words");
-	let mut awp = String::from("data/answer_words");
+	let mut wbp = String::from("data/bank1.csv");
 	let mut hdp_in = String::from("data/happrox.csv");
 	let mut hdp_out1 = String::from("data/hdata.csv");
 	let mut hdp_out2 = String::from("data/happrox.csv");
@@ -125,12 +124,9 @@ fn main() -> MainResult {
 			} "--dt" => {
 				dtree_out = Some(args.next().expect(
 					"'--dt' requires a secondary argument"));
-			} "--gwp" => {
-				gwp = args.next()
-					.expect("'--gwp' requires a secondary argument");
-			} "--awp" => {
-				awp = args.next()
-					.expect("'--awp' requires a secondary argument");
+			} "--wbp" => {
+				wbp = args.next()
+					.expect("'--wbp' requires a secondary argument");
 			} "--hdp-in" => {
 				hdp_in = args.next()
 					.expect("'--hdp-in' requires a secondary argument");
@@ -156,12 +152,10 @@ fn main() -> MainResult {
 		}
 	}
 
-	let gwb = WBank::from(&gwp, wlen)
-		.expect("couldn't find guess words!");
-	let mut awb = WBank::from(&awp, wlen)
-		.expect("couldn't find answer words!");
+	let (gwb, awb) = WBank::from2(wbp, wlen)
+		.expect("couldn't load word bank");
 	let hd = HData::load(hdp_in)
-		.expect("couldn't find heuristic data!");
+		.expect("couldn't load heuristic data!");
 
 	match mode.unwrap() {
 		"gen" => {

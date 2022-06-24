@@ -1,4 +1,4 @@
-use std::io::{BufRead, BufReader, Error, Write};
+use std::io::{Result, BufRead, BufReader, Error, Write};
 use std::fs::File;
 use std::path::Path;
 use std::collections::HashMap;
@@ -140,7 +140,7 @@ pub struct WBank {
 }
 
 impl WBank {
-	pub fn from<P>(p: &P, wlen: u8) -> Result<Self, Error>
+	pub fn from<P>(p: &P, wlen: u8) -> Result<Self>
 	where P: AsRef<Path> {
 		let file = File::open(p)?;
 		let reader = BufReader::new(file);
@@ -150,6 +150,26 @@ impl WBank {
 			.filter_map(Word::from)
 			.collect::<Vec<Word>>();
 		Ok(WBank{data: data, wlen: wlen})
+	}
+
+	pub fn from2<P>(p: P, wlen: u8) -> Result<(Self, Self)>
+	where P: AsRef<Path> {
+		let file = File::open(p)?;
+		let reader = BufReader::new(file);
+		let mut gdata = Vec::<Word>::new();
+		let mut adata = Vec::<Word>::new();
+		for line in reader.lines().skip(1) {
+			if let Ok(line) = line {
+				// parse line
+				let vec: Vec<&str> = line.split(",").collect();
+				if vec[2].parse::<u8>().unwrap() != wlen {continue}
+				// add to respective bank
+				let d = if vec[1] == "G" {&mut gdata} else {&mut adata}; 
+				d.push(Word::from_str(vec[0]).unwrap());
+			}
+		}
+
+		Ok((WBank {data: gdata, wlen}, WBank {data: adata, wlen}))
 	}
 
 	pub fn new() -> Self {
