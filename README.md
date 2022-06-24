@@ -14,9 +14,9 @@ inspired by the many wordle spin-offs like
 [speedle](https://tck.mn/speedle/).
 
 ## Running
-Either build the crate with `cargo build --release`, an executable
-`wordlers` in `target/release`. You can then run the binary like in
-the following examples:
+Either build the crate with `cargo build --release`, which should
+create an executable `wordlers` in `target/release`. You can then run
+the binary like in the following examples:
 
 ```
 # play wordle
