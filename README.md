@@ -1,5 +1,4 @@
 # Hustle
-
 ![preview](data/preview.png)
 
 ## Overview
@@ -13,38 +12,41 @@ inspired by the many wordle spin-offs like
 [hellowordl](https://hellowordl.net), and
 [speedle](https://tck.mn/speedle/).
 
-## Running
-Either build the crate with `cargo build --release`, which should
-create an executable `hustle` in `target/release`. You can then run
-the binary like in the following examples:
+## Installation
+Hustle can be easily installed with cargo on linux:
+```
+$ cargo install hustle
+```
+Then — if you haven't already — add ~/.cargo/bin to your PATH in your
+shell profile.
 
+## Usage
+Here are some examples of how to use hustle:
 ```
 # play wordle
-target/release/hustle play
+$ hustle play
 
 # solve a wordle game
-target/release/hustle solve salet.bbbbb.courd
-target/release/hustle solve salet.bbbgg
+$ hustle solve salet.bbbbb.courd
+$ hustle solve salet.bbbgg
 
 # solve and output decision tree to file
-target/release/hustle solve salet.bbbgg --dt out
+$ hustle solve salet.bbbgg --dt out
 
 # solve using specific heuristic data
-target/release/hustle solve salet.bbbgg --hdp-in myhdata.csv
+$ hustle solve salet.bbbgg --hdp-in myhdata.csv
 
 # solve 6 letter words with hellowordl word bank
-target/release/hustle solve salet.bbbgg --gwp data/guess_words2 --awp data/answer_words2
+$ hustle solve salet.bbbgg --gwp data/guess_words2 --awp data/answer_words2
 
-# run expensive heuristic data generation
-target/release/hustle gen
+# run expensive heuristic data generation with top 10 words
+$ hustle gen 10
 
 # run expensive heuristic data generation and specify output
-target/release/hustle gen --hdp-out1 data1.csv --hdp-out2 data2.csv
+$ hustle gen 10 --hdp-out1 data1.csv --hdp-out2 data2.csv
 ```
 
 ## TODO
-* change name
-* remove python dependency, do isotonic regression in rust
 * make solving constants a cmd option
 * make heuristics work for any word bank
 * combine word banks into one file
@@ -63,7 +65,6 @@ target/release/hustle gen --hdp-out1 data1.csv --hdp-out2 data2.csv
   - different layout for single
   - different modes like hard mode
 - sync with wordle, duordle, quordle, octordle's, etc daily
-* make easily installable
-  - first publish crate
+* make more easily installable
   - PKGBUILD, try to publish to AUR?
   - config file (colors, replacement method, etc)
