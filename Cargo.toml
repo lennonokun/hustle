@@ -10,7 +10,8 @@ keywords = ["wordle", "tui"]
 documentation = "https://github.com/lennonokun/hustle"
 homepage = "https://github.com/lennonokun/hustle"
 repository = "https://github.com/lennonokun/hustle"
-license = "MIT"
+readme = "README.md"
+license-file = "LICENSE"
 edition = "2021"
 
 [profile.release]
@@ -22,7 +23,6 @@ rand = "0.8.5"
 termion = "1.5.6"
 main_error = "0.1.2"
 # plotlib = "0.5.1"
-# rusty-machine = "0.5.4"
 
 [[bin]]
 name = "hustle"
