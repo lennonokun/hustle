@@ -4,7 +4,7 @@
 
 ## Overview
 Hustle is a terminal-based wordle clone and wordle solver written in
-rust, geared towards speedrunning. The solver is inspired by Alex
+rust, and geared towards speedrunning. The solver is inspired by Alex
 Selby's article [The best strategies for
 Wordle](http://sonorouschocolate.com/notes/index.php/The_best_strategies_for_Wordle)
 and [code](https://github.com/alex1770/wordle), and the game is
