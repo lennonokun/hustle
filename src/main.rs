@@ -15,10 +15,9 @@ use crate::ds::*;
 mod game;
 use crate::game::Game;
 
-fn gen_data<P>(gwb: &WBank, awb: &WBank, hd: &HData,
-							 hdop1: P, hdop2: P, n: i32)
+fn gen_data<P>(gwb: &WBank, awb: &WBank, hd: HData,
+							 hdop1: P, hdop2: P, n: u32)
 where P: AsRef<Path> {
-	let hrm = Mutex::new(HRec::new());
 	let gws2 = util::top_words(&gwb, &awb, &hd, n as usize);
 	for (i, w) in gws2.iter().enumerate() {
 		print!("{}. {}: ", i+1, w.to_string());
@@ -28,8 +27,10 @@ where P: AsRef<Path> {
 		println!("{}, {:.3}s", dt.unwrap().get_tot(),
 						 dur as f64 / 1_000.);
 	}
-	hrm.into_inner().unwrap()
-		.save(hdop1, hdop2).unwrap();
+
+	let mut hrm = hd.hrm.into_inner().unwrap();
+	hrm.save(hdop1).unwrap();
+	hrm.process(hdop2).unwrap();
 }
 
 fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
@@ -41,7 +42,7 @@ where P: AsRef<Path> {
 	let mut given = true;
 	let mut fbm = FbMap::new();
 	let mut w = Word::from_str("aaaaa").unwrap();
-	let mut turn = 0;
+	let mut turn = 0u32;
 	for s in s.split(".") {
 		if given {
 			w = Word::from_str(s).unwrap();
@@ -55,9 +56,9 @@ where P: AsRef<Path> {
 	}
 
 	let dt = if given {
-		solve_state(&gwb, &awb2, NGUESSES as i32 - turn, &hd)
+		solve_state(&gwb, &awb2, NGUESSES as u32 - turn, &hd)
 	} else {
-		solve_given(w, &gwb, &awb2, NGUESSES as i32 - turn, &hd)
+		solve_given(w, &gwb, &awb2, NGUESSES as u32 - turn, &hd)
 	}.expect("couldn't make dtree!");
 
 	if let DTree::Node{tot, word, ref fbmap} = dt {
@@ -73,7 +74,7 @@ where P: AsRef<Path> {
 	Ok(())
 }
 
-// ./wordlers
+// ./hustle
 // (gen)|(play)|(solve <str>)
 // [--(dt|gwp|awp|hdp-in|hdp-out1|hdp-out2) <PATH>]*
 // [--wlen <WLEN>]
@@ -82,11 +83,12 @@ fn main() -> MainResult {
 	let mut awp = String::from("data/answer_words");
 	let mut hdp_in = String::from("data/happrox.csv");
 	let mut hdp_out1 = String::from("data/hdata.csv");
-	let mut hdp_out2 = String::from("data/hinfs.csv");
+	let mut hdp_out2 = String::from("data/happrox.csv");
 	let mut wlen = 5;
 	let mut mode = None::<&str>;
 	let mut dtree_out = None::<String>;
 	let mut solve_str = None::<String>;
+	let mut gen_num = None::<u32>;
 	let mut args = env::args().skip(1);
 
 	// parse required arguments
@@ -94,6 +96,9 @@ fn main() -> MainResult {
 	match first.as_str() {
 		"gen" => {
 			mode = Some("gen");
+			gen_num = Some(args.next()
+										 .expect("'gen' requires a secondary argument")
+										 .parse().expect("could not parse gen_num"));
 		} "play" => {
 			mode = Some("play");
 		} "solve" => {
@@ -150,7 +155,7 @@ fn main() -> MainResult {
 
 	match mode.unwrap() {
 		"gen" => {
-			gen_data(&gwb, &awb, &hd, hdp_out1, hdp_out2, 100);
+			gen_data(&gwb, &awb, hd, hdp_out1, hdp_out2, gen_num.unwrap());
 		} "play" => {
 			let mut game = Game::new();
 			game.start();

@@ -1,6 +1,6 @@
 [package]
-name = "wordlers"
-version = "0.1.0"
+name = "hustle"
+version = "1.2.0"
 edition = "2021"
 
 [profile.release]
