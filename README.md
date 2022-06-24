@@ -4,11 +4,14 @@
 
 ## Overview
 wordlers is a terminal-based wordle clone and wordle solver written in
-rust, inspired by Alex Selby's article [The best strategies for
+rust, geared towards speedrunning. The solver is inspired by Alex
+Selby's article [The best strategies for
 Wordle](http://sonorouschocolate.com/notes/index.php/The_best_strategies_for_Wordle)
-and [code](https://github.com/alex1770/wordle), along with the many
-wordle spin-offs like [octordle](https://octordle.com) and
-[hellowordl](https://hellowordl.net).
+and [code](https://github.com/alex1770/wordle), and the game is
+inspired by the many wordle spin-offs like
+[octordle](https://octordle.com),
+[hellowordl](https://hellowordl.net), and
+[speedle](https://tck.mn/speedle/).
 
 ## Running
 Either build the crate with `cargo build --release`, an executable
@@ -16,8 +19,8 @@ Either build the crate with `cargo build --release`, an executable
 the following examples:
 
 ```
-# run expensive heuristic data generation
-./target/release/wordlers gen
+# play wordle
+./target/release/wordlers play
 
 # solve a wordle game
 ./target/release/wordlers solve salet.bbbbb.courd
@@ -26,16 +29,36 @@ the following examples:
 # solve and output decision tree to file
 ./target/release/wordlers solve salet.bbbgg --dt out
 
-# play wordle
-./target/release/wordlers play
+# solve using specific heuristic data
+./target/release/wordlers solve salet.bbbgg --hdp-in myhdata.csv
+
+# solve 6 letter words with hellowordl word bank
+./target/release/wordlers solve salet.bbbgg --gwp data/guess_words2 --awp data/answer_words2
+
+# run expensive heuristic data generation
+./target/release/wordlers gen
+
+# run expensive heuristic data generation and specify output
+./target/release/wordlers gen --hdp-out1 data1.csv --hdp-out2 data2.csv
 ```
 
 ## TODO
+* change name
 * don't ignore warnings
 * generally refactor
 * dictionary capabilities
 * show untested letters?
-* syncing with wordle's daily
+* show known letters
+  - display list below each column?
+  - is this cheating?
+  - regardless, it should be an option
+* single word
+  - different layout for single
+  - different modes like hard mode
+- sync with wordle, duordle, quordle, octordle's, etc daily
+* optimize solving
+* create benchmarks and unit tests
 * make installable
-  - PKGBUILD
+  - first publish crate
+  - PKGBUILD, try to publish to AUR?
   - config file (colors, replacement method, etc)

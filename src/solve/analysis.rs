@@ -57,8 +57,8 @@ impl HRec {
 		self.rinfs[n] += 1;
 	} 
 	// write recorded data to file
-	pub fn save(self: &mut Self, path1: &str, path2: &str)
-							-> Result<()> {
+	pub fn save<P>(self: &mut Self, path1: P, path2: P)
+							-> Result<()> where P: AsRef<Path> {
 		let mut out1 = File::create(path1)?;
 		writeln!(&mut out1, "m,n,h,ct");
 		for m in 1..7 {

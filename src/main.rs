@@ -15,7 +15,9 @@ use crate::ds::*;
 mod game;
 use crate::game::Game;
 
-fn gen_data(gwb: &WBank, awb: &WBank, hd: &HData, n: i32) {
+fn gen_data<P>(gwb: &WBank, awb: &WBank, hd: &HData,
+							 hdop1: P, hdop2: P, n: i32)
+where P: AsRef<Path> {
 	let hrm = Mutex::new(HRec::new());
 	let gws2 = util::top_words(&gwb, &awb, &hd, n as usize);
 	for (i, w) in gws2.iter().enumerate() {
@@ -27,20 +29,15 @@ fn gen_data(gwb: &WBank, awb: &WBank, hd: &HData, n: i32) {
 						 dur as f64 / 1_000.);
 	}
 	hrm.into_inner().unwrap()
-		.save("data/hdata.csv", "data/hinfs.csv").unwrap();
+		.save(hdop1, hdop2).unwrap();
 }
 
-fn solve<P>(s: String, wlen: u8, gwp: P, awp: P,
-						hdp: P, dtp: Option<String>)
-	-> io::Result<()> where P: AsRef<Path> {
-	let gwb = WBank::from(&gwp, wlen)
-		.expect("couldn't find guess words!");
-	let mut awb = WBank::from(&awp, wlen)
-		.expect("couldn't find answer words!");
-	let hd = HData::load(hdp)
-		.expect("couldn't find heuristic data!");
+fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
+						hd: &HData, dtp: Option<String>) -> io::Result<()>
+where P: AsRef<Path> {
 	let hrm = Mutex::new(HRec::new());
 
+	let mut awb2 = awb.clone();
 	let mut given = true;
 	let mut fbm = FbMap::new();
 	let mut w = Word::from_str("aaaaa").unwrap();
@@ -48,25 +45,25 @@ fn solve<P>(s: String, wlen: u8, gwp: P, awp: P,
 	for s in s.split(".") {
 		if given {
 			w = Word::from_str(s).unwrap();
-			fbm = util::fb_partition(w, &awb);
+			fbm = util::fb_partition(w, &awb2);
 			turn += 1;
 		} else {
 			let fb = Feedback::from_str(s).unwrap();
-			awb = fbm.get(&fb).unwrap().clone();
+			awb2 = fbm.get(&fb).unwrap().clone();
 		}
 		given = !given;
 	}
 
 	let dt = if given {
-		solve_state(&gwb, &awb, NGUESSES as i32 - turn, &hd)
+		solve_state(&gwb, &awb2, NGUESSES as i32 - turn, &hd)
 	} else {
-		solve_given(w, &gwb, &awb, NGUESSES as i32 - turn, &hd)
+		solve_given(w, &gwb, &awb2, NGUESSES as i32 - turn, &hd)
 	}.expect("couldn't make dtree!");
 
 	if let DTree::Node{tot, word, ref fbmap} = dt {
 		println!("found {}: {}/{} = {:.6}",
-							word.to_string(), tot, awb.data.len(),
-							tot as f64 / awb.data.len() as f64);
+							word.to_string(), tot, awb2.data.len(),
+							tot as f64 / awb2.data.len() as f64);
 		if let Some(dtp) = dtp {
 			let mut f = File::create(dtp)?;
 			dt.pprint(&mut f, &"".into(), turn);
@@ -78,19 +75,21 @@ fn solve<P>(s: String, wlen: u8, gwp: P, awp: P,
 
 // ./wordlers
 // (gen)|(play)|(solve <str>)
-// [--(dt|gwp|awp|hdp_in|hdp_out1|hdp_out2) <PATH>]*
+// [--(dt|gwp|awp|hdp-in|hdp-out1|hdp-out2) <PATH>]*
+// [--wlen <WLEN>]
 fn main() -> MainResult {
-	let gwp = "data/guess_words";
-	let awp = "data/answer_words";
-	let hdp_in = "data/happrox.csv";
-	let hdp_out1 = "data/hdata.csv";
-	let hdp_out2 = "data/hinfs.csv";
+	let mut gwp = String::from("data/guess_words");
+	let mut awp = String::from("data/answer_words");
+	let mut hdp_in = String::from("data/happrox.csv");
+	let mut hdp_out1 = String::from("data/hdata.csv");
+	let mut hdp_out2 = String::from("data/hinfs.csv");
+	let mut wlen = 5;
 	let mut mode = None::<&str>;
 	let mut dtree_out = None::<String>;
 	let mut solve_str = None::<String>;
 	let mut args = env::args().skip(1);
 
-	// required
+	// parse required arguments
 	let first = args.next().expect("Expected an argument!");
 	match first.as_str() {
 		"gen" => {
@@ -109,12 +108,31 @@ fn main() -> MainResult {
 		}
 	}
 
-	// optional
+	// parse optional arguments
 	while let Some(s) = args.next() {
 		match s.as_str() {
-			"--dt" => {
+			"--wlen" => {
+				wlen = args.next().expect(
+					"'--wlen' requires a secondary argument")
+					.parse().expect("could not parse wlen");
+			} "--dt" => {
 				dtree_out = Some(args.next().expect(
 					"'--dt' requires a secondary argument"));
+			} "--gwp" => {
+				gwp = args.next().expect(
+					"'--gwp' requires a secondary argument");
+			} "--awp" => {
+				awp = args.next().expect(
+					"'--awp' requires a secondary argument");
+			} "--hdp-in" => {
+				hdp_in = args.next().expect(
+					"'--hdp-in' requires a secondary argument");
+			} "--hdp-out1" => {
+				hdp_out1 = args.next().expect(
+					"'--hdp-out1' requires a secondary argument");
+			} "--hdp-out2" => {
+				hdp_out2 = args.next().expect(
+					"'--hdp-out2' requires a secondary argument");
 			} s => {
 			return Err(MainError::from(
 				Error::new(ErrorKind::Other,
@@ -123,20 +141,22 @@ fn main() -> MainResult {
 		}
 	}
 
-	let wlen = 5; // FOR NOW
-	let gwb = WBank::from(&gwp, wlen).expect("couldn't find gwb!");
-	let awb = WBank::from(&awp, wlen).expect("couldn't find awb!");
-	let hd = HData::load(hdp_in).expect("couldn't find heuristic data!");
+	let gwb = WBank::from(&gwp, wlen)
+		.expect("couldn't find guess words!");
+	let mut awb = WBank::from(&awp, wlen)
+		.expect("couldn't find answer words!");
+	let hd = HData::load(hdp_in)
+		.expect("couldn't find heuristic data!");
 
 	match mode.unwrap() {
 		"gen" => {
-			gen_data(&gwb, &awb, &hd, 100);
+			gen_data(&gwb, &awb, &hd, hdp_out1, hdp_out2, 100);
 		} "play" => {
 			let mut game = Game::new();
 			game.start();
 		} "solve" => {
-			solve(solve_str.unwrap(), wlen, gwp, awp,
-						hdp_in, dtree_out).unwrap();
+			solve::<String>(solve_str.unwrap(), wlen, &gwb, &awb,
+						&hd, dtree_out).unwrap();
 		} _ => {}
 	}
 
