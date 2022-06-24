@@ -46,7 +46,10 @@ the following examples:
 * change name
 * don't ignore warnings
 * generally refactor
+* optimize solving
+* create benchmarks and unit tests
 * dictionary capabilities
+* keep statistics and track pb's
 * show untested letters?
 * show known letters
   - display list below each column?
@@ -56,8 +59,6 @@ the following examples:
   - different layout for single
   - different modes like hard mode
 - sync with wordle, duordle, quordle, octordle's, etc daily
-* optimize solving
-* create benchmarks and unit tests
 * make installable
   - first publish crate
   - PKGBUILD, try to publish to AUR?
