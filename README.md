@@ -16,10 +16,9 @@ inspired by the many wordle spin-offs like
 Hustle can be installed using the PKGBUILD with makepkg and pacman on
 Arch Linux:
 ```
-$ makepkg PKGBUILD
+$ makepkg --clean PKGBUILD
 # tarball may be named something else
-$ pacman -U hustle-1.2.1-1-x86_64.pkg.tar.zst
-$ makepkg --clean
+$ sudo pacman -U hustle-1.2.1-1-x86_64.pkg.tar.zst
 ```
 
 ## Usage
