@@ -1,6 +1,6 @@
 [package]
 name = "hustle"
-version = "1.2.1"
+version = "1.2.2"
 description = """
 Hustle is a terminal-based wordle clone and wordle solver written in
 rust, and geared towards speedrunning.

@@ -18,7 +18,7 @@ Arch Linux:
 ```
 $ makepkg --clean PKGBUILD
 # tarball may be named something else
-$ sudo pacman -U hustle-1.2.1-1-x86_64.pkg.tar.zst
+$ sudo pacman -U hustle-1.2.2-1-x86_64.pkg.tar.zst
 ```
 
 ## Usage
