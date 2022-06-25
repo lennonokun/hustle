@@ -163,9 +163,10 @@ impl WBank {
 				// parse line
 				let vec: Vec<&str> = line.split(",").collect();
 				if vec[2].parse::<u8>().unwrap() != wlen {continue}
-				// add to respective bank
-				let d = if vec[1] == "G" {&mut gdata} else {&mut adata}; 
-				d.push(Word::from_str(vec[0]).unwrap());
+				// push to both if answer word, but only guess if guess word
+				let w = Word::from_str(vec[0]).unwrap();
+				if vec[1] == "A" {adata.push(w)}
+				gdata.push(w);
 			}
 		}
 
