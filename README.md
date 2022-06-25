@@ -50,11 +50,8 @@ $ hustle gen 10 --hdp-out1 data1.csv --hdp-out2 data2.csv
 ```
 
 ## TODO
-* make solving constants a cmd option
 * make heuristics work for any word bank
-* combine word banks into one file
 * generally refactor, don't ignore warnings
-* combine answer + guess word bank files? (and maybe struct)
 * optimize solving
 * create benchmarks and unit tests
 * dictionary capabilities
