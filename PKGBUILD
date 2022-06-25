@@ -31,11 +31,11 @@ package() {
 	install -Dm0755 -t "$pkgdir/usr/bin" "target/release/hustle"
 	# data
 	echo "installing into $pkgdir/usr/share"
-	install -Dm0644 -t "$pkgdir/usr/share/hustle/bank1.csv" "data/bank1.csv"
-	install -Dm0644 -t "$pkgdir/usr/share/hustle/bank2.csv" "data/bank2.csv"
-	install -Dm0644 -t "$pkgdir/usr/share/hustle/happrox.csv" "data/happrox.csv"
+	install -Dm0644 -t "$pkgdir/usr/share/hustle" "data/bank1.csv"
+	install -Dm0644 -t "$pkgdir/usr/share/hustle" "data/bank2.csv"
+	install -Dm0644 -t "$pkgdir/usr/share/hustle" "data/happrox.csv"
 	# misc
 	echo "installing into $pkgdir/usr/share/licenses+doc"
-	install -Dm0644 -t "$pkgdir/usr/share/licenses/$pkgname/LICENSE" "LICENSE"
+	install -Dm0644 -t "$pkgdir/usr/share/licenses/$pkgname" "LICENSE"
 	install -Dm0644 -t "$pkgdir/usr/share/doc/$pkgname" "README.md"
 }
