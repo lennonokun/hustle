@@ -11,7 +11,7 @@ documentation = "https://github.com/lennonokun/hustle"
 homepage = "https://github.com/lennonokun/hustle"
 repository = "https://github.com/lennonokun/hustle"
 readme = "README.md"
-license-file = "LICENSE"
+license = "MIT"
 edition = "2021"
 
 [profile.release]

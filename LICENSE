@@ -22,9 +22,9 @@ SOFTWARE.
 
 ===
 
-The files "src/data/guess_words2" and "src/data/answer_words2" are
-modified versions of "hellowordl's" "src/dictionary.json" and
-"src/target.json". That project's license is the following:
+The file "data/wbank2.csv" is a modified version of "hellowordl's"
+"src/dictionary.json" and "src/target.json". That project's license is
+the following:
 
 MIT License
 
