@@ -3,7 +3,7 @@
 
 ## Overview
 Hustle is a terminal-based wordle clone and wordle solver written in
-rust, and geared towards speedrunning. The solver is inspired by Alex
+rust, geared towards speedrunning. The solver is inspired by Alex
 Selby's article [The best strategies for
 Wordle](http://sonorouschocolate.com/notes/index.php/The_best_strategies_for_Wordle)
 and [code](https://github.com/alex1770/wordle), and the game is
@@ -28,16 +28,19 @@ $ hustle play
 
 # solve a wordle game
 $ hustle solve salet.bbbbb.courd
-$ hustle solve salet.bbbgg
+$ hustle solve reast.bbbgg
 
 # solve and output decision tree to file
-$ hustle solve salet.bbbgg --dt out
+$ hustle solve trace.gybbb --dt out
+
+# solve with specific ntops and cutoff
+$ hustle solve lodge.bbbbb --ntops 8 --cutoff 10
 
 # solve using specific heuristic data
 $ hustle solve salet.bbbgg --hdp-in myhdata.csv
 
 # solve 6 letter words with hellowordl word bank
-$ hustle solve salet.bbbgg --gwp data/guess_words2 --awp data/answer_words2
+$ hustle solve salet.bbbgg --wbp data/bank2.csv
 
 # run expensive heuristic data generation with top 10 words
 $ hustle gen 10
