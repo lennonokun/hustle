@@ -7,17 +7,15 @@ url="https://github.com/lennonokun/hustle/"
 license=('MIT')
 makedepends=('rust' 'cargo')
 source=("git+https://github.com/lennonokun/hustle.git#branch=main")
+sha256sums=('SKIP')
 
 prepare() {
 	cd "$pkgname"
-	ls
 	cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
 }
 
 build() {
-	ls
 	cd "$pkgname"
-	ls
 	export RUSTUP_TOOLCHAIN=stable
 	export CARGO_TARGET_DIR=target
 	cargo build --frozen --release --all-features
@@ -29,10 +27,8 @@ check() {
 
 package() {
 	cd "$pkgname"
-	tree
 	# binary
-	echo "installing into $pkgdir/usr/bin"
-	install -Dm0755 -t "$pkgdir/usr/bin" "usr/bin/hustle"
+	install -Dm0755 -t "$pkgdir/usr/bin" "target/release/hustle"
 	# data
 	echo "installing into $pkgdir/usr/share"
 	install -Dm0644 -t "$pkgdir/usr/share/hustle/bank1.csv" "data/bank1.csv"
@@ -43,4 +39,3 @@ package() {
 	install -Dm0644 -t "$pkgdir/usr/share/licenses/$pkgname/LICENSE" "LICENSE"
 	install -Dm0644 -t "$pkgdir/usr/share/doc/$pkgname" "README.md"
 }
-sha256sums=('SKIP')
