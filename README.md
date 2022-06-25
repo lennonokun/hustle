@@ -37,16 +37,13 @@ $ hustle solve trace.gybbb --dt out
 $ hustle solve lodge.bbbbb --ntops 8 --cutoff 10
 
 # solve using specific heuristic data
-$ hustle solve salet.bbbgg --hdp-in myhdata.csv
+$ hustle solve salet.bbbgg --hdp myhdata.csv
 
 # solve 6 letter words with hellowordl word bank
-$ hustle solve salet.bbbgg --wbp data/bank2.csv
+$ hustle solve traces.bgbbyy --wbp /usr/share/hustle/bank2.csv --wlen 6
 
-# run expensive heuristic data generation with top 10 words
-$ hustle gen 10
-
-# run expensive heuristic data generation and specify output
-$ hustle gen 10 --hdp-out1 data1.csv --hdp-out2 data2.csv
+# generate heuristic data with top 10 words
+$ hustle gen 10 myhdata2.csv
 ```
 
 ## TODO

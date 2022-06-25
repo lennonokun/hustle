@@ -16,7 +16,7 @@ mod game;
 use crate::game::Game;
 
 fn gen_data<P>(gwb: &WBank, awb: &WBank, hd: HData,
-							 hdop1: P, hdop2: P, cfg: Config, n: u32)
+							 hdop: P, cfg: Config, n: u32)
 where P: AsRef<Path> {
 	let gws2 = util::top_words(&gwb, &awb, &hd, n as usize);
 	for (i, w) in gws2.iter().enumerate() {
@@ -29,8 +29,7 @@ where P: AsRef<Path> {
 	}
 
 	let mut hrm = hd.hrm.into_inner().unwrap();
-	hrm.save(hdop1).unwrap();
-	hrm.process(hdop2).unwrap();
+	hrm.process(hdop).unwrap();
 }
 
 fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
@@ -76,15 +75,14 @@ where P: AsRef<Path> {
 }
 
 // ./hustle
-// (gen)|(play)|(solve <str>)
-// [--(dt|wbp|hdp-in|hdp-out1|hdp-out2) <PATH>]*
+// (play)|(solve <str> <)|(gen <n> <hdp-out>)
+// [--(dt|wbp|hdp) <PATH>]*
 // [--wlen <WLEN>]
 fn main() -> MainResult {
-	let mut wbp = String::from("data/bank1.csv");
-	let mut hdp_in = String::from("data/happrox.csv");
-	let mut hdp_out1 = String::from("data/hdata.csv");
-	let mut hdp_out2 = String::from("data/happrox.csv");
 	let mut wlen = 5;
+	let mut wbp = String::from("/usr/share/hustle/bank1.csv");
+	let mut hdp_in = String::from("/usr/share/hustle/happrox.csv");
+	let mut hdp_out = None::<String>;
 	let mut mode = None::<&str>;
 	let mut dtree_out = None::<String>;
 	let mut solve_str = None::<String>;
@@ -95,18 +93,20 @@ fn main() -> MainResult {
 	// parse required arguments
 	let first = args.next().expect("Expected an argument!");
 	match first.as_str() {
-		"gen" => {
-			mode = Some("gen");
-			gen_num = Some(args.next()
-										 .expect("'gen' requires a secondary argument")
-										 .parse().expect("could not parse gen_num"));
-		} "play" => {
+		"play" => {
 			mode = Some("play");
 		} "solve" => {
 			mode = Some("solve");
 			// should no argument just mean solve root?
 			solve_str = Some(args.next().expect(
 				"'solve' requires a secondary argument"));
+		} "gen" => {
+			mode = Some("gen");
+			gen_num = Some(args.next()
+										 .expect("'gen' requires a secondary argument")
+										 .parse().expect("could not parse gen_num"));
+			hdp_out = Some(args.next()
+										 .expect("'gen' requires a tertiary argument"));
 		} s => {
 			return Err(MainError::from(
 				Error::new(ErrorKind::Other,
@@ -130,12 +130,6 @@ fn main() -> MainResult {
 			} "--hdp-in" => {
 				hdp_in = args.next()
 					.expect("'--hdp-in' requires a secondary argument");
-			} "--hdp-out1" => {
-				hdp_out1 = args.next()
-					.expect("'--hdp-out1' requires a secondary argument");
-			} "--hdp-out2" => {
-				hdp_out2 = args.next()
-					.expect("'--hdp-out2' requires a secondary argument");
 			} "--ntops" => {
 				cfg.ntops = args.next()
 					.expect("'--ntops' requires a secondary argument")
@@ -159,7 +153,7 @@ fn main() -> MainResult {
 
 	match mode.unwrap() {
 		"gen" => {
-			gen_data(&gwb, &awb, hd, hdp_out1, hdp_out2,
+			gen_data(&gwb, &awb, hd, hdp_out.unwrap(),
 							 cfg, gen_num.unwrap());
 		} "play" => {
 			let mut game = Game::new();

@@ -42,7 +42,8 @@ const MENUSCREEN: [&'static str; MENUHEIGHT as usize] = [
 
 const NBANKS: u8 = 2;
 const WBPATHS: [&'static str; 2] = [
-	"data/bank1.csv", "data/bank2.csv"
+	"/usr/share/hustle/bank1.csv",
+	"/usr/share/hustle/bank2.csv"
 ];
 
 #[derive(Debug)]
@@ -269,13 +270,6 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		self.wlen = wlen.unwrap();
 		(self.gwb, self.awb) = WBank::from2(
 			WBPATHS[nbank as usize], self.wlen).unwrap();
-		eprintln!("gwb: {} {}, awb: {} {}",
-							self.gwb.data.len(), self.gwb.wlen,
-							self.awb.data.len(), self.awb.wlen);
-		eprintln!("gwb sample: {:?}", self.gwb.data.iter().take(10)
-							.map(|w| w.to_string()).collect::<Vec<String>>());
-		eprintln!("awb sample: {:?}", self.awb.data.iter().take(10)
-							.map(|w| w.to_string()).collect::<Vec<String>>());
 		return false;
 	}
 
@@ -367,7 +361,6 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 				self.stdout.flush();
 				match self.stdin.next().unwrap().unwrap() {
 					Key::Char(c) => if 'a' <= c && c <= 'z' {
-						eprintln!("key: {c}");
 						let c2 = (c as u8 - 32) as char;
 						guess.push(c2);
 						write!(self.stdout, "{}{}",
@@ -392,9 +385,7 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 
 				if guess.len() == self.wlen.into() {
 					let gw = Word::from(guess).unwrap();
-					eprintln!("entering: {}", gw.to_string());
 					if self.gwb.contains(gw) {
-						eprintln!("good word");
 						if self.turn == 0 {self.t_start = Instant::now()}
 						let mut i_done: Option<usize> = None;
 						for (i, c) in self.cols.iter_mut().enumerate() {
