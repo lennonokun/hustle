@@ -81,7 +81,7 @@ where P: AsRef<Path> {
 fn main() -> MainResult {
 	let mut wlen = 5;
 	let mut wbp = String::from("/usr/share/hustle/bank1.csv");
-	let mut hdp_in = String::from("/usr/share/hustle/happrox.csv");
+	let mut hdp = String::from("/usr/share/hustle/happrox.csv");
 	let mut hdp_out = None::<String>;
 	let mut mode = None::<&str>;
 	let mut dtree_out = None::<String>;
@@ -127,9 +127,9 @@ fn main() -> MainResult {
 			} "--wbp" => {
 				wbp = args.next()
 					.expect("'--wbp' requires a secondary argument");
-			} "--hdp-in" => {
-				hdp_in = args.next()
-					.expect("'--hdp-in' requires a secondary argument");
+			} "--hdp" => {
+				hdp = args.next()
+					.expect("'--hdp' requires a secondary argument");
 			} "--ntops" => {
 				cfg.ntops = args.next()
 					.expect("'--ntops' requires a secondary argument")
@@ -148,7 +148,7 @@ fn main() -> MainResult {
 
 	let (gwb, awb) = WBank::from2(wbp, wlen)
 		.expect("couldn't load word bank");
-	let hd = HData::load(hdp_in)
+	let hd = HData::load(hdp)
 		.expect("couldn't load heuristic data!");
 
 	match mode.unwrap() {
