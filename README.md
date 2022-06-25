@@ -13,12 +13,14 @@ inspired by the many wordle spin-offs like
 [speedle](https://tck.mn/speedle/).
 
 ## Installation
-Hustle can be easily installed with cargo on linux:
+Hustle can be installed using the PKGBUILD with makepkg and pacman on
+Arch Linux:
 ```
-$ cargo install hustle
+$ makepkg PKGBUILD
+# tarball may be named something else
+$ pacman -U hustle-1.2.1-1-x86_64.pkg.tar.zst
+$ makepkg --clean
 ```
-Then — if you haven't already — add ~/.cargo/bin to your PATH in your
-shell profile.
 
 ## Usage
 Here are some examples of how to use hustle:
@@ -63,5 +65,5 @@ $ hustle gen 10 myhdata2.csv
   - different modes like hard mode
 - sync with wordle, duordle, quordle, octordle's, etc daily
 * make more easily installable
-  - PKGBUILD, try to publish to AUR?
+  - try to publish to AUR?
   - config file (colors, replacement method, etc)

@@ -1,17 +1,23 @@
 pkgname=hustle
 pkgver=1.2.1
 pkgrel=1
-makedepends=('rust' 'cargo')
 arch=('i686' 'x86_64' 'armv6h' 'armv7h')
 pkgdesc="A terminal-based wordle clone and wordle solver written in rust, geared towards speedrunning"
-url="https://github.com/lennonokun/hustle"
+url="https://github.com/lennonokun/hustle/"
 license=('MIT')
+makedepends=('rust' 'cargo')
+source=("git+https://github.com/lennonokun/hustle.git#branch=main")
 
 prepare() {
+	cd "$pkgname"
+	ls
 	cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
 }
 
 build() {
+	ls
+	cd "$pkgname"
+	ls
 	export RUSTUP_TOOLCHAIN=stable
 	export CARGO_TARGET_DIR=target
 	cargo build --frozen --release --all-features
@@ -23,13 +29,18 @@ check() {
 
 package() {
 	cd "$pkgname"
+	tree
 	# binary
-	install -Dm0755 -t "$pkgdir/usr/bin" "target/release/$pkgname"
+	echo "installing into $pkgdir/usr/bin"
+	install -Dm0755 -t "$pkgdir/usr/bin" "usr/bin/hustle"
 	# data
+	echo "installing into $pkgdir/usr/share"
 	install -Dm0644 -t "$pkgdir/usr/share/hustle/bank1.csv" "data/bank1.csv"
 	install -Dm0644 -t "$pkgdir/usr/share/hustle/bank2.csv" "data/bank2.csv"
 	install -Dm0644 -t "$pkgdir/usr/share/hustle/happrox.csv" "data/happrox.csv"
 	# misc
+	echo "installing into $pkgdir/usr/share/licenses+doc"
 	install -Dm0644 -t "$pkgdir/usr/share/licenses/$pkgname/LICENSE" "LICENSE"
 	install -Dm0644 -t "$pkgdir/usr/share/doc/$pkgname" "README.md"
 }
+sha256sums=('SKIP')
