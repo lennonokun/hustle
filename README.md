@@ -49,6 +49,7 @@ $ hustle gen 10 myhdata2.csv
 
 ## TODO
 * make heuristics work for any word bank
+* multiple heuristic options? (linear reg, precomputed, etc)
 * generally refactor, don't ignore warnings
 * optimize solving
 * create benchmarks and unit tests
@@ -63,6 +64,8 @@ $ hustle gen 10 myhdata2.csv
   - different layout for single
   - different modes like hard mode
 - sync with wordle, duordle, quordle, octordle's, etc daily
+* create github releases?
 * make more easily installable
   - try to publish to AUR?
+  - create packages for more distros
   - config file (colors, replacement method, etc)
