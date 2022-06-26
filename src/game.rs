@@ -26,21 +26,25 @@ const MRC: &'static str = "┤";
 
 const MENUWIDTH: u16 = 24;
 const MENUHEIGHT: u16 = 9;
-const MENU_OFFX: [u16; 3] = [14, 14, 14];
+const MENU_OFFX: [u16; 3] = [11, 11, 11];
 const MENU_OFFY: [u16; 3] = [4, 5, 6];
 const MENUSCREEN: [&'static str; MENUHEIGHT as usize] = [
 	"┌──────────────────────┐",
 	"│                      │",
 	"│        HUSTLE        │",
 	"│                      │",
-	"│     nwords:          │",
-	"│       wlen:          │",
-	"│       bank:          │",
+	"│  nwords:             │",
+	"│    wlen:             │",
+	"│    bank: < bank1 >   │",
 	"│                      │",
 	"└──────────────────────┘",
 ];
 
 const NBANKS: u8 = 2;
+const WBPREVIEW: [&'static str; 2] = [
+	"< bank1 >",
+	"< bank2 >",
+];
 const WBPATHS: [&'static str; 2] = [
 	"/usr/share/hustle/bank1.csv",
 	"/usr/share/hustle/bank2.csv"
@@ -222,40 +226,58 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 
 		let mut cont = true;
 		let mut quit = false;
-		let mut s_arr = [String::new(), String::new(), String::new()];
 
-		let mut idx = 0usize;
+		let mut i = 0usize;
+		let mut s_nwords = String::new();
 		let mut nwords: Option<u16> = None;
+		let mut s_wlen = String::new();
 		let mut wlen: Option<u8> = None;
-		let mut nbank: Option<u8> = None;
+		let mut j_bank: usize = 0;
+		let mut bank: Option<&str> = None;
 		while cont {
-			let x = x0 + MENU_OFFX[idx];
-			let y = y0 + MENU_OFFY[idx];
+			let x = x0 + MENU_OFFX[i];
+			let y = y0 + MENU_OFFY[i];
 			match self.stdin.next().unwrap().unwrap() {
 				Key::Char('\n') => {
-					nwords = s_arr[0].parse().ok();
-					wlen = s_arr[1].parse().ok();
-					nbank = s_arr[2].parse().ok();
-					if let (Some(nwords), Some(wlen), Some(nbank)) = (nwords, wlen, nbank) {
+					// stop if valid
+					nwords = s_nwords.parse().ok();
+					wlen = s_wlen.parse().ok();
+					bank = Some(WBPATHS[j_bank]);
+					if let (Some(nwords), Some(wlen), Some(bank)) = (nwords, wlen, bank) {
 						cont = !((1..=MAXNWORDS).contains(&nwords) &&
-										 (MINWLEN..=MAXWLEN).contains(&(wlen as usize)) &&
-										 (0..=NBANKS).contains(&nbank));
+										 (MINWLEN..=MAXWLEN).contains(&(wlen as usize)));
 					}
-				} Key::Char(c) => if '0' <= c && c <= '9' {
+				} Key::Char(c) => if i < 2 && '0' <= c && c <= '9' {
+					// push character
+					let mut s = if i == 0 {&mut s_nwords} else {&mut s_wlen};
 					write!(self.stdout, "{}{}",
-									cursor::Goto(x + s_arr[idx].len() as u16, y),
+									cursor::Goto(x + s.len() as u16, y),
 									c.to_string());
-					s_arr[idx].push(c);
+					s.push(c);
 					self.stdout.flush();
-				} Key::Backspace => {
-					s_arr[idx].pop();
+				} Key::Backspace => if i < 2 {
+					// pop character
+					let mut s = if i == 0 {&mut s_nwords} else {&mut s_wlen};
+					s.pop();
 					write!(self.stdout, "{} ",
-									cursor::Goto(x + s_arr[idx].len() as u16, y));
+									cursor::Goto(x + s.len() as u16, y));
+					self.stdout.flush();
+				} Key::Left => if i == 2 {
+					eprintln!("left!");
+					j_bank = (j_bank - 1) % 2;
+					write!(self.stdout, "{}{}",
+								 cursor::Goto(x, y), WBPREVIEW[j_bank]);
+					self.stdout.flush();
+				} Key::Right => if i == 2 {
+					eprintln!("right!");
+					j_bank = (j_bank + 1) % 2;
+					write!(self.stdout, "{}{}",
+								 cursor::Goto(x, y), WBPREVIEW[j_bank]);
 					self.stdout.flush();
 				} Key::Up => {
-					idx = (idx - 1) % 3;
+					i = (i - 1) % 3;
 				} Key::Down => {
-					idx = (idx + 1) % 3;
+					i = (i + 1) % 3;
 				} Key::Esc => {
 					cont = false;
 					quit = true;
@@ -265,11 +287,11 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 
 		if quit {return true}
 
-		let nbank = nbank.unwrap();
+		let bank = bank.unwrap();
+		eprintln!("bank: {bank}");
 		self.nwords = nwords.unwrap();
 		self.wlen = wlen.unwrap();
-		(self.gwb, self.awb) = WBank::from2(
-			WBPATHS[nbank as usize], self.wlen).unwrap();
+		(self.gwb, self.awb) = WBank::from2(bank, self.wlen).unwrap();
 		return false;
 	}
 
