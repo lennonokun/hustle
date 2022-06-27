@@ -24,7 +24,7 @@ const BRC: &'static str = "┘";
 const MLC: &'static str = "├";
 const MRC: &'static str = "┤";
 
-const MENUWIDTH: u16 = 24;
+const MENUWIDTH: u16 = 23;
 const MENUHEIGHT: u16 = 9;
 const MENU_OFFX: [u16; 3] = [11, 11, 11];
 const MENU_OFFY: [u16; 3] = [4, 5, 6];
@@ -185,7 +185,7 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 	fn draw_status(&mut self) {
 		write!(self.stdout, "{}", cursor::Goto(2,2));
 		write!(self.stdout, "guesses: {}/{}, solved: {}/{}, scroll: {}/{}",
-					 self.turn, self.turn + NEXTRA,
+					 self.turn, self.nwords + NEXTRA,
 					 self.ndone, self.nwords,
 					 self.scroll + 1, self.nrows);
 	}
@@ -199,6 +199,9 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 	}
 	
 	fn draw_fbcols(&mut self) {
+		eprintln!("draw fbcols, turn: {}, max: {}",
+						 self.turn, self.maxrow);
+
 		for nrow in 0..cmp::min(self.turn, self.maxrow) {
 			for ncol in 0..self.ncols {
 				self.draw_fbc_row(ncol, nrow as u16)
@@ -215,8 +218,8 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 	}
 
 	fn menu_screen(&mut self) -> bool {
-		let x0 = (self.width - MENUWIDTH) / 2;
-		let y0 = (self.height - MENUHEIGHT)/ 2;
+		let x0 = (self.width - MENUWIDTH) / 2 + 1 ;
+		let y0 = (self.height - MENUHEIGHT) / 2 + 1;
 		for i in 0..MENUHEIGHT {
 			write!(self.stdout, "{}",
 						 cursor::Goto(x0, y0 + i));
@@ -263,13 +266,11 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 									cursor::Goto(x + s.len() as u16, y));
 					self.stdout.flush();
 				} Key::Left => if i == 2 {
-					eprintln!("left!");
 					j_bank = (j_bank - 1) % 2;
 					write!(self.stdout, "{}{}",
 								 cursor::Goto(x, y), WBPREVIEW[j_bank]);
 					self.stdout.flush();
 				} Key::Right => if i == 2 {
-					eprintln!("right!");
 					j_bank = (j_bank + 1) % 2;
 					write!(self.stdout, "{}{}",
 								 cursor::Goto(x, y), WBPREVIEW[j_bank]);
@@ -288,7 +289,6 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		if quit {return true}
 
 		let bank = bank.unwrap();
-		eprintln!("bank: {bank}");
 		self.nwords = nwords.unwrap();
 		self.wlen = wlen.unwrap();
 		(self.gwb, self.awb) = WBank::from2(bank, self.wlen).unwrap();
@@ -343,7 +343,8 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		let termsz = terminal_size().ok();
 		self.width = termsz.map(|(w,_)| w).unwrap();
 		self.height = termsz.map(|(_,h)| h).unwrap();
-		self.maxrow = self.height - 3;
+		self.maxrow = self.height - 4;
+		eprintln!("maxrow = {}", self.maxrow);
 
 		let mut cont = true;
 		let mut menu = true;
@@ -377,6 +378,7 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 			self.draw_status_base();
 
 			while self.turn < limit && self.ndone < self.nwords as u16 && !quit {
+				eprintln!("turn: {}", self.turn);
 				self.draw_status();
 				write!(self.stdout, "{}",
 							 cursor::Goto(guess.len() as u16 + 2, self.height-1));
@@ -420,9 +422,13 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 						self.turn += 1;
 						if let Some(i) = i_done {
 							// remove finished column and redraw entirely
+							eprintln!("done,turn: {} maxrow: {}",
+												self.turn, self.maxrow);
 							self.cols.remove(i);
 							self.draw_fbcols();
 						} else if self.turn <= self.maxrow {
+							eprintln!("turn: {} maxrow: {}",
+								self.turn, self.maxrow);
 							// or just draw guesses
 							for i in 0..self.ncols {
 								self.draw_fbc_row(i, self.turn-1);
