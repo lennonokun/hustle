@@ -33,11 +33,8 @@ where P: AsRef<Path> {
 }
 
 fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
-						hd: &HData, dtp: Option<String>, cfg: Config)
-						-> io::Result<()>
-where P: AsRef<Path> {
-	let hrm = Mutex::new(HRec::new());
-
+						hd: &HData, dtp: Option<P>, list: bool, cfg: Config)
+-> io::Result<()> where P: AsRef<Path> {
 	let mut awb2 = awb.clone();
 	let mut given = true;
 	let mut fbm = FbMap::new();
@@ -55,14 +52,33 @@ where P: AsRef<Path> {
 		given = !given;
 	}
 
-	let dt = if given {
+	let dt = if given && list {
+		let mut out_dt = None;
+		let mut out_tot = u32::MAX;
+		println!("Listing:");
+		for w in util::top_words(gwb, &awb2, hd, cfg.ntops as usize) {
+			let dt = solve_given(w, &gwb, &awb2, NGUESSES as u32 - turn - 1,
+													 &hd, cfg);
+			if let Some(DTree::Node{tot, word, ref fbmap}) = dt {
+				println!("{}: {}/{} = {:.3}",
+								 word.to_string(), tot, awb2.data.len(),
+								 tot as f64 / awb2.data.len() as f64);
+				if tot < out_tot {
+					out_tot = tot;
+					out_dt = dt;
+				}
+			}
+		}
+		println!();
+		out_dt
+	} else if given {
 		solve_state(&gwb, &awb2, NGUESSES as u32 - turn, &hd, cfg)
 	} else {
 		solve_given(w, &gwb, &awb2, NGUESSES as u32 - turn, &hd, cfg)
 	}.expect("couldn't make dtree!");
 
 	if let DTree::Node{tot, word, ref fbmap} = dt {
-		println!("found {}: {}/{} = {:.6}",
+		println!("found {}: {}/{} = {:.3}",
 							word.to_string(), tot, awb2.data.len(),
 							tot as f64 / awb2.data.len() as f64);
 		if let Some(dtp) = dtp {
@@ -75,9 +91,10 @@ where P: AsRef<Path> {
 }
 
 // ./hustle
-// (play)|(solve <str> <)|(gen <n> <hdp-out>)
+// (play)|(solve <str>)|(gen <n> <hdp-out>)|(guess <str>)
 // [--(dt|wbp|hdp) <PATH>]*
 // [--wlen <WLEN>]
+// [--list]
 fn main() -> MainResult {
 	let mut wlen = 5;
 	let mut wbp = String::from("/usr/share/hustle/bank1.csv");
@@ -86,6 +103,7 @@ fn main() -> MainResult {
 	let mut mode = None::<&str>;
 	let mut dtree_out = None::<String>;
 	let mut solve_str = None::<String>;
+	let mut solve_list = false;
 	let mut gen_num = None::<u32>;
 	let mut cfg = Config {ntops: 10, endgcutoff: 15};
 	let mut args = env::args().skip(1);
@@ -138,6 +156,8 @@ fn main() -> MainResult {
 				cfg.endgcutoff = args.next().expect(
 					"'--cutoff' requires a secondary argument")
 					.parse().expect("could not parse cutoff");
+			} "--list" => {
+				solve_list = true;
 			} s => {
 			return Err(MainError::from(
 				Error::new(ErrorKind::Other,
@@ -160,7 +180,7 @@ fn main() -> MainResult {
 			game.start();
 		} "solve" => {
 			solve::<String>(solve_str.unwrap(), wlen, &gwb, &awb,
-						&hd, dtree_out, cfg).unwrap();
+						&hd, dtree_out, solve_list, cfg)?;
 		} _ => {}
 	}
 
