@@ -1,5 +1,5 @@
 pkgname=hustle
-pkgver=1.2.2
+pkgver=1.2.3
 pkgrel=1
 arch=('i686' 'x86_64' 'armv6h' 'armv7h')
 pkgdesc="A terminal-based wordle clone and wordle solver written in rust, geared towards speedrunning"
