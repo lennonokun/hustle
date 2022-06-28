@@ -58,19 +58,25 @@ fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
 	let dt = if given && list {
 		let mut out_dt = None;
 		let mut out_tot = u32::MAX;
-		println!("Listing:");
+		let mut scores = Vec::new();
 		for w in util::top_words(gwb, &awb2, hd, cfg.ntops as usize) {
 			let dt = solve_given(w, &gwb, &awb2, NGUESSES as u32 - turn - 1,
 													 &hd, cfg);
 			if let Some(DTree::Node{tot, word, ref fbmap}) = dt {
-				println!("{}: {}/{} = {:.3}",
-								 word.to_string(), tot, awb2.data.len(),
-								 tot as f64 / awb2.data.len() as f64);
+				scores.push((word, tot));
 				if tot < out_tot {
 					out_tot = tot;
 					out_dt = dt;
 				}
 			}
+		}
+
+		println!("Listing:");
+		scores.sort_by_key(|(w,tot)| *tot);
+		for (i,(w,tot)) in scores.iter().enumerate() {
+			println!("{}. {}: {}/{} = {:.3}", i+1,
+								w.to_string(), tot, awb2.data.len(),
+								*tot as f64 / awb2.data.len() as f64);
 		}
 		println!();
 		out_dt
@@ -104,10 +110,6 @@ struct Cli {
 	wbp: String,
 	#[clap(long, default_value_t=String::from(DEFHDP))]
 	hdp: String,
-	#[clap(long, default_value_t=10)]
-	ntops: u32,
-	#[clap(long, default_value_t=15)]
-	cutoff: u32,
 }
 
 #[derive(Subcommand)]
@@ -120,11 +122,19 @@ enum Commands {
 		list: bool,
 		#[clap(long)]
 		dt: Option<String>,
+		#[clap(long, default_value_t=10)]
+		ntops: u32,
+		#[clap(long, default_value_t=15)]
+		cutoff: u32,
 	}, Gen {
 		#[clap(value_parser)]
 		niter: u32,
 		#[clap(value_parser)]
 		hdp_out: String,
+		#[clap(long, default_value_t=10)]
+		ntops: u32,
+		#[clap(long, default_value_t=15)]
+		cutoff: u32,
 	}
 }
 
@@ -133,15 +143,16 @@ fn main() {
 
 	let (gwb, awb) = WBank::from2(cli.wbp, cli.wlen).unwrap();
 	let hd = HData::load(cli.hdp).unwrap();
-	let cfg = Config {ntops: cli.ntops, endgcutoff: cli.cutoff};
 
 	match &cli.command {
 		Commands::Play {} => {
 			Game::new().start();
-		} Commands::Solve {state, list, dt} => {
+		} Commands::Solve {state, list, dt, ntops, cutoff} => {
+			let cfg = Config {ntops: *ntops, endgcutoff: *cutoff};
 			solve::<String>(state.to_string(), cli.wlen, &gwb, &awb,
 											&hd, dt.as_ref(), *list, cfg).unwrap();
-		} Commands::Gen {niter, hdp_out} => {
+		} Commands::Gen {niter, hdp_out, ntops, cutoff} => {
+			let cfg = Config {ntops: *ntops, endgcutoff: *cutoff};
 			gen_data(&gwb, &awb, hd, hdp_out, cfg, *niter);
 		}
 	}
