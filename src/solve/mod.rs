@@ -14,7 +14,9 @@ pub struct Config {
 	// number of top words to try
 	pub ntops: u32,
 	// number of remaining words makes it "endgame"
-	pub endgcutoff: u32
+	pub endgcutoff: u32,
+	// whether or not to record
+	pub record: bool
 }
 
 struct GivenData {
@@ -90,13 +92,14 @@ pub fn solve_state(gwb: &WBank, awb: &WBank, n: u32,
 
 	// inf when ran out of turns
 	if n == 0 {
-		// hd.hrm.lock().unwrap().record_inf(n as usize);
 		return None
 	}
 
 	// one answer -> guess it
 	if alen == 1 {
-		hd.hrm.lock().unwrap().record(alen as usize, 1);
+		if cfg.record {
+			hd.hrm.lock().unwrap().record(alen as usize, 1);
+		}
 		return Some(DTree::Node{
 			tot: 1, 
 			word: *awb.data.iter().next().unwrap(),
@@ -140,8 +143,10 @@ pub fn solve_state(gwb: &WBank, awb: &WBank, n: u32,
 	}
 	// dont bother checking other words if a 2 was found
 	if sd.lock().unwrap().tot == alen as u32 {
-		hd.hrm.lock().unwrap().record(alen as usize,
-																	sd.lock().unwrap().tot); 
+		if cfg.record {
+			hd.hrm.lock().unwrap().record(
+				alen as usize, sd.lock().unwrap().tot);
+		}
 		return sd.into_inner().unwrap().dt;
 	}
 
@@ -178,7 +183,9 @@ pub fn solve_state(gwb: &WBank, awb: &WBank, n: u32,
 		// todo why inf?
 		return None;
 	} else {
-		hd.hrm.lock().unwrap().record(alen as usize, sd2.tot);
+		if cfg.record {
+			hd.hrm.lock().unwrap().record(alen as usize, sd2.tot);
+		}
 		return sd2.dt;
 	}
 }

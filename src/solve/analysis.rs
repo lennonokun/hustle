@@ -14,11 +14,13 @@ pub struct HData {
 }
 
 // records heuristic data 
+// iteratively records moments of heuristic dist
+// of each answer length up to NWORDS
 // let ht[0] be zero to make indexing easier, so +1
 pub struct HRec {
-	// recorded data
-	rsums: [f64; NWORDS+1],
-	rcts: [u64; NWORDS+1],
+	cts: [u64; NWORDS+1],
+	m1s: [u64; NWORDS+1],
+	m2s: [u64; NWORDS+1],
 }
 
 impl HData {
@@ -41,14 +43,16 @@ impl HData {
 impl HRec {
 	pub fn new() -> Self {
 		Self {
-			rsums: [0.0; NWORDS+1],
-			rcts: [0; NWORDS+1],
+			cts: [0; NWORDS+1],
+			m1s: [0; NWORDS+1],
+			m2s: [0; NWORDS+1],
 		}
 	}
 
 	pub fn record(&mut self, n: usize, tot: u32) {
-		self.rsums[n] += tot as f64;
-		self.rcts[n] += 1;
+		self.cts[n] += 1;
+		self.m1s[n] += tot as u64;
+		self.m2s[n] += tot as u64 * tot as u64;
 	}
 
 	pub fn process<P>(&mut self, path: P) -> Result<()>
@@ -64,11 +68,11 @@ impl HRec {
 		w.push(1.);
 		for i in 0..=NWORDS {
 			// filter out nonrecorded
-			if self.rcts[i] > 0 {
-				let h = self.rsums[i] as f64 / self.rcts[i] as f64;
+			if self.cts[i] > 0 {
+				let h = self.m1s[i] as f64 / self.cts[i] as f64;
 				x.push(i as f64);
 				y.push(h);
-				w.push(self.rcts[i] as f64);
+				w.push(self.cts[i] as f64);
 			}
 			x2.push(i as f64);
 		}
@@ -93,11 +97,13 @@ impl HRec {
 	pub fn save<P>(&mut self, path: P) -> Result<()>
 	where P: AsRef<Path> {
 		let mut out = File::create(path)?;
-		writeln!(&mut out, "n,ct,h");
+		writeln!(&mut out, "n,ct,m1,m2");
 		for n in 0..=NWORDS {
-			let h = if self.rcts[n] == 0 {f64::NAN}
-			else {self.rsums[n] / self.rcts[n] as f64};
-			writeln!(&mut out, "{},{},{}", n, self.rcts[n], h);
+			let m1 = if self.cts[n] == 0 {f64::NAN}
+			else {self.m1s[n] as f64 / self.cts[n] as f64};
+			let m2 = if self.cts[n] == 0 {f64::NAN}
+			else {self.m2s[n] as f64 / self.cts[n] as f64};
+			writeln!(&mut out, "{},{},{},{}", n, self.cts[n], m1, m2);
 		}
 		Ok(())
 	}
