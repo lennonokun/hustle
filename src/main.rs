@@ -27,7 +27,9 @@ where P: AsRef<Path> {
 		let inst = Instant::now();
 		let dt = solve_given(*w, &gwb, &awb, 6, &hd, cfg);
 		let dur = inst.elapsed().as_millis();
-		println!("{}, {:.3}s", dt.unwrap().get_tot(),
+		let tot = dt.unwrap().get_tot();
+		println!("{}/{} = {:.3} in {:.3}s", tot, awb.data.len(),
+						 tot as f64 / awb.data.len() as f64,
 						 dur as f64 / 1_000.);
 	}
 
@@ -100,40 +102,56 @@ fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
 }
 
 #[derive(Parser)]
-#[clap(author, version, about, long_about=None)]
+#[clap(version, about)]
 struct Cli {
 	#[clap(subcommand)]
 	command: Commands,
+	/// word length
 	#[clap(long, default_value_t=5)]
 	wlen: u8,
+	/// word bank path
 	#[clap(long, default_value_t=String::from(DEFWBP))]
 	wbp: String,
+	/// heuristic data path
 	#[clap(long, default_value_t=String::from(DEFHDP))]
 	hdp: String,
 }
 
 #[derive(Subcommand)]
 enum Commands {
-	Play {
-	}, Solve {
+	/// Play hustle
+	Play,
+	/// Solve given game state
+	Solve {
+		/// the game state to solve from
 		#[clap(value_parser)]
 		state: String,
+		/// list top word evaluations
 		#[clap(long)]
 		list: bool,
+		/// output decision tree to file
 		#[clap(long)]
 		dt: Option<String>,
+		/// the number of top words to check at each state
 		#[clap(long, default_value_t=10)]
 		ntops: u32,
+		/// the maximum number of answer words left for an "endgame"
 		#[clap(long, default_value_t=15)]
 		cutoff: u32,
-	}, Gen {
+	},
+	/// Generate heuristic data
+	Gen {
 		#[clap(value_parser)]
+		/// the number of words to try
 		niter: u32,
+		/// the heuristic data output file
 		#[clap(value_parser)]
 		hdp_out: String,
-		#[clap(long, default_value_t=10)]
+		/// the number of top words to check at each state
+		#[clap(long, default_value_t=4)]
 		ntops: u32,
-		#[clap(long, default_value_t=15)]
+		/// the maximum number of answer words left for an "endgame"
+		#[clap(long, default_value_t=10)]
 		cutoff: u32,
 	}
 }
@@ -148,11 +166,11 @@ fn main() {
 		Commands::Play {} => {
 			Game::new().start();
 		} Commands::Solve {state, list, dt, ntops, cutoff} => {
-			let cfg = Config {ntops: *ntops, endgcutoff: *cutoff};
+			let cfg = Config {ntops: *ntops, endgcutoff: *cutoff, record: false};
 			solve::<String>(state.to_string(), cli.wlen, &gwb, &awb,
 											&hd, dt.as_ref(), *list, cfg).unwrap();
 		} Commands::Gen {niter, hdp_out, ntops, cutoff} => {
-			let cfg = Config {ntops: *ntops, endgcutoff: *cutoff};
+			let cfg = Config {ntops: *ntops, endgcutoff: *cutoff, record: true};
 			gen_data(&gwb, &awb, hd, hdp_out, cfg, *niter);
 		}
 	}
