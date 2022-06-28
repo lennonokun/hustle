@@ -4,7 +4,7 @@ use std::time::Instant;
 use std::path::Path;
 use std::fs::File;
 use std::io::{self, Error, ErrorKind};
-use main_error::{MainError, MainResult};
+use clap::{Parser, Args, Subcommand, ValueEnum};
 use std::env;
 
 mod solve;
@@ -14,6 +14,9 @@ mod ds;
 use crate::ds::*;
 mod game;
 use crate::game::Game;
+
+const DEFWBP: &'static str = "/usr/share/hustle/bank1.csv";
+const DEFHDP: &'static str = "/usr/share/hustle/happrox.csv";
 
 fn gen_data<P>(gwb: &WBank, awb: &WBank, hd: HData,
 							 hdop: P, cfg: Config, n: u32)
@@ -33,7 +36,7 @@ where P: AsRef<Path> {
 }
 
 fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
-						hd: &HData, dtp: Option<P>, list: bool, cfg: Config)
+						hd: &HData, dtp: Option<&P>, list: bool, cfg: Config)
 -> io::Result<()> where P: AsRef<Path> {
 	let mut awb2 = awb.clone();
 	let mut given = true;
@@ -90,99 +93,56 @@ fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
 	Ok(())
 }
 
-// ./hustle
-// (play)|(solve <str>)|(gen <n> <hdp-out>)|(guess <str>)
-// [--(dt|wbp|hdp) <PATH>]*
-// [--wlen <WLEN>]
-// [--list]
-fn main() -> MainResult {
-	let mut wlen = 5;
-	let mut wbp = String::from("/usr/share/hustle/bank1.csv");
-	let mut hdp = String::from("/usr/share/hustle/happrox.csv");
-	let mut hdp_out = None::<String>;
-	let mut mode = None::<&str>;
-	let mut dtree_out = None::<String>;
-	let mut solve_str = None::<String>;
-	let mut solve_list = false;
-	let mut gen_num = None::<u32>;
-	let mut cfg = Config {ntops: 10, endgcutoff: 15};
-	let mut args = env::args().skip(1);
+#[derive(Parser)]
+#[clap(author, version, about, long_about=None)]
+struct Cli {
+	#[clap(subcommand)]
+	command: Commands,
+	#[clap(long, default_value_t=5)]
+	wlen: u8,
+	#[clap(long, default_value_t=String::from(DEFWBP))]
+	wbp: String,
+	#[clap(long, default_value_t=String::from(DEFHDP))]
+	hdp: String,
+	#[clap(long, default_value_t=10)]
+	ntops: u32,
+	#[clap(long, default_value_t=15)]
+	cutoff: u32,
+}
 
-	// parse required arguments
-	let first = args.next().expect("Expected an argument!");
-	match first.as_str() {
-		"play" => {
-			mode = Some("play");
-		} "solve" => {
-			mode = Some("solve");
-			// should no argument just mean solve root?
-			solve_str = Some(args.next().expect(
-				"'solve' requires a secondary argument"));
-		} "gen" => {
-			mode = Some("gen");
-			gen_num = Some(args.next()
-										 .expect("'gen' requires a secondary argument")
-										 .parse().expect("could not parse gen_num"));
-			hdp_out = Some(args.next()
-										 .expect("'gen' requires a tertiary argument"));
-		} s => {
-			return Err(MainError::from(
-				Error::new(ErrorKind::Other,
-									format!("Invalid argument '{}' found", s))));
+#[derive(Subcommand)]
+enum Commands {
+	Play {
+	}, Solve {
+		#[clap(value_parser)]
+		state: String,
+		#[clap(long)]
+		list: bool,
+		#[clap(long)]
+		dt: Option<String>,
+	}, Gen {
+		#[clap(value_parser)]
+		niter: u32,
+		#[clap(value_parser)]
+		hdp_out: String,
+	}
+}
+
+fn main() {
+	let cli = Cli::parse();
+
+	let (gwb, awb) = WBank::from2(cli.wbp, cli.wlen).unwrap();
+	let hd = HData::load(cli.hdp).unwrap();
+	let cfg = Config {ntops: cli.ntops, endgcutoff: cli.cutoff};
+
+	match &cli.command {
+		Commands::Play {} => {
+			Game::new().start();
+		} Commands::Solve {state, list, dt} => {
+			solve::<String>(state.to_string(), cli.wlen, &gwb, &awb,
+											&hd, dt.as_ref(), *list, cfg).unwrap();
+		} Commands::Gen {niter, hdp_out} => {
+			gen_data(&gwb, &awb, hd, hdp_out, cfg, *niter);
 		}
 	}
-
-	// parse optional arguments
-	while let Some(s) = args.next() {
-		match s.as_str() {
-			"--wlen" => {
-				wlen = args.next()
-					.expect("'--wlen' requires a secondary argument")
-					.parse().expect("could not parse wlen");
-			} "--dt" => {
-				dtree_out = Some(args.next().expect(
-					"'--dt' requires a secondary argument"));
-			} "--wbp" => {
-				wbp = args.next()
-					.expect("'--wbp' requires a secondary argument");
-			} "--hdp" => {
-				hdp = args.next()
-					.expect("'--hdp' requires a secondary argument");
-			} "--ntops" => {
-				cfg.ntops = args.next()
-					.expect("'--ntops' requires a secondary argument")
-					.parse().expect("could not parse ntops");
-			} "--cutoff" => {
-				cfg.endgcutoff = args.next().expect(
-					"'--cutoff' requires a secondary argument")
-					.parse().expect("could not parse cutoff");
-			} "--list" => {
-				solve_list = true;
-			} s => {
-			return Err(MainError::from(
-				Error::new(ErrorKind::Other,
-									 format!("Invalid argument '{}' found", s))));
-			}
-		}
-	}
-
-	let (gwb, awb) = WBank::from2(wbp, wlen)
-		.expect("couldn't load word bank");
-	let hd = HData::load(hdp)
-		.expect("couldn't load heuristic data!");
-
-	match mode.unwrap() {
-		"gen" => {
-			gen_data(&gwb, &awb, hd, hdp_out.unwrap(),
-							 cfg, gen_num.unwrap());
-		} "play" => {
-			let mut game = Game::new();
-			game.start();
-		} "solve" => {
-			solve::<String>(solve_str.unwrap(), wlen, &gwb, &awb,
-						&hd, dtree_out, solve_list, cfg)?;
-		} _ => {}
-	}
-
-	Ok(())
 }

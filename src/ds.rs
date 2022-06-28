@@ -21,10 +21,6 @@ impl Word {
 	pub fn from(s: String) -> Option<Self> {
 		let wlen = s.len() as u8;
 		let mut data = [0u8; MAXWLEN];
-		// ruins derived hash, eq, and ord
-		// let mut data: [char; MAXWLEN] = unsafe {
-			// MaybeUninit::uninit().assume_init()
-		// };
 		if s.len() > MAXWLEN {return None}
 		for (i,c) in s.to_ascii_uppercase().chars().enumerate() {
 			data[i] = c as u8 - 'A' as u8;
@@ -35,9 +31,6 @@ impl Word {
 	pub fn from_str(s: &str) -> Option<Self> {
 		let wlen = s.len() as u8;
 		let mut data = [0; MAXWLEN];
-		// let mut data: [char; MAXWLEN] = unsafe {
-			// MaybeUninit::uninit().assume_init()
-		// };
 		if s.len() > MAXWLEN {return None}
 		for (i,c) in s.to_ascii_uppercase().chars().enumerate() {
 			data[i] = c as u8 - 'A' as u8;
@@ -132,6 +125,12 @@ impl Feedback {
 		self.g_bs == ((1 << self.wlen) - 1)
 	}
 }
+
+// pub struct WBank {
+	// pub gws: Vec<Word>,
+	// pub aws: Vec<Word>,
+	// pub wlen: u8
+// }
 
 #[derive(Debug, Clone)]
 pub struct WBank {
