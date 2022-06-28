@@ -24,20 +24,22 @@ const BRC: &'static str = "┘";
 const MLC: &'static str = "├";
 const MRC: &'static str = "┤";
 
-const MENUWIDTH: u16 = 23;
+const MENUWIDTH: u16 = 25;
 const MENUHEIGHT: u16 = 9;
-const MENU_OFFX: [u16; 3] = [11, 11, 11];
-const MENU_OFFY: [u16; 3] = [4, 5, 6];
+const MENUSTARX: [u16; 3] = [2, 2, 2];
+const MENUSTARY: [u16; 3] = [4, 5, 6];
+const MENUENTX: [u16; 3] = [12, 12, 12];
+const MENUENTY: [u16; 3] = [4, 5, 6];
 const MENUSCREEN: [&'static str; MENUHEIGHT as usize] = [
-	"┌──────────────────────┐",
-	"│                      │",
-	"│        HUSTLE        │",
-	"│                      │",
-	"│  nwords:             │",
-	"│    wlen:             │",
-	"│    bank: < bank1 >   │",
-	"│                      │",
-	"└──────────────────────┘",
+	"┌────────────────────────┐",
+	"│                        │",
+	"│         HUSTLE         │",
+	"│                        │",
+	"│   nwords:              │",
+	"│     wlen:              │",
+	"│     bank: < bank1 >    │",
+	"│                        │",
+	"└────────────────────────┘",
 ];
 
 const NBANKS: u8 = 2;
@@ -168,8 +170,8 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 			self.stdout.write(HORZE.as_bytes()).unwrap();
 		}
 		self.stdout.write(BRC.as_bytes()).unwrap();
-		write!(self.stdout, "{}", cursor::Hide);
 
+		write!(self.stdout, "{}", cursor::Hide);
 		// self.stdout.flush().unwrap();
 	}
 
@@ -199,9 +201,6 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 	}
 	
 	fn draw_fbcols(&mut self) {
-		eprintln!("draw fbcols, turn: {}, max: {}",
-						 self.turn, self.maxrow);
-
 		for nrow in 0..cmp::min(self.turn, self.maxrow) {
 			for ncol in 0..self.ncols {
 				self.draw_fbc_row(ncol, nrow as u16)
@@ -238,8 +237,11 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		let mut j_bank: usize = 0;
 		let mut bank: Option<&str> = None;
 		while cont {
-			let x = x0 + MENU_OFFX[i];
-			let y = y0 + MENU_OFFY[i];
+			let entx = x0 + MENUENTX[i];
+			let enty = y0 + MENUENTY[i];
+			let starx = x0 + MENUSTARX[i];
+			let stary = y0 + MENUSTARY[i];
+			writeln!(self.stdout, "{}*", cursor::Goto(starx, stary));
 			match self.stdin.next().unwrap().unwrap() {
 				Key::Char('\n') => {
 					// stop if valid
@@ -254,7 +256,7 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 					// push character
 					let mut s = if i == 0 {&mut s_nwords} else {&mut s_wlen};
 					write!(self.stdout, "{}{}",
-									cursor::Goto(x + s.len() as u16, y),
+									cursor::Goto(entx + s.len() as u16, enty),
 									c.to_string());
 					s.push(c);
 					self.stdout.flush();
@@ -263,21 +265,23 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 					let mut s = if i == 0 {&mut s_nwords} else {&mut s_wlen};
 					s.pop();
 					write!(self.stdout, "{} ",
-									cursor::Goto(x + s.len() as u16, y));
+									cursor::Goto(entx + s.len() as u16, enty));
 					self.stdout.flush();
 				} Key::Left => if i == 2 {
 					j_bank = (j_bank - 1) % 2;
 					write!(self.stdout, "{}{}",
-								 cursor::Goto(x, y), WBPREVIEW[j_bank]);
+								 cursor::Goto(entx, enty), WBPREVIEW[j_bank]);
 					self.stdout.flush();
 				} Key::Right => if i == 2 {
 					j_bank = (j_bank + 1) % 2;
 					write!(self.stdout, "{}{}",
-								 cursor::Goto(x, y), WBPREVIEW[j_bank]);
+								 cursor::Goto(entx, enty), WBPREVIEW[j_bank]);
 					self.stdout.flush();
 				} Key::Up => {
+					writeln!(self.stdout, "{} ", cursor::Goto(starx, stary));
 					i = (i - 1) % 3;
 				} Key::Down => {
+					writeln!(self.stdout, "{} ", cursor::Goto(starx, stary));
 					i = (i + 1) % 3;
 				} Key::Esc => {
 					cont = false;
@@ -344,7 +348,6 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		self.width = termsz.map(|(w,_)| w).unwrap();
 		self.height = termsz.map(|(_,h)| h).unwrap();
 		self.maxrow = self.height - 4;
-		eprintln!("maxrow = {}", self.maxrow);
 
 		let mut cont = true;
 		let mut menu = true;
@@ -378,7 +381,6 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 			self.draw_status_base();
 
 			while self.turn < limit && self.ndone < self.nwords as u16 && !quit {
-				eprintln!("turn: {}", self.turn);
 				self.draw_status();
 				write!(self.stdout, "{}",
 							 cursor::Goto(guess.len() as u16 + 2, self.height-1));
@@ -422,13 +424,9 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 						self.turn += 1;
 						if let Some(i) = i_done {
 							// remove finished column and redraw entirely
-							eprintln!("done,turn: {} maxrow: {}",
-												self.turn, self.maxrow);
 							self.cols.remove(i);
 							self.draw_fbcols();
 						} else if self.turn <= self.maxrow {
-							eprintln!("turn: {} maxrow: {}",
-								self.turn, self.maxrow);
 							// or just draw guesses
 							for i in 0..self.ncols {
 								self.draw_fbc_row(i, self.turn-1);
