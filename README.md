@@ -34,6 +34,9 @@ $ hustle solve reast.bbbgg
 # solve and output decision tree to file
 $ hustle solve trace.gybbb --dt out
 
+# solve and list results of top words
+$ hustle solve crate.bybyb --list
+
 # solve with specific ntops and cutoff
 $ hustle solve lodge.bbbbb --ntops 8 --cutoff 10
 
@@ -48,6 +51,10 @@ $ hustle gen 10 myhdata2.csv
 ```
 
 ## TODO
+* command help
+  - better error messages
+  - create man pages
+  - create --help command
 * make heuristics work for any word bank
 * multiple heuristic options? (linear reg, precomputed, etc)
 * generally refactor, don't ignore warnings
