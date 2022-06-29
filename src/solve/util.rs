@@ -7,7 +7,7 @@ pub fn fb_partition(gw: Word, awb: &WBank) -> FbMap<WBank> {
 	for aw in &awb.data {
 		let fb = Feedback::from(gw, *aw).unwrap();
 		let wb2 : &mut WBank =
-			map.entry(fb).or_insert(WBank::new());
+			map.entry(fb).or_insert_with(WBank::new);
 		wb2.data.push(*aw);
 	};
 	map
@@ -25,9 +25,10 @@ pub fn fb_counts(gw: Word, awb: &WBank) -> FbMap<u32> {
 
 // apply precalculated heuristic to partition sizes (lower is better)
 pub fn heuristic(gw: Word, awb: &WBank, hd: &HData) -> f64 {
-	fb_counts(gw, awb).iter()
+	let h = fb_counts(gw, awb).iter()
 		.map(|(_, n)| hd.get_approx(*n as usize))
-		.sum()
+		.sum();
+	if awb.contains(gw) {h - 1.} else {h}
 }
 
 // get top n words based off of heuristic

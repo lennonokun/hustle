@@ -2,6 +2,7 @@ use std::io::{Result, BufRead, BufReader, Error, Write};
 use std::fs::File;
 use std::path::Path;
 use std::collections::HashMap;
+use std::sync::Arc;
 use rand::prelude::*;
 
 pub const NLETS: usize = 5;
@@ -23,9 +24,9 @@ impl Word {
 		let mut data = [0u8; MAXWLEN];
 		if s.len() > MAXWLEN {return None}
 		for (i,c) in s.to_ascii_uppercase().chars().enumerate() {
-			data[i] = c as u8 - 'A' as u8;
+			data[i] = c as u8 - b'A';
 		}
-		Some(Word {data: data, wlen: wlen})
+		Some(Word{data, wlen})
 	}
 
 	pub fn from_str(s: &str) -> Option<Self> {
@@ -33,15 +34,15 @@ impl Word {
 		let mut data = [0; MAXWLEN];
 		if s.len() > MAXWLEN {return None}
 		for (i,c) in s.to_ascii_uppercase().chars().enumerate() {
-			data[i] = c as u8 - 'A' as u8;
+			data[i] = c as u8 - b'A';
 		}
-		Some(Word {data: data, wlen: wlen})
+		Some(Word{data, wlen})
 	}
 
 	pub fn to_string(&self) -> String {
 		self.data[0..self.wlen as usize]
 			.iter().cloned()
-			.map(|x| (x + 'A' as u8) as char)
+			.map(|x| (x + b'A') as char)
 			.collect()
 	}
 }
@@ -59,7 +60,7 @@ impl Feedback {
 	pub fn from(gw: Word, aw: Word) -> Option<Self> {
 		if gw.wlen != aw.wlen {return None}
 		let wlen = gw.wlen;
-		let mut fb = Feedback{g_bs: 0, y_bs:0, wlen: wlen};
+		let mut fb = Feedback{g_bs: 0, y_bs:0, wlen};
 		// bitset for used chars
 		let mut use_bs = 0u16;
 		// first find greens
@@ -101,7 +102,7 @@ impl Feedback {
 	pub fn from_str(s: &str) -> Option<Self> {
 		let wlen = s.len() as u8;
 		if wlen > MAXWLEN as u8 {return None}
-		let mut fb = Feedback{g_bs: 0, y_bs:0, wlen: wlen};
+		let mut fb = Feedback{g_bs: 0, y_bs:0, wlen};
 		for (i,c) in s.to_ascii_uppercase().chars()
 			.take(wlen as usize).enumerate() {
 			if c == 'G' {
@@ -114,11 +115,11 @@ impl Feedback {
 	}
 
 	pub fn get_g(&self, i: u8) -> bool {
-		return self.g_bs & 1 << i != 0;
+		self.g_bs & 1 << i != 0
 	}
 	
 	pub fn get_y(&self, i: u8) -> bool {
-		return self.y_bs & 1 << i != 0;
+		self.y_bs & 1 << i != 0
 	}
 
 	pub fn is_correct(&self) -> bool {
@@ -128,7 +129,7 @@ impl Feedback {
 
 // pub struct WBank {
 	// pub gws: Vec<Word>,
-	// pub aws: Vec<Word>,
+	// pub aws: Arc<Vec<Word>,
 	// pub wlen: u8
 // }
 
@@ -148,7 +149,7 @@ impl WBank {
 			.filter(|s| s.len() == wlen.into())
 			.filter_map(Word::from)
 			.collect::<Vec<Word>>();
-		Ok(WBank{data: data, wlen: wlen})
+		Ok(WBank{data, wlen})
 	}
 
 	pub fn from2<P>(p: P, wlen: u8) -> Result<(Self, Self)>
@@ -157,16 +158,14 @@ impl WBank {
 		let reader = BufReader::new(file);
 		let mut gdata = Vec::<Word>::new();
 		let mut adata = Vec::<Word>::new();
-		for line in reader.lines().skip(1) {
-			if let Ok(line) = line {
-				// parse line
-				let vec: Vec<&str> = line.split(",").collect();
-				if vec[2].parse::<u8>().unwrap() != wlen {continue}
-				// push to both if answer word, but only guess if guess word
-				let w = Word::from_str(vec[0]).unwrap();
-				if vec[1] == "A" {adata.push(w)}
-				gdata.push(w);
-			}
+		for line in reader.lines().skip(1).flatten() {
+			// parse line
+			let vec: Vec<&str> = line.split(',').collect();
+			if vec[2].parse::<u8>().unwrap() != wlen {continue}
+			// push to both if answer word, but only guess if guess word
+			let w = Word::from_str(vec[0]).unwrap();
+			if vec[1] == "A" {adata.push(w)}
+			gdata.push(w);
 		}
 
 		Ok((WBank {data: gdata, wlen}, WBank {data: adata, wlen}))

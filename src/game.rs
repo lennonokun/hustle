@@ -12,17 +12,17 @@ use crate::ds::*;
 const NEXTRA: u16 = 5;
 const MAXNWORDS: u16 = 2000;
 // space
-const EMPTY: &'static str = " ";
+const EMPTY: &str = " ";
 // edges
-const HORZE: &'static str = "─";
-const VERTE: &'static str = "│";
+const HORZE: &str = "─";
+const VERTE: &str = "│";
 // corners
-const ULC: &'static str = "┌";
-const URC: &'static str = "┐";
-const BLC: &'static str = "└";
-const BRC: &'static str = "┘";
-const MLC: &'static str = "├";
-const MRC: &'static str = "┤";
+const ULC: &str = "┌";
+const URC: &str = "┐";
+const BLC: &str = "└";
+const BRC: &str = "┘";
+const MLC: &str = "├";
+const MRC: &str = "┤";
 
 const MENUWIDTH: u16 = 25;
 const MENUHEIGHT: u16 = 9;
@@ -30,7 +30,7 @@ const MENUSTARX: [u16; 3] = [2, 2, 2];
 const MENUSTARY: [u16; 3] = [4, 5, 6];
 const MENUENTX: [u16; 3] = [12, 12, 12];
 const MENUENTY: [u16; 3] = [4, 5, 6];
-const MENUSCREEN: [&'static str; MENUHEIGHT as usize] = [
+const MENUSCREEN: [&str; MENUHEIGHT as usize] = [
 	"┌────────────────────────┐",
 	"│                        │",
 	"│         HUSTLE         │",
@@ -43,11 +43,11 @@ const MENUSCREEN: [&'static str; MENUHEIGHT as usize] = [
 ];
 
 const NBANKS: u8 = 2;
-const WBPREVIEW: [&'static str; 2] = [
+const WBPREVIEW: [&str; 2] = [
 	"< bank1 >",
 	"< bank2 >",
 ];
-const WBPATHS: [&'static str; 2] = [
+const WBPATHS: [&str; 2] = [
 	"/usr/share/hustle/bank1.csv",
 	"/usr/share/hustle/bank2.csv"
 ];
@@ -63,7 +63,7 @@ struct FeedbackCol {
 impl FeedbackCol {
 	fn new(ans: Word) -> Self {
 		Self {
-			ans: ans,
+			ans,
 			rows: Vec::<String>::new(),
 			wlen: ans.wlen,
 			done: false,
@@ -86,13 +86,13 @@ impl FeedbackCol {
 				s += &format!("{}{}", color::Rgb(255, 255, 255).fg_string(),
 											color::Bg(color::Blue));
 			}
-			s.push((gw.data[i as usize] + 'A' as u8) as char);
+			s.push((gw.data[i as usize] + b'A') as char);
 		};
 		s += &format!("{}{}", color::Reset.fg_str(),
 									color::Reset.bg_str());
 		self.rows.push(s);
 		self.done = gw == self.ans;
-		return self.done;
+		self.done
 	}
 }
 
@@ -124,8 +124,8 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		Game {
 			gwb: WBank {wlen: 0, data: Vec::new()},
 			awb: WBank {wlen: 0, data: Vec::new()},
-			stdin: stdin,
-			stdout: stdout,
+			stdin,
+			stdout,
 			wlen: 0,
 			width: 0,
 			height: 0,
@@ -147,29 +147,29 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		write!(self.stdout, "{}{}", clear::All, cursor::Goto(1,1));
 
 		// top edge
-		self.stdout.write(ULC.as_bytes()).unwrap();
+		self.stdout.write_all(ULC.as_bytes()).unwrap();
 		for _ in 1..self.width-1 {
-			self.stdout.write(HORZE.as_bytes()).unwrap();
+			self.stdout.write_all(HORZE.as_bytes()).unwrap();
 		}
-		self.stdout.write(URC.as_bytes()).unwrap();
-		self.stdout.write("\r\n".as_bytes()).unwrap();
+		self.stdout.write_all(URC.as_bytes()).unwrap();
+		self.stdout.write_all("\r\n".as_bytes()).unwrap();
 
 		// left+right edges
 		for _ in 1..self.height-1 {
-			self.stdout.write(VERTE.as_bytes()).unwrap();
+			self.stdout.write_all(VERTE.as_bytes()).unwrap();
 			for _ in 1..self.width-1 {
-				self.stdout.write(EMPTY.as_bytes()).unwrap();
+				self.stdout.write_all(EMPTY.as_bytes()).unwrap();
 			}
-			self.stdout.write(VERTE.as_bytes()).unwrap();
-			self.stdout.write("\r\n".as_bytes()).unwrap();
+			self.stdout.write_all(VERTE.as_bytes()).unwrap();
+			self.stdout.write_all("\r\n".as_bytes()).unwrap();
 		}
 
 		// bottom edge
-		self.stdout.write(BLC.as_bytes()).unwrap();
+		self.stdout.write_all(BLC.as_bytes()).unwrap();
 		for _ in 1..self.width-1 {
-			self.stdout.write(HORZE.as_bytes()).unwrap();
+			self.stdout.write_all(HORZE.as_bytes()).unwrap();
 		}
-		self.stdout.write(BRC.as_bytes()).unwrap();
+		self.stdout.write_all(BRC.as_bytes()).unwrap();
 
 		write!(self.stdout, "{}", cursor::Hide);
 		// self.stdout.flush().unwrap();
@@ -177,11 +177,11 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 
 	fn draw_status_base(&mut self) {
 		write!(self.stdout, "{}", cursor::Goto(1,3));
-		self.stdout.write(MLC.as_bytes());
+		self.stdout.write_all(MLC.as_bytes());
 		for _ in 1..self.width-1 {
-			self.stdout.write(HORZE.as_bytes()).unwrap();
+			self.stdout.write_all(HORZE.as_bytes()).unwrap();
 		}
-		self.stdout.write(MRC.as_bytes());
+		self.stdout.write_all(MRC.as_bytes());
 	}
 
 	fn draw_status(&mut self) {
@@ -222,7 +222,7 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		for i in 0..MENUHEIGHT {
 			write!(self.stdout, "{}",
 						 cursor::Goto(x0, y0 + i));
-			self.stdout.write(MENUSCREEN[i as usize].as_bytes());
+			self.stdout.write_all(MENUSCREEN[i as usize].as_bytes());
 		}
 		self.stdout.flush();
 
@@ -256,8 +256,7 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 					// push character
 					let mut s = if i == 0 {&mut s_nwords} else {&mut s_wlen};
 					write!(self.stdout, "{}{}",
-									cursor::Goto(entx + s.len() as u16, enty),
-									c.to_string());
+									cursor::Goto(entx + s.len() as u16, enty), c);
 					s.push(c);
 					self.stdout.flush();
 				} Key::Backspace => if i < 2 {
@@ -296,7 +295,7 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		self.nwords = nwords.unwrap();
 		self.wlen = wlen.unwrap();
 		(self.gwb, self.awb) = WBank::from2(bank, self.wlen).unwrap();
-		return false;
+		false
 	}
 
 	fn end_screen(&mut self) -> (bool, bool) {
@@ -340,7 +339,7 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 				} _ => {}
 			}
 		}
-		return (restart, menu);
+		(restart, menu)
 	}
 
 	pub fn start(&mut self) {
@@ -386,13 +385,13 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 							 cursor::Goto(guess.len() as u16 + 2, self.height-1));
 				self.stdout.flush();
 				match self.stdin.next().unwrap().unwrap() {
-					Key::Char(c) => if 'a' <= c && c <= 'z' {
+					Key::Char(c) => if ('a'..='z').contains(&c) {
 						let c2 = (c as u8 - 32) as char;
 						guess.push(c2);
 						write!(self.stdout, "{}{}",
 									 cursor::Goto(guess.len() as u16 + 1,
 																self.height-1),
-									 c2.to_string());
+									 c2);
 					} Key::Backspace => {
 						guess.pop();
 						write!(self.stdout, "{} ",

@@ -31,11 +31,11 @@ impl HData {
 			.filter_map(|s| s.ok()?.parse::<f64>().ok())
 			.collect::<Vec<f64>>()
 			.try_into().expect("expected NWORDS+1 lines in heuristic cache");
-		Ok(Self {approx: approx, hrm: Mutex::new(HRec::new())})
+		Ok(Self{approx, hrm: Mutex::new(HRec::new())})
 	}
 
 	#[inline]
-	pub fn get_approx(self: &Self, n: usize) -> f64 {
+	pub fn get_approx(&self, n: usize) -> f64 {
 		self.approx[n]
 	}
 }
@@ -86,8 +86,8 @@ impl HRec {
 
 		// save
 		let mut f = File::create(path)?;
-		for i in 0..=NWORDS {
-			writeln!(f, "{}", y2[i]);
+		for y2 in y2.iter().take(NWORDS+1) {
+			writeln!(f, "{}", y2);
 		}
 		
 		Ok(())
@@ -162,7 +162,7 @@ fn isotonic_regression(y: &mut Vec<f64>, w: &mut Vec<f64>)
 		}
 		i = k;
 	}
-	return Some(());
+	Some(())
 }
 
 // linearly interpolate sorted (x,y)'s onto sorted x2
@@ -173,9 +173,7 @@ fn lerp(x: &Vec<f64>, y: &Vec<f64>, x2: &Vec<f64>)
 		return None;
 	} else if x2.is_empty() {
 		return Some(Vec::new());
-	} else if x.len() < 2 {
-		return None;
-	} else if x2[0] < x[0] {
+	} else if x.len() < 2 || x2[0] < x[0] {
 		return None;
 	}
 	
@@ -185,9 +183,9 @@ fn lerp(x: &Vec<f64>, y: &Vec<f64>, x2: &Vec<f64>)
 	let mut a = 0usize;
 	let mut b = 1usize;
 
-	for i in 0..n {
+	for x2 in x2.iter().take(n).cloned() {
 		// search for bounds
-		while x[b] < x2[i] && b < m {
+		while x[b] < x2 && b < m {
 			b += 1;
 		}
 		if b == m {return None}
@@ -195,7 +193,7 @@ fn lerp(x: &Vec<f64>, y: &Vec<f64>, x2: &Vec<f64>)
 
 		// interpolate
 		let d = x[b] - x[a];
-		y2.push((y[a] * (x[b] - x2[i]) + y[b] * (x2[i] - x[a])) / d);
+		y2.push((y[a] * (x[b] - x2) + y[b] * (x2 - x[a])) / d);
 	}
 	
 	Some(y2)
