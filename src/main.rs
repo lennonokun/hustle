@@ -15,17 +15,17 @@ use crate::ds::*;
 mod game;
 use crate::game::Game;
 
-const DEFWBP: &'static str = "/usr/share/hustle/bank1.csv";
-const DEFHDP: &'static str = "/usr/share/hustle/happrox.csv";
+const DEFWBP: &str = "/usr/share/hustle/bank1.csv";
+const DEFHDP: &str = "/usr/share/hustle/happrox.csv";
 
 fn gen_data<P>(gwb: &WBank, awb: &WBank, hd: HData,
 							 hdop: P, cfg: Config, n: u32)
 where P: AsRef<Path> {
-	let gws2 = util::top_words(&gwb, &awb, &hd, n as usize);
+	let gws2 = util::top_words(gwb, awb, &hd, n as usize);
 	for (i, w) in gws2.iter().enumerate() {
 		print!("{}. {}: ", i+1, w.to_string());
 		let inst = Instant::now();
-		let dt = solve_given(*w, &gwb, &awb, 6, &hd, cfg);
+		let dt = solve_given(*w, gwb, awb, 6, &hd, cfg, u32::MAX);
 		let dur = inst.elapsed().as_millis();
 		let tot = dt.unwrap().get_tot();
 		println!("{}/{} = {:.3} in {:.3}s", tot, awb.data.len(),
@@ -45,14 +45,16 @@ fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
 	let mut fbm = FbMap::new();
 	let mut w = Word::from_str("aaaaa").unwrap();
 	let mut turn = 0u32;
-	for s in s.split(".") {
+	for s in s.split('.') {
 		if given {
 			w = Word::from_str(s).unwrap();
 			fbm = util::fb_partition(w, &awb2);
 			turn += 1;
 		} else {
 			let fb = Feedback::from_str(s).unwrap();
-			awb2 = fbm.get(&fb).unwrap().clone();
+			awb2 = fbm.get(&fb).unwrap_or(
+				&WBank{data: Vec::new(), wlen}
+			).clone();
 		}
 		given = !given;
 	}
@@ -62,8 +64,8 @@ fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
 		let mut out_tot = u32::MAX;
 		let mut scores = Vec::new();
 		for w in util::top_words(gwb, &awb2, hd, cfg.ntops as usize) {
-			let dt = solve_given(w, &gwb, &awb2, NGUESSES as u32 - turn - 1,
-													 &hd, cfg);
+			let dt = solve_given(w, gwb, &awb2, NGUESSES as u32 - turn - 1,
+													 hd, cfg, u32::MAX);
 			if let Some(DTree::Node{tot, word, ref fbmap}) = dt {
 				scores.push((word, tot));
 				if tot < out_tot {
@@ -83,9 +85,11 @@ fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
 		println!();
 		out_dt
 	} else if given {
-		solve_state(&gwb, &awb2, NGUESSES as u32 - turn, &hd, cfg)
+		solve_state(gwb, &awb2, NGUESSES as u32 - turn,
+								&hd, cfg, u32::MAX)
 	} else {
-		solve_given(w, &gwb, &awb2, NGUESSES as u32 - turn, &hd, cfg)
+		solve_given(w, gwb, &awb2, NGUESSES as u32 - turn,
+								&hd, cfg, u32::MAX)
 	}.expect("couldn't make dtree!");
 
 	if let DTree::Node{tot, word, ref fbmap} = dt {
@@ -151,7 +155,7 @@ enum Commands {
 		#[clap(long, default_value_t=4)]
 		ntops: u32,
 		/// the maximum number of answer words left for an "endgame"
-		#[clap(long, default_value_t=10)]
+		#[clap(long, default_value_t=15)]
 		cutoff: u32,
 	}
 }
