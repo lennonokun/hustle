@@ -36,7 +36,7 @@ const MENUSCREEN: [&str; MENUHEIGHT as usize] = [
 	"│         HUSTLE         │",
 	"│                        │",
 	"│   nwords:              │",
-	"│     wlen:              │",
+	"│     wlen: 5            │",
 	"│     bank: < bank1 >    │",
 	"│                        │",
 	"└────────────────────────┘",
@@ -211,7 +211,7 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 	
 	fn draw_empty_col(&mut self, ncol: u16) {
 		for nrow in 0..cmp::min(self.turn, self.maxrow) {
-			let goto = cursor::Goto(ncol*(self.wlen as u16 + 1) + 2, nrow + 2);
+			let goto = cursor::Goto(ncol*(self.wlen as u16+1)+2, nrow+2);
 			write!(self.stdout, "{}{}", goto, self.empty_string);
 		}
 	}
@@ -232,10 +232,11 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 		let mut i = 0usize;
 		let mut s_nwords = String::new();
 		let mut nwords: Option<u16> = None;
-		let mut s_wlen = String::new();
+		let mut s_wlen = String::from("5");
 		let mut wlen: Option<u8> = None;
 		let mut j_bank: usize = 0;
 		let mut bank: Option<&str> = None;
+		
 		while cont {
 			let entx = x0 + MENUENTX[i];
 			let enty = y0 + MENUENTY[i];
@@ -252,20 +253,12 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 						cont = !((1..=MAXNWORDS).contains(&nwords) &&
 										 (MINWLEN..=MAXWLEN).contains(&(wlen as usize)));
 					}
-				} Key::Char(c) => if i < 2 && '0' <= c && c <= '9' {
-					// push character
-					let mut s = if i == 0 {&mut s_nwords} else {&mut s_wlen};
-					write!(self.stdout, "{}{}",
-									cursor::Goto(entx + s.len() as u16, enty), c);
-					s.push(c);
-					self.stdout.flush();
-				} Key::Backspace => if i < 2 {
-					// pop character
-					let mut s = if i == 0 {&mut s_nwords} else {&mut s_wlen};
-					s.pop();
-					write!(self.stdout, "{} ",
-									cursor::Goto(entx + s.len() as u16, enty));
-					self.stdout.flush();
+				} Key::Up | Key::BackTab => {
+					writeln!(self.stdout, "{} ", cursor::Goto(starx, stary));
+					i = (i + 2) % 3;
+				} Key::Down | Key::Char('\t') => {
+					writeln!(self.stdout, "{} ", cursor::Goto(starx, stary));
+					i = (i + 1) % 3;
 				} Key::Left => if i == 2 {
 					j_bank = (j_bank - 1) % 2;
 					write!(self.stdout, "{}{}",
@@ -276,15 +269,23 @@ impl <'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
 					write!(self.stdout, "{}{}",
 								 cursor::Goto(entx, enty), WBPREVIEW[j_bank]);
 					self.stdout.flush();
-				} Key::Up => {
-					writeln!(self.stdout, "{} ", cursor::Goto(starx, stary));
-					i = (i - 1) % 3;
-				} Key::Down => {
-					writeln!(self.stdout, "{} ", cursor::Goto(starx, stary));
-					i = (i + 1) % 3;
+				} Key::Backspace => if i < 2 {
+					// pop character
+					let mut s = if i == 0 {&mut s_nwords} else {&mut s_wlen};
+					s.pop();
+					write!(self.stdout, "{} ",
+									cursor::Goto(entx + s.len() as u16, enty));
+					self.stdout.flush();
 				} Key::Esc => {
 					cont = false;
 					quit = true;
+				} Key::Char(c) => if i < 2 && '0' <= c && c <= '9' {
+					// push character
+					let mut s = if i == 0 {&mut s_nwords} else {&mut s_wlen};
+					write!(self.stdout, "{}{}",
+									cursor::Goto(entx + s.len() as u16, enty), c);
+					s.push(c);
+					self.stdout.flush();
 				} _ => {}
 			}
 		}

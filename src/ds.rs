@@ -175,6 +175,10 @@ impl WBank {
 		WBank {data: Vec::new(), wlen: 0}
 	}
 
+	pub fn new2(wlen: u8) -> Self {
+		WBank {data: Vec::new(), wlen}
+	}
+
 	pub fn contains(&self, w: Word) -> bool {
 		self.data.contains(&w)
 	}
