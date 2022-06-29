@@ -85,11 +85,13 @@ fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
 		println!();
 		out_dt
 	} else if given {
-		solve_state(gwb, &awb2, NGUESSES as u32 - turn,
-								&hd, cfg, u32::MAX)
+		let mut s = State::new(gwb, &awb2, &hd, cfg);
+		s.turns = NGUESSES as u32 - turn;
+		s.solve_state()
 	} else {
-		solve_given(w, gwb, &awb2, NGUESSES as u32 - turn,
-								&hd, cfg, u32::MAX)
+		let mut s = State::new(gwb, &awb2, &hd, cfg);
+		s.turns = NGUESSES as u32 - turn;
+		s.solve_given(w)
 	}.expect("couldn't make dtree!");
 
 	if let DTree::Node{tot, word, ref fbmap} = dt {
