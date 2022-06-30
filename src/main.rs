@@ -2,9 +2,11 @@
 use std::sync::Mutex;
 use std::time::Instant;
 use std::path::Path;
-use std::fs::File;
+use std::fs::{File, OpenOptions};
 use std::io::{self, Error, ErrorKind};
 use clap::{Parser, Args, Subcommand, ValueEnum};
+use rand::Rng;
+use std::io::Write;
 use std::env;
 
 mod solve;
@@ -18,23 +20,38 @@ use crate::game::Game;
 const DEFWBP: &str = "/usr/share/hustle/bank1.csv";
 const DEFHDP: &str = "/usr/share/hustle/happrox.csv";
 
-fn gen_data<P>(gwb: &WBank, awb: &WBank, hd: HData,
-							 hdop: P, cfg: Config, n: u32)
-where P: AsRef<Path> {
-	let gws2 = util::top_words(gwb, awb, &hd, n as usize);
-	for (i, w) in gws2.iter().enumerate() {
-		print!("{}. {}: ", i+1, w.to_string());
-		let inst = Instant::now();
-		let dt = solve_given(*w, gwb, awb, 6, &hd, cfg, u32::MAX);
-		let dur = inst.elapsed().as_millis();
-		let tot = dt.unwrap().get_tot();
-		println!("{}/{} = {:.3} in {:.3}s", tot, awb.data.len(),
-						 tot as f64 / awb.data.len() as f64,
-						 dur as f64 / 1_000.);
+fn gen_data<P>(gwb: &WBank, awb: &WBank, hd: &HData,
+							 hdop: P, cfg: Config, niter: u32)
+where P: AsRef<Path> + std::convert::AsRef<std::ffi::OsStr> {
+	let mut rng = rand::thread_rng();
+
+	// open and write header if new
+	let b = Path::new(&hdop).exists();
+	let mut out;
+	if b {
+		out = OpenOptions::new()
+			.write(true).append(true)
+			.open(hdop).unwrap();
+	} else {
+		out = File::create(hdop).unwrap();
+		writeln!(&mut out, "n,h");
 	}
 
-	let mut hrm = hd.hrm.into_inner().unwrap();
-	hrm.process(hdop).unwrap();
+	for i in 0..niter {
+		let nsample = rng.gen_range(1..=NWORDS);
+		let awb2 = WBank{
+			data: awb.pick(&mut rng, nsample as usize),
+			wlen: 5
+		};
+		let dt = solve_state(gwb, &awb2, 6, hd, cfg, u32::MAX);
+		if let Some(dt) = dt {
+			println!("{}. {}/{}", i+1, dt.get_tot(), nsample);
+			writeln!(&mut out, "{},{}", nsample, dt.get_tot());
+		}
+	}
+
+	// hd.hrm.lock().unwrap().save(hdop);
+	// hrm.process(hdop).unwrap();
 }
 
 fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
@@ -85,13 +102,11 @@ fn solve<P>(s: String, wlen: u8, gwb: &WBank, awb: &WBank,
 		println!();
 		out_dt
 	} else if given {
-		let mut s = State::new(gwb, &awb2, &hd, cfg);
-		s.turns = NGUESSES as u32 - turn;
-		s.solve_state()
+		solve_state(gwb, &awb2, NGUESSES as u32 - turn,
+								hd, cfg, u32::MAX)
 	} else {
-		let mut s = State::new(gwb, &awb2, &hd, cfg);
-		s.turns = NGUESSES as u32 - turn;
-		s.solve_given(w)
+		solve_given(w, gwb, &awb2, NGUESSES as u32 - turn,
+								hd, cfg, u32::MAX)
 	}.expect("couldn't make dtree!");
 
 	if let DTree::Node{tot, word, ref fbmap} = dt {
@@ -148,13 +163,14 @@ enum Commands {
 	/// Generate heuristic data
 	Gen {
 		#[clap(value_parser)]
-		/// the number of words to try
+		/// the number of word banks to try
 		niter: u32,
+		#[clap(value_parser)]
 		/// the heuristic data output file
 		#[clap(value_parser)]
 		hdp_out: String,
 		/// the number of top words to check at each state
-		#[clap(long, default_value_t=4)]
+		#[clap(long, default_value_t=2)]
 		ntops: u32,
 		/// the maximum number of answer words left for an "endgame"
 		#[clap(long, default_value_t=15)]
@@ -166,18 +182,18 @@ fn main() {
 	let cli = Cli::parse();
 
 	let (gwb, awb) = WBank::from2(cli.wbp, cli.wlen).unwrap();
-	let hd = HData::load(cli.hdp).unwrap();
+	let mut hd = HData::load(cli.hdp).unwrap();
 
 	match &cli.command {
 		Commands::Play {} => {
 			Game::new().start();
 		} Commands::Solve {state, list, dt, ntops, cutoff} => {
-			let cfg = Config {ntops: *ntops, endgcutoff: *cutoff, record: false};
+			let cfg = Config {ntops: *ntops, endgcutoff: *cutoff};
 			solve::<String>(state.to_string(), cli.wlen, &gwb, &awb,
 											&hd, dt.as_ref(), *list, cfg).unwrap();
 		} Commands::Gen {niter, hdp_out, ntops, cutoff} => {
-			let cfg = Config {ntops: *ntops, endgcutoff: *cutoff, record: true};
-			gen_data(&gwb, &awb, hd, hdp_out, cfg, *niter);
+			let cfg = Config {ntops: *ntops, endgcutoff: *cutoff};
+			gen_data(&gwb, &awb, &hd, hdp_out, cfg, *niter);
 		}
 	}
 }
