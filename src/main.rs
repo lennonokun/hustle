@@ -20,7 +20,7 @@ use crate::game::Game;
 const DEFWBP: &str = "/usr/share/hustle/bank1.csv";
 const DEFHDP: &str = "/usr/share/hustle/happrox.csv";
 
-fn gen_data<P>(gwb: &WBank, awb: &WBank, hd: &HData, hdop: P, cfg: Config, niter: u32)
+fn gen_data<P>(gwb: WBank, awb: WBank, hd: &HData, hdop: P, cfg: Config, niter: u32)
 where
   P: AsRef<Path> + std::convert::AsRef<std::ffi::OsStr>, {
   let mut rng = rand::thread_rng();
@@ -52,14 +52,14 @@ where
 }
 
 fn solve<P>(
-  s: String, wlen: u8, gwb: &WBank, awb: &WBank, hd: &HData, dtp: Option<&P>, list: bool,
+  s: String, wlen: u8, gwb: WBank, awb: WBank, hd: &HData, dtp: Option<&P>, list: bool,
   cfg: Config,
 ) -> io::Result<()>
 where
   P: AsRef<Path>, {
   let mut given = true;
   let mut fbm = FbMap::new();
-  let mut state = State::new(gwb.data.clone(), awb.data.clone(), gwb.wlen.into());
+  let mut state = State::new(gwb.data, awb.data, gwb.wlen.into());
   let mut w = Word::from_str("aaaaa").unwrap();
   let mut turn = 0u32;
   for s in s.split('.') {
@@ -69,48 +69,30 @@ where
       turn += 1;
     } else {
       let fb = Feedback::from_str(s).unwrap();
-      state = fbm.get(&fb).unwrap().clone();
+      state = fbm.remove(&fb).unwrap();
     }
     given = !given;
   }
 
-  //    if given && list {
-  //    let mut out_dt = None;
-  //    let mut out_tot = u32::MAX;
-  //    let mut scores = Vec::new();
-  //    let ws = util::top_words(&gwb2, &awb2, hd, cfg.ntops as usize);
-  //    for w in ws.iter() {println!("{}", w.to_string())}
-  //    for w in ws {
-  //      let dt = solve_given(w, &gwb2, &awb2, NGUESSES as u32 - turn - 1, hd, cfg, u32::MAX);
-  //      if let Some(DTree::Node {
-  //        tot,
-  //        word,
-  //        ref fbmap,
-  //      }) = dt
-  //      {
-  //        scores.push((word, tot));
-  //        if tot < out_tot {
-  //          out_tot = tot;
-  //          out_dt = dt;
-  //        }
-  //      }
-  //    }
-  //
-  //    println!("Listing:");
-  //    scores.sort_by_key(|(w, tot)| *tot);
-  //    for (i, (w, tot)) in scores.iter().enumerate() {
-  //      println!(
-  //        "{}. {}: {}/{} = {:.3}",
-  //        i + 1,
-  //        w.to_string(),
-  //        tot,
-  //        awb2.data.len(),
-  //        *tot as f64 / awb2.data.len() as f64
-  //      );
-  //    }
-  //    println!();
-  //    out_dt
-  let dt = if given {
+  let dt = if given && list {
+    let ws = state.top_words(&cfg, &hd);
+    let mut scores: Vec<(Word, DTree)> = ws.iter()
+      .filter_map(|w| Some((*w, state.solve_given(*w, &cfg, &hd, u32::MAX)?)))
+      .collect();
+    scores.sort_by_key(|(w, dt)| dt.get_tot());
+    println!("Listing:");
+    for (i, (w, dt)) in scores.iter().enumerate() {
+      println!(
+        "{}. {}: {}/{} = {:.3}",
+        i + 1,
+        w.to_string(),
+        dt.get_tot(),
+        state.aws.len(),
+        dt.get_tot() as f64 / state.aws.len() as f64
+      );
+    }
+    scores.pop().map(|(w, dt)| dt)
+  } else if given {
     state.solve(&cfg, hd, u32::MAX)
   } else {
     state.solve_given(w, &cfg, hd, u32::MAX)
@@ -135,22 +117,22 @@ where
       dt.pprint(&mut f, &"".into(), turn);
     }
 
-    let mut v: Vec<(&Feedback, &DTree)> = fbmap.iter().collect();
-    v.sort_by_key(|(fb, dt)| -(dt.get_tot() as i32));
-    for (i, (fb, dt)) in v.iter().enumerate() {
-      match dt {
-        DTree::Leaf => {}
-        DTree::Node { tot, word, fbmap } => {
-          println!(
-            "{}. {}: {}, {}",
-            i + 1,
-            fb.to_string(),
-            word.to_string(),
-            tot
-          );
-        }
-      }
-    }
+//    let mut v: Vec<(&Feedback, &DTree)> = fbmap.iter().collect();
+//    v.sort_by_key(|(fb, dt)| -(dt.get_tot() as i32));
+//    for (i, (fb, dt)) in v.iter().enumerate() {
+//      match dt {
+//        DTree::Leaf => {}
+//        DTree::Node { tot, word, fbmap } => {
+//          println!(
+//            "{}. {}: {}, {}",
+//            i + 1,
+//            fb.to_string(),
+//            word.to_string(),
+//            tot
+//          );
+//        }
+//      }
+//    }
   }
 
   Ok(())
@@ -244,8 +226,8 @@ fn main() {
       solve::<String>(
         state.to_string(),
         cli.wlen,
-        &gwb,
-        &awb,
+        gwb,
+        awb,
         &hd,
         dt.as_ref(),
         *list,
@@ -265,7 +247,7 @@ fn main() {
         endgcutoff: *cutoff,
         hard: *hard,
       };
-      gen_data(&gwb, &awb, &hd, hdp_out, cfg, *niter);
+      gen_data(gwb, awb, &hd, hdp_out, cfg, *niter);
     }
   }
 }
