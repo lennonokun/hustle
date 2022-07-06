@@ -36,7 +36,7 @@ where
       .unwrap();
   } else {
     out = File::create(hdop).unwrap();
-    writeln!(&mut out, "n,h");
+    writeln!(&mut out, "n,h,m");
   }
 
   for i in 0..niter {
@@ -45,15 +45,15 @@ where
     let s = State::new(gwb.data.clone(), aws2, awb.wlen.into());
     let dt = s.solve(&cfg, hd, u32::MAX);
     if let Some(dt) = dt {
+      let mode = if cfg.hard {"H"} else {"E"};
       println!("{}. {}/{}", i + 1, dt.get_tot(), nsample);
-      writeln!(&mut out, "{},{}", nsample, dt.get_tot());
+      writeln!(&mut out, "{},{},{}", nsample, dt.get_tot(), mode);
     }
   }
 }
 
 fn solve<P>(
-  s: String, wlen: u8, gwb: WBank, awb: WBank, hd: &HData, dtp: Option<&P>, list: bool,
-  cfg: Config,
+  s: String, wlen: u8, gwb: WBank, awb: WBank, hd: &HData, dtp: Option<&P>, list: bool, cfg: Config,
 ) -> io::Result<()>
 where
   P: AsRef<Path>, {
@@ -76,7 +76,8 @@ where
 
   let dt = if given && list {
     let ws = state.top_words(&cfg, &hd);
-    let mut scores: Vec<(Word, DTree)> = ws.iter()
+    let mut scores: Vec<(Word, DTree)> = ws
+      .iter()
       .filter_map(|w| Some((*w, state.solve_given(*w, &cfg, &hd, u32::MAX)?)))
       .collect();
     scores.sort_by_key(|(w, dt)| dt.get_tot());
@@ -117,22 +118,22 @@ where
       dt.pprint(&mut f, &"".into(), turn);
     }
 
-//    let mut v: Vec<(&Feedback, &DTree)> = fbmap.iter().collect();
-//    v.sort_by_key(|(fb, dt)| -(dt.get_tot() as i32));
-//    for (i, (fb, dt)) in v.iter().enumerate() {
-//      match dt {
-//        DTree::Leaf => {}
-//        DTree::Node { tot, word, fbmap } => {
-//          println!(
-//            "{}. {}: {}, {}",
-//            i + 1,
-//            fb.to_string(),
-//            word.to_string(),
-//            tot
-//          );
-//        }
-//      }
-//    }
+    //    let mut v: Vec<(&Feedback, &DTree)> = fbmap.iter().collect();
+    //    v.sort_by_key(|(fb, dt)| -(dt.get_tot() as i32));
+    //    for (i, (fb, dt)) in v.iter().enumerate() {
+    //      match dt {
+    //        DTree::Leaf => {}
+    //        DTree::Node { tot, word, fbmap } => {
+    //          println!(
+    //            "{}. {}: {}, {}",
+    //            i + 1,
+    //            fb.to_string(),
+    //            word.to_string(),
+    //            tot
+    //          );
+    //        }
+    //      }
+    //    }
   }
 
   Ok(())
