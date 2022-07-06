@@ -6,8 +6,6 @@ use crate::ds::*;
 
 pub mod analysis;
 use crate::solve::analysis::HData;
-pub mod util;
-use crate::solve::util::*;
 
 #[derive(Clone, Copy)]
 pub struct Config {
