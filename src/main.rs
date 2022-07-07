@@ -53,7 +53,8 @@ where
 }
 
 fn solve<P>(
-  s: String, wlen: u8, gwb: WBank, awb: WBank, hd: &HData, dtp: Option<&P>, list: bool, cfg: Config,
+  s: String, wlen: u8, gwb: WBank, awb: WBank, hd: &HData,
+  dtp: Option<&P>, list: bool, cfg: Config,
 ) -> io::Result<()>
 where
   P: AsRef<Path>, {
@@ -63,6 +64,7 @@ where
   let mut w = Word::from_str("aaaaa").unwrap();
   let mut turn = 0u32;
   for s in s.split('.') {
+    if s.is_empty() {continue}
     if given {
       w = Word::from_str(s).unwrap();
       fbm = state.fb_partition(&w, &cfg);
@@ -127,8 +129,8 @@ where
     //          println!(
     //            "{}. {}: {}, {}",
     //            i + 1,
-    //            fb.to_string(),
-    //            word.to_string(),
+    //            fb,
+    //            word,
     //            tot
     //          );
     //        }
@@ -162,7 +164,7 @@ enum Commands {
   /// Solve given game state
   Solve {
     /// the game state to solve from
-    #[clap(value_parser)]
+    #[clap(value_parser, default_value = "")]
     state: String,
     /// list top word evaluations
     #[clap(long)]
