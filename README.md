@@ -13,12 +13,17 @@ inspired by the many wordle spin-offs like
 [speedle](https://tck.mn/speedle/).
 
 ## Installation
-Hustle can be installed using the PKGBUILD with makepkg and pacman on
-Arch Linux:
+On Arch Linux, you can install using the PKGBUILD:
 ```
 $ makepkg --clean PKGBUILD
 # tarball may be named something else
 $ sudo pacman -U hustle-1.2.3-1-x86_64.pkg.tar.zst
+```
+Otherwise, you can install by cloning and using the Makefile:
+```
+$ git clone https://github.com/lennonokun/hustle.git
+$ cd hustle
+$ make install
 ```
 
 ## Usage
