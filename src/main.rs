@@ -10,8 +10,7 @@ use std::sync::Mutex;
 use std::time::Instant;
 
 mod solve;
-use crate::solve::analysis::*;
-use crate::solve::*;
+use crate::solve::{State, Config, HData};
 mod ds;
 use crate::ds::*;
 mod game;
@@ -42,8 +41,8 @@ where
   for i in 0..niter {
     let nsample = rng.gen_range(1..=NWORDS);
     let aws2 = awb.pick(&mut rng, nsample as usize);
-    let s = State::new(gwb.data.clone(), aws2, awb.wlen.into());
-    let dt = s.solve(&cfg, hd, u32::MAX);
+    let s = State::new(gwb.data.clone(), aws2, awb.wlen.into(), &cfg, &hd);
+    let dt = s.solve(u32::MAX);
     if let Some(dt) = dt {
       let mode = if cfg.hard {"H"} else {"E"};
       println!("{}. {}/{}", i + 1, dt.get_tot(), nsample);
@@ -58,29 +57,28 @@ fn solve<P>(
 ) -> io::Result<()>
 where
   P: AsRef<Path>, {
-  let mut given = true;
-  let mut fbm = FbMap::new();
-  let mut state = State::new(gwb.data, awb.data, gwb.wlen.into());
-  let mut w = Word::from_str("aaaaa").unwrap();
+  let mut state = State::new(gwb.data, awb.data, gwb.wlen.into(), &cfg, &hd);
+  let mut w: Option<Word> = None;
   let mut turn = 0u32;
-  for s in s.split('.') {
-    if s.is_empty() {continue}
-    if given {
-      w = Word::from_str(s).unwrap();
-      fbm = state.fb_partition(&w, &cfg);
-      turn += 1;
+  let mut it = s.split('.');
+  while let Some(s_a) = it.next() {
+    if s_a.is_empty() {break}
+    turn += 1;
+    if let Some(s_b) = it.next() {
+      let gw = Word::from_str(s_a).unwrap();
+      let fb = Feedback::from_str(s_b).unwrap();
+      state = state.fb_follow(gw, fb);
     } else {
-      let fb = Feedback::from_str(s).unwrap();
-      state = fbm.remove(&fb).unwrap();
+      w = Some(Word::from_str(s_a).unwrap());
     }
-    given = !given;
   }
 
-  let dt = if given && list {
-    let ws = state.top_words(&cfg, &hd);
+  let given = w.is_some();
+  let dt = if !given && list {
+    let ws = state.top_words();
     let mut scores: Vec<(Word, DTree)> = ws
       .iter()
-      .filter_map(|w| Some((*w, state.solve_given(*w, &cfg, &hd, u32::MAX)?)))
+      .filter_map(|w| Some((*w, state.solve_given(*w, u32::MAX)?)))
       .collect();
     scores.sort_by_key(|(w, dt)| dt.get_tot());
     println!("Listing:");
@@ -95,10 +93,10 @@ where
       );
     }
     scores.pop().map(|(w, dt)| dt)
-  } else if given {
-    state.solve(&cfg, hd, u32::MAX)
+  } else if !given {
+    state.solve(u32::MAX)
   } else {
-    state.solve_given(w, &cfg, hd, u32::MAX)
+    state.solve_given(w.unwrap(), u32::MAX)
   }
   .expect("couldn't make dtree!");
 
