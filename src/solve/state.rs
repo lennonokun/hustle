@@ -231,5 +231,15 @@ mod test {
     let state = State::new(gwb.data, awb.data, wlen.into(), &cfg, &hd);
     assert!(state.solve(u32::MAX).is_some());
   }
+
+  #[test]
+  fn impossible_solve() {
+    let wlen = 5;
+    let mut cfg = Config {ntops: 2, endgcutoff: 15, hard: false};
+    let hd = HData::load("/usr/share/hustle/happrox.csv").unwrap();
+    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", wlen).unwrap();
+    let state = State::new2(gwb.data, awb.data, wlen.into(), 3, &cfg, &hd);
+    assert!(state.solve(u32::MAX).is_none());
+  }
 }
 
