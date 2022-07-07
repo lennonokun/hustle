@@ -17,7 +17,7 @@ On Arch Linux, you can install using the PKGBUILD:
 ```
 $ makepkg --clean PKGBUILD
 # tarball may be named something else
-$ sudo pacman -U hustle-1.2.3-1-x86_64.pkg.tar.zst
+$ sudo pacman -U hustle-1.2.4-1-x86_64.pkg.tar.zst
 ```
 Otherwise, you can install by cloning and using the Makefile:
 ```
