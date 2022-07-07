@@ -31,8 +31,8 @@ $ hustle play
 $ hustle solve salet.bbbbb.courd
 $ hustle solve reast.bbbgg
 
-# solve and output decision tree to file
-$ hustle solve trace.gybbb --dt out
+# solve all of wordle and output to file (takes me 1m40s)
+$ hustle solve --dt out
 
 # solve and list results of top words
 $ hustle solve crate.bybyb --list
@@ -51,15 +51,18 @@ $ hustle gen 10 myhdata2.csv
 ```
 
 ## TODO
-* command help
-  - better error messages
-  - create man pages
-  - create --help command
+### General
+* generally refactor, don't ignore warnings
+* create benchmarks and unit tests
+### Solver
 * make heuristics work for any word bank
 * multiple heuristic options? (linear reg, precomputed, etc)
-* generally refactor, don't ignore warnings
 * optimize solving
-* create benchmarks and unit tests
+  - re-add multithreading
+    (beta pruning is mostly single-threaded though)
+  - look at flame graphs, etc
+### Game
+* split Game into multiple files
 * dictionary capabilities
 * keep statistics and track pb's
 * show untested letters?
@@ -74,5 +77,6 @@ $ hustle gen 10 myhdata2.csv
 * create github releases?
 * make more easily installable
   - try to publish to AUR?
+  - create install.sh?
   - create packages for more distros
   - config file (colors, replacement method, etc)
