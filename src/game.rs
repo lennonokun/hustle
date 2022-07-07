@@ -368,7 +368,7 @@ impl<'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
         let row = i as u16 / self.ncols;
         let x = (self.wlen as u16 + 1) * col + 2;
         let y = row + 4;
-        write!(self.stdout, "{}{}", cursor::Goto(x, y), ans.to_string());
+        write!(self.stdout, "{}{}", cursor::Goto(x, y), ans);
       }
     }
 

@@ -1,6 +1,7 @@
 use rand::prelude::*;
 use std::collections::HashMap;
 use std::fs::File;
+use std::fmt;
 use std::io::{BufRead, BufReader, Error, Result, Write};
 use std::path::Path;
 use std::sync::Arc;
@@ -49,6 +50,12 @@ impl Word {
       .cloned()
       .map(|x| (x + b'A') as char)
       .collect()
+  }
+}
+
+impl fmt::Display for Word {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(f, "{}", self.to_string())
   }
 }
 
@@ -144,6 +151,12 @@ impl Feedback {
 
   pub fn is_correct(&self) -> bool {
     self.g_bs == ((1 << self.wlen) - 1)
+  }
+}
+
+impl fmt::Display for Feedback {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(f, "{}", self.to_string())
   }
 }
 
