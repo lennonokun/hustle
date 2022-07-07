@@ -8,6 +8,8 @@ use termion::raw::{IntoRawMode, RawTerminal};
 use termion::{clear, color, cursor, style, terminal_size};
 
 use crate::ds::*;
+use crate::game::fbcol::FeedbackCol;
+use crate::game::menu::Menu;
 
 const NEXTRA: u16 = 5;
 const MAXNWORDS: u16 = 2000;
@@ -23,82 +25,6 @@ const BLC: &str = "└";
 const BRC: &str = "┘";
 const MLC: &str = "├";
 const MRC: &str = "┤";
-
-const MENUWIDTH: u16 = 25;
-const MENUHEIGHT: u16 = 9;
-const MENUSTARX: [u16; 3] = [2, 2, 2];
-const MENUSTARY: [u16; 3] = [4, 5, 6];
-const MENUENTX: [u16; 3] = [12, 12, 12];
-const MENUENTY: [u16; 3] = [4, 5, 6];
-const MENUSCREEN: [&str; MENUHEIGHT as usize] = [
-  "┌────────────────────────┐",
-  "│                        │",
-  "│         HUSTLE         │",
-  "│                        │",
-  "│   nwords:              │",
-  "│     wlen: 5            │",
-  "│     bank: < bank1 >    │",
-  "│                        │",
-  "└────────────────────────┘",
-];
-
-const NBANKS: u8 = 2;
-const WBPREVIEW: [&str; 2] = ["< bank1 >", "< bank2 >"];
-const WBPATHS: [&str; 2] = ["/usr/share/hustle/bank1.csv", "/usr/share/hustle/bank2.csv"];
-
-#[derive(Debug)]
-struct FeedbackCol {
-  ans: Word,
-  rows: Vec<String>,
-  wlen: u8,
-  done: bool,
-}
-
-impl FeedbackCol {
-  fn new(ans: Word) -> Self {
-    Self {
-      ans,
-      rows: Vec::<String>::new(),
-      wlen: ans.wlen,
-      done: false,
-    }
-  }
-
-  // returns if newly finished
-  fn guess(&mut self, gw: Word) -> bool {
-    if self.done || self.wlen != gw.wlen {
-      return false;
-    }
-    let fb = Feedback::from(gw, self.ans).unwrap();
-    let mut s = String::new();
-    for i in 0..self.wlen {
-      if fb.get_g(i) {
-        s += &format!(
-          "{}{}",
-          color::Rgb(255, 255, 255).fg_string(),
-          color::Bg(color::Green)
-        );
-      } else if fb.get_y(i) {
-        s += &format!(
-          "{}{}",
-          color::Rgb(255, 255, 255).fg_string(),
-          color::Bg(color::Yellow)
-        );
-      } else {
-        s += &format!(
-          "{}{}",
-          color::Rgb(255, 255, 255).fg_string(),
-          color::Bg(color::Blue)
-        );
-      }
-      s.push((gw.data[i as usize] + b'A') as char);
-    }
-    s += &format!("{}{}", color::Reset.fg_str(), color::Reset.bg_str());
-    self.rows.push(s);
-    self.done = gw == self.ans;
-    self.done
-  }
-}
 
 pub struct Game<R, W> {
   gwb: WBank,
@@ -235,117 +161,12 @@ impl<'a> Game<Keys<StdinLock<'a>>, RawTerminal<StdoutLock<'a>>> {
   }
 
   fn menu_screen(&mut self) -> bool {
-    let x0 = (self.width - MENUWIDTH) / 2 + 1;
-    let y0 = (self.height - MENUHEIGHT) / 2 + 1;
-    for i in 0..MENUHEIGHT {
-      write!(self.stdout, "{}", cursor::Goto(x0, y0 + i));
-      self.stdout.write_all(MENUSCREEN[i as usize].as_bytes());
-    }
-    self.stdout.flush();
-
-    let mut cont = true;
-    let mut quit = false;
-
-    let mut i = 0usize;
-    let mut s_nwords = String::new();
-    let mut nwords: Option<u16> = None;
-    let mut s_wlen = String::from("5");
-    let mut wlen: Option<u8> = None;
-    let mut j_bank: usize = 0;
-    let mut bank: Option<&str> = None;
-
-    while cont {
-      let entx = x0 + MENUENTX[i];
-      let enty = y0 + MENUENTY[i];
-      let starx = x0 + MENUSTARX[i];
-      let stary = y0 + MENUSTARY[i];
-      writeln!(self.stdout, "{}*", cursor::Goto(starx, stary));
-      match self.stdin.next().unwrap().unwrap() {
-        Key::Char('\n') => {
-          // stop if valid
-          nwords = s_nwords.parse().ok();
-          wlen = s_wlen.parse().ok();
-          bank = Some(WBPATHS[j_bank]);
-          if let (Some(nwords), Some(wlen), Some(bank)) = (nwords, wlen, bank) {
-            cont = !((1..=MAXNWORDS).contains(&nwords)
-              && (MINWLEN..=MAXWLEN).contains(&(wlen as usize)));
-          }
-        }
-        Key::Up | Key::BackTab => {
-          writeln!(self.stdout, "{} ", cursor::Goto(starx, stary));
-          i = (i + 2) % 3;
-        }
-        Key::Down | Key::Char('\t') => {
-          writeln!(self.stdout, "{} ", cursor::Goto(starx, stary));
-          i = (i + 1) % 3;
-        }
-        Key::Left => {
-          if i == 2 {
-            j_bank = (j_bank - 1) % 2;
-            write!(
-              self.stdout,
-              "{}{}",
-              cursor::Goto(entx, enty),
-              WBPREVIEW[j_bank]
-            );
-            self.stdout.flush();
-          }
-        }
-        Key::Right => {
-          if i == 2 {
-            j_bank = (j_bank + 1) % 2;
-            write!(
-              self.stdout,
-              "{}{}",
-              cursor::Goto(entx, enty),
-              WBPREVIEW[j_bank]
-            );
-            self.stdout.flush();
-          }
-        }
-        Key::Backspace => {
-          if i < 2 {
-            // pop character
-            let mut s = if i == 0 { &mut s_nwords } else { &mut s_wlen };
-            s.pop();
-            write!(
-              self.stdout,
-              "{} ",
-              cursor::Goto(entx + s.len() as u16, enty)
-            );
-            self.stdout.flush();
-          }
-        }
-        Key::Esc => {
-          cont = false;
-          quit = true;
-        }
-        Key::Char(c) => {
-          if i < 2 && '0' <= c && c <= '9' {
-            // push character
-            let mut s = if i == 0 { &mut s_nwords } else { &mut s_wlen };
-            write!(
-              self.stdout,
-              "{}{}",
-              cursor::Goto(entx + s.len() as u16, enty),
-              c
-            );
-            s.push(c);
-            self.stdout.flush();
-          }
-        }
-        _ => {}
-      }
-    }
-
-    if quit {
-      return true;
-    }
-
-    let bank = bank.unwrap();
-    self.nwords = nwords.unwrap();
-    self.wlen = wlen.unwrap();
-    (self.gwb, self.awb) = WBank::from2(bank, self.wlen).unwrap();
+    let menu = Menu::new(&mut self.stdin, &mut self.stdout);
+    let res = menu.run();
+    if res.quit {return true}
+    self.nwords = res.nwords;
+    self.wlen = res.wlen;
+    (self.gwb, self.awb) = WBank::from2(res.bank, self.wlen).unwrap();
     false
   }
 

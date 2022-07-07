@@ -5,6 +5,9 @@ use std::sync::Mutex;
 use crate::ds::*;
 use crate::solve::analysis::HData;
 
+// maximum number of words solveable in two guesses
+const MAX_TWOSOLVE: u32 = 20;
+
 #[derive(Clone, Copy)]
 pub struct Config {
   // number of top words to try
@@ -120,7 +123,7 @@ impl<'a> State<'a> {
     if alen == 1 && gw == *self.aws.get(0).unwrap() {
       // leaf if guessed
       return Some(DTree::Leaf);
-    } else if self.n == 0 || (self.n == 1 && alen > 20) {
+    } else if self.n == 0 || (self.n == 1 && alen > MAX_TWOSOLVE as usize) {
       // impossible guesses
       return None;
     }
