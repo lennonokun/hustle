@@ -6,6 +6,7 @@ use termion::raw::{IntoRawMode, RawTerminal};
 use termion::{clear, color, cursor, style, terminal_size};
 
 use crate::ds::{MINWLEN, MAXWLEN};
+use super::gameio::GameIO;
 
 const MENUWIDTH: u16 = 25;
 const MENUHEIGHT: u16 = 9;
@@ -37,31 +38,29 @@ pub struct MenuResults {
   pub bank: String,
 }
 
-pub struct Menu<'a, R, W> {
-  stdin: &'a mut R,
-  stdout: &'a mut W,
+pub struct Menu<'a, 'b> {
+  gio: &'a mut GameIO<'b>
 }
 
 type LockedIn<'a> = Keys<StdinLock<'a>>;
 type LockedOut<'a> = RawTerminal<StdoutLock<'a>>;
 
-impl<'a, 'b> Menu<'a, LockedIn<'b>, LockedOut<'b>> {
-  pub fn new(stdin: &'a mut LockedIn<'b>, stdout: &'a mut LockedOut<'b>) -> Self {
-    Self {stdin, stdout}
+impl<'a, 'b> Menu<'a, 'b> {
+  pub fn new(gio: &'a mut GameIO<'b>) -> Self {
+    Self {gio}
   }
 
   pub fn run(self) -> MenuResults {
-    let termsz = terminal_size().ok();
-    let width = termsz.map(|(w, _)| w).unwrap();
-    let height = termsz.map(|(_, h)| h).unwrap();
-
-    let x0 = (width - MENUWIDTH) / 2 + 1;
-    let y0 = (height - MENUHEIGHT) / 2 + 1;
+    let x0 = (self.gio.width - MENUWIDTH) / 2 + 1;
+    let y0 = (self.gio.height - MENUHEIGHT) / 2 + 1;
+    
+    self.gio.empty();
+    self.gio.rect(x0, y0, MENUWIDTH, MENUHEIGHT);
+    // TODO DRAW ENTRIES, ETC
     for i in 0..MENUHEIGHT {
-      write!(self.stdout, "{}", cursor::Goto(x0, y0 + i));
-      self.stdout.write_all(MENUSCREEN[i as usize].as_bytes());
+      wrta!(self.gio, x0, y0+i, MENUSCREEN[i as usize]);
     }
-    self.stdout.flush();
+    self.gio.flush();
 
     let mut cont = true;
     let mut quit = false;
@@ -79,8 +78,8 @@ impl<'a, 'b> Menu<'a, LockedIn<'b>, LockedOut<'b>> {
       let enty = y0 + MENUENTY[i];
       let starx = x0 + MENUSTARX[i];
       let stary = y0 + MENUSTARY[i];
-      writeln!(self.stdout, "{}*", cursor::Goto(starx, stary));
-      match self.stdin.next().unwrap().unwrap() {
+      wrt!(self.gio, cursor::Goto(starx, stary), "*");
+      match self.gio.read() {
         Key::Char('\n') => {
           // stop if valid
           nwords = s_nwords.parse().ok();
@@ -92,35 +91,25 @@ impl<'a, 'b> Menu<'a, LockedIn<'b>, LockedOut<'b>> {
           }
         }
         Key::Up | Key::BackTab => {
-          writeln!(self.stdout, "{} ", cursor::Goto(starx, stary));
+          wrta!(self.gio, starx, stary, " ");
           i = (i + 2) % 3;
         }
         Key::Down | Key::Char('\t') => {
-          writeln!(self.stdout, "{} ", cursor::Goto(starx, stary));
+          wrta!(self.gio, starx, stary, " ");
           i = (i + 1) % 3;
         }
         Key::Left => {
           if i == 2 {
             j_bank = (j_bank - 1) % 2;
-            write!(
-              self.stdout,
-              "{}{}",
-              cursor::Goto(entx, enty),
-              WBPREVIEW[j_bank]
-            );
-            self.stdout.flush();
+            wrta!(self.gio, entx, enty, WBPREVIEW[j_bank]);
+            self.gio.flush();
           }
         }
         Key::Right => {
           if i == 2 {
             j_bank = (j_bank + 1) % 2;
-            write!(
-              self.stdout,
-              "{}{}",
-              cursor::Goto(entx, enty),
-              WBPREVIEW[j_bank]
-            );
-            self.stdout.flush();
+            wrta!(self.gio, entx, enty, WBPREVIEW[j_bank]);
+            self.gio.flush();
           }
         }
         Key::Backspace => {
@@ -128,12 +117,8 @@ impl<'a, 'b> Menu<'a, LockedIn<'b>, LockedOut<'b>> {
             // pop character
             let mut s = if i == 0 { &mut s_nwords } else { &mut s_wlen };
             s.pop();
-            write!(
-              self.stdout,
-              "{} ",
-              cursor::Goto(entx + s.len() as u16, enty)
-            );
-            self.stdout.flush();
+            wrta!(self.gio, entx + s.len() as u16, enty, " ");
+            self.gio.flush();
           }
         }
         Key::Esc => {
@@ -144,14 +129,9 @@ impl<'a, 'b> Menu<'a, LockedIn<'b>, LockedOut<'b>> {
           if i < 2 && '0' <= c && c <= '9' {
             // push character
             let mut s = if i == 0 { &mut s_nwords } else { &mut s_wlen };
-            write!(
-              self.stdout,
-              "{}{}",
-              cursor::Goto(entx + s.len() as u16, enty),
-              c
-            );
+            wrta!(self.gio, entx + s.len() as u16, enty, c);
+            self.gio.flush();
             s.push(c);
-            self.stdout.flush();
           }
         }
         _ => {}

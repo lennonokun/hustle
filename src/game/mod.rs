@@ -1,4 +1,7 @@
-pub mod menu;
-pub mod fbcol;
-pub mod game;
+#[macro_use]
+mod gameio;
+mod menu;
+mod fbcol;
+mod game;
+
 pub use self::game::Game;
