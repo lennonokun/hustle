@@ -59,6 +59,7 @@ $ hustle gen 10 myhdata2.csv
 ### General
 * generally refactor, don't ignore warnings
 * create benchmarks and unit tests
+* make man page with clap
 ### Solver
 * make heuristics work for any word bank
 * multiple heuristic options? (linear reg, precomputed, etc)
@@ -68,7 +69,15 @@ $ hustle gen 10 myhdata2.csv
   - look at flame graphs, etc
 ### Game
 * split Game into multiple files
+* warn when impossible to guess (red text)?
+* swap Game and Play?
+* rename End, Menu, etc to +Screen
+* is wrt! slow?
+* show wlen in end, and maybe wbank?
+* better resizing
+* make prompt trait + macro like clap
 * dictionary capabilities
+* draw input beneath each col?
 * keep statistics and track pb's
 * show untested letters?
 * show known letters
@@ -82,6 +91,5 @@ $ hustle gen 10 myhdata2.csv
 * create github releases?
 * make more easily installable
   - try to publish to AUR?
-  - create install.sh?
   - create packages for more distros
   - config file (colors, replacement method, etc)

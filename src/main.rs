@@ -14,7 +14,7 @@ use crate::solve::{State, Config, HData};
 mod ds;
 use crate::ds::*;
 mod game;
-use crate::game::Game;
+use crate::game::game;
 
 const DEFWBP: &str = "/usr/share/hustle/bank1.csv";
 const DEFHDP: &str = "/usr/share/hustle/happrox.csv";
@@ -209,7 +209,7 @@ fn main() {
 
   match &cli.command {
     Commands::Play {} => {
-      Game::new().start();
+      game();
     }
     Commands::Solve {
       state,

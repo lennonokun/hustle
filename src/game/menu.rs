@@ -31,11 +31,12 @@ const MAXNWORDS: u16 = 2000;
 const WBPREVIEW: [&str; 2] = ["< bank1 >", "< bank2 >"];
 const WBPATHS: [&str; 2] = ["/usr/share/hustle/bank1.csv", "/usr/share/hustle/bank2.csv"];
 
+#[derive(Clone, Copy, Default)]
 pub struct MenuResults {
   pub quit: bool,
   pub nwords: u16,
   pub wlen: u8,
-  pub bank: String,
+  pub bank: &'static str,
 }
 
 pub struct Menu<'a, 'b> {
@@ -56,7 +57,6 @@ impl<'a, 'b> Menu<'a, 'b> {
     
     self.gio.empty();
     self.gio.rect(x0, y0, MENUWIDTH, MENUHEIGHT);
-    // TODO DRAW ENTRIES, ETC
     for i in 0..MENUHEIGHT {
       wrta!(self.gio, x0, y0+i, MENUSCREEN[i as usize]);
     }
@@ -139,11 +139,11 @@ impl<'a, 'b> Menu<'a, 'b> {
     }
 
     if quit {
-      MenuResults{quit, nwords: 0, wlen: 0, bank: "".to_string()}
+      MenuResults{quit, nwords: 0, wlen: 0, bank: ""}
     } else {
       let nwords = nwords.unwrap();
       let wlen = wlen.unwrap();
-      let bank = bank.unwrap().to_string();
+      let bank = bank.unwrap();
       MenuResults{quit, nwords, wlen, bank}
     }
   }
