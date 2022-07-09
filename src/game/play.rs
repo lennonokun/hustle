@@ -100,6 +100,18 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
       wrta!(self.gio, x, y, self.empty_string);
     }
   }
+  
+  fn draw_guess(&mut self, guess: &String) {
+    let y = cmp::min(self.turn, self.maxrow) + 4;
+    for ncol in 0..self.ncols {
+      let x = ncol * (self.wlen as u16 + 1) + 2;
+      let n = self.ncols * self.scroll + ncol;
+      wrta!(self.gio, x, y, self.empty_string);
+      if (n as usize) < self.cols.len() {
+        wrta!(self.gio, x, y, guess);
+      }
+    }
+  }
 
   pub fn run(&mut self) -> PlayResults {
     self.ncols = (self.gio.width - 1) / (self.wlen + 1) as u16;
@@ -128,8 +140,7 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
 
     while (self.turn as usize) < limit && self.ndone < self.nwords as u16 && !quit {
       self.draw_status();
-      wrta!(self.gio, 2, self.gio.height - 1, self.empty_string);
-      wrta!(self.gio, 2, self.gio.height - 1, guess);
+      self.draw_guess(&guess);
       self.gio.flush();
 
       match self.gio.read() {
