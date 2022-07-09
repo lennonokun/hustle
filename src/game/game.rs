@@ -6,9 +6,9 @@ use termion::raw::{IntoRawMode, RawTerminal};
 use termion::{clear, color, cursor, style, terminal_size};
 
 use super::gameio::GameIO;
-use super::menu::{Menu, MenuResults};
-use super::play::{Play, PlayResults};
-use super::end::{End, EndResults};
+use super::menu::{MenuScreen, MenuResults};
+use super::play::{PlayScreen, PlayResults};
+use super::end::{EndScreen, EndResults};
 
 const NEXTRA: u16 = 5;
 const MAXNWORDS: u16 = 2000;
@@ -24,15 +24,15 @@ pub fn game() {
   
   while cont {
     if screen == "menu" {
-      let mut menu = Menu::new(&mut gio);
+      let mut menu = MenuScreen::new(&mut gio);
       m_results = menu.run();
       cont = !m_results.quit;
       screen = "play";
     } else if screen == "play" {
-      let mut play = Play::new(&mut gio, m_results.bank, m_results.wlen, m_results.nwords);
+      let mut play = PlayScreen::new(&mut gio, m_results.bank, m_results.wlen, m_results.nwords);
       let p_results = play.run();
 
-      let mut end = End::new(&mut gio, p_results);
+      let mut end = EndScreen::new(&mut gio, p_results);
       let e_results = end.run();
 
       if e_results.quit {

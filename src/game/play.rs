@@ -12,7 +12,7 @@ use super::gameio::GameIO;
 // TODO:
 // is the dependence between play and end bad
 
-pub struct Play<'a, 'b> {
+pub struct PlayScreen<'a, 'b> {
   gio: &'a mut GameIO<'b>,
   gwb: WBank,
   awb: WBank,
@@ -40,7 +40,7 @@ pub struct PlayResults {
   pub time: Duration,
 }
 
-impl<'a, 'b> Play<'a, 'b> {
+impl<'a, 'b> PlayScreen<'a, 'b> {
   pub fn new(gio: &'a mut GameIO<'b>, wbp: &'static str, wlen: u8, nwords: u16) -> Self {
     let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
     Self {

@@ -9,7 +9,7 @@ use crate::ds::*;
 use super::gameio::GameIO;
 use super::play::PlayResults;
 
-pub struct End<'a, 'b> {
+pub struct EndScreen<'a, 'b> {
   gio: &'a mut GameIO<'b>,
   results: PlayResults, 
 }
@@ -22,7 +22,7 @@ pub struct EndResults {
   pub quit: bool,
 }
 
-impl<'a, 'b> End<'a, 'b> {
+impl<'a, 'b> EndScreen<'a, 'b> {
   pub fn new(gio: &'a mut GameIO<'b>, results: PlayResults) -> Self {
     Self {gio, results}
   }

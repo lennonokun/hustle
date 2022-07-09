@@ -39,14 +39,14 @@ pub struct MenuResults {
   pub bank: &'static str,
 }
 
-pub struct Menu<'a, 'b> {
+pub struct MenuScreen<'a, 'b> {
   gio: &'a mut GameIO<'b>
 }
 
 type LockedIn<'a> = Keys<StdinLock<'a>>;
 type LockedOut<'a> = RawTerminal<StdoutLock<'a>>;
 
-impl<'a, 'b> Menu<'a, 'b> {
+impl<'a, 'b> MenuScreen<'a, 'b> {
   pub fn new(gio: &'a mut GameIO<'b>) -> Self {
     Self {gio}
   }
