@@ -57,11 +57,11 @@ impl<'a, 'b> EndScreen<'a, 'b> {
     let mut restart = false;
     let mut menu = false;
     let mut quit = false;
-    while !quit && !restart {
+    while !quit && !restart && !menu {
       match self.gio.read() {
         Key::Char(c) => {
           quit = c == 'q';
-          restart = c == 'r' || c == 's';
+          restart = c == 'r';
           menu = c == 's';
         }
         Key::Esc => {
