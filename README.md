@@ -68,7 +68,6 @@ $ hustle gen 10 myhdata2.csv
     (beta pruning is mostly single-threaded though)
   - look at flame graphs, etc
 ### Game
-* split Game into multiple files
 * warn when impossible to guess (red text)?
 * swap Game and Play?
 * rename End, Menu, etc to +Screen
