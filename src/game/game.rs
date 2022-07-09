@@ -45,5 +45,5 @@ pub fn game() {
     }
   }
 
-  wrta!(gio, 1, 1, clear::All, cursor::Show, style::Reset);
+  gio.clear();
 }

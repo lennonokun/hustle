@@ -105,11 +105,15 @@ impl<'a> GameIO<'a> {
 
   /// draws the empty base
   pub fn empty(&mut self) {
-    wrt!(self, clear::All, cursor::Goto(1, 1), cursor::Hide);
+    wrta!(self, 1, 1, clear::All, cursor::Hide, style::Reset);
     for x in 1..=self.width {
       for y in 1..=self.height {wrt!(self, EMPTY);}
       wrt!(self, "\n");
     }
+  }
+
+  pub fn clear(&mut self) {
+    wrta!(self, 1, 1, clear::All, cursor::Show, style::Reset);
   }
 
   /// draws a rectangle from (x,y) to (x+w,y+h)
