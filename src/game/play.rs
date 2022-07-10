@@ -11,6 +11,12 @@ use super::gameio::GameIO;
 
 // TODO:
 // is the dependence between play and end bad
+// prettify unknowns + gue
+// unknowns should be in top? + truncate
+
+// frequency of letters in standard wordle bank
+const FREQ_ORD: &'static str = "EAROTLISNCUYDHPMGBFKWVZXQJ";
+const EMPTYUNKNOWNS: &'static str = "                          ";
 
 pub struct PlayScreen<'a, 'b> {
   gio: &'a mut GameIO<'b>,
@@ -28,6 +34,7 @@ pub struct PlayScreen<'a, 'b> {
   t_start: Instant,
   cols: Vec<FeedbackCol>,
   answers: Vec<Word>,
+  unknowns: Vec<char>,
 }
 
 #[derive(Clone, Default)]
@@ -59,6 +66,7 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
       t_start: Instant::now(),
       cols: Vec::new(),
       answers: Vec::new(),
+      unknowns: Vec::new(),
     }
   }
   
@@ -113,14 +121,21 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
     }
   }
 
+  fn draw_unknowns(&mut self) {
+    let s: String = self.unknowns.iter().cloned().collect();
+    wrta!(self.gio, 2, self.gio.height - 1, EMPTYUNKNOWNS);
+    wrta!(self.gio, 2, self.gio.height - 1, s);
+  }
+
   pub fn run(&mut self) -> PlayResults {
     self.ncols = (self.gio.width - 1) / (self.wlen + 1) as u16;
     self.nrows = (self.nwords - 1) / self.ncols + 1;
-    self.maxrow = self.gio.height - 5;
+    self.maxrow = self.gio.height - 6;
     self.empty_string = String::new();
     for _ in 0..self.wlen {
       self.empty_string.push(' ');
     }
+    self.unknowns = FREQ_ORD.chars().collect();
 
     self.ndone = 0;
     self.turn = 0;
@@ -139,8 +154,9 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
     self.empty();
 
     while (self.turn as usize) < limit && self.ndone < self.nwords as u16 && !quit {
-      self.draw_status();
+      self.draw_status(); // also unecesseary?
       self.draw_guess(&guess);
+      self.draw_unknowns(); // unecessary, only for each guess
       self.gio.flush();
 
       match self.gio.read() {
@@ -168,8 +184,12 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
       }
 
       if guess.len() == self.wlen.into() {
-        let gw = Word::from(guess).unwrap();
+        let gw = Word::from(guess.clone()).unwrap();
         if self.gwb.contains(gw) {
+          // remove guessed characters
+          let gw2: Vec<char> = guess.to_ascii_uppercase().chars().collect();
+          self.unknowns.retain(|&c| !gw2.contains(&c));
+
           if self.turn == 0 {
             self.t_start = Instant::now()
           }

@@ -13,7 +13,10 @@ pub const NWORDS: usize = 2309;
 pub const MINWLEN: usize = 4;
 pub const MAXWLEN: usize = 11;
 
-#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
+pub const DEFBANK: &'static str = "/usr/share/hustle/bank1.csv";
+pub const DEFHAPPROX: &'static str = "/usr/share/hustle/happrox.csv";
+
+#[derive(Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 pub struct Word {
   pub data: [u8; MAXWLEN],
   pub wlen: u8,
@@ -59,7 +62,13 @@ impl fmt::Display for Word {
   }
 }
 
-#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
+impl fmt::Debug for Word {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(f, "{}", self.to_string())
+  }
+}
+
+#[derive(Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 pub struct Feedback {
   // green + yellow bitsets
   g_bs: u16,
@@ -160,11 +169,11 @@ impl fmt::Display for Feedback {
   }
 }
 
-// pub struct WBank {
-// pub gws: Vec<Word>,
-// pub aws: Arc<Vec<Word>,
-// pub wlen: u8
-// }
+impl fmt::Debug for Feedback {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(f, "{}", self.to_string())
+  }
+}
 
 #[derive(Debug, Clone)]
 pub struct WBank {
@@ -173,20 +182,6 @@ pub struct WBank {
 }
 
 impl WBank {
-  pub fn from<P>(p: &P, wlen: u8) -> Result<Self>
-  where
-    P: AsRef<Path>, {
-    let file = File::open(p)?;
-    let reader = BufReader::new(file);
-    let data = reader
-      .lines()
-      .filter_map(Result::ok)
-      .filter(|s| s.len() == wlen.into())
-      .filter_map(Word::from)
-      .collect::<Vec<Word>>();
-    Ok(WBank { data, wlen })
-  }
-
   pub fn from2<P>(p: P, wlen: u8) -> Result<(Self, Self)>
   where
     P: AsRef<Path>, {
@@ -251,7 +246,7 @@ impl WBank {
 pub type FbMap<T> = HashMap<Feedback, T>;
 
 // decision tree
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum DTree {
   Leaf,
   Node {

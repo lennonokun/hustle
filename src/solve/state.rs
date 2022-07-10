@@ -1,36 +1,57 @@
 use rand::prelude::*;
 use rayon::prelude::*;
 use std::sync::Mutex;
+use std::hash::{Hash, Hasher};
+use rand::Rng;
 
 use crate::ds::*;
-use crate::solve::analysis::HData;
+use super::analysis::HData;
+use super::cache::Cache;
+
+// TODO: also hash gws?
+// could also iteratively hash when forming the state
 
 // maximum number of words solveable in two guesses
 const MAX_TWOSOLVE: u32 = 20;
 
-#[derive(Clone, Copy)]
+#[derive(Debug)]
 pub struct Config {
-  // number of top words to try
+  /// heuristic data
+  pub hd: HData,
+  /// cache
+  pub cache: Cache,
+  /// number of top words to try
   pub ntops: u32,
-  // number of remaining words makes it "endgame"
+  /// number of remaining words makes it "endgame"
   pub endgcutoff: u32,
-  // hard mode flag
-  pub hard: bool,
+  /// number of remaining words that makes caching worth it
+  pub cachecutoff: u32,
 }
 
-struct SolveData {
-  dt: Option<DTree>,
-  beta: u32,
+impl Config {
+  pub fn new(hd: HData, cache: Cache, ntops: u32, endgcutoff: u32, cachecutoff: u32) -> Self {
+    Self {hd, cache, ntops, endgcutoff, cachecutoff}
+  }
+
+  pub fn new2(ntops: u32) -> Self {
+    let hd = HData::load(DEFHAPPROX).unwrap();
+    let cache = Cache::new(16, 4);
+    Self::new(hd, cache, ntops, 15, 30)
+  }
 }
 
-#[derive(Clone)]
-pub struct State<'a> {
+// struct SolveData {
+//   dt: Option<DTree>,
+//   beta: u32,
+// }
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub struct State {
   pub gws: Vec<Word>,
   pub aws: Vec<Word>,
   pub wlen: u32,
   pub n: u32,
-  pub cfg: &'a Config,
-  pub hd: &'a HData,
+  pub hard: bool,
 }
 
 pub fn fb_filter(gw: Word, fb: Feedback, gws: &Vec<Word>) -> Vec<Word> {
@@ -41,28 +62,31 @@ pub fn fb_filter(gw: Word, fb: Feedback, gws: &Vec<Word>) -> Vec<Word> {
     .collect()
 }
 
-impl<'a> State<'a> {
-  pub fn new(gws: Vec<Word>, aws: Vec<Word>, wlen: u32,
-             cfg: &'a Config, hd: &'a HData) -> Self {
-    State {
-      gws,
-      aws,
-      wlen,
-      n: wlen + NEXTRA as u32,
-      cfg,
-      hd
-    }
+impl State {
+  pub fn new(gws: Vec<Word>, aws: Vec<Word>, wlen: u32, hard: bool) -> Self {
+    State {gws, aws, wlen, n: NGUESSES as u32, hard}
   }
 
-  pub fn new2(gws: Vec<Word>, aws: Vec<Word>, wlen: u32, n: u32,
-              cfg: &'a Config, hd: &'a HData) -> Self {
-    State { gws, aws, wlen, n, cfg, hd }
+  pub fn new2(gws: Vec<Word>, aws: Vec<Word>, wlen: u32, n: u32, hard: bool) -> Self {
+    State {gws, aws, wlen, n, hard}
   }
 
-  pub fn fb_follow(self, gw: Word, fb: Feedback) -> State<'a> {
-    let gws = if self.cfg.hard {fb_filter(gw, fb, &self.gws)} else {self.gws};
+  pub fn new3() -> Self {
+    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", NLETS as u8).unwrap();
+    State::new(gwb.data, awb.data, NLETS as u32, false)
+  }
+
+  pub fn random(maxlen: usize) -> Self {
+    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
+    let mut rng = rand::thread_rng();
+    let len = rng.gen_range(1..=maxlen);
+    State::new2(gwb.data, awb.pick(&mut rng, len), NLETS as u32, NGUESSES as u32, false)
+  }
+
+  pub fn fb_follow(self, gw: Word, fb: Feedback) -> Self {
+    let gws = if self.hard {fb_filter(gw, fb, &self.gws)} else {self.gws};
     let aws = fb_filter(gw, fb, &self.aws);
-    State::new2(gws, aws, self.wlen, self.n-1, self.cfg, self.hd)
+    State::new2(gws, aws, self.wlen, self.n-1, self.hard)
   }
 
   pub fn fb_partition(&self, gw: &Word) -> FbMap<State> {
@@ -70,12 +94,12 @@ impl<'a> State<'a> {
     for aw in &self.aws {
       let fb = Feedback::from(*gw, *aw).unwrap();
       let s2: &mut State = map.entry(fb).or_insert_with(|| {
-        let gws2 = if self.cfg.hard {
+        let gws2 = if self.hard {
           fb_filter(*gw, fb, &self.gws)
         } else {
           self.gws.clone()
         };
-        State::new2(gws2, Vec::new(), self.wlen, self.n - 1, self.cfg, self.hd)
+        State::new2(gws2, Vec::new(), self.wlen, self.n - 1, self.hard)
       });
       s2.aws.push(*aw);
     }
@@ -91,34 +115,30 @@ impl<'a> State<'a> {
     map
   }
 
-  pub fn heuristic(&self, gw: &Word) -> f64 {
+  pub fn heuristic(&self, gw: &Word, cfg: &Config) -> f64 {
     let h = self
       .fb_counts(gw)
       .iter()
-      .map(|(_, n)| self.hd.get_approx(*n as usize))
+      .map(|(_, n)| cfg.hd.get_approx(*n as usize))
       .sum();
-    if self.aws.contains(gw) {
-      h - 1.
-    } else {
-      h
-    }
+    if self.aws.contains(gw) {h - 1.} else {h}
   }
 
-  pub fn top_words(&self) -> Vec<Word> {
+  pub fn top_words(&self, cfg: &Config) -> Vec<Word> {
     let mut tups: Vec<(Word, f64)> = self
       .gws
       .iter()
-      .map(|gw| (*gw, self.heuristic(gw)))
+      .map(|gw| (*gw, self.heuristic(gw, cfg)))
       .collect();
     tups.sort_by(|(_, f1), (_, f2)| f1.partial_cmp(f2).unwrap());
     tups
       .iter()
       .map(|(gw, _)| *gw)
-      .take(self.cfg.ntops as usize)
+      .take(cfg.ntops as usize)
       .collect()
   }
 
-  pub fn solve_given(&self, gw: Word, beta: u32) -> Option<DTree> {
+  pub fn solve_given(&self, gw: Word, cfg: &mut Config, beta: u32) -> Option<DTree> {
     let alen = self.aws.len();
     if alen == 1 && gw == *self.aws.get(0).unwrap() {
       // leaf if guessed
@@ -135,7 +155,7 @@ impl<'a> State<'a> {
       if fb.is_correct() {
         fbm.insert(fb, DTree::Leaf);
       } else {
-        match s2.solve(beta) {
+        match s2.solve(cfg, beta) {
           None => return None,
           Some(dt) => {
             tot += dt.get_tot();
@@ -155,14 +175,14 @@ impl<'a> State<'a> {
     })
   }
 
-  pub fn solve(&self, beta: u32) -> Option<DTree> {
+  pub fn solve(&self, cfg: &mut Config, beta: u32) -> Option<DTree> {
     let alen = self.aws.len();
 
     // no more turns
     if self.n == 0 {
       return None;
     // one answer -> guess it
-    } else if alen == 1 {
+    } else if alen == 3 {
       return Some(DTree::Node {
         tot: 1,
         word: *self.aws.get(0).unwrap(),
@@ -171,15 +191,23 @@ impl<'a> State<'a> {
     }
 
     // check if endgame guess is viable
-    if alen <= self.cfg.endgcutoff as usize {
+    if alen <= cfg.endgcutoff as usize {
       for aw in self.aws.iter() {
         if self.fb_counts(aw).values().all(|c| *c == 1) {
-          return self.solve_given(*aw, beta);
+          return self.solve_given(*aw, cfg, beta);
         }
       }
     }
 
+    // read cache if worth it
+    if alen >= cfg.cachecutoff as usize {
+      if let Some(dt) = cfg.cache.read(self) {
+        return Some(dt.clone());
+      }
+    }
+
     // finally, check top words
+
     //    let sd = Mutex::new(SolveData { dt: None, beta });
     //    self.top_words(cfg, hd).into_par_iter().map(|w| {
     //      if sd.lock().unwrap().beta <= 2 * alen as u32 {return}
@@ -194,14 +222,15 @@ impl<'a> State<'a> {
     //    });
     //
     //   sd.into_inner().unwrap().dt
+
     let mut dt = None;
     let mut beta = beta;
-    for w in self.top_words() {
+    for w in self.top_words(cfg) {
       if beta <= 2 * alen as u32 {
         break;
       }
 
-      let dt2 = self.solve_given(w, beta);
+      let dt2 = self.solve_given(w, cfg, beta);
       if let Some(dt2) = dt2 {
         if dt2.get_tot() < beta {
           beta = dt2.get_tot();
@@ -209,7 +238,22 @@ impl<'a> State<'a> {
         }
       }
     }
+
+    // cache if worth it
+    if alen >= cfg.cachecutoff as usize {
+      if let Some(ref dt) = dt {
+        cfg.cache.add(self.clone(), dt.clone());
+      }
+    }
+
     dt
+  }
+}
+
+impl<'a> Hash for State {
+  fn hash<H: Hasher>(&self, h: &mut H) {
+    self.n.hash(h);
+    self.aws.hash(h);
   }
 }
 
@@ -218,28 +262,36 @@ mod test {
   use super::*;
 
   #[test]
+  fn check_news() {
+    let mut cfg = Config::new2(10);
+    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
+
+    let state1 = State::new(gwb.data.clone(), awb.data.clone(), 5, false);
+    let state2 = State::new2(gwb.data.clone(), awb.data.clone(), 5, 6, false);
+    let state3 = State::new3();
+    assert_eq!(state1, state2);
+    assert_eq!(state2, state3);
+  }
+
+  #[test]
   fn simple_solve() {
-    let wlen = 5;
-    let mut cfg = Config {ntops: 2, endgcutoff: 15, hard: false};
-    let hd = HData::load("/usr/share/hustle/happrox.csv").unwrap();
-    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", wlen).unwrap();
-    let state = State::new(gwb.data, awb.data, wlen.into(), &cfg, &hd);
-    assert!(state.solve(u32::MAX).is_some());
-    let mut cfg = Config {ntops: 2, endgcutoff: 15, hard: true};
-    let hd = HData::load("/usr/share/hustle/happrox.csv").unwrap();
-    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", wlen).unwrap();
-    let state = State::new(gwb.data, awb.data, wlen.into(), &cfg, &hd);
-    assert!(state.solve(u32::MAX).is_some());
+    let mut cfg = Config::new2(15);
+    let state1 = State::new3();
+    let mut state2 = State::new3();
+    state2.hard = true;
+
+    assert!(state1.solve(&mut cfg, u32::MAX).is_some());
+    assert!(state2.solve(&mut cfg, u32::MAX).is_some());
   }
 
   #[test]
   fn impossible_solve() {
-    let wlen = 5;
-    let mut cfg = Config {ntops: 2, endgcutoff: 15, hard: false};
-    let hd = HData::load("/usr/share/hustle/happrox.csv").unwrap();
-    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", wlen).unwrap();
-    let state = State::new2(gwb.data, awb.data, wlen.into(), 3, &cfg, &hd);
-    assert!(state.solve(u32::MAX).is_none());
+    let mut cfg = Config::new2(2);
+    let mut state = State::new3();
+    state.n = 2;
+
+    // cannot solve in 2 guesses
+    assert!(state.solve(&mut cfg, u32::MAX).is_none());
   }
 }
 

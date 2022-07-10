@@ -57,11 +57,28 @@ $ hustle gen 10 myhdata2.csv
 
 ## TODO
 ### General
+* get rid of WBank?
 * generally refactor, don't ignore warnings
 * create benchmarks and unit tests
 * make man page with clap
+* explain scripts + dependencies in README
+* look at each files TODOs
 ### Solver
+* STATE SHOULD BE SEPARATED FROM HDATA, CFG, AND CACHE
+* RENAME CONFIG TO SOMETHING ELSE
+* SPLIT CONFIG INTO NEW FILE
+* should hard be in config?
+* add cache config to main?
+* record cache stats
+* standardize types for stuff like NLETS and wlen
 * make heuristics work for any word bank
+* check if solve strings are impossible? (allow impossible with --dirty)
+* better upper bounds finding
+* caching
+* make command to list possible answers
+* improve dtree pprint format
+* make stats for time to solve also
+* also try stats for different n and configs
 * multiple heuristic options? (linear reg, precomputed, etc)
 * optimize solving
   - re-add multithreading
@@ -70,7 +87,7 @@ $ hustle gen 10 myhdata2.csv
 ### Game
 * warn when impossible to guess (red text)?
 * swap Game and Play?
-* rename End, Menu, etc to +Screen
+* see how vim clears without leaving weird history
 * is wrt! slow?
 * show wlen in end, and maybe wbank?
 * better resizing

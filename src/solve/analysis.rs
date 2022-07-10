@@ -7,6 +7,7 @@ use crate::ds::*;
 
 // loaded approximated heuristics
 // does this really need to be f64
+#[derive(Debug)]
 pub struct HData {
   approx: [f64; NWORDS],
 }
@@ -31,3 +32,4 @@ impl HData {
     self.approx[n-1]
   }
 }
+

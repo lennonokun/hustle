@@ -10,7 +10,7 @@ use std::sync::Mutex;
 use std::time::Instant;
 
 mod solve;
-use crate::solve::{State, Config, HData};
+use crate::solve::{State, Config, HData, Cache};
 mod ds;
 use crate::ds::*;
 mod game;
@@ -19,7 +19,7 @@ use crate::game::game;
 const DEFWBP: &str = "/usr/share/hustle/bank1.csv";
 const DEFHDP: &str = "/usr/share/hustle/happrox.csv";
 
-fn gen_data<P>(gwb: WBank, awb: WBank, hd: &HData, hdop: P, cfg: Config, niter: u32)
+fn gen_data<P>(gwb: WBank, awb: WBank, mut cfg: Config, hdop: P, niter: u32, hard: bool)
 where
   P: AsRef<Path> + std::convert::AsRef<std::ffi::OsStr>, {
   let mut rng = rand::thread_rng();
@@ -41,10 +41,10 @@ where
   for i in 0..niter {
     let nsample = rng.gen_range(1..=NWORDS);
     let aws2 = awb.pick(&mut rng, nsample as usize);
-    let s = State::new(gwb.data.clone(), aws2, awb.wlen.into(), &cfg, &hd);
-    let dt = s.solve(u32::MAX);
+    let s = State::new(gwb.data.clone(), aws2, awb.wlen.into(), false);
+    let dt = s.solve(&mut cfg, u32::MAX);
     if let Some(dt) = dt {
-      let mode = if cfg.hard {"H"} else {"E"};
+      let mode = if hard {"H"} else {"E"};
       println!("{}. {}/{}", i + 1, dt.get_tot(), nsample);
       writeln!(&mut out, "{},{},{}", nsample, dt.get_tot(), mode);
     }
@@ -52,12 +52,10 @@ where
 }
 
 fn solve<P>(
-  s: String, wlen: u8, gwb: WBank, awb: WBank, hd: &HData,
-  dtp: Option<&P>, list: bool, cfg: Config,
-) -> io::Result<()>
-where
-  P: AsRef<Path>, {
-  let mut state = State::new(gwb.data, awb.data, gwb.wlen.into(), &cfg, &hd);
+  s: String, wlen: u8, gwb: WBank, awb: WBank, mut cfg: Config,
+  dtp: Option<&P>, hard: bool, list: bool) -> io::Result<()>
+where P: AsRef<Path>, {
+  let mut state = State::new(gwb.data, awb.data, wlen.into(), hard);
   let mut w: Option<Word> = None;
   let mut turn = 0u32;
   let mut it = s.split('.');
@@ -75,10 +73,10 @@ where
 
   let given = w.is_some();
   let dt = if !given && list {
-    let ws = state.top_words();
+    let ws = state.top_words(&cfg);
     let mut scores: Vec<(Word, DTree)> = ws
       .iter()
-      .filter_map(|w| Some((*w, state.solve_given(*w, u32::MAX)?)))
+      .filter_map(|w| Some((*w, state.solve_given(*w, &mut cfg, u32::MAX)?)))
       .collect();
     scores.sort_by_key(|(w, dt)| dt.get_tot());
     println!("Listing:");
@@ -94,9 +92,11 @@ where
     }
     scores.pop().map(|(w, dt)| dt)
   } else if !given {
-    state.solve(u32::MAX)
+    println!("{:?}", state);
+    state.solve(&mut cfg, u32::MAX)
   } else {
-    state.solve_given(w.unwrap(), u32::MAX)
+    println!("{:?}", state);
+    state.solve_given(w.unwrap(), &mut cfg, u32::MAX)
   }
   .expect("couldn't make dtree!");
 
@@ -175,7 +175,10 @@ enum Commands {
     ntops: u32,
     /// the maximum number of answer words left for an "endgame"
     #[clap(long, default_value_t = 15)]
-    cutoff: u32,
+    ecutoff: u32,
+    /// the minimum number of answers word left to cache
+    #[clap(long, default_value_t = 30)]
+    ccutoff: u32,
     /// play in hard mode
     #[clap(long)]
     hard: bool,
@@ -194,7 +197,10 @@ enum Commands {
     ntops: u32,
     /// the maximum number of answer words left for an "endgame"
     #[clap(long, default_value_t = 15)]
-    cutoff: u32,
+    ecutoff: u32,
+    /// the minimum number of answers word left to cache
+    #[clap(long, default_value_t = 30)]
+    ccutoff: u32,
     /// play in hard mode
     #[clap(long)]
     hard: bool,
@@ -216,23 +222,26 @@ fn main() {
       list,
       dt,
       ntops,
-      cutoff,
+      ecutoff,
+      ccutoff,
       hard,
     } => {
       let cfg = Config {
+        hd,
+        cache: Cache::new(16, 4),
         ntops: *ntops,
-        endgcutoff: *cutoff,
-        hard: *hard,
+        endgcutoff: *ecutoff,
+        cachecutoff: *ccutoff,
       };
       solve::<String>(
         state.to_string(),
         cli.wlen,
         gwb,
         awb,
-        &hd,
-        dt.as_ref(),
-        *list,
         cfg,
+        dt.as_ref(),
+        *hard,
+        *list,
       )
       .unwrap();
     }
@@ -240,15 +249,18 @@ fn main() {
       niter,
       hdp_out,
       ntops,
-      cutoff,
+      ecutoff,
+      ccutoff,
       hard,
     } => {
       let cfg = Config {
+        hd,
+        cache: Cache::new(16, 4),
         ntops: *ntops,
-        endgcutoff: *cutoff,
-        hard: *hard,
+        endgcutoff: *ecutoff,
+        cachecutoff: *ccutoff,
       };
-      gen_data(gwb, awb, &hd, hdp_out, cfg, *niter);
+      gen_data(gwb, awb, cfg, hdp_out, *niter, *hard);
     }
   }
 }
