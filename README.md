@@ -34,7 +34,9 @@ $ hustle play
 
 # solve a wordle game
 $ hustle solve salet.bbbbb.courd
-$ hustle solve reast.bbbgg
+
+# solve in hard mode
+$ hustle solve reast.bbbgg --hard
 
 # solve all of wordle and output to file (takes me 1m40s)
 $ hustle solve --dt out
@@ -72,6 +74,7 @@ $ hustle gen 10 myhdata2.csv
 * record cache stats
 * standardize types for stuff like NLETS and wlen
 * make heuristics work for any word bank
+* maybe wbank csvs should re list answers for guess bank?
 * check if solve strings are impossible? (allow impossible with --dirty)
 * better upper bounds finding
 * caching
