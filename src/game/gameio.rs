@@ -7,6 +7,7 @@ use termion::{clear, color, cursor, style, terminal_size};
 
 // TODO
 // unit tests
+// make method for printing with empty back (pass max size)
 
 // space
 const EMPTY: &str = " ";
