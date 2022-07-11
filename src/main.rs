@@ -92,10 +92,8 @@ where P: AsRef<Path>, {
     }
     scores.pop().map(|(w, dt)| dt)
   } else if !given {
-    println!("{:?}", state);
     state.solve(&mut cfg, u32::MAX)
   } else {
-    println!("{:?}", state);
     state.solve_given(w.unwrap(), &mut cfg, u32::MAX)
   }
   .expect("couldn't make dtree!");
