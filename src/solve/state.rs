@@ -148,10 +148,23 @@ impl State {
       return None;
     }
 
+    // partition and sort by increasing alen (right now it is not beneficial)
+    let fbp = self.fb_partition(&gw);
+    // let mut sfbp: Vec<(&Feedback, &State)> = fbp.iter().collect();
+    // sfbp.sort_by_key(|(fb, s)| s.aws.len());
+
+    // bounds check m >= 2|A|-1
+    let mut tot = alen as u32;
+    for (fb, s2) in &fbp {
+      if fb.is_correct() {break}
+      tot += 2*(s2.aws.len() as u32)-1;
+      if tot >= beta {return None}
+    }
+
+    // final
     let mut tot = alen as u32;
     let mut fbm = FbMap::new();
-
-    for (&fb, s2) in self.fb_partition(&gw).iter() {
+    for (fb, s2) in fbp {
       if fb.is_correct() {
         fbm.insert(fb, DTree::Leaf);
       } else {
