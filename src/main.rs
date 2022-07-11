@@ -21,12 +21,56 @@ use crate::game::game;
 const DEFWBP: &str = "/usr/share/hustle/bank1.csv";
 const DEFHDP: &str = "/usr/share/hustle/happrox.csv";
 
-fn gen_data<P>(wbp: &P, hdop: &P, cfg: Config, niter: u32, hard: bool)
+/// generate data for creating heuristic
+fn hgen<P>(wbp: &P, hdp: &P, hdop: &P, niter: u32)
 where P: AsRef<Path>+std::convert::AsRef<std::ffi::OsStr> {
-  // read wbp + parse mode
+  // get wbanks + config
   let (gwb, awb) = WBank::from2(wbp, NLETS as u8).unwrap();
-  let mode = if hard {"H"} else {"E"};
+  let hd = HData::load(hdp).unwrap();
+  let cache = Cache::new(16, 4);
+  let cfg = Config::new(hd, cache, 2, 15, 30);
+  
+  // open and write if new
+  let mut out;
+  if Path::new(hdop).exists() {
+    out = OpenOptions::new()
+      .write(true)
+      .append(true)
+      .open(hdop)
+      .unwrap();
+  } else {
+    out = File::create(hdop).unwrap();
+    writeln!(&mut out, "alen,tot");
+  }
 
+  // solve randomly sized states in parallel
+  let out = Mutex::new(out);
+  let i = Mutex::new(1);
+  (0..niter).into_par_iter().for_each(|_| {
+    // pick aws
+    let mut rng = rand::thread_rng();
+    let alen = rng.gen_range(1..=NWORDS);
+    let aws2 = awb.pick(&mut rng, alen as usize);
+    
+    let s = State::new2(gwb.data.clone(), aws2, awb.wlen.into(), NGUESSES as u32, false);
+    let mut cfg = cfg.clone();
+    if let Some(dt) = s.solve(&mut cfg, u32::MAX) {
+      let mut out = out.lock().unwrap();
+      let mut i = i.lock().unwrap();
+      println!("{}. alen: {}, tot: {}", i, alen, dt.get_tot());
+      writeln!(out, "{},{}", alen, dt.get_tot());
+      *i += 1;
+    }
+  });
+}
+
+/// generate data for general analysis
+fn agen<P>(wbp: &P, hdp: &P, hdop: &P, niter: u32)
+where P: AsRef<Path>+std::convert::AsRef<std::ffi::OsStr> {
+  // get constants
+  let (gwb, awb) = WBank::from2(wbp, NLETS as u8).unwrap();
+  let hd = HData::load(hdp).unwrap();
+  let cache = Cache::new(16, 4);
 
   // open and write header if new
   let mut out;
@@ -38,29 +82,41 @@ where P: AsRef<Path>+std::convert::AsRef<std::ffi::OsStr> {
       .unwrap();
   } else {
     out = File::create(hdop).unwrap();
-    writeln!(&mut out, "alen,tot,time,mode,ntops,ecut,ccut");
+    writeln!(&mut out, "alen,tot,time,turns,mode,ntops,ecut,ccut");
   }
 
   let out = Mutex::new(out);
   let i = Mutex::new(1);
   (0..niter).into_par_iter().for_each(|_| {
+    // pick random features
     let mut rng = rand::thread_rng();
-
     let alen = rng.gen_range(1..=NWORDS);
     let aws2 = awb.pick(&mut rng, alen as usize);
-    let mut cfg = cfg.clone();
-    let s = State::new(gwb.data.clone(), aws2, awb.wlen.into(), false);
+    let turns = rng.gen_range(1..=6);
+    let ntops = rng.gen_range(1..=8);
+    let ecut = 15;
+    let ccut = 30;
+    let hard = false; // FOR NOW ALWAYS EASY BC CACHE DONT CHECK GWS
 
+    // generate state
+    let s = State::new2(gwb.data.clone(), aws2, awb.wlen.into(), turns, false);
+    let mut cfg = Config::new(hd.clone(), cache.clone(), ntops, ecut, ccut);
+
+    // solve and time
     let instant = Instant::now();
     let dt = s.solve(&mut cfg, u32::MAX);
     let time = instant.elapsed().as_millis();
+    // MAYBE MAKE IT u32 max? or nan (but make float)
     let tot = dt.map_or(0, |dt| dt.get_tot());
 
     let mut i = i.lock().unwrap();
-    println!("{}. {}/{}", i, tot, alen);
-    writeln!(out.lock().unwrap(), "{},{},{},{},{},{},{}",
-             alen, tot, time, mode, cfg.ntops,
-             cfg.endgcutoff, cfg.cachecutoff);
+    let mut out = out.lock().unwrap();
+    println!("{}. {},{},{},{},{},{},{},{}",
+             *i, alen, tot, time, turns, if hard {"H"} else {"E"},
+             cfg.ntops, cfg.endgcutoff, cfg.cachecutoff);
+    writeln!(out, "{},{},{},{},{},{},{},{}",
+             alen, tot, time, turns, if hard {"H"} else {"E"},
+             cfg.ntops, cfg.endgcutoff, cfg.cachecutoff);
     *i += 1;
   });
 }
@@ -197,27 +253,23 @@ enum Commands {
     hard: bool,
   },
   /// Generate heuristic data
-  Gen {
-    #[clap(value_parser)]
+  HGen {
     /// the number of word banks to try
+    #[clap(value_parser)]
     niter: u32,
+    /// the file to output data to
     #[clap(value_parser)]
-    /// the heuristic data output file
-    #[clap(value_parser)]
-    hdp_out: String,
-    /// the number of top words to check at each state
-    #[clap(long, default_value_t = 2)]
-    ntops: u32,
-    /// the maximum number of answer words left for an "endgame"
-    #[clap(long, default_value_t = 15)]
-    ecutoff: u32,
-    /// the minimum number of answers word left to cache
-    #[clap(long, default_value_t = 30)]
-    ccutoff: u32,
-    /// play in hard mode
-    #[clap(long)]
-    hard: bool,
+    out: String,
   },
+  /// Generate general analysis data
+  AGen {
+    /// the number of word banks to try
+    #[clap(value_parser)]
+    niter: u32,
+    /// the file to output data to
+    #[clap(value_parser)]
+    out: String,
+  }
 }
 
 fn main() {
@@ -250,19 +302,11 @@ fn main() {
       )
       .unwrap();
     }
-    Commands::Gen {
-      niter,
-      ref hdp_out,
-      ntops,
-      ecutoff,
-      ccutoff,
-      hard,
-    } => {
-      let hd = HData::load(&cli.hdp).unwrap();
-      let cache = Cache::new(16, 4);
-      let cfg = Config::new(hd, cache, *ntops, *ecutoff, *ccutoff);
-
-      gen_data(&cli.wbp, hdp_out, cfg, *niter, *hard);
+    Commands::HGen {niter, out} => {
+      hgen(&cli.wbp, &cli.hdp, &out, *niter);
+    }
+    Commands::AGen {niter, out} => {
+      agen(&cli.wbp, &cli.hdp, &out, *niter);
     }
   }
 }
