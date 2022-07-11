@@ -7,15 +7,15 @@ use crate::ds::*;
 
 // loaded approximated heuristics
 // does this really need to be f64
-#[derive(Debug)]
+#[derive(Debug,Clone)]
 pub struct HData {
   approx: [f64; NWORDS],
 }
 
 impl HData {
-  pub fn load<P>(p: P) -> Result<Self>
+  pub fn load<P>(p: &P) -> Result<Self>
   where
-    P: AsRef<Path>, {
+    P: AsRef<Path>+?Sized, {
     let file = File::open(p)?;
     let reader = BufReader::new(file);
     let approx = reader.lines().skip(1)

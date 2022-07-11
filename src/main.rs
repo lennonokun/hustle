@@ -6,8 +6,10 @@ use std::fs::{File, OpenOptions};
 use std::io::Write;
 use std::io::{self, Error, ErrorKind};
 use std::path::Path;
-use std::sync::Mutex;
 use std::time::Instant;
+use rand::prelude::*;
+use rayon::prelude::*;
+use std::sync::Mutex;
 
 mod solve;
 use crate::solve::{State, Config, HData, Cache};
@@ -19,15 +21,16 @@ use crate::game::game;
 const DEFWBP: &str = "/usr/share/hustle/bank1.csv";
 const DEFHDP: &str = "/usr/share/hustle/happrox.csv";
 
-fn gen_data<P>(gwb: WBank, awb: WBank, mut cfg: Config, hdop: P, niter: u32, hard: bool)
-where
-  P: AsRef<Path> + std::convert::AsRef<std::ffi::OsStr>, {
-  let mut rng = rand::thread_rng();
+fn gen_data<P>(wbp: &P, hdop: &P, cfg: Config, niter: u32, hard: bool)
+where P: AsRef<Path>+std::convert::AsRef<std::ffi::OsStr> {
+  // read wbp + parse mode
+  let (gwb, awb) = WBank::from2(wbp, NLETS as u8).unwrap();
+  let mode = if hard {"H"} else {"E"};
+
 
   // open and write header if new
-  let b = Path::new(&hdop).exists();
   let mut out;
-  if b {
+  if Path::new(hdop).exists() {
     out = OpenOptions::new()
       .write(true)
       .append(true)
@@ -35,26 +38,38 @@ where
       .unwrap();
   } else {
     out = File::create(hdop).unwrap();
-    writeln!(&mut out, "n,h,m");
+    writeln!(&mut out, "alen,tot,time,mode,ntops,ecut,ccut");
   }
 
-  for i in 0..niter {
-    let nsample = rng.gen_range(1..=NWORDS);
-    let aws2 = awb.pick(&mut rng, nsample as usize);
+  let out = Mutex::new(out);
+  let i = Mutex::new(1);
+  (0..niter).into_par_iter().for_each(|_| {
+    let mut rng = rand::thread_rng();
+
+    let alen = rng.gen_range(1..=NWORDS);
+    let aws2 = awb.pick(&mut rng, alen as usize);
+    let mut cfg = cfg.clone();
     let s = State::new(gwb.data.clone(), aws2, awb.wlen.into(), false);
+
+    let instant = Instant::now();
     let dt = s.solve(&mut cfg, u32::MAX);
-    if let Some(dt) = dt {
-      let mode = if hard {"H"} else {"E"};
-      println!("{}. {}/{}", i + 1, dt.get_tot(), nsample);
-      writeln!(&mut out, "{},{},{}", nsample, dt.get_tot(), mode);
-    }
-  }
+    let time = instant.elapsed().as_millis();
+    let tot = dt.map_or(0, |dt| dt.get_tot());
+
+    let mut i = i.lock().unwrap();
+    println!("{}. {}/{}", i, tot, alen);
+    writeln!(out.lock().unwrap(), "{},{},{},{},{},{},{}",
+             alen, tot, time, mode, cfg.ntops,
+             cfg.endgcutoff, cfg.cachecutoff);
+    *i += 1;
+  });
 }
 
 fn solve<P>(
-  s: String, wlen: u8, gwb: WBank, awb: WBank, mut cfg: Config,
+  wbp: &P, s: String, wlen: u8, mut cfg: Config,
   dtp: Option<&P>, hard: bool, list: bool) -> io::Result<()>
 where P: AsRef<Path>, {
+  let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
   let mut state = State::new(gwb.data, awb.data, wlen.into(), hard);
   let mut w: Option<Word> = None;
   let mut turn = 0u32;
@@ -208,9 +223,6 @@ enum Commands {
 fn main() {
   let cli = Cli::parse();
 
-  let (gwb, awb) = WBank::from2(cli.wbp, cli.wlen).unwrap();
-  let mut hd = HData::load(cli.hdp).unwrap();
-
   match &cli.command {
     Commands::Play {} => {
       game();
@@ -224,18 +236,13 @@ fn main() {
       ccutoff,
       hard,
     } => {
-      let cfg = Config {
-        hd,
-        cache: Cache::new(16, 4),
-        ntops: *ntops,
-        endgcutoff: *ecutoff,
-        cachecutoff: *ccutoff,
-      };
+      let hd = HData::load(&cli.hdp).unwrap();
+      let cache = Cache::new(16, 4);
+      let cfg = Config::new(hd, cache, *ntops, *ecutoff, *ccutoff);
       solve::<String>(
+        &cli.wbp,
         state.to_string(),
         cli.wlen,
-        gwb,
-        awb,
         cfg,
         dt.as_ref(),
         *hard,
@@ -245,20 +252,17 @@ fn main() {
     }
     Commands::Gen {
       niter,
-      hdp_out,
+      ref hdp_out,
       ntops,
       ecutoff,
       ccutoff,
       hard,
     } => {
-      let cfg = Config {
-        hd,
-        cache: Cache::new(16, 4),
-        ntops: *ntops,
-        endgcutoff: *ecutoff,
-        cachecutoff: *ccutoff,
-      };
-      gen_data(gwb, awb, cfg, hdp_out, *niter, *hard);
+      let hd = HData::load(&cli.hdp).unwrap();
+      let cache = Cache::new(16, 4);
+      let cfg = Config::new(hd, cache, *ntops, *ecutoff, *ccutoff);
+
+      gen_data(&cli.wbp, hdp_out, cfg, *niter, *hard);
     }
   }
 }

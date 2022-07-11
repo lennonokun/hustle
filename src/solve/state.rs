@@ -14,7 +14,7 @@ use super::cache::Cache;
 // maximum number of words solveable in two guesses
 const MAX_TWOSOLVE: u32 = 20;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Config {
   /// heuristic data
   pub hd: HData,
