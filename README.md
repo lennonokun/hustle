@@ -4,8 +4,7 @@
 ## Overview
 Hustle is a terminal-based wordle clone and wordle solver written in
 rust, geared towards speedrunning. The solver is inspired by Alex
-Selby's article [The best strategies for
-Wordle](http://sonorouschocolate.com/notes/index.php/The_best_strategies_for_Wordle)
+Selby's article [The best strategies for Wordle](http://sonorouschocolate.com/notes/index.php/The_best_strategies_for_Wordle)
 and [code](https://github.com/alex1770/wordle), and the game is
 inspired by the many wordle spin-offs like
 [octordle](https://octordle.com),
@@ -35,10 +34,7 @@ $ hustle play
 # solve a wordle game
 $ hustle solve salet.bbbbb.courd
 
-# solve in hard mode
-$ hustle solve reast.bbbgg --hard
-
-# solve all of wordle and output to file (takes me 1m40s)
+# solve all of wordle and output to file (takes me 1m18s)
 $ hustle solve --dt out
 
 # solve and list results of top words
@@ -48,14 +44,18 @@ $ hustle solve crate.bybyb --list
 $ hustle solve lodge.bbbbb --ntops 8 --cutoff 10
 
 # solve using specific heuristic data
-$ hustle solve salet.bbbgg --hdp myhdata.csv
+$ hustle solve salet.bbbgg --hdp hdata.csv
 
 # solve 6 letter words with hellowordl word bank
 $ hustle solve traces.bgbbyy --wbp /usr/share/hustle/bank2.csv --wlen 6
 
-# generate heuristic data with top 10 words
-$ hustle gen 10 myhdata2.csv
+# generate heuristic data with n=100
+$ hustle hgen 100 hdata.csv
+
+# generate analysis data with n=100
+$ hustle agen 100 adata.csv
 ```
+Run hustle --help for more information.
 
 ## TODO
 ### General
@@ -66,9 +66,14 @@ $ hustle gen 10 myhdata2.csv
 * explain scripts + dependencies in README
 * look at each files TODOs
 ### Solver
+* csv with metadata
 * STATE SHOULD BE SEPARATED FROM HDATA, CFG, AND CACHE
 * RENAME CONFIG TO SOMETHING ELSE
 * SPLIT CONFIG INTO NEW FILE
+* PARALLELIZE DATA GENERATION
+* MAKE GENERATING CACHES INDEPENDENT?
+* UPDATE HEURISTIC SCRIPT + HDATA FOR N AND FOR NTOPS/BLAH
+* BETTER UPPER BOUNDS
 * should hard be in config?
 * add cache config to main?
 * record cache stats
@@ -76,7 +81,6 @@ $ hustle gen 10 myhdata2.csv
 * make heuristics work for any word bank
 * maybe wbank csvs should re list answers for guess bank?
 * check if solve strings are impossible? (allow impossible with --dirty)
-* better upper bounds finding
 * caching
 * make command to list possible answers
 * improve dtree pprint format
