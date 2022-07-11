@@ -35,7 +35,7 @@ impl Config {
 
   pub fn new2(ntops: u32) -> Self {
     let hd = HData::load(DEFHAPPROX).unwrap();
-    let cache = Cache::new(16, 4);
+    let cache = Cache::new(64, 8);
     Self::new(hd, cache, ntops, 15, 30)
   }
 }
@@ -182,7 +182,7 @@ impl State {
     if self.n == 0 {
       return None;
     // one answer -> guess it
-    } else if alen == 3 {
+    } else if alen == 1 {
       return Some(DTree::Node {
         tot: 1,
         word: *self.aws.get(0).unwrap(),
