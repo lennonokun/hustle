@@ -77,38 +77,36 @@ pub struct Feedback {
 }
 
 impl Feedback {
-  pub fn from(gw: Word, aw: Word) -> Option<Self> {
+  pub fn from(mut gw: Word, mut aw: Word) -> Option<Self> {
     if gw.wlen != aw.wlen {
       return None;
     }
     let wlen = gw.wlen;
-    let mut fb = Feedback {
-      g_bs: 0,
-      y_bs: 0,
-      wlen,
-    };
-    // bitset for used chars
-    let mut use_bs = 0u16;
+    let mut g_bs = 0u16;
+    let mut y_bs = 0u16;
     // first find greens
     for i in 0..wlen as usize {
-      if aw.data[i] == gw.data[i] {
-        fb.g_bs |= 1 << i;
-        use_bs |= 1 << i;
+      if gw.data[i] == aw.data[i] {
+        g_bs |= 1 << i;
+        // remove
+        gw.data[i] = 255;
+        aw.data[i] = 255;
       }
     }
     // then find yellows
     for i in 0..wlen as usize {
-      if fb.g_bs & 1 << i == 0 {
+      if gw.data[i] < 255 {
         for j in 0..wlen as usize {
-          if gw.data[i] == aw.data[j] && (use_bs & 1 << j == 0) {
-            fb.y_bs |= 1 << i;
-            use_bs |= 1 << j;
+          if gw.data[i] == aw.data[j] {
+            y_bs |= 1 << i;
+            gw.data[i] = 255;
+            aw.data[j] = 255;
             break;
           }
         }
       }
     }
-    Some(fb)
+    Some(Feedback {g_bs, y_bs, wlen})
   }
 
   pub fn to_string(&self) -> String {
