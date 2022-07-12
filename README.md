@@ -95,6 +95,7 @@ Run hustle --help for more information.
 * dictionary capabilities
 * draw input beneath each col?
 * keep statistics and track pb's
+* adjust layout for overflow
 * show known letters
   - display list below each column?
   - is this cheating?

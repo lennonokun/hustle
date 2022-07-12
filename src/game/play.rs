@@ -73,7 +73,7 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
   /// draw empty base
   fn empty(&mut self) {
     self.gio.rect(1, 1, self.gio.width, self.gio.height);
-    self.gio.hcut(1, 3, self.gio.width);
+    self.gio.hcut(1, 4, self.gio.width);
   }
 
   fn draw_status(&mut self) {
@@ -81,10 +81,13 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
            self.turn, self.nwords as usize + NEXTRA,
            self.ndone, self.nwords,
            self.scroll + 1, self.nrows);
+    let unknowns: String = self.unknowns.iter().cloned().collect();
+    wrtaf!(self.gio, 2, 3, "unknowns: {}", EMPTYUNKNOWNS);
+    wrtaf!(self.gio, 2, 3, "unknowns: {}", unknowns);
   }
 
   fn draw_fbc_row(&mut self, ncol: u16, nrow: u16) {
-    let (x, y) = (ncol * (self.wlen as u16 + 1) + 2, nrow + 4);
+    let (x, y) = (ncol * (self.wlen as u16 + 1) + 2, nrow + 5);
     let s = self
       .cols
       .get((self.ncols * self.scroll + ncol) as usize)
@@ -110,7 +113,7 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
   }
   
   fn draw_guess(&mut self, guess: &String) {
-    let y = cmp::min(self.turn, self.maxrow) + 4;
+    let y = cmp::min(self.turn, self.maxrow) + 5;
     for ncol in 0..self.ncols {
       let x = ncol * (self.wlen as u16 + 1) + 2;
       let n = self.ncols * self.scroll + ncol;
@@ -119,12 +122,6 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
         wrta!(self.gio, x, y, guess);
       }
     }
-  }
-
-  fn draw_unknowns(&mut self) {
-    let s: String = self.unknowns.iter().cloned().collect();
-    wrta!(self.gio, 2, self.gio.height - 1, EMPTYUNKNOWNS);
-    wrta!(self.gio, 2, self.gio.height - 1, s);
   }
 
   pub fn run(&mut self) -> PlayResults {
@@ -156,7 +153,6 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
     while (self.turn as usize) < limit && self.ndone < self.nwords as u16 && !quit {
       self.draw_status(); // also unecesseary?
       self.draw_guess(&guess);
-      self.draw_unknowns(); // unecessary, only for each guess
       self.gio.flush();
 
       match self.gio.read() {
@@ -214,7 +210,6 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
           }
         }
         guess = String::new();
-        wrta!(self.gio, 2, self.gio.height - 1, self.empty_string);
       }
     }
 
