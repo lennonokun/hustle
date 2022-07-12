@@ -40,7 +40,10 @@ enum Commands {
     gamestate: String,
     /// list top word evaluations
     #[clap(long)]
-    list: bool,
+    elist: bool,
+    /// list potential answers
+    #[clap(long)]
+    alist: bool,
     /// output decision tree to file
     #[clap(long)]
     dt: Option<String>,
@@ -113,7 +116,8 @@ fn main() {
     }
     Commands::Solve {
       gamestate,
-      list,
+      elist,
+      alist,
       dt,
       wbp,
       hdp,
@@ -144,17 +148,26 @@ fn main() {
           w = Some(Word::from_str(s_a).unwrap());
         }
       }
+      
+      // list answers
+      if alist {
+        println!("Potential Answers:");
+        for (i,aw) in state.aws.iter().enumerate() {
+          println!("{}. {}", i+1, aw);
+        }
+        println!();
+      }
 
-      // solve + list?
+      // solve + elist?
       let given = w.is_some();
-      let dtree = if !given && list {
+      let dtree = if !given && elist {
         let ws = state.top_words(&cfg);
         let mut scores: Vec<(Word, DTree)> = ws
           .iter()
           .filter_map(|w| Some((*w, state.solve_given(*w, &mut cfg, u32::MAX)?)))
           .collect();
         scores.sort_by_key(|(w, dt)| dt.get_tot());
-        println!("Listing:");
+        println!("Evaluations:");
         for (i, (w, dt)) in scores.iter().enumerate() {
           println!(
             "{}. {}: {}/{} = {:.3}",
@@ -165,7 +178,8 @@ fn main() {
             dt.get_tot() as f64 / state.aws.len() as f64
           );
         }
-        scores.pop().map(|(w, dt)| dt)
+        println!();
+        Some(scores.remove(0).1)
       } else if !given {
         state.solve(&mut cfg, u32::MAX)
       } else {
@@ -180,8 +194,9 @@ fn main() {
         ref fbmap,
       } = dtree
       {
+        println!("Solution:");
         println!(
-          "found {}: {}/{} = {:.3}",
+          "{}: {}/{} = {:.3}",
           word.to_string(),
           tot,
           state.aws.len(),

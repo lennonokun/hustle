@@ -37,11 +37,14 @@ $ hustle solve salet.bbbbb.courd
 # solve all of wordle and output to file (takes me 1m18s)
 $ hustle solve --dt out
 
-# solve and list results of top words
-$ hustle solve crate.bybyb --list
+# solve and list potential answers
+$ hustle solve crate.bybyb --alist
 
-# solve with specific ntops and cutoff
-$ hustle solve lodge.bbbbb --ntops 8 --cutoff 10
+# solve and list results of top words
+$ hustle solve crate.bybyb --elist
+
+# solve with specific number of top words to try
+$ hustle solve lodge.bbbbb --ntops 8
 
 # solve using specific heuristic data
 $ hustle solve salet.bbbgg --hdp hdata.csv
@@ -66,14 +69,7 @@ Run hustle --help for more information.
 * explain scripts + dependencies in README
 * look at each files TODOs
 ### Solver
-* csv with metadata
-* STATE SHOULD BE SEPARATED FROM HDATA, CFG, AND CACHE
-* RENAME CONFIG TO SOMETHING ELSE
-* SPLIT CONFIG INTO NEW FILE
-* PARALLELIZE DATA GENERATION
-* MAKE GENERATING CACHES INDEPENDENT?
-* UPDATE HEURISTIC SCRIPT + HDATA FOR N AND FOR NTOPS/BLAH
-* BETTER UPPER BOUNDS
+* rename "Config"
 * should hard be in config?
 * add cache config to main?
 * record cache stats
@@ -81,13 +77,13 @@ Run hustle --help for more information.
 * make heuristics work for any word bank
 * maybe wbank csvs should re list answers for guess bank?
 * check if solve strings are impossible? (allow impossible with --dirty)
-* caching
 * make command to list possible answers
 * improve dtree pprint format
 * make stats for time to solve also
 * also try stats for different n and configs
 * multiple heuristic options? (linear reg, precomputed, etc)
 * optimize solving
+  - better lower bounds
   - re-add multithreading
     (beta pruning is mostly single-threaded though)
   - look at flame graphs, etc
