@@ -2,6 +2,7 @@ use rand::prelude::*;
 use rayon::prelude::*;
 use std::sync::Mutex;
 use std::hash::{Hash, Hasher};
+use std::cmp;
 use rand::Rng;
 
 use crate::ds::*;
@@ -140,11 +141,17 @@ impl State {
 
   pub fn solve_given(&self, gw: Word, cfg: &mut Config, beta: u32) -> Option<DTree> {
     let alen = self.aws.len();
+
+    // leaf if guessed
     if alen == 1 && gw == *self.aws.get(0).unwrap() {
-      // leaf if guessed
       return Some(DTree::Leaf);
-    } else if self.n == 0 || (self.n == 1 && alen > MAX_TWOSOLVE as usize) {
-      // impossible guesses
+    // impossible guesses
+    } if self.n == 0
+      || (self.n == 1 && alen > 1)
+      || (self.n == 2 && alen > MAX_TWOSOLVE as usize) {
+      return None;
+    // check alpha = 2|A|-1
+    } if beta <= 2*(alen as u32)-1 {
       return None;
     }
 
@@ -153,22 +160,14 @@ impl State {
     // let mut sfbp: Vec<(&Feedback, &State)> = fbp.iter().collect();
     // sfbp.sort_by_key(|(fb, s)| s.aws.len());
 
-    // bounds check m >= 2|A|-1
-    let mut tot = alen as u32;
-    for (fb, s2) in &fbp {
-      if fb.is_correct() {break}
-      tot += 2*(s2.aws.len() as u32)-1;
-      if tot >= beta {return None}
-    }
-
-    // final
+    // calculate 
     let mut tot = alen as u32;
     let mut fbm = FbMap::new();
     for (fb, s2) in fbp {
       if fb.is_correct() {
         fbm.insert(fb, DTree::Leaf);
       } else {
-        match s2.solve(cfg, beta) {
+        match s2.solve(cfg, beta-tot) {
           None => return None,
           Some(dt) => {
             tot += dt.get_tot();
@@ -195,54 +194,36 @@ impl State {
     if self.n == 0 {
       return None;
     // one answer -> guess it
-    } else if alen == 1 {
+    } if alen == 1 {
       return Some(DTree::Node {
         tot: 1,
         word: *self.aws.get(0).unwrap(),
         fbmap: [(Feedback::from_str("GGGGG").unwrap(), DTree::Leaf)].into(),
       });
-    }
-
-    // check if endgame guess is viable
-    if alen <= cfg.endgcutoff as usize {
+    // check alpha = 2|A|-1
+    } if beta <= 2*(alen as u32) - 1 {
+      return None;
+    // check endgame if viable
+    } if alen <= cfg.endgcutoff as usize {
       for aw in self.aws.iter() {
         if self.fb_counts(aw).values().all(|c| *c == 1) {
           return self.solve_given(*aw, cfg, beta);
         }
       }
-    }
-
     // read cache if worth it
-    if alen >= cfg.cachecutoff as usize {
+    } if alen >= cfg.cachecutoff as usize {
       if let Some(dt) = cfg.cache.read(self) {
         return Some(dt.clone());
       }
     }
 
     // finally, check top words
-
-    //    let sd = Mutex::new(SolveData { dt: None, beta });
-    //    self.top_words(cfg, hd).into_par_iter().map(|w| {
-    //      if sd.lock().unwrap().beta <= 2 * alen as u32 {return}
-    //      let dt2 = self.solve_given(w, cfg, hd, sd.lock().unwrap().beta);
-    //      let mut sd2 = sd.lock().unwrap();
-    //      if let Some(dt2) = dt2 {
-    //        if dt2.get_tot() < sd2.beta {
-    //          sd2.beta = dt2.get_tot();
-    //          sd2.dt = Some(dt2);
-    //        }
-    //      }
-    //    });
-    //
-    //   sd.into_inner().unwrap().dt
-
     let mut dt = None;
     let mut beta = beta;
     for w in self.top_words(cfg) {
       if beta <= 2 * alen as u32 {
         break;
       }
-
       let dt2 = self.solve_given(w, cfg, beta);
       if let Some(dt2) = dt2 {
         if dt2.get_tot() < beta {
@@ -252,7 +233,7 @@ impl State {
       }
     }
 
-    // cache if worth it
+    // add cache if worth it
     if alen >= cfg.cachecutoff as usize {
       if let Some(ref dt) = dt {
         cfg.cache.add(self.clone(), dt.clone());
