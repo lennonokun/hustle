@@ -79,6 +79,7 @@ impl<'a, 'b> MenuScreen<'a, 'b> {
       let starx = x0 + MENUSTARX[i];
       let stary = y0 + MENUSTARY[i];
       wrt!(self.gio, cursor::Goto(starx, stary), "*");
+      self.gio.flush();
       match self.gio.read() {
         Key::Char('\n') => {
           // stop if valid
