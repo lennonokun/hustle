@@ -78,8 +78,6 @@ Run hustle --help for more information.
 * maybe wbank csvs should re list answers for guess bank?
 * check if solve strings are impossible? (allow impossible with --dirty)
 * improve dtree pprint format
-* make stats for time to solve also
-* also try stats for different n and configs
 * multiple heuristic options? (linear reg, precomputed, etc)
 * optimize solving
   - better lower bounds
@@ -97,7 +95,6 @@ Run hustle --help for more information.
 * dictionary capabilities
 * draw input beneath each col?
 * keep statistics and track pb's
-* show untested letters?
 * show known letters
   - display list below each column?
   - is this cheating?
