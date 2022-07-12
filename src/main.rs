@@ -159,6 +159,7 @@ fn main() {
       }
 
       // solve + elist?
+      let inst = Instant::now();
       let given = w.is_some();
       let dtree = if !given && elist {
         let ws = state.top_words(&cfg);
@@ -196,11 +197,12 @@ fn main() {
       {
         println!("Solution:");
         println!(
-          "{}: {}/{} = {:.3}",
+          "{}: {}/{} = {:.3} in {:.3}s",
           word.to_string(),
           tot,
           state.aws.len(),
-          tot as f64 / state.aws.len() as f64
+          tot as f64 / state.aws.len() as f64,
+          inst.elapsed().as_millis() as f64 / 1000.
         );
         // output dtree
         if let Some(dt) = dt {

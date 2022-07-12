@@ -34,7 +34,7 @@ $ hustle play
 # solve a wordle game
 $ hustle solve salet.bbbbb.courd
 
-# solve all of wordle and output to file (takes me 1m18s)
+# solve all of wordle and output to file (takes me 1m34s)
 $ hustle solve --dt out
 
 # solve and list potential answers
@@ -77,7 +77,6 @@ Run hustle --help for more information.
 * make heuristics work for any word bank
 * maybe wbank csvs should re list answers for guess bank?
 * check if solve strings are impossible? (allow impossible with --dirty)
-* make command to list possible answers
 * improve dtree pprint format
 * make stats for time to solve also
 * also try stats for different n and configs
