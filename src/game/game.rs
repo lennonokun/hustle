@@ -1,5 +1,6 @@
 use std::io;
-use std::path::Path;
+use std::env;
+use std::path::{Path, PathBuf};
 
 use termion::input::TermRead;
 use termion::raw::IntoRawMode;
@@ -14,7 +15,7 @@ pub fn game() {
   let stdin = io::stdin().lock().keys();
   let stdout = io::stdout().lock().into_raw_mode().unwrap();
   let mut gio = GameIO::new(stdin, stdout);
-  let cfg = Config::load(Path::new("data/config.toml")).unwrap();
+  let cfg = Config::load();
 
   let mut cont = true;
   let mut screen = "menu";
