@@ -31,23 +31,26 @@ impl<'a, 'b> EndScreen<'a, 'b> {
     let ncols = (self.gio.width - 1) / (self.results.wlen + 1) as u16;
 
     self.gio.rect(1, 1, self.gio.width, self.gio.height);
-    if self.results.won {
-      wrtaf!(self.gio, 2, 2,
-        "Won n={} in {}/{}, {:.3}!",
-        self.results.nwords,
-        self.results.turn,
-        self.results.nwords + NEXTRA as u16,
-        self.results.time.as_millis() as f64 / 1000.
-      );
-    } else {
-      wrta!(self.gio, 2, 2, "Answers were:");
-      for (i, ans) in self.results.answers.iter().enumerate() {
-        let col = i as u16 % ncols;
-        let row = i as u16 / ncols;
-        let x = (self.results.wlen as u16 + 1) * col + 2;
-        let y = row + 4;
-        wrta!(self.gio, x, y, ans);
-      }
+
+    wrta!(self.gio, 2, 2, "Results:");
+    wrtaf!(self.gio, 2, 3,
+           "{} {} with wlen={}, n={}",
+           if self.results.won {"Won"} else {"Lost"},
+           self.results.wbp, self.results.wlen, self.results.nwords);
+
+    wrta!(self.gio, 2, 5, "Statistics:");
+    wrtaf!(self.gio, 2, 6,
+           "turns: {}/{}, time: {:.3}s",
+           self.results.turn, self.results.nwords + NEXTRA as u16,
+           self.results.time.as_millis() as f64 / 1000.);
+
+    wrta!(self.gio, 2, 8, "Answers:");
+    for (i, ans) in self.results.answers.iter().enumerate() {
+      let col = i as u16 % ncols;
+      let row = i as u16 / ncols;
+      let x = (self.results.wlen as u16 + 1) * col + 2;
+      let y = row + 9;
+      wrta!(self.gio, x, y, ans);
     }
 
     wrta!(self.gio, 2, self.gio.height - 1,

@@ -22,6 +22,7 @@ pub struct PlayScreen<'a, 'b> {
   gio: &'a mut GameIO<'b>,
   gwb: WBank,
   awb: WBank,
+  wbp: &'static str,
   wlen: u8,
   nwords: u16,
   nrows: u16,
@@ -40,6 +41,7 @@ pub struct PlayScreen<'a, 'b> {
 #[derive(Clone, Default)]
 pub struct PlayResults {
   pub won: bool,
+  pub wbp: &'static str,
   pub nwords: u16,
   pub wlen: u8,
   pub turn: u16,
@@ -52,6 +54,7 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
     let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
     Self {
       gio,
+      wbp,
       gwb,
       awb,
       wlen,
@@ -215,6 +218,7 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
 
     PlayResults {
       won: self.ndone == self.nwords,
+      wbp: self.wbp,
       nwords: self.nwords,
       wlen: self.wlen,
       turn: self.turn,
