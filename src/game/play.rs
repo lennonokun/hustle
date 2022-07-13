@@ -84,7 +84,7 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
     let answers_left = self.nwords - self.ndone;
     let turns_left = limit - self.turn;
     let extra_turns = turns_left as i32 - answers_left as i32;
-    wrtaf!(self.gio, 2, 2, "solved: {}/{}, {}turns: {}/{} ({}){}, scroll: {}/{}",
+    wrtaf!(self.gio, 2, 2, "solved: {}/{}, {}turns: {}/{} ({:+}){}, scroll: {}/{}",
            self.ndone, self.nwords,
            if extra_turns>=0 {color::Reset.fg_str()} else {color::Red.fg_str()},
            self.turn, limit, extra_turns,
