@@ -1,9 +1,4 @@
-use termion::event::Key;
-use termion::input::{Keys, TermRead};
-use termion::raw::{IntoRawMode, RawTerminal};
-use termion::{clear, color, cursor, style, terminal_size};
-
-use crate::ds::{MINWLEN, MAXWLEN};
+use termion::color;
 
 use crate::ds::*;
 

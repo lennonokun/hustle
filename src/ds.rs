@@ -1,10 +1,9 @@
 use rand::prelude::*;
 use std::collections::HashMap;
-use std::fs::File;
 use std::fmt;
-use std::io::{BufRead, BufReader, Error, Result, Write};
+use std::fs::File;
+use std::io::{BufRead, BufReader, Result, Write};
 use std::path::Path;
-use std::sync::Arc;
 
 pub const NLETS: usize = 5;
 pub const NGUESSES: usize = 6;
@@ -13,8 +12,8 @@ pub const NWORDS: usize = 2309;
 pub const MINWLEN: usize = 4;
 pub const MAXWLEN: usize = 11;
 
-pub const DEFBANK: &'static str = "/usr/share/hustle/bank1.csv";
-pub const DEFHAPPROX: &'static str = "/usr/share/hustle/happrox.csv";
+pub const DEFWBP: &'static str = "/usr/share/hustle/bank1.csv";
+pub const DEFHDP: &'static str = "/usr/share/hustle/happrox.csv";
 
 #[derive(Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 pub struct Word {
@@ -106,7 +105,7 @@ impl Feedback {
         }
       }
     }
-    Some(Feedback {g_bs, y_bs, wlen})
+    Some(Feedback { g_bs, y_bs, wlen })
   }
 
   pub fn to_string(&self) -> String {
@@ -223,11 +222,7 @@ impl WBank {
   }
 
   pub fn pick(&self, rng: &mut ThreadRng, n: usize) -> Vec<Word> {
-    self
-      .data
-      .choose_multiple(&mut rand::thread_rng(), n)
-      .cloned()
-      .collect()
+    self.data.choose_multiple(rng, n).cloned().collect()
   }
 
   pub fn to_string(&self) -> String {
@@ -261,21 +256,33 @@ impl DTree {
   pub fn follow(&self, fb: Feedback) -> Option<&DTree> {
     match self {
       DTree::Leaf => None,
-      DTree::Node { tot, word, fbmap } => fbmap.get(&fb),
+      DTree::Node {
+        tot: _,
+        word: _,
+        fbmap,
+      } => fbmap.get(&fb),
     }
   }
 
   pub fn get_tot(&self) -> u32 {
     match self {
       DTree::Leaf => 0,
-      DTree::Node { tot, word, fbmap } => *tot,
+      DTree::Node {
+        tot,
+        word: _,
+        fbmap: _,
+      } => *tot,
     }
   }
 
   pub fn get_fbmap(&self) -> Option<&FbMap<DTree>> {
     match self {
       DTree::Leaf => None,
-      DTree::Node { tot, word, fbmap } => Some(fbmap),
+      DTree::Node {
+        tot: _,
+        word: _,
+        fbmap,
+      } => Some(fbmap),
     }
   }
 

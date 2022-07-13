@@ -1,13 +1,9 @@
-use rand::prelude::*;
-use rayon::prelude::*;
-use std::sync::Mutex;
-use std::hash::{Hash, Hasher};
-use std::cmp;
 use rand::Rng;
+use std::hash::{Hash, Hasher};
 
-use crate::ds::*;
 use super::analysis::HData;
 use super::cache::Cache;
+use crate::ds::*;
 
 // TODO: also hash gws?
 // could also iteratively hash when forming the state
@@ -31,11 +27,17 @@ pub struct Config {
 
 impl Config {
   pub fn new(hd: HData, cache: Cache, ntops: u32, endgcutoff: u32, cachecutoff: u32) -> Self {
-    Self {hd, cache, ntops, endgcutoff, cachecutoff}
+    Self {
+      hd,
+      cache,
+      ntops,
+      endgcutoff,
+      cachecutoff,
+    }
   }
 
   pub fn new2(ntops: u32) -> Self {
-    let hd = HData::load(DEFHAPPROX).unwrap();
+    let hd = HData::load(DEFHDP).unwrap();
     let cache = Cache::new(64, 8);
     Self::new(hd, cache, ntops, 15, 30)
   }
@@ -65,11 +67,23 @@ pub fn fb_filter(gw: Word, fb: Feedback, gws: &Vec<Word>) -> Vec<Word> {
 
 impl State {
   pub fn new(gws: Vec<Word>, aws: Vec<Word>, wlen: u32, hard: bool) -> Self {
-    State {gws, aws, wlen, n: NGUESSES as u32, hard}
+    State {
+      gws,
+      aws,
+      wlen,
+      n: NGUESSES as u32,
+      hard,
+    }
   }
 
   pub fn new2(gws: Vec<Word>, aws: Vec<Word>, wlen: u32, n: u32, hard: bool) -> Self {
-    State {gws, aws, wlen, n, hard}
+    State {
+      gws,
+      aws,
+      wlen,
+      n,
+      hard,
+    }
   }
 
   pub fn new3() -> Self {
@@ -81,13 +95,23 @@ impl State {
     let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
     let mut rng = rand::thread_rng();
     let len = rng.gen_range(1..=maxlen);
-    State::new2(gwb.data, awb.pick(&mut rng, len), NLETS as u32, NGUESSES as u32, false)
+    State::new2(
+      gwb.data,
+      awb.pick(&mut rng, len),
+      NLETS as u32,
+      NGUESSES as u32,
+      false,
+    )
   }
 
   pub fn fb_follow(self, gw: Word, fb: Feedback) -> Self {
-    let gws = if self.hard {fb_filter(gw, fb, &self.gws)} else {self.gws};
+    let gws = if self.hard {
+      fb_filter(gw, fb, &self.gws)
+    } else {
+      self.gws
+    };
     let aws = fb_filter(gw, fb, &self.aws);
-    State::new2(gws, aws, self.wlen, self.n-1, self.hard)
+    State::new2(gws, aws, self.wlen, self.n - 1, self.hard)
   }
 
   pub fn fb_partition(&self, gw: &Word) -> FbMap<State> {
@@ -122,7 +146,11 @@ impl State {
       .iter()
       .map(|(_, n)| cfg.hd.get_approx(*n as usize))
       .sum();
-    if self.aws.contains(gw) {h - 1.} else {h}
+    if self.aws.contains(gw) {
+      h - 1.
+    } else {
+      h
+    }
   }
 
   pub fn top_words(&self, cfg: &Config) -> Vec<Word> {
@@ -145,13 +173,13 @@ impl State {
     // leaf if guessed
     if alen == 1 && gw == *self.aws.get(0).unwrap() {
       return Some(DTree::Leaf);
-    // impossible guesses
-    } if self.n == 0
-      || (self.n == 1 && alen > 1)
-      || (self.n == 2 && alen > MAX_TWOSOLVE as usize) {
+      // impossible guesses
+    }
+    if self.n == 0 || (self.n == 1 && alen > 1) || (self.n == 2 && alen > MAX_TWOSOLVE as usize) {
       return None;
-    // check alpha = 2|A|-1
-    } if beta <= 2*(alen as u32)-1 {
+      // check alpha = 2|A|-1
+    }
+    if beta <= 2 * (alen as u32) - 1 {
       return None;
     }
 
@@ -160,14 +188,14 @@ impl State {
     // let mut sfbp: Vec<(&Feedback, &State)> = fbp.iter().collect();
     // sfbp.sort_by_key(|(fb, s)| s.aws.len());
 
-    // calculate 
+    // calculate
     let mut tot = alen as u32;
     let mut fbm = FbMap::new();
     for (fb, s2) in fbp {
       if fb.is_correct() {
         fbm.insert(fb, DTree::Leaf);
       } else {
-        match s2.solve(cfg, beta-tot) {
+        match s2.solve(cfg, beta - tot) {
           None => return None,
           Some(dt) => {
             tot += dt.get_tot();
@@ -193,25 +221,29 @@ impl State {
     // no more turns
     if self.n == 0 {
       return None;
-    // one answer -> guess it
-    } if alen == 1 {
+      // one answer -> guess it
+    }
+    if alen == 1 {
       return Some(DTree::Node {
         tot: 1,
         word: *self.aws.get(0).unwrap(),
         fbmap: [(Feedback::from_str("GGGGG").unwrap(), DTree::Leaf)].into(),
       });
-    // check alpha = 2|A|-1
-    } if beta <= 2*(alen as u32) - 1 {
+      // check alpha = 2|A|-1
+    }
+    if beta <= 2 * (alen as u32) - 1 {
       return None;
-    // check endgame if viable
-    } if alen <= cfg.endgcutoff as usize {
+      // check endgame if viable
+    }
+    if alen <= cfg.endgcutoff as usize {
       for aw in self.aws.iter() {
         if self.fb_counts(aw).values().all(|c| *c == 1) {
           return self.solve_given(*aw, cfg, beta);
         }
       }
-    // read cache if worth it
-    } if alen >= cfg.cachecutoff as usize {
+      // read cache if worth it
+    }
+    if alen >= cfg.cachecutoff as usize {
       if let Some(dt) = cfg.cache.read(self) {
         return Some(dt.clone());
       }
@@ -257,7 +289,6 @@ mod test {
 
   #[test]
   fn check_news() {
-    let mut cfg = Config::new2(10);
     let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
 
     let state1 = State::new(gwb.data.clone(), awb.data.clone(), 5, false);
@@ -288,4 +319,3 @@ mod test {
     assert!(state.solve(&mut cfg, u32::MAX).is_none());
   }
 }
-

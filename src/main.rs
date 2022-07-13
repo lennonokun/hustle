@@ -1,26 +1,19 @@
-#![allow(unused, unused_variables, unused_must_use)]
-#[macro_use]
-use clap::{Args, Parser, Subcommand, ValueEnum, clap_app};
+#![allow(unused)]
+use clap::{Parser, Subcommand};
 use rand::Rng;
-use std::env;
+use rayon::prelude::*;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
-use std::io::{self, Error, ErrorKind};
 use std::path::Path;
-use std::time::Instant;
-use rand::prelude::*;
-use rayon::prelude::*;
 use std::sync::Mutex;
+use std::time::Instant;
 
 mod solve;
-use crate::solve::{State, Config, HData, Cache};
+use crate::solve::{Cache, Config, HData, State};
 mod ds;
 use crate::ds::*;
 mod game;
 use crate::game::game;
-
-const DEFWBP: &str = "/usr/share/hustle/bank1.csv";
-const DEFHDP: &str = "/usr/share/hustle/happrox.csv";
 
 #[derive(Parser)]
 #[clap(version, about)]
@@ -104,7 +97,7 @@ enum Commands {
     /// heuristic data path
     #[clap(long, default_value_t=String::from(DEFHDP))]
     hdp: String,
-  }
+  },
 }
 
 fn main() {
@@ -138,7 +131,9 @@ fn main() {
       let mut turn = 0u32;
       let mut it = gamestate.split('.');
       while let Some(s_a) = it.next() {
-        if s_a.is_empty() {break}
+        if s_a.is_empty() {
+          break;
+        }
         turn += 1;
         if let Some(s_b) = it.next() {
           let gw = Word::from_str(s_a).unwrap();
@@ -148,12 +143,12 @@ fn main() {
           w = Some(Word::from_str(s_a).unwrap());
         }
       }
-      
+
       // list answers
       if alist {
         println!("Potential Answers:");
-        for (i,aw) in state.aws.iter().enumerate() {
-          println!("{}. {}", i+1, aw);
+        for (i, aw) in state.aws.iter().enumerate() {
+          println!("{}. {}", i + 1, aw);
         }
         println!();
       }
@@ -167,7 +162,7 @@ fn main() {
           .iter()
           .filter_map(|w| Some((*w, state.solve_given(*w, &mut cfg, u32::MAX)?)))
           .collect();
-        scores.sort_by_key(|(w, dt)| dt.get_tot());
+        scores.sort_by_key(|(_w, dt)| dt.get_tot());
         println!("Evaluations:");
         for (i, (w, dt)) in scores.iter().enumerate() {
           println!(
@@ -192,7 +187,7 @@ fn main() {
       if let DTree::Node {
         tot,
         word,
-        ref fbmap,
+        fbmap: _,
       } = dtree
       {
         println!("Solution:");
@@ -211,13 +206,19 @@ fn main() {
         }
       }
     }
-    Commands::Hgen {niter, out, wlen, wbp, hdp} => {
+    Commands::Hgen {
+      niter,
+      out,
+      wlen: _,
+      wbp: _,
+      hdp: _,
+    } => {
       // get wbanks + config
       let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
       let hd = HData::load(DEFHDP).unwrap();
       let cache = Cache::new(16, 4);
       let cfg = Config::new(hd, cache, 2, 15, 30);
-      
+
       // open and write if new
       let mut f;
       if Path::new(&out).exists() {
@@ -239,8 +240,14 @@ fn main() {
         let mut rng = rand::thread_rng();
         let alen = rng.gen_range(1..=NWORDS);
         let aws2 = awb.pick(&mut rng, alen as usize);
-        
-        let s = State::new2(gwb.data.clone(), aws2, awb.wlen.into(), NGUESSES as u32, false);
+
+        let s = State::new2(
+          gwb.data.clone(),
+          aws2,
+          awb.wlen.into(),
+          NGUESSES as u32,
+          false,
+        );
         let mut cfg = cfg.clone();
         if let Some(dt) = s.solve(&mut cfg, u32::MAX) {
           let mut f = f.lock().unwrap();
@@ -251,7 +258,13 @@ fn main() {
         }
       });
     }
-    Commands::Agen {niter, out, wlen, wbp, hdp} => {
+    Commands::Agen {
+      niter,
+      out,
+      wlen: _,
+      wbp,
+      hdp,
+    } => {
       // get constants
       let (gwb, awb) = WBank::from2(wbp, NLETS as u8).unwrap();
       let hd = HData::load(&hdp).unwrap();
@@ -296,12 +309,30 @@ fn main() {
 
         let mut i = i.lock().unwrap();
         let mut f = f.lock().unwrap();
-        println!("{}. {},{},{},{},{},{},{},{}",
-                 *i, alen, tot, time, turns, if hard {"H"} else {"E"},
-                 cfg.ntops, cfg.endgcutoff, cfg.cachecutoff);
-        writeln!(f, "{},{},{},{},{},{},{},{}",
-                 alen, tot, time, turns, if hard {"H"} else {"E"},
-                 cfg.ntops, cfg.endgcutoff, cfg.cachecutoff);
+        println!(
+          "{}. {},{},{},{},{},{},{},{}",
+          *i,
+          alen,
+          tot,
+          time,
+          turns,
+          if hard { "H" } else { "E" },
+          cfg.ntops,
+          cfg.endgcutoff,
+          cfg.cachecutoff
+        );
+        writeln!(
+          f,
+          "{},{},{},{},{},{},{},{}",
+          alen,
+          tot,
+          time,
+          turns,
+          if hard { "H" } else { "E" },
+          cfg.ntops,
+          cfg.endgcutoff,
+          cfg.cachecutoff
+        );
         *i += 1;
       });
     }

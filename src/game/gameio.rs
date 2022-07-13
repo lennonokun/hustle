@@ -1,9 +1,9 @@
-use std::io::{self, StdinLock, StdoutLock, Write};
+use std::io::{StdinLock, StdoutLock, Write};
 
 use termion::event::Key;
-use termion::input::{Keys, TermRead};
-use termion::raw::{IntoRawMode, RawTerminal};
-use termion::{clear, color, cursor, style, terminal_size};
+use termion::input::Keys;
+use termion::raw::RawTerminal;
+use termion::{clear, cursor, style, terminal_size};
 
 // TODO
 // unit tests
@@ -29,14 +29,12 @@ const LCUT: &str = "├";
 /// *a: at specific coords
 /// *f: formatted
 
-#[macro_use]
 macro_rules! wrt {
   ($gio: expr, $( $x: expr ),* ) => {
     $(write!(($gio).stdout, "{}", $x));*
   }
 }
 
-#[macro_use]
 macro_rules! wrta {
   ($gio: expr, $x: expr, $y: expr, $( $s: expr ),* ) => {
     write!(($gio).stdout, "{}", cursor::Goto($x, $y));
@@ -44,14 +42,12 @@ macro_rules! wrta {
   }
 }
 
-#[macro_use]
 macro_rules! wrtf {
   ($gio: expr, $fmt: expr, $($arg: expr ),*) => {
     {write!(($gio).stdout, $fmt, $($arg),*);}
   }
 }
 
-#[macro_use]
 macro_rules! wrtaf {
   ($gio: expr, $x: expr, $y: expr, $fmt: expr, $($arg: expr ),* ) => {
     write!(($gio).stdout, "{}", cursor::Goto($x, $y));
@@ -76,7 +72,12 @@ impl<'a> GameIO<'a> {
     let termsz = terminal_size().ok();
     let width = termsz.map(|sz| sz.0).unwrap();
     let height = termsz.map(|sz| sz.1).unwrap();
-    Self {stdin, stdout, width, height}
+    Self {
+      stdin,
+      stdout,
+      width,
+      height,
+    }
   }
 
   // update size and return if different
@@ -107,8 +108,10 @@ impl<'a> GameIO<'a> {
   /// draws the empty base
   pub fn empty(&mut self) {
     wrta!(self, 1, 1, clear::All, cursor::Hide, style::Reset);
-    for x in 1..=self.width {
-      for y in 1..=self.height {wrt!(self, EMPTY);}
+    for _x in 1..=self.width {
+      for _y in 1..=self.height {
+        wrt!(self, EMPTY);
+      }
       wrt!(self, "\n");
     }
   }
@@ -121,33 +124,43 @@ impl<'a> GameIO<'a> {
   pub fn rect(&mut self, x: u16, y: u16, w: u16, h: u16) {
     // top
     wrta!(self, x, y, ULC);
-    for _ in 1..w-1 {wrt!(self, HEDGE);}
+    for _ in 1..w - 1 {
+      wrt!(self, HEDGE);
+    }
     wrt!(self, URC);
 
     // middle
-    for i in 1..h-1 {
-      wrta!(self, x, y+i, VEDGE);
-      for _ in 1..w-1 {wrt!(self, EMPTY);}
+    for i in 1..h - 1 {
+      wrta!(self, x, y + i, VEDGE);
+      for _ in 1..w - 1 {
+        wrt!(self, EMPTY);
+      }
       wrt!(self, VEDGE);
     }
 
     // bottom
-    wrta!(self, x, y+h-1, BLC);
-    for _ in 1..w-1 {wrt!(self, HEDGE);}
+    wrta!(self, x, y + h - 1, BLC);
+    for _ in 1..w - 1 {
+      wrt!(self, HEDGE);
+    }
     wrt!(self, BRC);
   }
 
   /// draws a cut from (x,y) to (x+w,y)
   pub fn hcut(&mut self, x: u16, y: u16, w: u16) {
     wrta!(self, x, y, LCUT);
-    for _ in 1..w-1 {wrt!(self, HEDGE);}
+    for _ in 1..w - 1 {
+      wrt!(self, HEDGE);
+    }
     wrt!(self, RCUT);
   }
 
   /// draws a cut from (x,y) to (x,y+h)
   pub fn vcut(&mut self, x: u16, y: u16, h: u16) {
     wrta!(self, x, y, LCUT);
-    for i in 1..h-1 {wrta!(self, x+i, y, HEDGE);}
+    for i in 1..h - 1 {
+      wrta!(self, x + i, y, HEDGE);
+    }
     wrt!(self, RCUT);
   }
 }

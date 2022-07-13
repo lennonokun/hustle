@@ -1,12 +1,10 @@
-use std::io::{self, StdinLock, StdoutLock, Write};
+use std::io::Write;
 
+use termion::cursor;
 use termion::event::Key;
-use termion::input::{Keys, TermRead};
-use termion::raw::{IntoRawMode, RawTerminal};
-use termion::{clear, color, cursor, style, terminal_size};
 
-use crate::ds::{MINWLEN, MAXWLEN};
 use super::gameio::GameIO;
+use crate::ds::{MAXWLEN, MINWLEN};
 
 const MENUWIDTH: u16 = 25;
 const MENUHEIGHT: u16 = 9;
@@ -26,10 +24,10 @@ const MENUSCREEN: [&str; MENUHEIGHT as usize] = [
   "└────────────────────────┘",
 ];
 
-const NBANKS: u8 = 2;
+const NBANKS: usize = 2;
 const MAXNWORDS: u16 = 2000;
-const WBPREVIEW: [&str; 2] = ["< bank1 >", "< bank2 >"];
-const WBPATHS: [&str; 2] = ["/usr/share/hustle/bank1.csv", "/usr/share/hustle/bank2.csv"];
+const WBPREVIEW: [&str; NBANKS] = ["< bank1 >", "< bank2 >"];
+const WBPATHS: [&str; NBANKS] = ["/usr/share/hustle/bank1.csv", "/usr/share/hustle/bank2.csv"];
 
 #[derive(Clone, Copy, Default)]
 pub struct MenuResults {
@@ -40,25 +38,22 @@ pub struct MenuResults {
 }
 
 pub struct MenuScreen<'a, 'b> {
-  gio: &'a mut GameIO<'b>
+  gio: &'a mut GameIO<'b>,
 }
-
-type LockedIn<'a> = Keys<StdinLock<'a>>;
-type LockedOut<'a> = RawTerminal<StdoutLock<'a>>;
 
 impl<'a, 'b> MenuScreen<'a, 'b> {
   pub fn new(gio: &'a mut GameIO<'b>) -> Self {
-    Self {gio}
+    Self { gio }
   }
 
   pub fn run(self) -> MenuResults {
     let x0 = (self.gio.width - MENUWIDTH) / 2 + 1;
     let y0 = (self.gio.height - MENUHEIGHT) / 2 + 1;
-    
+
     self.gio.empty();
     self.gio.rect(x0, y0, MENUWIDTH, MENUHEIGHT);
     for i in 0..MENUHEIGHT {
-      wrta!(self.gio, x0, y0+i, MENUSCREEN[i as usize]);
+      wrta!(self.gio, x0, y0 + i, MENUSCREEN[i as usize]);
     }
     self.gio.flush();
 
@@ -86,7 +81,7 @@ impl<'a, 'b> MenuScreen<'a, 'b> {
           nwords = s_nwords.parse().ok();
           wlen = s_wlen.parse().ok();
           bank = Some(WBPATHS[j_bank]);
-          if let (Some(nwords), Some(wlen), Some(bank)) = (nwords, wlen, bank) {
+          if let (Some(nwords), Some(wlen), Some(_bank)) = (nwords, wlen, bank) {
             cont = !((1..=MAXNWORDS).contains(&nwords)
               && (MINWLEN..=MAXWLEN).contains(&(wlen as usize)));
           }
@@ -116,7 +111,7 @@ impl<'a, 'b> MenuScreen<'a, 'b> {
         Key::Backspace => {
           if i < 2 {
             // pop character
-            let mut s = if i == 0 { &mut s_nwords } else { &mut s_wlen };
+            let s = if i == 0 { &mut s_nwords } else { &mut s_wlen };
             s.pop();
             wrta!(self.gio, entx + s.len() as u16, enty, " ");
             self.gio.flush();
@@ -129,7 +124,7 @@ impl<'a, 'b> MenuScreen<'a, 'b> {
         Key::Char(c) => {
           if i < 2 && '0' <= c && c <= '9' {
             // push character
-            let mut s = if i == 0 { &mut s_nwords } else { &mut s_wlen };
+            let s = if i == 0 { &mut s_nwords } else { &mut s_wlen };
             wrta!(self.gio, entx + s.len() as u16, enty, c);
             self.gio.flush();
             s.push(c);
@@ -140,12 +135,22 @@ impl<'a, 'b> MenuScreen<'a, 'b> {
     }
 
     if quit {
-      MenuResults{quit, nwords: 0, wlen: 0, bank: ""}
+      MenuResults {
+        quit,
+        nwords: 0,
+        wlen: 0,
+        bank: "",
+      }
     } else {
       let nwords = nwords.unwrap();
       let wlen = wlen.unwrap();
       let bank = bank.unwrap();
-      MenuResults{quit, nwords, wlen, bank}
+      MenuResults {
+        quit,
+        nwords,
+        wlen,
+        bank,
+      }
     }
   }
 }

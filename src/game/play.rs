@@ -1,13 +1,13 @@
 use std::cmp;
-use std::io::{self, Write};
-use std::time::{Instant, Duration};
+use std::io::Write;
+use std::time::{Duration, Instant};
 
 use termion::event::Key;
-use termion::{clear, color, cursor, style, terminal_size};
+use termion::{color, cursor};
 
-use crate::ds::*;
 use super::fbcol::FeedbackCol;
 use super::gameio::GameIO;
+use crate::ds::*;
 
 // TODO:
 // is the dependence between play and end bad
@@ -72,7 +72,7 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
       unknowns: Vec::new(),
     }
   }
-  
+
   /// draw empty base
   fn empty(&mut self) {
     self.gio.rect(1, 1, self.gio.width, self.gio.height);
@@ -84,12 +84,25 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
     let answers_left = self.nwords - self.ndone;
     let turns_left = limit - self.turn;
     let extra_turns = turns_left as i32 - answers_left as i32;
-    wrtaf!(self.gio, 2, 2, "solved: {}/{}, {}turns: {}/{} ({:+}){}, scroll: {}/{}",
-           self.ndone, self.nwords,
-           if extra_turns>=0 {color::Reset.fg_str()} else {color::Red.fg_str()},
-           self.turn, limit, extra_turns,
-           color::Fg(color::Reset),
-           self.scroll + 1, self.nrows);
+    wrtaf!(
+      self.gio,
+      2,
+      2,
+      "solved: {}/{}, {}turns: {}/{} ({:+}){}, scroll: {}/{}",
+      self.ndone,
+      self.nwords,
+      if extra_turns >= 0 {
+        color::Reset.fg_str()
+      } else {
+        color::Red.fg_str()
+      },
+      self.turn,
+      limit,
+      extra_turns,
+      color::Fg(color::Reset),
+      self.scroll + 1,
+      self.nrows
+    );
     let unknowns: String = self.unknowns.iter().cloned().collect();
     wrtaf!(self.gio, 2, 3, "unknowns: {}", EMPTYUNKNOWNS);
     wrtaf!(self.gio, 2, 3, "unknowns: {}", unknowns);
@@ -120,7 +133,7 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
       wrta!(self.gio, x, y, self.empty_string);
     }
   }
-  
+
   fn draw_guess(&mut self, guess: &String) {
     let y = cmp::min(self.turn, self.maxrow) + 5;
     for ncol in 0..self.ncols {

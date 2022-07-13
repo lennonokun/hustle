@@ -1,9 +1,9 @@
-use std::collections::VecDeque;
 use std::collections::hash_map::DefaultHasher;
+use std::collections::VecDeque;
 use std::hash::{Hash, Hasher};
 
-use crate::ds::*;
 use super::state::State;
+use crate::ds::*;
 
 // TODO: cache tests don't need to actually solve
 
@@ -23,8 +23,10 @@ pub struct Entry {
 impl Cache {
   pub fn new(n: usize, m: usize) -> Self {
     let mut table = Vec::with_capacity(n);
-    for i in 0..n {table.push(VecDeque::new())}
-    Self {n, m, table}
+    for _i in 0..n {
+      table.push(VecDeque::new())
+    }
+    Self { n, m, table }
   }
 
   pub fn get_row(&mut self, state: &State) -> Option<&mut VecDeque<Entry>> {
@@ -36,8 +38,8 @@ impl Cache {
   }
 
   pub fn read(&mut self, state: &State) -> Option<&DTree> {
-    let mut row = self.get_row(state).unwrap();
-    for (i,ent) in row.iter().enumerate() {
+    let row = self.get_row(state).unwrap();
+    for (i, ent) in row.iter().enumerate() {
       if ent.check(state) {
         // promote to front
         let ent = row.remove(i).unwrap();
@@ -51,9 +53,11 @@ impl Cache {
   // assumes state not already in table
   pub fn add(&mut self, state: State, dt: DTree) {
     let m = self.m; // hacky way to avoid double borrow
-    let mut row = self.get_row(&state).unwrap();
-    row.push_front(Entry {state, dt});
-    if row.len() > m {row.pop_back();}
+    let row = self.get_row(&state).unwrap();
+    row.push_front(Entry { state, dt });
+    if row.len() > m {
+      row.pop_back();
+    }
   }
 }
 
@@ -67,13 +71,13 @@ impl Entry {
 #[cfg(test)]
 mod test {
   use super::*;
-  use crate::solve::{State, Config, HData};
+  use crate::solve::{Config, State};
 
   fn add_garbage<'a>(n: usize, cache: &mut Cache, cfg: &mut Config) {
     let mut i = 0;
     while i < n {
       let state = State::random(20);
-      if let Some(dt) = state.solve(cfg, u32::MAX){
+      if let Some(dt) = state.solve(cfg, u32::MAX) {
         cache.add(state.clone(), dt.clone());
         i += 1;
       }
@@ -91,7 +95,7 @@ mod test {
     assert!(cache.read(&state).is_none());
     cache.add(state.clone(), dt.clone());
     assert_eq!(cache.read(&state).unwrap().clone(), dt);
-    
+
     // add less than m garbage, state should still be there
     add_garbage(4, &mut cache, &mut cfg);
     assert_eq!(cache.read(&state).unwrap().clone(), dt);

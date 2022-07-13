@@ -1,17 +1,12 @@
-use std::io::{self, Write};
+use std::io;
 
-use termion::event::Key;
-use termion::input::{Keys, TermRead};
-use termion::raw::{IntoRawMode, RawTerminal};
-use termion::{clear, color, cursor, style, terminal_size};
+use termion::input::TermRead;
+use termion::raw::IntoRawMode;
 
+use super::end::EndScreen;
 use super::gameio::GameIO;
-use super::menu::{MenuScreen, MenuResults};
-use super::play::{PlayScreen, PlayResults};
-use super::end::{EndScreen, EndResults};
-
-const NEXTRA: u16 = 5;
-const MAXNWORDS: u16 = 2000;
+use super::menu::{MenuResults, MenuScreen};
+use super::play::PlayScreen;
 
 pub fn game() {
   let stdin = io::stdin().lock().keys();
@@ -21,10 +16,10 @@ pub fn game() {
   let mut cont = true;
   let mut screen = "menu";
   let mut m_results = MenuResults::default();
-  
+
   while cont {
     if screen == "menu" {
-      let mut menu = MenuScreen::new(&mut gio);
+      let menu = MenuScreen::new(&mut gio);
       m_results = menu.run();
       cont = !m_results.quit;
       screen = "play";
