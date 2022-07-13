@@ -28,17 +28,10 @@ impl FeedbackCol {
     }
     let fb = Feedback::from(gw, self.ans).unwrap();
     let mut s = String::new();
-    let fg_color = color::White.fg_str();
     for i in 0..self.wlen {
-      let bg_color = if fb.get_g(i) {
-        cfg.fbcolors[2].bg_string()
-      } else if fb.get_y(i) {
-        cfg.fbcolors[1].bg_string()
-      } else {
-        cfg.fbcolors[0].bg_string()
-      };
-
-      s += &format!("{}{}", fg_color, bg_color);
+      let fg = cfg.fb_fg;
+      let bg = cfg.fb_bgs[if fb.get_g(i) {2} else if fb.get_y(i) {1} else {0}];
+      s += &format!("{}{}", fg.fg_string(), bg.bg_string());
       s.push((gw.data[i as usize] + b'A') as char);
     }
     s += &format!("{}{}", color::Reset.fg_str(), color::Reset.bg_str());

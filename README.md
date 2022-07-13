@@ -105,7 +105,6 @@ Run hustle --help for more information.
 * config
   - default colors should be terminal defaults
   - feedback fg too
-  - implement XDG finding
   - implement finish, unknowns, 
   - implement unknowns
   - install default into usr/share

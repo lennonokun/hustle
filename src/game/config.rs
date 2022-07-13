@@ -56,10 +56,12 @@ pub fn parse_rgb(x: u32) -> Rgb {
 }
 
 config! {
-  feedback_colors, [u32; 3], fbcolors, [Rgb; 3], |x: [u32; 3]| {
-    x.iter().map(|x| parse_rgb(*x)).collect::<Vec<Rgb>>().try_into().unwrap()
+  feedback_fg, u32, fb_fg, Rgb, parse_rgb;
+  feedback_bgs, [u32; 3], fb_bgs, [Rgb; 3], |xs: [u32; 3]| {
+    xs.iter().map(|x| parse_rgb(*x)).collect::<Vec<Rgb>>()
+      .try_into().unwrap()
   };
-  impossible_color, u32, impcolor, Rgb, parse_rgb;
+  impossible_fg, u32, imp_fg, Rgb, parse_rgb;
   finished, String, finished, String, |s| s;
 }
 
@@ -94,7 +96,5 @@ mod test {
   pub fn default_config() {
     let cfg = Config::from1(Path::new("/usr/share/hustle/config.toml"));
     assert!(cfg.is_ok());
-    println!("{:?}", cfg);
-    assert!(false);
   }
 }

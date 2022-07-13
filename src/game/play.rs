@@ -97,7 +97,7 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
       if extra_turns >= 0 {
         String::from("")
       } else {
-        self.cfg.impcolor.fg_string()
+        self.cfg.imp_fg.fg_string()
       },
       self.turn,
       limit,
