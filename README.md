@@ -62,6 +62,8 @@ Run hustle --help for more information.
 
 ## TODO
 ### General
+* better error handling
+* use Path instead of AsPath
 * get rid of WBank?
 * generally refactor, don't ignore warnings
 * create benchmarks and unit tests
@@ -100,8 +102,14 @@ Run hustle --help for more information.
   - different layout for single
   - different modes like hard mode
 - sync with wordle, duordle, quordle, octordle's, etc daily
+* config
+  - default colors should be terminal defaults
+  - feedback fg too
+  - implement XDG finding
+  - implement finish, unknowns, 
+  - implement unknowns
+  - install default into usr/share
 * create github releases?
 * make more easily installable
   - try to publish to AUR?
   - create packages for more distros
-  - config file (colors, replacement method, etc)

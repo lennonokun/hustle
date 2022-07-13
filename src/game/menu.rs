@@ -3,6 +3,7 @@ use std::io::Write;
 use termion::cursor;
 use termion::event::Key;
 
+use super::config::Config;
 use super::gameio::GameIO;
 use crate::ds::{MAXWLEN, MINWLEN};
 
@@ -39,11 +40,12 @@ pub struct MenuResults {
 
 pub struct MenuScreen<'a, 'b> {
   gio: &'a mut GameIO<'b>,
+  cfg: &'a Config
 }
 
 impl<'a, 'b> MenuScreen<'a, 'b> {
-  pub fn new(gio: &'a mut GameIO<'b>) -> Self {
-    Self { gio }
+  pub fn new(gio: &'a mut GameIO<'b>, cfg: &'a Config) -> Self {
+    Self { gio, cfg }
   }
 
   pub fn run(self) -> MenuResults {

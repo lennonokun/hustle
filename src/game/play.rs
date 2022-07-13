@@ -5,6 +5,7 @@ use std::time::{Duration, Instant};
 use termion::event::Key;
 use termion::{color, cursor};
 
+use super::config::Config;
 use super::fbcol::FeedbackCol;
 use super::gameio::GameIO;
 use crate::ds::*;
@@ -20,6 +21,7 @@ const EMPTYUNKNOWNS: &'static str = "                          ";
 
 pub struct PlayScreen<'a, 'b> {
   gio: &'a mut GameIO<'b>,
+  cfg: &'a Config,
   gwb: WBank,
   awb: WBank,
   wbp: &'static str,
@@ -50,10 +52,11 @@ pub struct PlayResults {
 }
 
 impl<'a, 'b> PlayScreen<'a, 'b> {
-  pub fn new(gio: &'a mut GameIO<'b>, wbp: &'static str, wlen: u8, nwords: u16) -> Self {
+  pub fn new(gio: &'a mut GameIO<'b>, cfg: &'a Config, wbp: &'static str, wlen: u8, nwords: u16) -> Self {
     let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
     Self {
       gio,
+      cfg,
       wbp,
       gwb,
       awb,
@@ -92,9 +95,9 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
       self.ndone,
       self.nwords,
       if extra_turns >= 0 {
-        color::Reset.fg_str()
+        String::from("")
       } else {
-        color::Red.fg_str()
+        self.cfg.impcolor.fg_string()
       },
       self.turn,
       limit,
@@ -213,7 +216,7 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
           }
           let mut i_done: Option<usize> = None;
           for (i, c) in self.cols.iter_mut().enumerate() {
-            if c.guess(gw) {
+            if c.guess(gw, self.cfg) {
               i_done = Some(i);
               self.ndone += 1;
             }

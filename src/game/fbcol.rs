@@ -1,5 +1,6 @@
 use termion::color;
 
+use super::config::Config;
 use crate::ds::*;
 
 #[derive(Debug)]
@@ -21,7 +22,7 @@ impl FeedbackCol {
   }
 
   // returns if newly finished
-  pub fn guess(&mut self, gw: Word) -> bool {
+  pub fn guess(&mut self, gw: Word, cfg: &Config) -> bool {
     if self.done || self.wlen != gw.wlen {
       return false;
     }
@@ -30,11 +31,11 @@ impl FeedbackCol {
     let fg_color = color::White.fg_str();
     for i in 0..self.wlen {
       let bg_color = if fb.get_g(i) {
-        color::Green.bg_str()
+        cfg.fbcolors[2].bg_string()
       } else if fb.get_y(i) {
-        color::Yellow.bg_str()
+        cfg.fbcolors[1].bg_string()
       } else {
-        color::Blue.bg_str()
+        cfg.fbcolors[0].bg_string()
       };
 
       s += &format!("{}{}", fg_color, bg_color);

@@ -1,8 +1,10 @@
 use std::io;
+use std::path::Path;
 
 use termion::input::TermRead;
 use termion::raw::IntoRawMode;
 
+use super::config::Config;
 use super::end::EndScreen;
 use super::gameio::GameIO;
 use super::menu::{MenuResults, MenuScreen};
@@ -12,6 +14,7 @@ pub fn game() {
   let stdin = io::stdin().lock().keys();
   let stdout = io::stdout().lock().into_raw_mode().unwrap();
   let mut gio = GameIO::new(stdin, stdout);
+  let cfg = Config::load(Path::new("data/config.toml")).unwrap();
 
   let mut cont = true;
   let mut screen = "menu";
@@ -19,15 +22,15 @@ pub fn game() {
 
   while cont {
     if screen == "menu" {
-      let menu = MenuScreen::new(&mut gio);
+      let menu = MenuScreen::new(&mut gio, &cfg);
       m_results = menu.run();
       cont = !m_results.quit;
       screen = "play";
     } else if screen == "play" {
-      let mut play = PlayScreen::new(&mut gio, m_results.bank, m_results.wlen, m_results.nwords);
+      let mut play = PlayScreen::new(&mut gio, &cfg, m_results.bank, m_results.wlen, m_results.nwords);
       let p_results = play.run();
 
-      let mut end = EndScreen::new(&mut gio, p_results);
+      let mut end = EndScreen::new(&mut gio, &cfg, p_results);
       let e_results = end.run();
 
       if e_results.quit {

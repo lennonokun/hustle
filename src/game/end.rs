@@ -3,6 +3,7 @@ use std::io::Write;
 use termion::cursor;
 use termion::event::Key;
 
+use super::config::Config;
 use super::gameio::GameIO;
 use super::play::PlayResults;
 use crate::ds::*;
@@ -21,7 +22,7 @@ pub struct EndResults {
 }
 
 impl<'a, 'b> EndScreen<'a, 'b> {
-  pub fn new(gio: &'a mut GameIO<'b>, results: PlayResults) -> Self {
+  pub fn new(gio: &'a mut GameIO<'b>, cfg: &'a Config, results: PlayResults) -> Self {
     Self { gio, results }
   }
 

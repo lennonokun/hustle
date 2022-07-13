@@ -1,0 +1,12 @@
+# default hustle config
+
+# respective colors for absent, present, and correct
+feedback_colors = [0x268bd2, 0xb58900, 0x859900]
+
+# status color for impossible solve
+impossible_colors = 0xdc322f
+
+# what to do with finished columns
+# "remove": remove column (default)
+# "gray": gray out
+finished = "remove"
