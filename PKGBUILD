@@ -34,6 +34,7 @@ package() {
 	install -Dm0644 -t "$pkgdir/usr/share/hustle" "data/bank1.csv"
 	install -Dm0644 -t "$pkgdir/usr/share/hustle" "data/bank2.csv"
 	install -Dm0644 -t "$pkgdir/usr/share/hustle" "data/happrox.csv"
+	install -Dm0644 -t "$pkgdir/usr/share/hustle" "data/config.toml"
 	# misc
 	echo "installing into $pkgdir/usr/share/licenses+doc"
 	install -Dm0644 -t "$pkgdir/usr/share/licenses/$pkgname" "LICENSE"

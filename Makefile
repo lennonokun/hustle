@@ -9,6 +9,7 @@ install: target/release/hustle
 	sudo install -Dm0644 -t "/usr/share/hustle" "data/bank1.csv"
 	sudo install -Dm0644 -t "/usr/share/hustle" "data/bank2.csv"
 	sudo install -Dm0644 -t "/usr/share/hustle" "data/happrox.csv"
+	sudo install -Dm0644 -t "/usr/share/hustle" "data/config.toml"
 	# misc
 	sudo install -Dm0644 -t "/usr/share/licenses/hustle" "LICENSE"
 	sudo install -Dm0644 -t "/usr/share/doc/hustle" "README.md"
