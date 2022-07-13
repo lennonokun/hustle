@@ -75,7 +75,6 @@ Run hustle --help for more information.
 * record cache stats
 * standardize types for stuff like NLETS and wlen
 * make heuristics work for any word bank
-* maybe wbank csvs should re list answers for guess bank?
 * check if solve strings are impossible? (allow impossible with --dirty)
 * improve dtree pprint format
 * multiple heuristic options? (linear reg, precomputed, etc)
@@ -85,15 +84,12 @@ Run hustle --help for more information.
     (beta pruning is mostly single-threaded though)
   - look at flame graphs, etc
 ### Game
-* warn when impossible to guess (red text)?
 * swap Game and Play?
 * see how vim clears without leaving weird history
 * is wrt! slow?
-* show wlen in end, and maybe wbank?
 * better resizing
 * make prompt trait + macro like clap
 * dictionary capabilities
-* draw input beneath each col?
 * keep statistics and track pb's
 * adjust layout for overflow
 * show known letters
