@@ -11,8 +11,9 @@ use crate::ds::*;
 // maximum number of words solveable in two guesses
 const MAX_TWOSOLVE: u32 = 20;
 
+/// solve data
 #[derive(Debug, Clone)]
-pub struct Config {
+pub struct SData {
   /// heuristic data
   pub hd: HData,
   /// cache
@@ -25,7 +26,7 @@ pub struct Config {
   pub cachecutoff: u32,
 }
 
-impl Config {
+impl SData {
   pub fn new(hd: HData, cache: Cache, ntops: u32, endgcutoff: u32, cachecutoff: u32) -> Self {
     Self {
       hd,
@@ -140,11 +141,11 @@ impl State {
     map
   }
 
-  pub fn heuristic(&self, gw: &Word, cfg: &Config) -> f64 {
+  pub fn heuristic(&self, gw: &Word, sd: &SData) -> f64 {
     let h = self
       .fb_counts(gw)
       .iter()
-      .map(|(_, n)| cfg.hd.get_approx(*n as usize))
+      .map(|(_, n)| sd.hd.get_approx(*n as usize))
       .sum();
     if self.aws.contains(gw) {
       h - 1.
@@ -153,21 +154,21 @@ impl State {
     }
   }
 
-  pub fn top_words(&self, cfg: &Config) -> Vec<Word> {
+  pub fn top_words(&self, sd: &SData) -> Vec<Word> {
     let mut tups: Vec<(Word, f64)> = self
       .gws
       .iter()
-      .map(|gw| (*gw, self.heuristic(gw, cfg)))
+      .map(|gw| (*gw, self.heuristic(gw, sd)))
       .collect();
     tups.sort_by(|(_, f1), (_, f2)| f1.partial_cmp(f2).unwrap());
     tups
       .iter()
       .map(|(gw, _)| *gw)
-      .take(cfg.ntops as usize)
+      .take(sd.ntops as usize)
       .collect()
   }
 
-  pub fn solve_given(&self, gw: Word, cfg: &mut Config, beta: u32) -> Option<DTree> {
+  pub fn solve_given(&self, gw: Word, sd: &mut SData, beta: u32) -> Option<DTree> {
     let alen = self.aws.len();
 
     // leaf if guessed
@@ -195,7 +196,7 @@ impl State {
       if fb.is_correct() {
         fbm.insert(fb, DTree::Leaf);
       } else {
-        match s2.solve(cfg, beta - tot) {
+        match s2.solve(sd, beta - tot) {
           None => return None,
           Some(dt) => {
             tot += dt.get_tot();
@@ -215,7 +216,7 @@ impl State {
     })
   }
 
-  pub fn solve(&self, cfg: &mut Config, beta: u32) -> Option<DTree> {
+  pub fn solve(&self, sd: &mut SData, beta: u32) -> Option<DTree> {
     let alen = self.aws.len();
 
     // no more turns
@@ -235,16 +236,16 @@ impl State {
       return None;
       // check endgame if viable
     }
-    if alen <= cfg.endgcutoff as usize {
+    if alen <= sd.endgcutoff as usize {
       for aw in self.aws.iter() {
         if self.fb_counts(aw).values().all(|c| *c == 1) {
-          return self.solve_given(*aw, cfg, beta);
+          return self.solve_given(*aw, sd, beta);
         }
       }
       // read cache if worth it
     }
-    if alen >= cfg.cachecutoff as usize {
-      if let Some(dt) = cfg.cache.read(self) {
+    if alen >= sd.cachecutoff as usize {
+      if let Some(dt) = sd.cache.read(self) {
         return Some(dt.clone());
       }
     }
@@ -252,11 +253,11 @@ impl State {
     // finally, check top words
     let mut dt = None;
     let mut beta = beta;
-    for w in self.top_words(cfg) {
+    for w in self.top_words(sd) {
       if beta <= 2 * alen as u32 {
         break;
       }
-      let dt2 = self.solve_given(w, cfg, beta);
+      let dt2 = self.solve_given(w, sd, beta);
       if let Some(dt2) = dt2 {
         if dt2.get_tot() < beta {
           beta = dt2.get_tot();
@@ -266,9 +267,9 @@ impl State {
     }
 
     // add cache if worth it
-    if alen >= cfg.cachecutoff as usize {
+    if alen >= sd.cachecutoff as usize {
       if let Some(ref dt) = dt {
-        cfg.cache.add(self.clone(), dt.clone());
+        sd.cache.add(self.clone(), dt.clone());
       }
     }
 
@@ -300,22 +301,22 @@ mod test {
 
   #[test]
   fn simple_solve() {
-    let mut cfg = Config::new2(15);
+    let mut sd = SData::new2(15);
     let state1 = State::new3();
     let mut state2 = State::new3();
     state2.hard = true;
 
-    assert!(state1.solve(&mut cfg, u32::MAX).is_some());
-    assert!(state2.solve(&mut cfg, u32::MAX).is_some());
+    assert!(state1.solve(&mut sd, u32::MAX).is_some());
+    assert!(state2.solve(&mut sd, u32::MAX).is_some());
   }
 
   #[test]
   fn impossible_solve() {
-    let mut cfg = Config::new2(2);
+    let mut sd = SData::new2(2);
     let mut state = State::new3();
     state.n = 2;
 
     // cannot solve in 2 guesses
-    assert!(state.solve(&mut cfg, u32::MAX).is_none());
+    assert!(state.solve(&mut sd, u32::MAX).is_none());
   }
 }

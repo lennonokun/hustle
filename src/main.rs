@@ -9,7 +9,7 @@ use std::sync::Mutex;
 use std::time::Instant;
 
 mod solve;
-use crate::solve::{Cache, Config, HData, State};
+use crate::solve::{Cache, SData, HData, State};
 mod ds;
 use crate::ds::*;
 mod game;
@@ -124,7 +124,7 @@ fn main() {
       let hd = HData::load(&hdp).unwrap();
       let cache = Cache::new(16, 4);
       let mut state = State::new(gwb.data, awb.data, wlen.into(), hard);
-      let mut cfg = Config::new(hd, cache, ntops, ecutoff, ccutoff);
+      let mut sd = SData::new(hd, cache, ntops, ecutoff, ccutoff);
 
       // parse gamestate
       let mut w: Option<Word> = None;
@@ -157,10 +157,10 @@ fn main() {
       let inst = Instant::now();
       let given = w.is_some();
       let dtree = if !given && elist {
-        let ws = state.top_words(&cfg);
+        let ws = state.top_words(&sd);
         let mut scores: Vec<(Word, DTree)> = ws
           .iter()
-          .filter_map(|w| Some((*w, state.solve_given(*w, &mut cfg, u32::MAX)?)))
+          .filter_map(|w| Some((*w, state.solve_given(*w, &mut sd, u32::MAX)?)))
           .collect();
         scores.sort_by_key(|(_w, dt)| dt.get_tot());
         println!("Evaluations:");
@@ -177,9 +177,9 @@ fn main() {
         println!();
         Some(scores.remove(0).1)
       } else if !given {
-        state.solve(&mut cfg, u32::MAX)
+        state.solve(&mut sd, u32::MAX)
       } else {
-        state.solve_given(w.unwrap(), &mut cfg, u32::MAX)
+        state.solve_given(w.unwrap(), &mut sd, u32::MAX)
       }
       .expect("couldn't make dtree!");
 
@@ -217,7 +217,7 @@ fn main() {
       let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
       let hd = HData::load(DEFHDP).unwrap();
       let cache = Cache::new(16, 4);
-      let cfg = Config::new(hd, cache, 2, 15, 30);
+      let sd = SData::new(hd, cache, 2, 15, 30);
 
       // open and write if new
       let mut f;
@@ -248,8 +248,8 @@ fn main() {
           NGUESSES as u32,
           false,
         );
-        let mut cfg = cfg.clone();
-        if let Some(dt) = s.solve(&mut cfg, u32::MAX) {
+        let mut sd = sd.clone();
+        if let Some(dt) = s.solve(&mut sd, u32::MAX) {
           let mut f = f.lock().unwrap();
           let mut i = i.lock().unwrap();
           println!("{}. alen: {}, tot: {}", i, alen, dt.get_tot());
@@ -298,11 +298,11 @@ fn main() {
 
         // generate state
         let s = State::new2(gwb.data.clone(), aws2, awb.wlen.into(), turns, false);
-        let mut cfg = Config::new(hd.clone(), cache.clone(), ntops, ecut, ccut);
+        let mut sd = SData::new(hd.clone(), cache.clone(), ntops, ecut, ccut);
 
         // solve and time
         let instant = Instant::now();
-        let dt = s.solve(&mut cfg, u32::MAX);
+        let dt = s.solve(&mut sd, u32::MAX);
         let time = instant.elapsed().as_millis();
         // MAYBE MAKE IT u32 max? or nan (but make float)
         let tot = dt.map_or(0, |dt| dt.get_tot());
@@ -317,9 +317,9 @@ fn main() {
           time,
           turns,
           if hard { "H" } else { "E" },
-          cfg.ntops,
-          cfg.endgcutoff,
-          cfg.cachecutoff
+          sd.ntops,
+          sd.endgcutoff,
+          sd.cachecutoff
         );
         writeln!(
           f,
@@ -329,9 +329,9 @@ fn main() {
           time,
           turns,
           if hard { "H" } else { "E" },
-          cfg.ntops,
-          cfg.endgcutoff,
-          cfg.cachecutoff
+          sd.ntops,
+          sd.endgcutoff,
+          sd.cachecutoff
         );
         *i += 1;
       });
