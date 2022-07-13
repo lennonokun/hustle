@@ -80,9 +80,15 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
   }
 
   fn draw_status(&mut self) {
-    wrtaf!(self.gio, 2, 2, "guesses: {}/{}, solved: {}/{}, scroll: {}/{}",
-           self.turn, self.nwords as usize + NEXTRA,
+    let limit = self.nwords + NEXTRA as u16;
+    let answers_left = self.nwords - self.ndone;
+    let turns_left = limit - self.turn;
+    let extra_turns = turns_left as i32 - answers_left as i32;
+    wrtaf!(self.gio, 2, 2, "solved: {}/{}, {}turns: {}/{} ({}){}, scroll: {}/{}",
            self.ndone, self.nwords,
+           if extra_turns>=0 {color::Reset.fg_str()} else {color::Red.fg_str()},
+           self.turn, limit, extra_turns,
+           color::Fg(color::Reset),
            self.scroll + 1, self.nrows);
     let unknowns: String = self.unknowns.iter().cloned().collect();
     wrtaf!(self.gio, 2, 3, "unknowns: {}", EMPTYUNKNOWNS);
