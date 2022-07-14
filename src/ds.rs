@@ -46,6 +46,11 @@ impl Word {
     Some(Word { data, wlen })
   }
 
+  pub fn get(&self, i: usize) -> Option<char> {
+    if i > self.wlen.into() {return None}
+    Some((self.data[i] + b'A') as char)
+  }
+
   pub fn to_string(&self) -> String {
     self.data[0..self.wlen as usize]
       .iter()

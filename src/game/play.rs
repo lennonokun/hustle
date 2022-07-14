@@ -36,6 +36,7 @@ pub struct PlayScreen<'a, 'b> {
   empty_string: String,
   t_start: Instant,
   cols: Vec<FeedbackCol>,
+  guesses: Vec<Word>,
   answers: Vec<Word>,
   unknowns: Vec<char>,
 }
@@ -71,6 +72,7 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
       empty_string: String::new(),
       t_start: Instant::now(),
       cols: Vec::new(),
+      guesses: Vec::new(),
       answers: Vec::new(),
       unknowns: Vec::new(),
     }
@@ -111,13 +113,15 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
     wrtaf!(self.gio, 2, 3, "unknowns: {}", unknowns);
   }
 
+  fn get_col(&self, ncol: u16) -> Option<&FeedbackCol> {
+    self.cols.get((self.ncols * self.scroll + ncol) as usize)
+  }
+
   fn draw_fbc_row(&mut self, ncol: u16, nrow: u16) {
     let (x, y) = (ncol * (self.wlen as u16 + 1) + 2, nrow + 5);
-    let s = self
-      .cols
-      .get((self.ncols * self.scroll + ncol) as usize)
-      .and_then(|fbc| fbc.rows.get(nrow as usize))
-      .unwrap_or(&self.empty_string);
+    let s = self.get_col(ncol)
+      .and_then(|fbc| fbc.get(nrow as usize, self.cfg))
+      .unwrap_or(self.empty_string.clone());
     wrta!(self.gio, x, y, s);
   }
 
@@ -140,12 +144,10 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
   fn draw_guess(&mut self, guess: &String) {
     let y = cmp::min(self.turn, self.maxrow) + 5;
     for ncol in 0..self.ncols {
+      if self.get_col(ncol).map_or(true, |col| col.done) {continue}
       let x = ncol * (self.wlen as u16 + 1) + 2;
-      let n = self.ncols * self.scroll + ncol;
       wrta!(self.gio, x, y, self.empty_string);
-      if (n as usize) < self.cols.len() {
-        wrta!(self.gio, x, y, guess);
-      }
+      wrta!(self.gio, x, y, guess);
     }
   }
 
@@ -176,7 +178,7 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
     self.empty();
 
     while (self.turn as usize) < limit && self.ndone < self.nwords as u16 && !quit {
-      self.draw_status(); // also unecesseary?
+      self.draw_status(); // also unnecessary?
       self.draw_guess(&guess);
       self.gio.flush();
 
@@ -216,14 +218,14 @@ impl<'a, 'b> PlayScreen<'a, 'b> {
           }
           let mut i_done: Option<usize> = None;
           for (i, c) in self.cols.iter_mut().enumerate() {
-            if c.guess(gw, self.cfg) {
+            if c.guess(gw) {
               i_done = Some(i);
               self.ndone += 1;
             }
           }
 
           self.turn += 1;
-          if let Some(i) = i_done {
+          if let Some(i) = i_done && self.cfg.finished == "remove" {
             // remove finished column and redraw entirely
             self.cols.remove(i);
             self.draw_fbcols();

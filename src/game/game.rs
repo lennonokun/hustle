@@ -12,9 +12,9 @@ use super::menu::{MenuResults, MenuScreen};
 use super::play::PlayScreen;
 
 pub fn game() {
-  let stdin = io::stdin().lock().keys();
-  let stdout = io::stdout().lock().into_raw_mode().unwrap();
-  let mut gio = GameIO::new(stdin, stdout);
+  let gin = io::stdin().lock().keys();
+  let gout = io::stdout().lock().into_raw_mode().unwrap();
+  let mut gio = GameIO::new(gin, gout);
   let cfg = Config::load();
 
   let mut cont = true;

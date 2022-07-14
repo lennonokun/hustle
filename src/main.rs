@@ -1,4 +1,5 @@
 #![allow(unused)]
+#![feature(let_chains)]
 use clap::{Parser, Subcommand};
 use rand::Rng;
 use rayon::prelude::*;

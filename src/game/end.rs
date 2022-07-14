@@ -10,6 +10,7 @@ use crate::ds::*;
 
 pub struct EndScreen<'a, 'b> {
   gio: &'a mut GameIO<'b>,
+  cfg: &'a Config,
   results: PlayResults,
 }
 
@@ -23,7 +24,7 @@ pub struct EndResults {
 
 impl<'a, 'b> EndScreen<'a, 'b> {
   pub fn new(gio: &'a mut GameIO<'b>, cfg: &'a Config, results: PlayResults) -> Self {
-    Self { gio, results }
+    Self { gio, cfg, results }
   }
 
   pub fn run(&mut self) -> EndResults {

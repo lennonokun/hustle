@@ -1,42 +1,65 @@
 use termion::color;
 
+use super::gameio::GameIO;
+use super::play::PlayScreen;
 use super::config::Config;
 use crate::ds::*;
 
 #[derive(Debug)]
 pub struct FeedbackCol {
-  pub ans: Word,
-  pub rows: Vec<String>,
+  pub aw: Word,
+  pub feedbacks: Vec<Feedback>,
+  pub guesses: Vec<Word>,
   pub wlen: u8,
   pub done: bool,
 }
 
+fn fb_color_index(fb: &Feedback, i: usize) -> usize {
+  if fb.get_g(i as u8) {
+    2
+  } else if fb.get_y(i as u8) {
+    1
+  } else {
+    0
+  }
+}
+
 impl FeedbackCol {
-  pub fn new(ans: Word) -> Self {
+  /// create new feedback col with answer aw
+  pub fn new(aw: Word) -> Self {
     Self {
-      ans,
-      rows: Vec::<String>::new(),
-      wlen: ans.wlen,
+      aw,
+      feedbacks: Vec::<Feedback>::new(),
+      guesses: Vec::<Word>::new(),
+      wlen: aw.wlen,
       done: false,
     }
   }
 
-  // returns if newly finished
-  pub fn guess(&mut self, gw: Word, cfg: &Config) -> bool {
-    if self.done || self.wlen != gw.wlen {
+  /// guess and return if newly done
+  pub fn guess(&mut self, gw: Word) -> bool {
+    if self.done || gw.wlen != self.aw.wlen {
       return false;
     }
-    let fb = Feedback::from(gw, self.ans).unwrap();
-    let mut s = String::new();
-    for i in 0..self.wlen {
-      let fg = cfg.fb_fg;
-      let bg = cfg.fb_bgs[if fb.get_g(i) {2} else if fb.get_y(i) {1} else {0}];
-      s += &format!("{}{}", fg.fg_string(), bg.bg_string());
-      s.push((gw.data[i as usize] + b'A') as char);
-    }
-    s += &format!("{}{}", color::Reset.fg_str(), color::Reset.bg_str());
-    self.rows.push(s);
-    self.done = gw == self.ans;
+    let fb = Feedback::from(gw, self.aw).unwrap();
+    self.guesses.push(gw);
+    self.feedbacks.push(fb);
+    self.done = fb.is_correct();
     self.done
+  }
+
+  /// get display string for row i or None
+  pub fn get(&self, i: usize, cfg: &Config) -> Option<String> {
+    let gw = self.guesses.get(i)?;
+    let fb = self.feedbacks.get(i)?;
+    let mut out = cfg.fb_fg.fg_string();
+    for j in 0..self.wlen as usize {
+      let idx = fb_color_index(fb, j);
+      out.push_str(cfg.fb_bgs[idx].bg_string().as_str());
+      out.push(gw.get(j)?);
+    }
+    out.push_str(color::Reset.fg_str());
+    out.push_str(color::Reset.bg_str());
+    Some(out)
   }
 }

@@ -40,7 +40,7 @@ pub struct MenuResults {
 
 pub struct MenuScreen<'a, 'b> {
   gio: &'a mut GameIO<'b>,
-  cfg: &'a Config
+  cfg: &'a Config,
 }
 
 impl<'a, 'b> MenuScreen<'a, 'b> {

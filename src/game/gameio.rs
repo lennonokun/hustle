@@ -1,4 +1,4 @@
-use std::io::{StdinLock, StdoutLock, Write};
+use std::io::{self, StdinLock, StdoutLock, Write};
 
 use termion::event::Key;
 use termion::input::Keys;
@@ -31,27 +31,27 @@ const LCUT: &str = "├";
 
 macro_rules! wrt {
   ($gio: expr, $( $x: expr ),* ) => {
-    $(write!(($gio).stdout, "{}", $x));*
+    $(write!(($gio).gout, "{}", $x));*
   }
 }
 
 macro_rules! wrta {
   ($gio: expr, $x: expr, $y: expr, $( $s: expr ),* ) => {
-    write!(($gio).stdout, "{}", cursor::Goto($x, $y));
-    $(write!(($gio).stdout, "{}", $s));*
+    write!(($gio).gout, "{}", cursor::Goto($x, $y));
+    $(write!(($gio).gout, "{}", $s));*
   }
 }
 
 macro_rules! wrtf {
   ($gio: expr, $fmt: expr, $($arg: expr ),*) => {
-    {write!(($gio).stdout, $fmt, $($arg),*);}
+    {write!(($gio).gout, $fmt, $($arg),*);}
   }
 }
 
 macro_rules! wrtaf {
   ($gio: expr, $x: expr, $y: expr, $fmt: expr, $($arg: expr ),* ) => {
-    write!(($gio).stdout, "{}", cursor::Goto($x, $y));
-    write!(($gio).stdout, $fmt, $($arg),*);
+    write!(($gio).gout, "{}", cursor::Goto($x, $y));
+    write!(($gio).gout, $fmt, $($arg),*);
   }
 }
 
@@ -60,21 +60,21 @@ type GameOut<'a> = RawTerminal<StdoutLock<'a>>;
 
 /// game input and output handler
 pub struct GameIO<'a> {
-  pub stdin: Keys<StdinLock<'a>>,
-  pub stdout: RawTerminal<StdoutLock<'a>>,
+  pub gin: GameIn<'a>,
+  pub gout: GameOut<'a>,
   pub width: u16,
   pub height: u16,
 }
 
 impl<'a> GameIO<'a> {
   /// construct new GameIO with specified input and output
-  pub fn new(stdin: GameIn<'a>, stdout: GameOut<'a>) -> Self {
+  pub fn new(gin: GameIn<'a>, gout: GameOut<'a>) -> Self {
     let termsz = terminal_size().ok();
     let width = termsz.map(|sz| sz.0).unwrap();
     let height = termsz.map(|sz| sz.1).unwrap();
     Self {
-      stdin,
-      stdout,
+      gin,
+      gout,
       width,
       height,
     }
@@ -90,19 +90,19 @@ impl<'a> GameIO<'a> {
     return false;
   }
 
-  /// read single key from stdin
+  /// read single key from gin
   pub fn read(&mut self) -> Key {
-    self.stdin.next().unwrap().unwrap()
+    self.gin.next().unwrap().unwrap()
   }
 
   pub fn read_at(&mut self, x: u16, y: u16) -> Key {
     wrt!(self, cursor::Goto(x, y));
-    self.stdin.next().unwrap().unwrap()
+    self.gin.next().unwrap().unwrap()
   }
 
   /// flush output
   pub fn flush(&mut self) {
-    self.stdout.flush();
+    self.gout.flush();
   }
 
   /// draws the empty base
