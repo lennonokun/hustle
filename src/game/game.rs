@@ -1,48 +1,20 @@
-use std::io;
-use std::env;
-use std::path::{Path, PathBuf};
+use cursive::Cursive;
+use cursive::view::Nameable;
+use cursive::views::*;
+use cursive::theme::{Color, BaseColor, ColorStyle, Effect};
+use cursive::traits::*;
+use cursive::event::{Event, EventResult, Key};
+use cursive::direction::Direction;
+use cursive::{Printer, Vec2};
+use cursive::view::CannotFocus;
 
-use termion::input::TermRead;
-use termion::raw::IntoRawMode;
-
+use crate::ds::*;
 use super::config::Config;
-use super::end::EndScreen;
-use super::gameio::GameIO;
-use super::menu::{MenuResults, MenuScreen};
-use super::play::PlayScreen;
+use super::gameview::GameView;
 
-pub fn game() {
-  let gin = io::stdin().lock().keys();
-  let gout = io::stdout().lock().into_raw_mode().unwrap();
-  let mut gio = GameIO::new(gin, gout);
-  let cfg = Config::load();
+pub fn game_open(s: &mut Cursive, wbp: String, wlen: u8, nwords: usize) {
+  let wbp = "/usr/share/hustle/bank1.csv"; // TODO for now
+  let mut fbview = GameView::new(wbp, wlen, nwords);
 
-  let mut cont = true;
-  let mut screen = "menu";
-  let mut m_results = MenuResults::default();
-
-  while cont {
-    if screen == "menu" {
-      let menu = MenuScreen::new(&mut gio, &cfg);
-      m_results = menu.run();
-      cont = !m_results.quit;
-      screen = "play";
-    } else if screen == "play" {
-      let mut play = PlayScreen::new(&mut gio, &cfg, m_results.bank, m_results.wlen, m_results.nwords);
-      let p_results = play.run();
-
-      let mut end = EndScreen::new(&mut gio, &cfg, p_results);
-      let e_results = end.run();
-
-      if e_results.quit {
-        cont = false;
-      } else if e_results.restart {
-        screen = "play";
-      } else if e_results.menu {
-        screen = "menu";
-      }
-    }
-  }
-
-  gio.clear();
+  s.add_fullscreen_layer(fbview);
 }

@@ -14,7 +14,7 @@ use crate::solve::{Cache, SData, HData, State};
 mod ds;
 use crate::ds::*;
 mod game;
-use crate::game::game;
+use crate::game::play;
 
 #[derive(Parser)]
 #[clap(version, about)]
@@ -106,7 +106,7 @@ fn main() {
 
   match cli.command {
     Commands::Play {} => {
-      game();
+      play();
     }
     Commands::Solve {
       gamestate,

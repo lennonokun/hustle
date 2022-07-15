@@ -1,10 +1,8 @@
 #[macro_use]
-mod gameio;
-mod end;
-mod fbcol;
 mod config;
 mod game;
+mod gameview;
 mod menu;
 mod play;
 
-pub use self::game::game;
+pub use self::play::play;

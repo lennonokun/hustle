@@ -1,158 +1,56 @@
-use std::io::Write;
+use cursive::Cursive;
+use cursive::views::*;
+use cursive::traits::*;
+use cursive::event::{Event, Key};
 
-use termion::cursor;
-use termion::event::Key;
-
+use super::game::game_open;
 use super::config::Config;
-use super::gameio::GameIO;
-use crate::ds::{MAXWLEN, MINWLEN};
 
-const MENUWIDTH: u16 = 25;
-const MENUHEIGHT: u16 = 9;
-const MENUSTARX: [u16; 3] = [2, 2, 2];
-const MENUSTARY: [u16; 3] = [4, 5, 6];
-const MENUENTX: [u16; 3] = [12, 12, 12];
-const MENUENTY: [u16; 3] = [4, 5, 6];
-const MENUSCREEN: [&str; MENUHEIGHT as usize] = [
-  "┌────────────────────────┐",
-  "│                        │",
-  "│         HUSTLE         │",
-  "│                        │",
-  "│   nwords:              │",
-  "│     wlen: 5            │",
-  "│     bank: < bank1 >    │",
-  "│                        │",
-  "└────────────────────────┘",
-];
+pub fn menu_open(s: &mut Cursive) {
+  let menu_input = LinearLayout::vertical()
+    .child(PaddedView::lrtb(0,0,1,1, TextView::new("HUSTLE").center()))
+    .child(LinearLayout::horizontal()
+           .child(TextView::new("nwords")
+                  .fixed_width(10))
+           .child(EditView::new()
+                  .with_name("nwords")
+                  .fixed_width(10)))
+    .child(LinearLayout::horizontal()
+           .child(TextView::new("wlen")
+                  .fixed_width(10))
+           .child(EditView::new()
+                  .with_name("wlen")
+                  .fixed_width(10)))
+    .child(LinearLayout::horizontal()
+           .child(TextView::new("wbank")
+                  .fixed_width(10))
+           .child(EditView::new()
+                  .with_name("wbank")
+                  .fixed_width(10)));
 
-const NBANKS: usize = 2;
-const MAXNWORDS: u16 = 2000;
-const WBPREVIEW: [&str; NBANKS] = ["< bank1 >", "< bank2 >"];
-const WBPATHS: [&str; NBANKS] = ["/usr/share/hustle/bank1.csv", "/usr/share/hustle/bank2.csv"];
+  let menu = Dialog::around(menu_input)
+    .title("Menu")
+    .button("Ok", menu_submit);
 
-#[derive(Clone, Copy, Default)]
-pub struct MenuResults {
-  pub quit: bool,
-  pub nwords: u16,
-  pub wlen: u8,
-  pub bank: &'static str,
+  s.add_layer(menu);
+  s.add_global_callback(Key::Enter, menu_submit);
 }
 
-pub struct MenuScreen<'a, 'b> {
-  gio: &'a mut GameIO<'b>,
-  cfg: &'a Config,
-}
-
-impl<'a, 'b> MenuScreen<'a, 'b> {
-  pub fn new(gio: &'a mut GameIO<'b>, cfg: &'a Config) -> Self {
-    Self { gio, cfg }
-  }
-
-  pub fn run(self) -> MenuResults {
-    let x0 = (self.gio.width - MENUWIDTH) / 2 + 1;
-    let y0 = (self.gio.height - MENUHEIGHT) / 2 + 1;
-
-    self.gio.empty();
-    self.gio.rect(x0, y0, MENUWIDTH, MENUHEIGHT);
-    for i in 0..MENUHEIGHT {
-      wrta!(self.gio, x0, y0 + i, MENUSCREEN[i as usize]);
-    }
-    self.gio.flush();
-
-    let mut cont = true;
-    let mut quit = false;
-
-    let mut i = 0usize;
-    let mut s_nwords = String::new();
-    let mut nwords: Option<u16> = None;
-    let mut s_wlen = String::from("5");
-    let mut wlen: Option<u8> = None;
-    let mut j_bank: usize = 0;
-    let mut bank: Option<&str> = None;
-
-    while cont {
-      let entx = x0 + MENUENTX[i];
-      let enty = y0 + MENUENTY[i];
-      let starx = x0 + MENUSTARX[i];
-      let stary = y0 + MENUSTARY[i];
-      wrt!(self.gio, cursor::Goto(starx, stary), "*");
-      self.gio.flush();
-      match self.gio.read() {
-        Key::Char('\n') => {
-          // stop if valid
-          nwords = s_nwords.parse().ok();
-          wlen = s_wlen.parse().ok();
-          bank = Some(WBPATHS[j_bank]);
-          if let (Some(nwords), Some(wlen), Some(_bank)) = (nwords, wlen, bank) {
-            cont = !((1..=MAXNWORDS).contains(&nwords)
-              && (MINWLEN..=MAXWLEN).contains(&(wlen as usize)));
-          }
-        }
-        Key::Up | Key::BackTab => {
-          wrta!(self.gio, starx, stary, " ");
-          i = (i + 2) % 3;
-        }
-        Key::Down | Key::Char('\t') => {
-          wrta!(self.gio, starx, stary, " ");
-          i = (i + 1) % 3;
-        }
-        Key::Left => {
-          if i == 2 {
-            j_bank = (j_bank - 1) % 2;
-            wrta!(self.gio, entx, enty, WBPREVIEW[j_bank]);
-            self.gio.flush();
-          }
-        }
-        Key::Right => {
-          if i == 2 {
-            j_bank = (j_bank + 1) % 2;
-            wrta!(self.gio, entx, enty, WBPREVIEW[j_bank]);
-            self.gio.flush();
-          }
-        }
-        Key::Backspace => {
-          if i < 2 {
-            // pop character
-            let s = if i == 0 { &mut s_nwords } else { &mut s_wlen };
-            s.pop();
-            wrta!(self.gio, entx + s.len() as u16, enty, " ");
-            self.gio.flush();
-          }
-        }
-        Key::Esc => {
-          cont = false;
-          quit = true;
-        }
-        Key::Char(c) => {
-          if i < 2 && '0' <= c && c <= '9' {
-            // push character
-            let s = if i == 0 { &mut s_nwords } else { &mut s_wlen };
-            wrta!(self.gio, entx + s.len() as u16, enty, c);
-            self.gio.flush();
-            s.push(c);
-          }
-        }
-        _ => {}
-      }
-    }
-
-    if quit {
-      MenuResults {
-        quit,
-        nwords: 0,
-        wlen: 0,
-        bank: "",
-      }
-    } else {
-      let nwords = nwords.unwrap();
-      let wlen = wlen.unwrap();
-      let bank = bank.unwrap();
-      MenuResults {
-        quit,
-        nwords,
-        wlen,
-        bank,
-      }
-    }
+fn menu_submit(s: &mut Cursive) {
+  let nwords = s.call_on_name(
+    "nwords",
+    |view: &mut EditView| view.get_content())
+    .and_then(|a| a.parse::<usize>().ok());
+  let wlen = s.call_on_name(
+    "wlen",
+    |view: &mut EditView| view.get_content())
+    .and_then(|a| a.parse::<u8>().ok());
+  let wbank = s.call_on_name(
+    "wbank",
+    |view: &mut EditView| view.get_content());
+  if let (Some(nwords), Some(wlen), Some(wbank)) = (nwords, wlen, wbank) {
+    s.pop_layer();
+    game_open(s, wbank.to_string(), wlen, nwords);
   }
 }
+
