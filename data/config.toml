@@ -13,3 +13,8 @@ impossible_fg = 0xdc322f
 # "remove": remove column
 # "gray": gray out
 finished = "remove"
+
+# word bank paths
+[word_banks]
+standard = "/usr/share/hustle/bank1.csv"
+hellowordl = "/usr/share/hustle/bank2.csv"

@@ -4,9 +4,15 @@ use cursive::traits::*;
 use cursive::event::{Event, Key};
 
 use super::game::game_open;
-use super::config::Config;
+use super::config::CONFIG;
+use super::hselectview::HSelectView;
 
 pub fn menu_open(s: &mut Cursive) {
+  let mut bank_select = HSelectView::new();
+  for (k,v) in CONFIG.wbps.iter() {
+    bank_select.add_item(k.to_string(), v.to_string());
+  }
+
   let menu_input = LinearLayout::vertical()
     .child(PaddedView::lrtb(0,0,1,1, TextView::new("HUSTLE").center()))
     .child(LinearLayout::horizontal()
@@ -24,7 +30,7 @@ pub fn menu_open(s: &mut Cursive) {
     .child(LinearLayout::horizontal()
            .child(TextView::new("wbank")
                   .fixed_width(10))
-           .child(EditView::new()
+           .child(bank_select
                   .with_name("wbank")
                   .fixed_width(10)));
 
@@ -45,12 +51,13 @@ fn menu_submit(s: &mut Cursive) {
     "wlen",
     |view: &mut EditView| view.get_content())
     .and_then(|a| a.parse::<u8>().ok());
-  let wbank = s.call_on_name(
+  let wbn = s.call_on_name(
     "wbank",
-    |view: &mut EditView| view.get_content());
-  if let (Some(nwords), Some(wlen), Some(wbank)) = (nwords, wlen, wbank) {
+    |view: &mut HSelectView<String>| view.selected_label());
+
+  if let (Some(nwords), Some(wlen), Some(Some(wbn))) = (nwords, wlen, wbn) {
     s.pop_layer();
-    game_open(s, wbank.to_string(), wlen, nwords);
+    game_open(s, &wbn, wlen, nwords);
   }
 }
 

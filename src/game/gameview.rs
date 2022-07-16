@@ -13,7 +13,7 @@ use cursive::{Printer, Vec2};
 use cursive::view::CannotFocus;
 
 use crate::ds::*;
-use super::config::Config;
+use super::config::CONFIG;
 use super::menu::menu_open;
 
 // TODO how should scrolling and resizing work?
@@ -26,27 +26,6 @@ enum State {
 struct FbCol {
   ans: Word,
   done: bool,
-}
-
-pub struct GameView {
-  wbp: &'static str,
-  nwords: usize,
-  wlen: u8,
-  gwb: WBank,
-  awb: WBank,
-  fbcols: Vec<FbCol>,
-  guesses: Vec<Word>,
-  answers: Vec<Word>,
-  state: State,
-  inst: Instant,
-  time: Duration,
-  nrows: usize,
-  ncols: usize,
-  guessbuf: String,
-  ndone: usize,
-  turn: usize,
-  last_size: Vec2,
-  scroll: usize,
 }
 
 impl FbCol {
@@ -70,12 +49,36 @@ impl FbCol {
   }
 }
 
+pub struct GameView {
+  wbn: String,
+  wbp: String,
+  nwords: usize,
+  wlen: u8,
+  gwb: WBank,
+  awb: WBank,
+  fbcols: Vec<FbCol>,
+  guesses: Vec<Word>,
+  answers: Vec<Word>,
+  state: State,
+  inst: Instant,
+  time: Duration,
+  nrows: usize,
+  ncols: usize,
+  guessbuf: String,
+  ndone: usize,
+  turn: usize,
+  last_size: Vec2,
+  scroll: usize,
+}
+
 impl GameView {
   /// create new feedback col with answer aw
-  pub fn new(wbp: &'static str, wlen: u8, nwords: usize) -> Self {
+  pub fn new(wbn: &String, wlen: u8, nwords: usize) -> Self {
+    let wbp = CONFIG.wbps.get(wbn).unwrap();
     let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
     let mut out = Self {
-      wbp,
+      wbn: wbn.clone(),
+      wbp: wbp.clone(),
       nwords,
       wlen,
       gwb,
@@ -194,9 +197,9 @@ impl GameView {
 
     printer.print((1,1), "Results:");
     printer.print((1,2), &format!(
-        "{} {} with wlen={}, nwords={}",
+        "{} on \"{}\" with wlen={}, nwords={}",
         s_result,
-        self.wbp,
+        self.wbn,
         self.wlen,
         self.nwords));
     
@@ -279,7 +282,7 @@ impl View for GameView {
         } else if c == 'r' {
           self.start();
         } else if c == 's' {
-          return EventResult::with_cb(|s| {s.pop_layer(); menu_open(s);})
+          return EventResult::with_cb(|s| {s.pop_layer(); menu_open(s)})
         } else {
           return EventResult::Ignored;
         } _ => {

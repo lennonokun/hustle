@@ -14,8 +14,9 @@ use cursive::theme::Color::*;
 use cursive::theme::BaseColor::*;
 use cursive::theme::{Theme, Palette, BorderStyle};
 
-use super::config::Config;
 use super::menu::menu_open;
+
+// TODO screens? 
 
 pub fn play() {
   let mut siv = cursive::default();

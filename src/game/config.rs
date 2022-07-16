@@ -1,6 +1,8 @@
 #![feature(struct_field_attributes)]
 
+use lazy_static::lazy_static;
 use std::fs::File;
+use std::collections::HashMap;
 use std::io::{self, Read};
 use std::error::Error;
 use std::path::{Path, PathBuf};
@@ -9,6 +11,10 @@ use std::env;
 use termion::color::Rgb;
 use serde::Deserialize;
 use toml;
+
+lazy_static! {
+  pub static ref CONFIG: Config = {Config::load()};
+}
 
 macro_rules! config {
   ($($id1: ident, $ty1: ty, $id2: ident, $ty2: ty, $f: expr);*$(;)?) => {
@@ -26,7 +32,7 @@ macro_rules! config {
       }
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone)]
     pub struct Config { $(pub $id2: $ty2),* }
 
     impl Config {
@@ -40,8 +46,6 @@ macro_rules! config {
       pub fn from2(p1: &Path, p2: &Path) -> io::Result<Self> {
         let ct1 = ConfigTomlLoader::load(p1)?;
         let ct2 = ConfigTomlLoader::load(p2)?;
-        println!("{:?}", ct1);
-        println!("{:?}", ct1);
         Ok(Self { $($id2: $f(ct2.$id1.or(ct1.$id1).unwrap())),* })
       }
     }
@@ -63,6 +67,7 @@ config! {
   };
   impossible_fg, u32, imp_fg, Rgb, parse_rgb;
   finished, String, finished, String, |s| s;
+  word_banks, HashMap<String, String>, wbps, HashMap<String, String>, |m| m;
 }
 
 impl Config {

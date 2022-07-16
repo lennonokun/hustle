@@ -86,14 +86,13 @@ Run hustle --help for more information.
     (beta pruning is mostly single-threaded though)
   - look at flame graphs, etc
 ### Game
-* swap Game and Play?
-* see how vim clears without leaving weird history
-* is wrt! slow?
-* better resizing
-* make prompt trait + macro like clap
 * dictionary capabilities
 * keep statistics and track pb's
 * adjust layout for overflow
+* add unknowns again
+* make cut between status and main
+* improve HSelectView
+* make config work again
 * show known letters
   - display list below each column?
   - is this cheating?

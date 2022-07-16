@@ -299,7 +299,8 @@ mod test {
     assert_eq!(state2, state3);
   }
 
-  #[test]
+  // takes a while
+  // #[test]
   fn simple_solve() {
     let mut sd = SData::new2(15);
     let state1 = State::new3();

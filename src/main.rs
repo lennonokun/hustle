@@ -1,5 +1,8 @@
 #![allow(unused)]
 #![feature(let_chains)]
+
+extern crate lazy_static;
+
 use clap::{Parser, Subcommand};
 use rand::Rng;
 use rayon::prelude::*;
