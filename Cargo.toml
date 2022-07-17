@@ -20,7 +20,7 @@ opt-level = 3
 [dependencies]
 rayon = "1.5.3"
 rand = "0.8.5"
-cursive = "0.18"
+cursive = {version="0.18", features=["termion-backend"]}
 clap = {version="3.2.7", features=["derive"]}
 serde = {version="1.0.139", features=["derive"]}
 lazy_static = "1.4.0"
