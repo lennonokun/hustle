@@ -25,7 +25,7 @@ clap = {version="3.2.7", features=["derive"]}
 serde = {version="1.0.139", features=["derive"]}
 toml = "0.5.3"
 lazy_static = "1.4.0"
-toml_loader = { version = "0.1.0", path = "toml_loader" }
+config = "0.13.1"
 # log = "0.4"
 
 [[bin]]
