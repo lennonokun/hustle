@@ -32,7 +32,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "toml-loader"
+name = "toml_loader"
 version = "0.1.0"
 dependencies = [
  "proc-macro2",
