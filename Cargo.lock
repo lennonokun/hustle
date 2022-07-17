@@ -405,7 +405,6 @@ dependencies = [
  "rand",
  "rayon",
  "serde",
- "toml",
 ]
 
 [[package]]
