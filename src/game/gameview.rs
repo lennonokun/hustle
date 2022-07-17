@@ -129,10 +129,20 @@ impl GameView {
     self.turn += 1;
 
     // update done's and ndone
-    for mut fbcol in &mut self.fbcols {
+    let mut finished = None;
+    for (i, mut fbcol) in self.fbcols.iter_mut().enumerate() {
       if !fbcol.done && fbcol.ans == gw {
         fbcol.done = true;
         self.ndone += 1;
+        finished = Some(i);
+        break;
+      }
+    }
+
+    // remove if configured to do so
+    if CONFIG.column_finish == "remove" {
+      if let Some(finished) = finished {
+        self.fbcols.remove(finished);   
       }
     }
 

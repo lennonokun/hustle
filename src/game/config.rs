@@ -23,6 +23,7 @@ pub struct Config {
   pub feedback_correct_bg: Color,
   pub impossible_fg: Color,
   pub word_banks: IndexMap<String, String>,
+  pub column_finish: String,
 }
 
 // loader config
@@ -35,6 +36,7 @@ struct RawConfig {
   pub feedback_correct_bg: String,
   pub impossible_fg: String,
   pub word_banks: IndexMap<String, String>,
+  pub column_finish: String,
 }
 
 macro_rules! add_src {
@@ -67,6 +69,7 @@ impl Config {
       feedback_correct_bg: Color::parse(&rawcfg.feedback_correct_bg)?,
       impossible_fg: Color::parse(&rawcfg.impossible_fg)?,
       word_banks: rawcfg.word_banks,
+      column_finish: rawcfg.column_finish,
     })
   }
 }

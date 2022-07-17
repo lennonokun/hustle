@@ -12,7 +12,7 @@ impossible_fg = "#dc322f"
 # what to do with finished columns
 # "remove": remove column
 # "gray": gray out
-finished = "remove"
+column_finish = "remove"
 
 # word bank paths
 [word_banks]
