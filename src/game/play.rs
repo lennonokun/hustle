@@ -2,9 +2,6 @@ use std::io;
 use std::env;
 use std::path::{Path, PathBuf};
 
-use termion::input::TermRead;
-use termion::raw::IntoRawMode;
-
 use cursive::Cursive;
 use cursive::views::*;
 use cursive::traits::*;
