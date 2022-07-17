@@ -33,14 +33,14 @@ impl FbCol {
   fn draw_guess(&self, gw: Word, pos: Vec2, printer: &Printer) -> bool {
     let fb = Feedback::from(gw, self.ans).unwrap();
     for j in 0..gw.wlen {
-      let bg = Color::Dark(if fb.get_g(j) {
-        BaseColor::Green
+      let bg = if fb.get_g(j) {
+        CONFIG.feedback_correct_bg
       } else if fb.get_y(j) {
-        BaseColor::Yellow
+        CONFIG.feedback_present_bg
       } else {
-        BaseColor::Blue
-      });
-      let cs = ColorStyle::new(Color::Light(BaseColor::White), bg);
+        CONFIG.feedback_absent_bg
+      };
+      let cs = ColorStyle::new(CONFIG.feedback_fg, bg);
       printer.with_color(cs, |printer| {
         printer.print(pos+(j,0), &gw.get(j.into()).unwrap().to_string().as_str())
       });
@@ -74,7 +74,7 @@ pub struct GameView {
 impl GameView {
   /// create new feedback col with answer aw
   pub fn new(wbn: &String, wlen: u8, nwords: usize) -> Self {
-    let wbp = CONFIG.wbps.get(wbn).unwrap();
+    let wbp = CONFIG.word_banks.get(wbn).unwrap();
     let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
     let mut out = Self {
       wbn: wbn.clone(),
@@ -111,6 +111,7 @@ impl GameView {
     self.state = State::Play;
     self.inst = Instant::now();
     self.time = Duration::ZERO;
+    self.turn = 0;
   }
 
   /// guess word

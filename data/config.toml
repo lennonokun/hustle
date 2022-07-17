@@ -1,13 +1,13 @@
 # default hustle config
 
-# feedback foreground color
-feedback_fg = 0xffffff
-
-# feedback background colors for absent, present, correct, and done
-feedback_bgs = [0x268bd2, 0xb58900, 0x859900]
+# feedback colors
+feedback_fg = "#ffffff"
+feedback_absent_bg = "#268bd2"
+feedback_present_bg = "#b58900"
+feedback_correct_bg = "#859900"
 
 # impossible solve foreground color
-impossible_fg = 0xdc322f
+impossible_fg = "#dc322f"
 
 # what to do with finished columns
 # "remove": remove column

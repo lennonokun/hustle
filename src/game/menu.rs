@@ -9,7 +9,7 @@ use super::hselectview::HSelectView;
 
 pub fn menu_open(s: &mut Cursive) {
   let mut bank_select = HSelectView::new();
-  for (k,v) in CONFIG.wbps.iter() {
+  for (k,v) in CONFIG.word_banks.iter() {
     bank_select.add_item(k.to_string(), v.to_string());
   }
 
