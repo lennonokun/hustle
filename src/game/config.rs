@@ -16,8 +16,6 @@ lazy_static! {
   pub static ref CONFIG: Config = {Config::find()};
 }
 
-// TODO REMEMBER TO FLIP ORDER OF P1/P2 after migrating to macro
-
 pub trait Loadable {
   fn load(vec: Vec<&Path>) -> Option<Self> where Self: Sized;
 }
@@ -68,17 +66,5 @@ mod test {
   pub fn default_config() {
     let cfg = Config::load(vec![Path::new("/usr/share/hustle/config.toml")]);
     assert!(cfg.is_some());
-  }
-
-  #[test]
-  pub fn test_config2() {
-    let cfg = Config::load(
-      vec![
-      Path::new("/home/lokun/.config/hustle/config.toml"),
-      Path::new("/usr/share/hustle/config.toml"),
-      ]
-    );
-    println!("{:?}", cfg);
-    assert!(false);
   }
 }
