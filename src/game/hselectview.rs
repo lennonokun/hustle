@@ -1,5 +1,6 @@
 use std::fmt::Display;
 use std::rc::Rc;
+use std::cmp;
 
 use cursive::Cursive;
 use cursive::view::Nameable;
@@ -30,6 +31,7 @@ impl<T> Item<T> {
 pub struct HSelectView<T> {
   items: Vec<Item<T>>,
   index: usize, 
+  last_size: Vec2,
 }
 
 impl<T> HSelectView<T> {
@@ -37,6 +39,7 @@ impl<T> HSelectView<T> {
     Self {
       items: Vec::new(),
       index: 0,
+      last_size: Vec2::zero(),
     }
   }
 
@@ -57,10 +60,18 @@ impl<T> HSelectView<T> {
 
 impl<T: 'static> View for HSelectView<T> {
   // TODO add needs redraw
+  
+  fn layout(&mut self, size: Vec2) {
+    self.last_size = size;
+  }
 
   fn draw(&self, printer: &Printer) {
     if let Some(label) = self.selected_label() {
-      printer.print((0,0), &label);
+      let x = self.last_size.x;
+      let s = &label[..cmp::min(x-4, label.len())];
+      printer.print((0,0), "< ");
+      printer.print((2,0), s);
+      printer.print((x-2,0), " >");
     }
   }
 

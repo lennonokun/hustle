@@ -20,19 +20,19 @@ pub fn menu_open(s: &mut Cursive) {
                   .fixed_width(10))
            .child(EditView::new()
                   .with_name("nwords")
-                  .fixed_width(10)))
+                  .fixed_width(15)))
     .child(LinearLayout::horizontal()
            .child(TextView::new("wlen")
                   .fixed_width(10))
            .child(EditView::new()
                   .with_name("wlen")
-                  .fixed_width(10)))
+                  .fixed_width(15)))
     .child(LinearLayout::horizontal()
            .child(TextView::new("wbank")
                   .fixed_width(10))
            .child(bank_select
                   .with_name("wbank")
-                  .fixed_width(10)));
+                  .fixed_width(15)));
 
   let menu = Dialog::around(menu_input)
     .title("Menu")
