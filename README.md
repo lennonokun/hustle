@@ -91,7 +91,7 @@ Run hustle --help for more information.
 * adjust layout for overflow
 * add unknowns again
 * make cut between status and main
-* improve HSelectView
+* improve HSelectView (centering)
 * make config work again
 * show known letters
   - display list below each column?
