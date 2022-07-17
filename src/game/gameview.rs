@@ -111,6 +111,7 @@ impl GameView {
     self.state = State::Play;
     self.inst = Instant::now();
     self.time = Duration::ZERO;
+    self.ndone = 0;
     self.turn = 0;
   }
 
