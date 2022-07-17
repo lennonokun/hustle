@@ -67,7 +67,7 @@ pub struct GameView {
   guessbuf: String,
   ndone: usize,
   turn: usize,
-  last_size: Vec2,
+  size: Vec2,
   scroll: usize,
 }
 
@@ -94,7 +94,7 @@ impl GameView {
       ncols: 0,
       ndone: 0,
       turn: 0,
-      last_size: Vec2::zero(),
+      size: Vec2::zero(),
       scroll: 0,
     };
     out.start();
@@ -170,7 +170,7 @@ impl GameView {
   }
 
   fn draw_main(&self, printer: &Printer) {
-    let maxrow = self.last_size.y - 5;
+    let maxrow = self.size.y - 5;
     for ncol in 0..self.ncols {
       let x = (self.wlen+1) as usize * ncol + 1;
       if let Some(fbc) = self.fbcols.get(self.scroll*self.ncols+ncol) {
@@ -218,7 +218,7 @@ impl GameView {
       printer.print((x,y), &aw.to_string());
     }
 
-    printer.print((1, self.last_size.y-2),
+    printer.print((1, self.size.y-2),
         "'r': restart, 's': settings, 'q'/Esc: quit");
   }
 }
@@ -227,14 +227,17 @@ impl View for GameView {
   // TODO add needs redraw
 
   fn layout(&mut self, size: Vec2) {
-    self.last_size = size;
+    self.size = size;
     self.ncols = (size.x-3) / (self.wlen as usize + 1);
     self.nrows = (self.nwords + self.ncols - 1) / self.ncols;
   }
 
   fn draw(&self, printer: &Printer) {
-    printer.print_box((0,0), self.last_size, false);
+    printer.print_box((0,0), self.size, false);
     if self.state == State::Play {
+      printer.print_hline((1,2), self.size.x-1, "─");
+      printer.print((0,2), "├");
+      printer.print((self.size.x-1,2), "┤");
       self.draw_status(printer);
       self.draw_main(printer);
     } else {
