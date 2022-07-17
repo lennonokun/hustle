@@ -1,12 +1,12 @@
 use config::{Config as ConfigMod, File};
 use lazy_static::lazy_static;
-use std::collections::HashMap;
 use std::io::{self, Read};
 use std::error::Error;
 use std::path::{Path, PathBuf};
 use std::env;
 use std::default::Default;
 
+use indexmap::IndexMap;
 use serde::Deserialize;
 use cursive::theme::Color;
 
@@ -22,7 +22,7 @@ pub struct Config {
   pub feedback_present_bg: Color,
   pub feedback_correct_bg: Color,
   pub impossible_fg: Color,
-  pub word_banks: HashMap<String, String>,
+  pub word_banks: IndexMap<String, String>,
 }
 
 // loader config
@@ -34,7 +34,7 @@ struct RawConfig {
   pub feedback_present_bg: String,
   pub feedback_correct_bg: String,
   pub impossible_fg: String,
-  pub word_banks: HashMap<String, String>,
+  pub word_banks: IndexMap<String, String>,
 }
 
 macro_rules! add_src {

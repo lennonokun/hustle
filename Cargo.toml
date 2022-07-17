@@ -24,7 +24,8 @@ cursive = "0.18"
 clap = {version="3.2.7", features=["derive"]}
 serde = {version="1.0.139", features=["derive"]}
 lazy_static = "1.4.0"
-config = "0.13.1"
+config = {version="0.13.1", features=["toml", "preserve_order"], default-features=false}
+indexmap = "1.9.1"
 # log = "0.4"
 
 [[bin]]
