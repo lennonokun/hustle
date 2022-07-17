@@ -303,7 +303,7 @@ dependencies = [
  "rayon",
  "serde",
  "toml",
- "toml-loader",
+ "toml_loader",
 ]
 
 [[package]]
@@ -700,7 +700,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "toml-loader"
+name = "toml_loader"
 version = "0.1.0"
 dependencies = [
  "proc-macro2",
