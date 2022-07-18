@@ -5,7 +5,7 @@ use std::cmp::min;
 use cursive::Cursive;
 use cursive::view::Nameable;
 use cursive::views::*;
-use cursive::theme::{Color, BaseColor, ColorStyle, Effect};
+use cursive::theme::{Color, BaseColor, ColorStyle, Effect, PaletteColor};
 use cursive::traits::*;
 use cursive::event::{Event, EventResult, Key};
 use cursive::direction::Direction;
@@ -34,13 +34,14 @@ impl FbCol {
     let fb = Feedback::from(gw, self.ans).unwrap();
     for j in 0..gw.wlen {
       let bg = if fb.get_g(j) {
-        CONFIG.feedback_correct_bg
+        CONFIG.palette.custom("feedback_correct_bg").unwrap()
       } else if fb.get_y(j) {
-        CONFIG.feedback_present_bg
+        CONFIG.palette.custom("feedback_present_bg").unwrap()
       } else {
-        CONFIG.feedback_absent_bg
+        CONFIG.palette.custom("feedback_absent_bg").unwrap()
       };
-      let cs = ColorStyle::new(CONFIG.feedback_fg, bg);
+      let fg = CONFIG.palette.custom("feedback_fg").unwrap();
+      let cs = ColorStyle::new(*fg, *bg);
       printer.with_color(cs, |printer| {
         printer.print(pos+(j,0), &gw.get(j.into()).unwrap().to_string().as_str())
       });
@@ -176,7 +177,17 @@ impl GameView {
       self.nrows,
       time,
     );
-    printer.print((1,1), &s);
+
+    let cs = if delta < 0 {
+      let fg = CONFIG.palette.custom("impossible_fg").unwrap();
+      let bg = CONFIG.palette[PaletteColor::Tertiary];
+      ColorStyle::new(*fg, bg)
+    } else {
+      ColorStyle::primary()
+    };
+    printer.with_style(cs, |printer| {
+      printer.print((1,1), &s);
+    });
   }
 
   fn draw_main(&self, printer: &Printer) {
@@ -259,7 +270,6 @@ impl View for GameView {
 
   fn on_event(&mut self, event: Event) -> EventResult {
     if self.state == State::Play {
-      eprintln!("{:?}", event);
       match event {
         Event::Char(c) => if is_alpha(c) {
           self.guessbuf.push(upper(c));

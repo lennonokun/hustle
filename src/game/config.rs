@@ -8,7 +8,7 @@ use std::default::Default;
 
 use indexmap::IndexMap;
 use serde::Deserialize;
-use cursive::theme::Color;
+use cursive::theme::{Color, Palette};
 
 lazy_static! {
   // find config on start up
@@ -16,12 +16,7 @@ lazy_static! {
 }
 
 pub struct Config {
-  // pub feedback_theme: FeedbackTheme,
-  pub feedback_fg: Color,
-  pub feedback_absent_bg: Color,
-  pub feedback_present_bg: Color,
-  pub feedback_correct_bg: Color,
-  pub impossible_fg: Color,
+  pub palette: Palette,
   pub word_banks: IndexMap<String, String>,
   pub column_finish: String,
 }
@@ -29,7 +24,6 @@ pub struct Config {
 // loader config
 #[derive(Deserialize)]
 struct RawConfig {
-  // pub feedback_theme: Option<LFeedbackTheme>,
   pub feedback_fg: String,
   pub feedback_absent_bg: String,
   pub feedback_present_bg: String,
@@ -47,6 +41,12 @@ macro_rules! add_src {
   };
 }
 
+macro_rules! set_color {
+  ($palette: expr, $rawcfg: expr, $field: ident) => {
+    $palette.set_color(stringify!($field), Color::parse(&($rawcfg.$field))?)
+  }
+}
+
 impl Config {
   pub fn find() -> Option<Self> {
     // default < home < xdg
@@ -62,12 +62,20 @@ impl Config {
       .build().expect("couldn't build config")
       .try_deserialize().ok()?;
 
+    Self::process(rawcfg)
+  }
+
+  fn process(rawcfg: RawConfig) -> Option<Self> {
+    // todo add namespaces
+    let mut palette = Palette::default();
+    set_color!(palette, rawcfg, feedback_fg);
+    set_color!(palette, rawcfg, feedback_present_bg);
+    set_color!(palette, rawcfg, feedback_absent_bg);
+    set_color!(palette, rawcfg, feedback_correct_bg);
+    set_color!(palette, rawcfg, impossible_fg);
+
     Some(Config {
-      feedback_fg: Color::parse(&rawcfg.feedback_fg)?,
-      feedback_absent_bg: Color::parse(&rawcfg.feedback_absent_bg)?,
-      feedback_present_bg: Color::parse(&rawcfg.feedback_present_bg)?,
-      feedback_correct_bg: Color::parse(&rawcfg.feedback_correct_bg)?,
-      impossible_fg: Color::parse(&rawcfg.impossible_fg)?,
+      palette,
       word_banks: rawcfg.word_banks,
       column_finish: rawcfg.column_finish,
     })
