@@ -4,14 +4,14 @@
 # impossible solve foreground color
 impossible_fg = "#dc322f"
 
-[theme.feedback.unsolved]
+[theme.feedback.saturated]
 # theme for unsolved feedback
 fg = "#f1f7ed"
 absent_bg = "#2892D7"
 present_bg = "#f79824"
 correct_bg = "#679436"
 
-[theme.feedback.solved]
+[theme.feedback.desaturated]
 # theme for solved feedback
 fg = "#f2f4f0"
 absent_bg = "#5d88a3"
@@ -24,6 +24,7 @@ correct_bg = "#667852"
 # "leave": leave column
 # "replace": TODO replace with another unsolved column
 column_finish = "remove"
+column_desaturate = true
 
 # word bank paths
 [word_banks]

@@ -33,7 +33,17 @@ impl FbCol {
   fn draw_guess(&self, gw: Word, pos: Vec2, printer: &Printer) -> bool {
     let fb = Feedback::from(gw, self.ans).unwrap();
     for j in 0..gw.wlen {
-      let cs = if self.done {
+      let cs = if self.done && CONFIG.column_desaturate {
+        let fg = CONFIG.color("dfb_fg");
+        let bg = CONFIG.color(if fb.get_g(j) {
+          "dfb_cbg"
+        } else if fb.get_y(j) {
+          "dfb_pbg"
+        } else {
+          "dfb_abg"
+        });
+        ColorStyle::new(fg, bg)
+      } else {
         let fg = CONFIG.color("sfb_fg");
         let bg = CONFIG.color(if fb.get_g(j) {
           "sfb_cbg"
@@ -41,16 +51,6 @@ impl FbCol {
           "sfb_pbg"
         } else {
           "sfb_abg"
-        });
-        ColorStyle::new(fg, bg)
-      } else {
-        let fg = CONFIG.color("ufb_fg");
-        let bg = CONFIG.color(if fb.get_g(j) {
-          "ufb_cbg"
-        } else if fb.get_y(j) {
-          "ufb_pbg"
-        } else {
-          "ufb_abg"
         });
         ColorStyle::new(fg, bg)
       };

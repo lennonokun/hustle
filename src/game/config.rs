@@ -19,9 +19,9 @@ pub struct Config {
   pub palette: Palette,
   pub word_banks: IndexMap<String, String>,
   pub column_finish: String,
+  pub column_desaturate: bool,
 }
 
-// loader config
 #[derive(Debug, Deserialize)]
 struct RawConfig {
   pub theme: RawTheme,
@@ -42,8 +42,8 @@ struct RawStatusTheme {
 
 #[derive(Debug, Deserialize)]
 struct RawFbThemes {
-  unsolved: RawFbTheme,
-  solved: RawFbTheme,
+  desaturated: RawFbTheme,
+  saturated: RawFbTheme,
 }
 
 #[derive(Debug, Deserialize)]
@@ -57,6 +57,7 @@ struct RawFbTheme {
 #[derive(Debug, Deserialize)]
 struct RawBehavior {
   pub column_finish: String,
+  pub column_desaturate: bool,
 }
 
 macro_rules! add_src {
@@ -92,26 +93,26 @@ impl Config {
   fn process(rawcfg: RawConfig) -> Option<Self> {
     macro_rules! set_color {
       ($palette: expr, $name: expr, $string: expr) => {
-        $palette.set_color($name, Color::parse($string)?)
+        $palette.set_color($name, Color::parse(&$string)?)
       }
     }
-    // todo add namespaces
     let mut palette = Palette::default();
     let theme = rawcfg.theme;
-    set_color!(palette, "ufb_fg", &theme.feedback.unsolved.fg);
-    set_color!(palette, "ufb_abg", &theme.feedback.unsolved.absent_bg);
-    set_color!(palette, "ufb_pbg", &theme.feedback.unsolved.present_bg);
-    set_color!(palette, "ufb_cbg", &theme.feedback.unsolved.correct_bg);
-    set_color!(palette, "sfb_fg", &theme.feedback.solved.fg);
-    set_color!(palette, "sfb_abg", &theme.feedback.solved.absent_bg);
-    set_color!(palette, "sfb_pbg", &theme.feedback.solved.present_bg);
-    set_color!(palette, "sfb_cbg", &theme.feedback.solved.correct_bg);
-    set_color!(palette, "stat_imp_fg", &theme.status.impossible_fg);
+    set_color!(palette, "dfb_fg", theme.feedback.desaturated.fg);
+    set_color!(palette, "dfb_abg", theme.feedback.desaturated.absent_bg);
+    set_color!(palette, "dfb_pbg", theme.feedback.desaturated.present_bg);
+    set_color!(palette, "dfb_cbg", theme.feedback.desaturated.correct_bg);
+    set_color!(palette, "sfb_fg", theme.feedback.saturated.fg);
+    set_color!(palette, "sfb_abg", theme.feedback.saturated.absent_bg);
+    set_color!(palette, "sfb_pbg", theme.feedback.saturated.present_bg);
+    set_color!(palette, "sfb_cbg", theme.feedback.saturated.correct_bg);
+    set_color!(palette, "stat_imp_fg", theme.status.impossible_fg);
 
     Some(Config {
       palette,
       word_banks: rawcfg.word_banks,
       column_finish: rawcfg.behavior.column_finish,
+      column_desaturate: rawcfg.behavior.column_desaturate,
     })
   }
 
