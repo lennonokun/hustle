@@ -12,17 +12,18 @@ inspired by the many wordle spin-offs like
 [speedle](https://tck.mn/speedle/).
 
 ## Preview
-<details>
-  <summary>Menu</summary>
-  ![menu preview](extra/menu_preview.png)
+<details><summary>Menu</summary>
+<p>
+![menu preview](extra/menu_preview.png)
+</p>
 </details>
-<details>
-  <summary>Game</summary>
-  ![game preview](extra/game_preview.png)
+<details><summary>Game</summary>
+<p>
+![game preview](extra/game_preview.png)
+</p>
 </details>
-<details>
-  <summary>Results</summary>
-  ![results preview](extra/results_preview.png)
+<details><summary>Results</summary>
+![results preview](extra/results_preview.png)
 </details>
 
 ## Installation
