@@ -1,4 +1,5 @@
 # Hustle
+[preview](extra/game_preview.png)
 
 ## Overview
 Hustle is a terminal-based wordle clone and wordle solver written in
@@ -10,13 +11,15 @@ inspired by the many wordle spin-offs like
 [hellowordl](https://hellowordl.net), and
 [speedle](https://tck.mn/speedle/).
 
-## Preview
+<details>
+<summary>## Preview</summary>
 ### Menu
 ![menu preview](extra/menu_preview.png)
 ### Game
 ![game preview](extra/game_preview.png)
 ### Results
 ![results preview](extra/results_preview.png)
+</details>
 
 ## Installation
 On Linux, you can install hustle by cloning and building it:
@@ -32,39 +35,7 @@ $ makepkg --clean PKGBUILD
 $ sudo pacman -U hustle-1.2.4-1-x86_64.pkg.tar.zst
 ```
 ## Usage
-Here are some examples of how to use hustle:
-```
-# play hustle
-$ hustle play
-
-# solve a wordle game
-$ hustle solve salet.bbbbb.courd
-
-# solve all of wordle and output to file (takes me 1m34s)
-$ hustle solve --dt out
-
-# solve and list potential answers
-$ hustle solve crate.bybyb --alist
-
-# solve and list results of top words
-$ hustle solve crate.bybyb --elist
-
-# solve with specific number of top words to try
-$ hustle solve lodge.bbbbb --ntops 8
-
-# solve using specific heuristic data
-$ hustle solve salet.bbbgg --hdp hdata.csv
-
-# solve 6 letter words with hellowordl word bank
-$ hustle solve traces.bgbbyy --wbp /usr/share/hustle/bank2.csv --wlen 6
-
-# generate heuristic data with n=100
-$ hustle hgen 100 hdata.csv
-
-# generate analysis data with n=100
-$ hustle agen 100 adata.csv
-```
-Run hustle --help for more information.
+Refer to `hustle --help`
 
 ## Configuration
 Hustle's can be configured with a TOML file at the following location (with decreasing priority):
