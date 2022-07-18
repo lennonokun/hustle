@@ -1,5 +1,5 @@
 # Hustle
-![preview](extra/game_preview.png)
+![preview](extra/main_preview.png)
 
 ## Overview
 Hustle is a terminal-based wordle clone and wordle solver written in
