@@ -64,7 +64,6 @@ impl<T> HSelectView<T> {
   }
 
   pub fn selection(&self) -> Option<Rc<T>> {
-    eprintln!("selection!");
     self.items.get(self.index).map(|item| item.value.clone())
   }
 
