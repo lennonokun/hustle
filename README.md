@@ -46,9 +46,11 @@ Refer to `hustle --help`
 
 ## Configuration
 Hustle's can be configured with a TOML file at the following location (with decreasing priority):
-1. $XDG\_CONFIG\_HOME/hustle/config.toml
-2. $HOME/hustle/config.toml
-For the configuration options, see defaults at /usr/share/hustle/config.toml.
+
+1. `$XDG_CONFIG_HOME/hustle/config.toml`
+2. `$HOME/hustle/config.toml`
+
+For the configuration options, see defaults at `/usr/share/hustle/config.toml`.
 
 ## TODO
 ### General
