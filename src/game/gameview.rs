@@ -102,7 +102,6 @@ impl GameView {
   }
 
   pub fn start(&mut self) {
-    // TODO
     self.guesses.clear();
     self.answers = self.awb.pick(&mut rand::thread_rng(), self.nwords);
     self.fbcols = self.answers.iter()
