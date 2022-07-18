@@ -1,5 +1,4 @@
 # Hustle
-![preview](data/preview.png)
 
 ## Overview
 Hustle is a terminal-based wordle clone and wordle solver written in
@@ -11,24 +10,31 @@ inspired by the many wordle spin-offs like
 [hellowordl](https://hellowordl.net), and
 [speedle](https://tck.mn/speedle/).
 
+## Preview
+### Menu
+![menu preview](extra/menu_preview.png)
+### Game
+![game preview](extra/game_preview.png)
+### Results
+![results preview](extra/results_preview.png)
+
 ## Installation
-On Arch Linux, you can install using the PKGBUILD:
-```
-$ makepkg --clean PKGBUILD
-# tarball may be named something else
-$ sudo pacman -U hustle-1.2.4-1-x86_64.pkg.tar.zst
-```
-Otherwise, you can install by cloning and using the Makefile (requires ncurses):
+On Linux, you can install hustle by cloning and building it:
 ```
 $ git clone https://github.com/lennonokun/hustle.git
 $ cd hustle
 $ make install
 ```
-
+On Arch Linux, you can install hustle using the PKGBUILD in extra:
+```
+$ makepkg --clean PKGBUILD
+# tarball may be named something else
+$ sudo pacman -U hustle-1.2.4-1-x86_64.pkg.tar.zst
+```
 ## Usage
 Here are some examples of how to use hustle:
 ```
-# play wordle
+# play hustle
 $ hustle play
 
 # solve a wordle game
@@ -60,6 +66,12 @@ $ hustle agen 100 adata.csv
 ```
 Run hustle --help for more information.
 
+## Configuration
+Hustle's can be configured with a TOML file at the following location (with decreasing priority):
+1. $XDG\_CONFIG\_HOME/hustle/config.toml
+2. $HOME/hustle/config.toml
+For the configuration options, see defaults at /usr/share/hustle/config.toml.
+
 ## TODO
 ### General
 * better error handling
@@ -71,9 +83,7 @@ Run hustle --help for more information.
 * explain scripts + dependencies in README
 * look at each files TODOs
 ### Solver
-* rename "Config"
-* should hard be in config?
-* add cache config to main?
+* add cache settings to main?
 * record cache stats
 * standardize types for stuff like NLETS and wlen
 * make heuristics work for any word bank
@@ -91,13 +101,12 @@ Run hustle --help for more information.
 * dictionary capabilities
 * keep statistics and track pb's
 * adjust layout for overflow
-* add unknowns again
-* make cut between status and main
-* make config work again
-* show known letters
-  - display list below each column?
-  - is this cheating?
-  - regardless, it should be an option
+* re-add unknowns
+* multiple in a row?
+* exordle
+* infinite
+* display pace
+* optionally show known letters beneath columns (or above?)
 * single word
   - different layout for single
   - different modes like hard mode
@@ -105,11 +114,8 @@ Run hustle --help for more information.
 * config
   - how to handle enum fields?
   - better error handling
-  - implement finish, unknowns, 
-  - implement unknowns
-  - install default into usr/share
-  - add graying
-  - feedback theme for grayed?
+  - unknowns
+  - set theme not just palette?
   - find out how to remove serde_json dependency from config (features)
 * create github releases?
 * make more easily installable
