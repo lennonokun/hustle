@@ -68,6 +68,9 @@ impl View for EditView {
       } Event::Key(Key::Backspace) => {
         Rc::make_mut(&mut self.content).pop();
         return EventResult::Consumed(None);
+      } Event::CtrlChar('w') | Event::Ctrl(Key::Backspace) => {
+        Rc::make_mut(&mut self.content).clear();
+        return EventResult::Consumed(None);
       } _ => {
         return EventResult::Ignored;
       }

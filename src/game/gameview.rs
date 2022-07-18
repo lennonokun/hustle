@@ -246,9 +246,7 @@ impl View for GameView {
   fn draw(&self, printer: &Printer) {
     printer.print_box((0,0), self.size, false);
     if self.state == State::Play {
-      printer.print_hline((1,2), self.size.x-1, "─");
-      printer.print((0,2), "├");
-      printer.print((self.size.x-1,2), "┤");
+      printer.print_hdelim((0,2), self.size.x);
       self.draw_status(printer);
       self.draw_main(printer);
     } else {
@@ -262,6 +260,7 @@ impl View for GameView {
 
   fn on_event(&mut self, event: Event) -> EventResult {
     if self.state == State::Play {
+      eprintln!("{:?}", event);
       match event {
         Event::Char(c) => if is_alpha(c) {
           self.guessbuf.push(upper(c));
@@ -274,7 +273,7 @@ impl View for GameView {
           return EventResult::Ignored;
         } Event::Key(Key::Backspace) => {
           self.guessbuf.pop();
-        } Event::Ctrl(Key::Backspace) => {
+        } Event::CtrlChar('w') | Event::Ctrl(Key::Backspace) => {
           self.guessbuf.clear();
         } Event::Key(Key::Up) => {
           self.scroll = (self.scroll + self.nrows - 1) % self.nrows;
