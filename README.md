@@ -86,12 +86,13 @@ Run hustle --help for more information.
     (beta pruning is mostly single-threaded though)
   - look at flame graphs, etc
 ### Game
+* why do my ctrl-backspaces get sent as ctrl-h's?
+* why doesn't backtab work?
 * dictionary capabilities
 * keep statistics and track pb's
 * adjust layout for overflow
 * add unknowns again
 * make cut between status and main
-* improve HSelectView (centering)
 * make config work again
 * show known letters
   - display list below each column?
@@ -102,11 +103,14 @@ Run hustle --help for more information.
   - different modes like hard mode
 - sync with wordle, duordle, quordle, octordle's, etc daily
 * config
-  - default colors should be terminal defaults
-  - feedback fg too
+  - how to handle enum fields?
+  - better error handling
   - implement finish, unknowns, 
   - implement unknowns
   - install default into usr/share
+  - add graying
+  - feedback theme for grayed?
+  - find out how to remove serde_json dependency from config (features)
 * create github releases?
 * make more easily installable
   - try to publish to AUR?
