@@ -4,7 +4,7 @@ use std::io::{self, Read};
 use std::error::Error;
 use std::path::{Path, PathBuf};
 use std::env;
-use std::default::Default;
+use std::collections::HashMap;
 
 use indexmap::IndexMap;
 use serde::Deserialize;
@@ -22,14 +22,40 @@ pub struct Config {
 }
 
 // loader config
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 struct RawConfig {
-  pub feedback_fg: String,
-  pub feedback_absent_bg: String,
-  pub feedback_present_bg: String,
-  pub feedback_correct_bg: String,
-  pub impossible_fg: String,
+  pub theme: RawTheme,
   pub word_banks: IndexMap<String, String>,
+  pub behavior: RawBehavior,
+}
+
+#[derive(Debug, Deserialize)]
+struct RawTheme {
+  status: RawStatusTheme,
+  feedback: RawFbThemes,
+}
+
+#[derive(Debug, Deserialize)]
+struct RawStatusTheme {
+  impossible_fg: String
+}
+
+#[derive(Debug, Deserialize)]
+struct RawFbThemes {
+  unsolved: RawFbTheme,
+  solved: RawFbTheme,
+}
+
+#[derive(Debug, Deserialize)]
+struct RawFbTheme {
+  fg: String,
+  absent_bg: String,
+  present_bg: String,
+  correct_bg: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct RawBehavior {
   pub column_finish: String,
 }
 
@@ -41,10 +67,8 @@ macro_rules! add_src {
   };
 }
 
-macro_rules! set_color {
-  ($palette: expr, $rawcfg: expr, $field: ident) => {
-    $palette.set_color(stringify!($field), Color::parse(&($rawcfg.$field))?)
-  }
+
+fn set_color(palette: &mut Palette, name: &str, string: &String) {
 }
 
 impl Config {
@@ -66,19 +90,33 @@ impl Config {
   }
 
   fn process(rawcfg: RawConfig) -> Option<Self> {
+    macro_rules! set_color {
+      ($palette: expr, $name: expr, $string: expr) => {
+        $palette.set_color($name, Color::parse($string)?)
+      }
+    }
     // todo add namespaces
     let mut palette = Palette::default();
-    set_color!(palette, rawcfg, feedback_fg);
-    set_color!(palette, rawcfg, feedback_present_bg);
-    set_color!(palette, rawcfg, feedback_absent_bg);
-    set_color!(palette, rawcfg, feedback_correct_bg);
-    set_color!(palette, rawcfg, impossible_fg);
+    let theme = rawcfg.theme;
+    set_color!(palette, "ufb_fg", &theme.feedback.unsolved.fg);
+    set_color!(palette, "ufb_abg", &theme.feedback.unsolved.absent_bg);
+    set_color!(palette, "ufb_pbg", &theme.feedback.unsolved.present_bg);
+    set_color!(palette, "ufb_cbg", &theme.feedback.unsolved.correct_bg);
+    set_color!(palette, "sfb_fg", &theme.feedback.solved.fg);
+    set_color!(palette, "sfb_abg", &theme.feedback.solved.absent_bg);
+    set_color!(palette, "sfb_pbg", &theme.feedback.solved.present_bg);
+    set_color!(palette, "sfb_cbg", &theme.feedback.solved.correct_bg);
+    set_color!(palette, "stat_imp_fg", &theme.status.impossible_fg);
 
     Some(Config {
       palette,
       word_banks: rawcfg.word_banks,
-      column_finish: rawcfg.column_finish,
+      column_finish: rawcfg.behavior.column_finish,
     })
+  }
+
+  pub fn color(&self, name: &str) -> Color {
+    *self.palette.custom(name).unwrap()
   }
 }
 

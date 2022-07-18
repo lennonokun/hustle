@@ -1,18 +1,28 @@
 # default hustle config
 
-# feedback colors
-feedback_fg = "#f1f7ed"
-feedback_absent_bg = "#2892D7"
-feedback_present_bg = "#f79824"
-feedback_correct_bg = "#679436"
-
+[theme.status]
 # impossible solve foreground color
 impossible_fg = "#dc322f"
 
+[theme.feedback.unsolved]
+# theme for unsolved feedback
+fg = "#f1f7ed"
+absent_bg = "#2892D7"
+present_bg = "#f79824"
+correct_bg = "#679436"
+
+[theme.feedback.solved]
+# theme for solved feedback
+fg = "#f2f4f0"
+absent_bg = "#5d88a3"
+present_bg = "#b89164"
+correct_bg = "#667852"
+
+[behavior]
 # what to do with finished columns
 # "remove": remove column
 # "leave": leave column
-# "gray": gray out (TODO make second theme?)
+# "replace": TODO replace with another unsolved column
 column_finish = "remove"
 
 # word bank paths

@@ -33,15 +33,27 @@ impl FbCol {
   fn draw_guess(&self, gw: Word, pos: Vec2, printer: &Printer) -> bool {
     let fb = Feedback::from(gw, self.ans).unwrap();
     for j in 0..gw.wlen {
-      let bg = if fb.get_g(j) {
-        CONFIG.palette.custom("feedback_correct_bg").unwrap()
-      } else if fb.get_y(j) {
-        CONFIG.palette.custom("feedback_present_bg").unwrap()
+      let cs = if self.done {
+        let fg = CONFIG.color("sfb_fg");
+        let bg = CONFIG.color(if fb.get_g(j) {
+          "sfb_cbg"
+        } else if fb.get_y(j) {
+          "sfb_pbg"
+        } else {
+          "sfb_abg"
+        });
+        ColorStyle::new(fg, bg)
       } else {
-        CONFIG.palette.custom("feedback_absent_bg").unwrap()
+        let fg = CONFIG.color("ufb_fg");
+        let bg = CONFIG.color(if fb.get_g(j) {
+          "ufb_cbg"
+        } else if fb.get_y(j) {
+          "ufb_pbg"
+        } else {
+          "ufb_abg"
+        });
+        ColorStyle::new(fg, bg)
       };
-      let fg = CONFIG.palette.custom("feedback_fg").unwrap();
-      let cs = ColorStyle::new(*fg, *bg);
       printer.with_color(cs, |printer| {
         printer.print(pos+(j,0), &gw.get(j.into()).unwrap().to_string().as_str())
       });
@@ -179,9 +191,9 @@ impl GameView {
     );
 
     let cs = if delta < 0 {
-      let fg = CONFIG.palette.custom("impossible_fg").unwrap();
+      let fg = CONFIG.color("stat_imp_fg");
       let bg = CONFIG.palette[PaletteColor::View];
-      ColorStyle::new(*fg, bg)
+      ColorStyle::new(fg, bg)
     } else {
       ColorStyle::primary()
     };
