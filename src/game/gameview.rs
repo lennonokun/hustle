@@ -125,6 +125,7 @@ impl GameView {
     self.time = Duration::ZERO;
     self.ndone = 0;
     self.turn = 0;
+    self.scroll = 0;
   }
 
   /// guess word
