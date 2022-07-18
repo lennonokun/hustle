@@ -39,13 +39,13 @@ On Arch Linux, you can install hustle using the PKGBUILD in extra:
 ```
 $ makepkg --clean PKGBUILD
 # tarball may be named something else
-$ sudo pacman -U hustle-1.2.4-1-x86_64.pkg.tar.zst
+$ sudo pacman -U hustle-1.3.0-1-x86_64.pkg.tar.zst
 ```
 ## Usage
 Refer to `hustle --help`
 
 ## Configuration
-Hustle's can be configured with a TOML file at the following location (with decreasing priority):
+Hustle's can be configured with a TOML file at the following locations (with decreasing priority):
 
 1. `$XDG_CONFIG_HOME/hustle/config.toml`
 2. `$HOME/hustle/config.toml`
