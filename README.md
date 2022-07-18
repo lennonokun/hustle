@@ -13,17 +13,19 @@ inspired by the many wordle spin-offs like
 
 ## Preview
 <details><summary>Menu</summary>
-<p>
+
 ![menu](extra/menu_preview.png)
-</p>
+
 </details>
 <details><summary>Game</summary>
-<p>
+
 ![game](extra/game_preview.png)
-</p>
+
 </details>
 <details><summary>Results</summary>
+
 ![results](extra/results_preview.png)
+
 </details>
 
 ## Installation
