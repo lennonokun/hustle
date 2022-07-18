@@ -14,16 +14,16 @@ inspired by the many wordle spin-offs like
 ## Preview
 <details><summary>Menu</summary>
 <p>
-![menu preview](extra/menu_preview.png)
+![menu](extra/menu_preview.png)
 </p>
 </details>
 <details><summary>Game</summary>
 <p>
-![game preview](extra/game_preview.png)
+![game](extra/game_preview.png)
 </p>
 </details>
 <details><summary>Results</summary>
-![results preview](extra/results_preview.png)
+![results](extra/results_preview.png)
 </details>
 
 ## Installation
