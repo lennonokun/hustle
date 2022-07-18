@@ -5,14 +5,19 @@ use std::cmp;
 use cursive::Cursive;
 use cursive::view::Nameable;
 use cursive::views::*;
-use cursive::theme::{Color, BaseColor, ColorStyle, Effect};
+use cursive::theme::{Color, BaseColor, Style, ColorStyle, Effect};
+use cursive::reexports::enumset::{EnumSet,enum_set};
 use cursive::traits::*;
 use cursive::event::{Event, EventResult, Key};
 use cursive::direction::Direction;
-use cursive::{Printer, Vec2};
+use cursive::{Printer, Vec2, Rect};
+use cursive::align::*;
 use cursive::view::CannotFocus;
 
-// TODO how should scrolling and resizing work?
+// todo make util.rs
+fn make_style(color: ColorStyle, effects: EnumSet<Effect>) -> Style {
+  Style {color, effects}
+}
 
 #[derive(Debug)]
 struct Item<T> {
@@ -31,7 +36,10 @@ impl<T> Item<T> {
 pub struct HSelectView<T> {
   items: Vec<Item<T>>,
   index: usize, 
-  last_size: Vec2,
+  size: Vec2,
+  style1: Style,
+  style2: Style,
+  align: Align,
 }
 
 impl<T> HSelectView<T> {
@@ -39,7 +47,10 @@ impl<T> HSelectView<T> {
     Self {
       items: Vec::new(),
       index: 0,
-      last_size: Vec2::zero(),
+      size: Vec2::zero(),
+      style1: make_style(ColorStyle::highlight(), enum_set!()),
+      style2: make_style(ColorStyle::highlight_inactive(), enum_set!()),
+      align: Align::center(),
     }
   }
 
@@ -56,22 +67,35 @@ impl<T> HSelectView<T> {
     eprintln!("selection!");
     self.items.get(self.index).map(|item| item.value.clone())
   }
+
+  pub fn get_style(&self, printer: &Printer) -> Style {
+    if printer.focused {
+      self.style1
+    } else {
+      self.style2
+    }
+  }
 }
 
 impl<T: 'static> View for HSelectView<T> {
   // TODO add needs redraw
   
   fn layout(&mut self, size: Vec2) {
-    self.last_size = size;
+    self.size = size;
   }
 
   fn draw(&self, printer: &Printer) {
     if let Some(label) = self.selected_label() {
-      let x = self.last_size.x;
-      let s = &label[..cmp::min(x-4, label.len())];
       printer.print((0,0), "< ");
-      printer.print((2,0), s);
-      printer.print((x-2,0), " >");
+      printer.print((self.size.x-2,0), " >");
+
+      let w = self.size.x-4;
+      printer.with_style(self.get_style(printer), |printer| {
+        printer.print_hline((2,0), w, " ");
+        let printer = printer.shrinked_centered((4,0));
+        let x = self.align.h.get_offset(label.len(), w);
+        printer.print((x,0), &label);
+      });
     }
   }
 

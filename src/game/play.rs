@@ -18,12 +18,12 @@ use super::menu::menu_open;
 pub fn play() {
   let mut siv = cursive::default();
   let mut palette = Palette::default();
-  palette[Background] = TerminalDefault;
-  palette[Primary] = TerminalDefault;
-  palette[Secondary] = TerminalDefault;
-  palette[Tertiary] = TerminalDefault;
-  palette[View] = TerminalDefault;
-  palette[Highlight] = TerminalDefault;
+//  palette[Background] = TerminalDefault;
+//  palette[Primary] = TerminalDefault;
+//  palette[Secondary] = TerminalDefault;
+//  palette[Tertiary] = TerminalDefault;
+//  palette[View] = TerminalDefault;
+//  palette[Highlight] = TerminalDefault;
   let theme = Theme {shadow: false, borders: BorderStyle::Simple, palette};
   
   siv.set_theme(theme);

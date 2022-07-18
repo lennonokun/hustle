@@ -2,9 +2,11 @@ use cursive::Cursive;
 use cursive::views::*;
 use cursive::traits::*;
 use cursive::event::{Event, Key};
+use cursive::theme::ColorStyle;
 
 use super::game::game_open;
 use super::config::CONFIG;
+use super::editview::EditView;
 use super::hselectview::HSelectView;
 
 pub fn menu_open(s: &mut Cursive) {
