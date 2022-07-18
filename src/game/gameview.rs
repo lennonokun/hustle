@@ -180,7 +180,7 @@ impl GameView {
 
     let cs = if delta < 0 {
       let fg = CONFIG.palette.custom("impossible_fg").unwrap();
-      let bg = CONFIG.palette[PaletteColor::Tertiary];
+      let bg = CONFIG.palette[PaletteColor::View];
       ColorStyle::new(*fg, bg)
     } else {
       ColorStyle::primary()
