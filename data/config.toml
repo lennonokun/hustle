@@ -24,7 +24,14 @@ correct_bg = "#667852"
 # "leave": leave column
 # "replace": TODO replace with another unsolved column
 column_finish = "remove"
+# whether or not to desaturate finished columns
+# true: desaturate
+# false: do not desaturate
 column_desaturate = true
+# whether or not to submit guesses when enough letters
+# true: submit guess when enough letters
+# false: submit guess on 'Space' or 'Enter'
+quick_guess = false
 
 # word bank paths
 [word_banks]

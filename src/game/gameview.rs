@@ -129,7 +129,13 @@ impl GameView {
   }
 
   /// guess word
-  pub fn guess(&mut self, gw: Word) {
+  pub fn guess(&mut self) {
+    if self.guessbuf.len() != self.wlen as usize {
+      self.guessbuf = String::new();
+      return;
+    }
+    // TODO why have to clone, the value is lost
+    let gw = Word::from(self.guessbuf.clone()).unwrap();
     self.guessbuf = String::new();
     if !self.gwb.data.contains(&gw) {return}
 
@@ -285,18 +291,22 @@ impl View for GameView {
     if self.state == State::Play {
       match event {
         Event::Char(c) => if is_alpha(c) {
-          self.guessbuf.push(upper(c));
-          if self.guessbuf.len() as u8 == self.wlen {
-            // TODO why have to clone, the value is lost
-            let gw = Word::from(self.guessbuf.clone()).unwrap();
-            self.guess(gw);
+          if (self.guessbuf.len() as u8) < self.wlen {
+            self.guessbuf.push(upper(c));
           }
+          if (self.guessbuf.len() as u8) == self.wlen && CONFIG.quick_guess {
+            self.guess();
+          }
+        } else if c == ' ' {
+          self.guess();
         } else {
           return EventResult::Ignored;
         } Event::Key(Key::Backspace) => {
           self.guessbuf.pop();
         } Event::CtrlChar('w') | Event::Ctrl(Key::Backspace) => {
           self.guessbuf.clear();
+        } Event::Key(Key::Enter) => {
+          self.guess();
         } Event::Key(Key::Up) => {
           self.scroll = (self.scroll + self.nrows - 1) % self.nrows;
         } Event::Key(Key::Down) => {

@@ -20,6 +20,7 @@ pub struct Config {
   pub word_banks: IndexMap<String, String>,
   pub column_finish: String,
   pub column_desaturate: bool,
+  pub quick_guess: bool,
 }
 
 #[derive(Debug, Deserialize)]
@@ -58,6 +59,7 @@ struct RawFbTheme {
 struct RawBehavior {
   pub column_finish: String,
   pub column_desaturate: bool,
+  pub quick_guess: bool,
 }
 
 macro_rules! add_src {
@@ -66,10 +68,6 @@ macro_rules! add_src {
     $(pb.push($buf));+;
     $builder = $builder.add_source(File::from(pb))
   };
-}
-
-
-fn set_color(palette: &mut Palette, name: &str, string: &String) {
 }
 
 impl Config {
@@ -113,6 +111,7 @@ impl Config {
       word_banks: rawcfg.word_banks,
       column_finish: rawcfg.behavior.column_finish,
       column_desaturate: rawcfg.behavior.column_desaturate,
+      quick_guess: rawcfg.behavior.quick_guess,
     })
   }
 
