@@ -174,12 +174,12 @@ impl State {
     // leaf if guessed
     if alen == 1 && gw == *self.aws.get(0).unwrap() {
       return Some(DTree::Leaf);
-      // impossible guesses
     }
+    // impossible guesses
     if self.n == 0 || (self.n == 1 && alen > 1) || (self.n == 2 && alen > MAX_TWOSOLVE as usize) {
       return None;
-      // check alpha = 2|A|-1
     }
+    // check alpha = 2|A|-1
     if beta <= 2 * (alen as u32) - 1 {
       return None;
     }
@@ -222,28 +222,28 @@ impl State {
     // no more turns
     if self.n == 0 {
       return None;
-      // one answer -> guess it
     }
+    // one answer -> guess it
     if alen == 1 {
       return Some(DTree::Node {
         tot: 1,
         word: *self.aws.get(0).unwrap(),
         fbmap: [(Feedback::from_str("GGGGG").unwrap(), DTree::Leaf)].into(),
       });
-      // check alpha = 2|A|-1
     }
+    // check alpha = 2|A|-1
     if beta <= 2 * (alen as u32) - 1 {
       return None;
-      // check endgame if viable
     }
+    // check endgame if viable
     if alen <= sd.endgcutoff as usize {
       for aw in self.aws.iter() {
         if self.fb_counts(aw).values().all(|c| *c == 1) {
           return self.solve_given(*aw, sd, beta);
         }
       }
-      // read cache if worth it
     }
+    // read cache if worth it
     if alen >= sd.cachecutoff as usize {
       if let Some(dt) = sd.cache.read(self) {
         return Some(dt.clone());
