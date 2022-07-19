@@ -12,11 +12,11 @@ install: target/release/hustle
 	sudo install -Dm0644 -t "/usr/share/hustle" "data/config.toml"
 	# manpages
 	gzip -c "extra/manpages/hustle.man" \
-		| sudo dd of="/usr/share/man/man1/hustle.1.gz"
+		| sudo dd status=none of="/usr/share/man/man1/hustle.1.gz"
 	gzip -c "extra/manpages/hustle-solve.man" \
-		| sudo dd of="/usr/share/man/man1/hustle-solve.1.gz"
+		| sudo dd status=none of="/usr/share/man/man1/hustle-solve.1.gz"
 	gzip -c "extra/manpages/hustle-play.man" \
-		| sudo dd of="/usr/share/man/man1/hustle-play.1.gz"
+		| sudo dd status=none of="/usr/share/man/man1/hustle-play.1.gz"
 	# misc
 	sudo install -Dm0644 -t "/usr/share/licenses/hustle" "LICENSE"
 	sudo install -Dm0644 -t "/usr/share/doc/hustle" "README.md"
