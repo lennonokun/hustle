@@ -1,5 +1,21 @@
 # default hustle config
 
+[theme.view]
+# theme used for cursive (the TUI library)
+do_shadow = false
+border_style = "simple"
+background = "dark blue"
+shadow = "dark black"
+view = "dark white"
+primary = "dark black"
+secondary = "dark blue"
+tertiary = "light white"
+title_primary = "dark red"
+title_secondary = "light blue"
+highlight = "dark red"
+highlight_inactive = "dark blue"
+highlight_text = "dark white"
+
 [theme.status]
 # impossible solve foreground color
 impossible_fg = "#dc322f"

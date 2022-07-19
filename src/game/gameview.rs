@@ -199,7 +199,7 @@ impl GameView {
 
     let cs = if delta < 0 {
       let fg = CONFIG.color("stat_imp_fg");
-      let bg = CONFIG.palette[PaletteColor::View];
+      let bg = CONFIG.theme.palette[PaletteColor::View];
       ColorStyle::new(fg, bg)
     } else {
       ColorStyle::primary()

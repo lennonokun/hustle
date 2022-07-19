@@ -12,21 +12,13 @@ use cursive::theme::BaseColor::*;
 use cursive::theme::{Theme, Palette, BorderStyle};
 
 use super::menu::menu_open;
+use super::config::CONFIG;
 
 // TODO screens? 
 
 pub fn play() {
   let mut siv = cursive::default();
-  let mut palette = Palette::default();
-//  palette[Background] = TerminalDefault;
-//  palette[Primary] = TerminalDefault;
-//  palette[Secondary] = TerminalDefault;
-//  palette[Tertiary] = TerminalDefault;
-//  palette[View] = TerminalDefault;
-//  palette[Highlight] = TerminalDefault;
-  let theme = Theme {shadow: false, borders: BorderStyle::Simple, palette};
-  
-  siv.set_theme(theme);
+  siv.set_theme(CONFIG.theme.clone());
   siv.set_fps(20);
   siv.add_global_callback(Event::CtrlChar('q'), |s| s.quit());
   menu_open(&mut siv);

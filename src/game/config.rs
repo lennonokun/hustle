@@ -8,7 +8,7 @@ use std::collections::HashMap;
 
 use indexmap::IndexMap;
 use serde::Deserialize;
-use cursive::theme::{Color, Palette};
+use cursive::theme::{Color, Palette, Theme, BorderStyle};
 
 lazy_static! {
   // find config on start up
@@ -16,7 +16,7 @@ lazy_static! {
 }
 
 pub struct Config {
-  pub palette: Palette,
+  pub theme: Theme,
   pub word_banks: IndexMap<String, String>,
   pub column_finish: String,
   pub column_desaturate: bool,
@@ -32,8 +32,26 @@ struct RawConfig {
 
 #[derive(Debug, Deserialize)]
 struct RawTheme {
+  view: RawViewTheme,
   status: RawStatusTheme,
   feedback: RawFbThemes,
+}
+
+#[derive(Debug, Deserialize)]
+struct RawViewTheme {
+  pub do_shadow: bool,
+  pub border_style: String,
+  pub background: String,
+  pub shadow: String,
+  pub view: String,
+  pub primary: String,
+  pub secondary: String,
+  pub tertiary: String,
+  pub title_primary: String,
+  pub title_secondary: String,
+  pub highlight: String,
+  pub highlight_text: String,
+  pub highlight_inactive: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -94,20 +112,46 @@ impl Config {
         $palette.set_color($name, Color::parse(&$string)?)
       }
     }
+
     let mut palette = Palette::default();
-    let theme = rawcfg.theme;
-    set_color!(palette, "dfb_fg", theme.feedback.desaturated.fg);
-    set_color!(palette, "dfb_abg", theme.feedback.desaturated.absent_bg);
-    set_color!(palette, "dfb_pbg", theme.feedback.desaturated.present_bg);
-    set_color!(palette, "dfb_cbg", theme.feedback.desaturated.correct_bg);
-    set_color!(palette, "sfb_fg", theme.feedback.saturated.fg);
-    set_color!(palette, "sfb_abg", theme.feedback.saturated.absent_bg);
-    set_color!(palette, "sfb_pbg", theme.feedback.saturated.present_bg);
-    set_color!(palette, "sfb_cbg", theme.feedback.saturated.correct_bg);
-    set_color!(palette, "stat_imp_fg", theme.status.impossible_fg);
+    let rawtheme = rawcfg.theme;
+    set_color!(palette, "Background", rawtheme.view.background);
+    set_color!(palette, "Shadow", rawtheme.view.shadow);
+    set_color!(palette, "View", rawtheme.view.view);
+    set_color!(palette, "Primary", rawtheme.view.primary);
+    set_color!(palette, "Secondary", rawtheme.view.secondary);
+    set_color!(palette, "Tertiary", rawtheme.view.tertiary);
+    set_color!(palette, "TitlePrimary", rawtheme.view.title_primary);
+    set_color!(palette, "TitleSecondary", rawtheme.view.title_secondary);
+    set_color!(palette, "Highlight", rawtheme.view.highlight);
+    set_color!(palette, "HighlightInactive", rawtheme.view.highlight_inactive);
+    set_color!(palette, "HighlightText", rawtheme.view.highlight_text);
+    set_color!(palette, "dfb_fg", rawtheme.feedback.desaturated.fg);
+    set_color!(palette, "dfb_abg", rawtheme.feedback.desaturated.absent_bg);
+    set_color!(palette, "dfb_pbg", rawtheme.feedback.desaturated.present_bg);
+    set_color!(palette, "dfb_cbg", rawtheme.feedback.desaturated.correct_bg);
+    set_color!(palette, "sfb_fg", rawtheme.feedback.saturated.fg);
+    set_color!(palette, "sfb_abg", rawtheme.feedback.saturated.absent_bg);
+    set_color!(palette, "sfb_pbg", rawtheme.feedback.saturated.present_bg);
+    set_color!(palette, "sfb_cbg", rawtheme.feedback.saturated.correct_bg);
+    set_color!(palette, "stat_imp_fg", rawtheme.status.impossible_fg);
+
+    let borders = if rawtheme.view.border_style == "simple" {
+      BorderStyle::Simple
+    } else if rawtheme.view.border_style == "outset" {
+      BorderStyle::Outset
+    } else {
+      BorderStyle::None
+    };
+
+    let theme = Theme {
+      shadow: rawtheme.view.do_shadow,
+      borders,
+      palette,
+    };
 
     Some(Config {
-      palette,
+      theme,
       word_banks: rawcfg.word_banks,
       column_finish: rawcfg.behavior.column_finish,
       column_desaturate: rawcfg.behavior.column_desaturate,
@@ -116,7 +160,7 @@ impl Config {
   }
 
   pub fn color(&self, name: &str) -> Color {
-    *self.palette.custom(name).unwrap()
+    *self.theme.palette.custom(name).unwrap()
   }
 }
 
