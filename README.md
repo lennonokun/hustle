@@ -1,5 +1,5 @@
 # Hustle
-![preview](extra/main_preview.png)
+![preview](extra/preview/main_preview.png)
 
 ## Overview
 Hustle is a terminal-based wordle clone and wordle solver written in
@@ -14,17 +14,17 @@ inspired by the many wordle spin-offs like
 ## Preview
 <details><summary>Menu</summary>
 
-![menu](extra/menu_preview.png)
+![menu](extra/preview/menu_preview.png)
 
 </details>
 <details><summary>Game</summary>
 
-![game](extra/game_preview.png)
+![game](extra/preview/game_preview.png)
 
 </details>
 <details><summary>Results</summary>
 
-![results](extra/results_preview.png)
+![results](extra/preview/results_preview.png)
 
 </details>
 
