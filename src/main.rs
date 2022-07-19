@@ -1,5 +1,4 @@
 #![allow(unused)]
-#![feature(let_chains)]
 
 extern crate lazy_static;
 
