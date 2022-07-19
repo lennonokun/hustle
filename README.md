@@ -42,7 +42,7 @@ $ makepkg --clean PKGBUILD
 $ sudo pacman -U hustle-1.3.0-1-x86_64.pkg.tar.zst
 ```
 ## Usage
-Refer to `hustle --help`
+Refer to manpages with `man hustle`, `man hustle solve`, and `man hustle play`.
 
 ## Configuration
 Hustle's can be configured with a TOML file at the following locations (with decreasing priority):

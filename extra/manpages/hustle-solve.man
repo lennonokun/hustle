@@ -1,0 +1,71 @@
+.TH hustle-solve 1 "18 July 2022" "version 1.3.0" "User Commands"
+.SH NAME
+hustle-solve \- Solve a given state
+.SH SYNOPSIS
+hustle solve [GAMESTATE] [--alist] [--ccutoff <CCUTOFF>] [--dt <DT>]
+[--ecutoff <ECUTOFF>] [--elist] [-h | --help] [--hard] [--hdp <HDP>]
+[--ntops <NTOPS>] [--wbp <WBP>] [--wlen <WLEN>]
+.SH ARGS
+.PP
+\fB<GAMESTATE>\fR
+.RS 4
+The gamestate to solve [default: initial state].
+Can end with or without a specified last guess [example: salet.bbygb, lodge.bbyby.triad]\&.
+.RE
+.SH OPTIONS
+.PP
+\fB--alist\fR
+.RS 4
+List the potential answers.
+.RE
+.PP
+\fB--ccutoff\fR <\fICCUTOFF\fR>
+.RS 4
+Specify the minimum number of remaining answers to cache a solution for [default: 30].
+.RE
+.PP
+\fB--dt\fR <\fIDT\fR>
+.RS 4
+Output decision tree to \fIDT\fR\&.
+.RE
+.PP
+\fB--ecutoff\fR <\fIECUTOFF\fR>
+.RS 4
+Specify the maximum number of remaining answers to treat as an 'endgame' [default: 15]
+.RE
+.PP
+\fB-h\fR, \fB--help\fR
+.RS 4
+Print a synopsis for this command\&.
+.RE
+.PP
+\fB--hard\fR
+.RS 4
+Treat as a 'hard mode' game (hints must be reused)\&.
+.RE
+.PP
+\fB--hdp\fR <\fIHDP\fR>
+.RS 4
+Specify the heuristic file to use [default: \fI/usr/share/hustle/happrox.csv\fR].
+.RE
+.PP
+\fB--ntops\fR <\fINTOPS\fR>
+.RS 4
+Specify the number of top words to check at each state [default: 10].
+.RE
+.PP
+\fB--wbp\fR <\fIWBP\fR>
+.RS 4
+Specify the word bank file to use [default: \fI/usr/share/hustle/bank1.csv\fR,
+wordle's standard word bank]. Hellowordl's word bank is also included on installation
+at \fI/usr/share/hustle/bank2.csv\fR\&.
+.RE
+.PP
+\fB--wlen\fR <\fIWLEN\fR>
+.RS 4
+Specify the word length to use\&.
+Defaults to 5\&.
+.SH "SEE ALSO"
+.sp
+\fBhustle\fR(1), \fBhustle-play\fR(1), \fBhustle-agen\fR(1), \fBhustle-hgen\fR(1)
+
