@@ -1,15 +1,22 @@
+use std::io;
+use std::env;
+use std::path::{Path, PathBuf};
+
 use cursive::Cursive;
 use cursive::views::*;
 use cursive::traits::*;
 use cursive::event::{Event, Key};
-use cursive::theme::ColorStyle;
+use cursive::theme::PaletteColor::*;
+use cursive::theme::Color::*;
+use cursive::theme::BaseColor::*;
+use cursive::theme::{Theme, Palette, BorderStyle};
 
-use super::game::game_open;
-use super::config::CONFIG;
-use super::editview::EditView;
 use super::hselectview::HSelectView;
+use super::gameview::GameView;
+use super::editview::EditView;
+use super::config::CONFIG;
 
-pub fn menu_open(s: &mut Cursive) {
+pub fn open_menu(s: &mut Cursive) {
   let mut bank_select = HSelectView::new();
   for (k,v) in CONFIG.word_banks.iter() {
     bank_select.add_item(k.to_string(), v.to_string());
@@ -59,7 +66,7 @@ fn menu_submit(s: &mut Cursive) {
 
   if let (Some(nwords), Some(wlen), Some(Some(wbn))) = (nwords, wlen, wbn) {
     s.pop_layer();
-    game_open(s, &wbn, wlen, nwords);
+    s.add_fullscreen_layer(GameView::new(&wbn, wlen, nwords));
   }
 }
 

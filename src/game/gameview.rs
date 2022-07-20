@@ -14,7 +14,7 @@ use cursive::view::CannotFocus;
 
 use crate::ds::*;
 use super::config::CONFIG;
-use super::menu::menu_open;
+use super::menu::open_menu;
 
 // TODO how should scrolling and resizing work?
 
@@ -85,7 +85,6 @@ pub struct GameView {
 }
 
 impl GameView {
-  /// create new feedback col with answer aw
   pub fn new(wbn: &String, wlen: u8, nwords: usize) -> Self {
     let wbp = CONFIG.word_banks.get(wbn).unwrap();
     let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
@@ -328,7 +327,7 @@ impl View for GameView {
         } else if c == 'r' {
           self.start();
         } else if c == 's' {
-          return EventResult::with_cb(|s| {s.pop_layer(); menu_open(s)})
+          return EventResult::with_cb(|s| {s.pop_layer(); open_menu(s)})
         } else {
           return EventResult::Ignored;
         } _ => {
