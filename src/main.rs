@@ -5,6 +5,7 @@ extern crate lazy_static;
 use clap::{Parser, Subcommand};
 use lazy_static::lazy_static;
 use rand::Rng;
+use rand::distributions::Uniform;
 use regex::Regex;
 
 use std::str::FromStr;
@@ -16,6 +17,7 @@ use std::ops::{Range, Add};
 
 mod solve;
 use crate::solve::{Cache, SData, HData, State, DataGenerator};
+use crate::solve::gen::parse_uniform;
 mod ds;
 use crate::ds::*;
 mod game;
@@ -104,26 +106,6 @@ enum Commands {
     #[clap(long)]
     ccuts: Option<String>,
   },
-}
-
-fn parse_range<T>(s: &String) -> Option<Range<T>>
-where T: FromStr + From<u8> + Add<T, Output=T> {
-  lazy_static! {
-    static ref RE_RANGE_EXC: Regex = Regex::new(r"^(?P<a>\d+)..(?P<b>\d+)$").unwrap();
-    static ref RE_RANGE_INC: Regex = Regex::new(r"^(?P<a>\d+)..=(?P<b>\d+)$").unwrap();
-  }
-  
-  if let Some(caps) = RE_RANGE_EXC.captures(s) {
-    let a = caps.get(1)?.as_str().parse::<T>().ok()?;
-    let b = caps.get(2)?.as_str().parse::<T>().ok()?;
-    Some(a..b)
-  } else if let Some(caps) = RE_RANGE_INC.captures(s) {
-    let a = caps.get(1)?.as_str().parse::<T>().ok()?;
-    let b = caps.get(2)?.as_str().parse::<T>().ok()?;
-    Some(a..(b + 1.into()))
-  } else {
-    None
-  }
 }
 
 fn flatten_opt<T>(x: Option<Option<T>>) -> Option<T> {
@@ -254,16 +236,16 @@ fn main() {
       ccuts,
     } => {
       // parse ranges
-      let alens = flatten_opt(alens.as_ref().map(parse_range::<usize>))
-        .unwrap_or(1..NWORDS);
-      let turns = flatten_opt(turns.as_ref().map(parse_range::<u32>))
-        .unwrap_or(1..7);
-      let ntops = flatten_opt(ntops.as_ref().map(parse_range::<u32>))
-        .unwrap_or(1..8);
-      let ecuts = flatten_opt(ecuts.as_ref().map(parse_range::<u32>))
-        .unwrap_or(15..16);
-      let ccuts = flatten_opt(ccuts.as_ref().map(parse_range::<u32>))
-        .unwrap_or(30..31);
+      let alens = flatten_opt(alens.as_ref().map(parse_uniform::<usize>))
+        .unwrap_or(Uniform::new_inclusive(1,NWORDS));
+      let turns = flatten_opt(turns.as_ref().map(parse_uniform::<u32>))
+        .unwrap_or(Uniform::new_inclusive(1,6));
+      let ntops = flatten_opt(ntops.as_ref().map(parse_uniform::<u32>))
+        .unwrap_or(Uniform::new_inclusive(1,10));
+      let ecuts = flatten_opt(ecuts.as_ref().map(parse_uniform::<u32>))
+        .unwrap_or(Uniform::new_inclusive(15,15));
+      let ccuts = flatten_opt(ccuts.as_ref().map(parse_uniform::<u32>))
+        .unwrap_or(Uniform::new_inclusive(30,30));
 
       // create + run gen
       let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();

@@ -1,28 +1,54 @@
 use rand::Rng;
+use rand::rngs::ThreadRng;
+use rand::distributions::Distribution;
+use rand::distributions::uniform::{Uniform, SampleUniform};
 use rayon::prelude::*;
+use lazy_static::lazy_static;
+use regex::Regex;
+
 use std::fs::{File, OpenOptions};
 use std::io::Write;
 use std::path::Path;
 use std::sync::Mutex;
 use std::time::Instant;
-use std::ops::Range;
+use std::cmp::PartialOrd;
+use std::str::FromStr;
+use std::ops::Add;
 
 use crate::ds::*;
 use super::cache::Cache;
 use super::analysis::HData;
 use super::state::{State, SData};
 
+pub fn parse_uniform<X>(s: &String) -> Option<Uniform<X>> 
+where X: SampleUniform + FromStr { 
+  lazy_static! {
+    static ref RE_UNIF: Regex = Regex::new(r"^(\d+)..(=?)(\d+)$").unwrap();
+  }
+  if let Some(caps) = RE_UNIF.captures(s) {
+    let a: X = caps.get(1)?.as_str().parse().ok()?;
+    let b: X = caps.get(3)?.as_str().parse().ok()?;
+    if caps.get(2)?.as_str().is_empty() {
+      Some(Uniform::new(a, b))
+    } else {
+      Some(Uniform::new_inclusive(a, b))
+    }
+  } else {
+    None
+  }
+}
+
 pub struct DataGenerator {
   pub gwb: WBank,
   pub awb: WBank,
   pub wlen: u8,
   pub hd: HData,
-  pub cache: Cache, // TODO using the same cache messes with time results
-  pub alens: Range<usize>,
-  pub turns: Range<u32>,
-  pub ntops: Range<u32>,
-  pub ecuts: Range<u32>,
-  pub ccuts: Range<u32>,
+  pub cache: Cache, // TODO using the same cache interferes with time results
+  pub alens: Uniform<usize>,
+  pub turns: Uniform<u32>,
+  pub ntops: Uniform<u32>,
+  pub ecuts: Uniform<u32>,
+  pub ccuts: Uniform<u32>,
   pub niter: usize,
 }
 
@@ -47,11 +73,11 @@ impl DataGenerator {
     (0..self.niter).into_par_iter().for_each(|_| {
       // take samples
       let mut rng = rand::thread_rng();
-      let alen = rng.gen_range(self.alens.clone());
-      let turns = rng.gen_range(self.turns.clone());
-      let ntops = rng.gen_range(self.ntops.clone());
-      let ecut = rng.gen_range(self.ecuts.clone());
-      let ccut = rng.gen_range(self.ccuts.clone());
+      let alen = self.alens.sample(&mut rng);
+      let turns = self.turns.sample(&mut rng);
+      let ntops = self.ntops.sample(&mut rng);
+      let ecut = self.ecuts.sample(&mut rng);
+      let ccut = self.ccuts.sample(&mut rng);
       let hard = false; // FOR NOW ALWAYS EASY BC CACHE DONT CHECK GWS
 
       // make state
