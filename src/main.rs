@@ -3,16 +3,19 @@
 extern crate lazy_static;
 
 use clap::{Parser, Subcommand};
+use lazy_static::lazy_static;
 use rand::Rng;
-use rayon::prelude::*;
+use regex::Regex;
+
+use std::str::FromStr;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
 use std::path::Path;
-use std::sync::Mutex;
 use std::time::Instant;
+use std::ops::{Range, Add};
 
 mod solve;
-use crate::solve::{Cache, SData, HData, State};
+use crate::solve::{Cache, SData, HData, State, DataGenerator};
 mod ds;
 use crate::ds::*;
 mod game;
@@ -66,10 +69,13 @@ enum Commands {
     ccutoff: u32,
   },
   /// generate heuristic data
-  Hgen {
-    /// the number of word banks to try
+  Gen {
+    /// the type of data to generate
     #[clap(value_parser)]
-    niter: u32,
+    mode: String,
+    /// the number of data points to generate
+    #[clap(value_parser)]
+    niter: usize,
     /// the file to output data to
     #[clap(value_parser)]
     out: String,
@@ -82,25 +88,49 @@ enum Commands {
     /// heuristic data path
     #[clap(long, default_value_t=String::from(DEFHDP))]
     hdp: String,
+    /// the range of answer lengths to try
+    #[clap(long)]
+    alens: Option<String>,
+    /// the range of turns to try
+    #[clap(long)]
+    turns: Option<String>,
+    /// the range of ntops to try
+    #[clap(long)]
+    ntops: Option<String>,
+    /// the range of ecuts to try
+    #[clap(long)]
+    ecuts: Option<String>,
+    /// the range of ccuts to try
+    #[clap(long)]
+    ccuts: Option<String>,
   },
-  /// generate general analysis data
-  Agen {
-    /// the number of word banks to try
-    #[clap(value_parser)]
-    niter: u32,
-    /// the file to output data to
-    #[clap(value_parser)]
-    out: String,
-    /// word length
-    #[clap(long, default_value_t = 5)]
-    wlen: u8,
-    /// word bank path
-    #[clap(long, default_value_t=String::from(DEFWBP))]
-    wbp: String,
-    /// heuristic data path
-    #[clap(long, default_value_t=String::from(DEFHDP))]
-    hdp: String,
-  },
+}
+
+fn parse_range<T>(s: &String) -> Option<Range<T>>
+where T: FromStr + From<u8> + Add<T, Output=T> {
+  lazy_static! {
+    static ref RE_RANGE_EXC: Regex = Regex::new(r"^(?P<a>\d+)..(?P<b>\d+)$").unwrap();
+    static ref RE_RANGE_INC: Regex = Regex::new(r"^(?P<a>\d+)..=(?P<b>\d+)$").unwrap();
+  }
+  
+  if let Some(caps) = RE_RANGE_EXC.captures(s) {
+    let a = caps.get(1)?.as_str().parse::<T>().ok()?;
+    let b = caps.get(2)?.as_str().parse::<T>().ok()?;
+    Some(a..b)
+  } else if let Some(caps) = RE_RANGE_INC.captures(s) {
+    let a = caps.get(1)?.as_str().parse::<T>().ok()?;
+    let b = caps.get(2)?.as_str().parse::<T>().ok()?;
+    Some(a..(b + 1.into()))
+  } else {
+    None
+  }
+}
+
+fn flatten_opt<T>(x: Option<Option<T>>) -> Option<T> {
+  match x {
+    Some(x) => x,
+    None => None
+  }
 }
 
 fn main() {
@@ -123,6 +153,7 @@ fn main() {
       ecutoff,
       ccutoff,
     } => {
+      // create state + sdata
       let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
       let hd = HData::load(&hdp).unwrap();
       let cache = Cache::new(16, 4);
@@ -209,135 +240,49 @@ fn main() {
         }
       }
     }
-    Commands::Hgen {
+    Commands::Gen {
+      mode,
       niter,
       out,
-      wlen: _,
-      wbp: _,
-      hdp: _,
-    } => {
-      // get wbanks + config
-      let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
-      let hd = HData::load(DEFHDP).unwrap();
-      let cache = Cache::new(16, 4);
-      let sd = SData::new(hd, cache, 2, 15, 30);
-
-      // open and write if new
-      let mut f;
-      if Path::new(&out).exists() {
-        f = OpenOptions::new()
-          .write(true)
-          .append(true)
-          .open(out)
-          .unwrap();
-      } else {
-        f = File::create(out).unwrap();
-        writeln!(&mut f, "alen,tot");
-      }
-
-      // solve randomly sized states in parallel
-      let f = Mutex::new(f);
-      let i = Mutex::new(1);
-      (0..niter).into_par_iter().for_each(|_| {
-        // pick aws
-        let mut rng = rand::thread_rng();
-        let alen = rng.gen_range(1..=NWORDS);
-        let aws2 = awb.pick(&mut rng, alen as usize);
-
-        let s = State::new2(
-          gwb.data.clone(),
-          aws2,
-          awb.wlen.into(),
-          NGUESSES as u32,
-          false,
-        );
-        let mut sd = sd.clone();
-        if let Some(dt) = s.solve(&mut sd, u32::MAX) {
-          let mut f = f.lock().unwrap();
-          let mut i = i.lock().unwrap();
-          println!("{}. alen: {}, tot: {}", i, alen, dt.get_tot());
-          writeln!(f, "{},{}", alen, dt.get_tot());
-          *i += 1;
-        }
-      });
-    }
-    Commands::Agen {
-      niter,
-      out,
-      wlen: _,
+      wlen,
       wbp,
       hdp,
+      alens,
+      turns,
+      ntops,
+      ecuts,
+      ccuts,
     } => {
-      // get constants
-      let (gwb, awb) = WBank::from2(wbp, NLETS as u8).unwrap();
+      // parse ranges
+      let alens = flatten_opt(alens.as_ref().map(parse_range::<usize>))
+        .unwrap_or(1..NWORDS);
+      let turns = flatten_opt(turns.as_ref().map(parse_range::<u32>))
+        .unwrap_or(1..7);
+      let ntops = flatten_opt(ntops.as_ref().map(parse_range::<u32>))
+        .unwrap_or(1..8);
+      let ecuts = flatten_opt(ecuts.as_ref().map(parse_range::<u32>))
+        .unwrap_or(15..16);
+      let ccuts = flatten_opt(ccuts.as_ref().map(parse_range::<u32>))
+        .unwrap_or(30..31);
+
+      // create + run gen
+      let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
       let hd = HData::load(&hdp).unwrap();
       let cache = Cache::new(16, 4);
-
-      // open and write header if new
-      let mut f;
-      if Path::new(&out).exists() {
-        f = OpenOptions::new()
-          .write(true)
-          .append(true)
-          .open(out)
-          .unwrap();
-      } else {
-        f = File::create(out).unwrap();
-        writeln!(&mut f, "alen,tot,time,turns,mode,ntops,ecut,ccut");
-      }
-
-      let f = Mutex::new(f);
-      let i = Mutex::new(1);
-      (0..niter).into_par_iter().for_each(|_| {
-        // pick random features
-        let mut rng = rand::thread_rng();
-        let alen = rng.gen_range(1..=NWORDS);
-        let aws2 = awb.pick(&mut rng, alen as usize);
-        let turns = rng.gen_range(1..=6);
-        let ntops = rng.gen_range(1..=8);
-        let ecut = 15;
-        let ccut = 30;
-        let hard = false; // FOR NOW ALWAYS EASY BC CACHE DONT CHECK GWS
-
-        // generate state
-        let s = State::new2(gwb.data.clone(), aws2, awb.wlen.into(), turns, false);
-        let mut sd = SData::new(hd.clone(), cache.clone(), ntops, ecut, ccut);
-
-        // solve and time
-        let instant = Instant::now();
-        let dt = s.solve(&mut sd, u32::MAX);
-        let time = instant.elapsed().as_millis();
-        // MAYBE MAKE IT u32 max? or nan (but make float)
-        let tot = dt.map_or(0, |dt| dt.get_tot());
-
-        let mut i = i.lock().unwrap();
-        let mut f = f.lock().unwrap();
-        println!(
-          "{}. {},{},{},{},{},{},{},{}",
-          *i,
-          alen,
-          tot,
-          time,
-          turns,
-          if hard { "H" } else { "E" },
-          sd.ntops,
-          sd.endgcutoff,
-          sd.cachecutoff
-        );
-        writeln!(
-          f,
-          "{},{},{},{},{},{},{},{}",
-          alen,
-          tot,
-          time,
-          turns,
-          if hard { "H" } else { "E" },
-          sd.ntops,
-          sd.endgcutoff,
-          sd.cachecutoff
-        );
-        *i += 1;
-      });
+      let mut gen = DataGenerator {
+        gwb,
+        awb,
+        wlen,
+        hd,
+        cache,
+        alens,
+        turns,
+        ntops,
+        ecuts,
+        ccuts,
+        niter
+      };
+      gen.run(Path::new(&out));
     }
   }
 }
