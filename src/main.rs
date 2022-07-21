@@ -2,111 +2,31 @@
 
 extern crate lazy_static;
 
-use clap::{Parser, Subcommand};
 use lazy_static::lazy_static;
 use rand::Rng;
 use rand::distributions::Uniform;
 use regex::Regex;
+use rayon::prelude::*;
 
+use std::sync::Mutex;
 use std::str::FromStr;
 use std::fs::{File, OpenOptions};
+use std::collections::HashMap;
 use std::io::Write;
 use std::path::Path;
 use std::time::Instant;
 use std::ops::{Range, Add};
 
+mod ds;
+use crate::ds::*;
+mod command;
+use crate::command::{cli_parse, Commands};
 mod solve;
 use crate::solve::{Cache, SData, HData, State, DataGenerator};
 use crate::solve::gen::parse_uniform;
-mod ds;
-use crate::ds::*;
 mod game;
 use crate::game::play;
 
-#[derive(Parser)]
-#[clap(version, about)]
-struct Cli {
-  #[clap(subcommand)]
-  command: Commands,
-}
-
-#[derive(Subcommand)]
-enum Commands {
-  /// play hustle
-  Play,
-  /// solve game state
-  Solve {
-    /// the game state to solve from
-    #[clap(value_parser, default_value = "")]
-    gamestate: String,
-    /// list top word evaluations
-    #[clap(long)]
-    elist: bool,
-    /// list potential answers
-    #[clap(long)]
-    alist: bool,
-    /// output decision tree to file
-    #[clap(long)]
-    dt: Option<String>,
-    /// word length
-    #[clap(long, default_value_t = 5)]
-    wlen: u8,
-    /// word bank path
-    #[clap(long, default_value_t=String::from(DEFWBP))]
-    wbp: String,
-    /// heuristic data path
-    #[clap(long, default_value_t=String::from(DEFHDP))]
-    hdp: String,
-    /// play in hard mode
-    #[clap(long)]
-    hard: bool,
-    /// the number of top words to check at each state
-    #[clap(long, default_value_t = 10)]
-    ntops: u32,
-    /// the maximum number of answer words left for an "endgame"
-    #[clap(long, default_value_t = 15)]
-    ecutoff: u32,
-    /// the minimum number of answers word left to cache
-    #[clap(long, default_value_t = 30)]
-    ccutoff: u32,
-  },
-  /// generate heuristic data
-  Gen {
-    /// the type of data to generate
-    #[clap(value_parser)]
-    mode: String,
-    /// the number of data points to generate
-    #[clap(value_parser)]
-    niter: usize,
-    /// the file to output data to
-    #[clap(value_parser)]
-    out: String,
-    /// word length
-    #[clap(long, default_value_t = 5)]
-    wlen: u8,
-    /// word bank path
-    #[clap(long, default_value_t=String::from(DEFWBP))]
-    wbp: String,
-    /// heuristic data path
-    #[clap(long, default_value_t=String::from(DEFHDP))]
-    hdp: String,
-    /// the range of answer lengths to try
-    #[clap(long)]
-    alens: Option<String>,
-    /// the range of turns to try
-    #[clap(long)]
-    turns: Option<String>,
-    /// the range of ntops to try
-    #[clap(long)]
-    ntops: Option<String>,
-    /// the range of ecuts to try
-    #[clap(long)]
-    ecuts: Option<String>,
-    /// the range of ccuts to try
-    #[clap(long)]
-    ccuts: Option<String>,
-  },
-}
 
 fn flatten_opt<T>(x: Option<Option<T>>) -> Option<T> {
   match x {
@@ -116,7 +36,7 @@ fn flatten_opt<T>(x: Option<Option<T>>) -> Option<T> {
 }
 
 fn main() {
-  let cli = Cli::parse();
+  let cli = cli_parse();
 
   match cli.command {
     Commands::Play {} => {
@@ -132,15 +52,15 @@ fn main() {
       hard,
       wlen,
       ntops,
-      ecutoff,
-      ccutoff,
+      ecut,
+      ccut,
     } => {
       // create state + sdata
       let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
       let hd = HData::load(&hdp).unwrap();
       let cache = Cache::new(16, 4);
       let mut state = State::new(gwb.data, awb.data, wlen.into(), hard);
-      let mut sd = SData::new(hd, cache, ntops, ecutoff, ccutoff);
+      let mut sd = SData::new(hd, cache, ntops, ecut, ccut);
 
       // parse gamestate
       let mut w: Option<Word> = None;
@@ -222,49 +142,71 @@ fn main() {
         }
       }
     }
-    Commands::Gen {
-      mode,
+    Commands::Hgen {
       niter,
       out,
       wlen,
       wbp,
       hdp,
-      alens,
-      turns,
       ntops,
-      ecuts,
-      ccuts,
+      ecut,
+      ccut,
     } => {
-      // parse ranges
-      let alens = flatten_opt(alens.as_ref().map(parse_uniform::<usize>))
-        .unwrap_or(Uniform::new_inclusive(1,NWORDS));
-      let turns = flatten_opt(turns.as_ref().map(parse_uniform::<u32>))
-        .unwrap_or(Uniform::new_inclusive(1,6));
-      let ntops = flatten_opt(ntops.as_ref().map(parse_uniform::<u32>))
-        .unwrap_or(Uniform::new_inclusive(1,10));
-      let ecuts = flatten_opt(ecuts.as_ref().map(parse_uniform::<u32>))
-        .unwrap_or(Uniform::new_inclusive(15,15));
-      let ccuts = flatten_opt(ccuts.as_ref().map(parse_uniform::<u32>))
-        .unwrap_or(Uniform::new_inclusive(30,30));
-
-      // create + run gen
-      let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
-      let hd = HData::load(&hdp).unwrap();
+      // get banks + solve data
+      let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
+      let hd = HData::load(DEFHDP).unwrap();
       let cache = Cache::new(16, 4);
-      let mut gen = DataGenerator {
-        gwb,
-        awb,
-        wlen,
-        hd,
-        cache,
-        alens,
-        turns,
-        ntops,
-        ecuts,
-        ccuts,
-        niter
-      };
-      gen.run(Path::new(&out));
-    }
+      let sd = SData::new(hd, cache, 2, 15, 30);
+
+      // open and write header if new
+      let mut f;
+      if Path::new(&out).exists() {
+        f = OpenOptions::new()
+          .write(true)
+          .append(true)
+          .open(out)
+          .unwrap();
+      } else {
+        f = File::create(out).unwrap();
+        writeln!(&mut f, "alen,tot,time,turns,mode,ntops,ecut,ccut");
+      }
+
+      // solve randomly sized states in parallel
+      let f = Mutex::new(f);
+      let i = Mutex::new(1);
+      (0..niter).into_par_iter().for_each(|_| {
+        // pick aws
+        let mut rng = rand::thread_rng();
+        let alen = rng.gen_range(1..=NWORDS);
+        let aws2 = awb.pick(&mut rng, alen as usize);
+
+        let s = State::new2(
+          gwb.data.clone(),
+          aws2,
+          awb.wlen.into(),
+          NGUESSES as u32,
+          false,
+        );
+        let mut sd = sd.clone();
+        if let Some(dt) = s.solve(&mut sd, u32::MAX) {
+          let mut f = f.lock().unwrap();
+          let mut i = i.lock().unwrap();
+          println!("{}. alen: {}, tot: {}", i, alen, dt.get_tot());
+          writeln!(f, "{},{}", alen, dt.get_tot());
+          *i += 1;
+        }
+      });
+    },
+//    Commands::Ggen {
+//      niter,
+//      out,
+//      wlen,
+//      wbp,
+//      hdp,
+//      ntops,
+//      ecut,
+//      ccut,
+//    } => {
+//    },
   }
 }
