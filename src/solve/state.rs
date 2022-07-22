@@ -42,11 +42,6 @@ impl SData {
   }
 }
 
-// struct SolveData {
-//   dt: Option<DTree>,
-//   beta: u32,
-// }
-
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct State {
   pub gws: Vec<Word>,
@@ -216,7 +211,9 @@ impl State {
       return Some(DTree::Leaf);
     }
     // impossible guesses
-    if self.n == 0 || (self.n == 1 && alen > 1) || (self.n == 2 && alen > MAX_TWOSOLVE as usize) {
+    if self.n == 0
+      || (self.n == 1 && alen > 1)
+      || (self.n == 2 && alen > MAX_TWOSOLVE as usize) {
       return None;
     }
     // check alpha = 2|A|-1
@@ -303,8 +300,10 @@ impl State {
       }
     }
     // check cache
-    if let Some(dt) = sd.cache.read(self) {
-      return Some(dt.clone());
+    if !self.hard {
+      if let Some(dt) = sd.cache.read(self) {
+        return Some(dt.clone());
+      }
     }
 
     // finally, check top words
@@ -324,9 +323,11 @@ impl State {
     }
 
     // add cache
-   if let Some(ref dt) = dt {
-     sd.cache.add(self.clone(), dt.clone());
-   }
+    if !self.hard {
+      if let Some(ref dt) = dt {
+        sd.cache.add(self.clone(), dt.clone());
+      }
+    }
 
     dt
   }
