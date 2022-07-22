@@ -44,9 +44,6 @@ pub enum Commands {
     /// the maximum number of answer words left for an "endgame"
     #[clap(long, default_value_t = 15)]
     ecut: u32,
-    /// the minimum number of answers word left to cache
-    #[clap(long, default_value_t = 30)]
-    ccut: u32,
   },
   /// generate heuristic data
   Hgen {
@@ -71,9 +68,6 @@ pub enum Commands {
     /// endgame cutoff
     #[clap(long, default_value_t = 15)]
     ecut: u32,
-    /// cache cutoff
-    #[clap(long, default_value_t = 30)]
-    ccut: u32,
   },
 //  /// generate general data
 //  Ggen {
@@ -98,9 +92,6 @@ pub enum Commands {
 //    /// endgame cutoff
 //    #[clap(long)]
 //    ecut: Option<String>,
-//    /// cache cutoff
-//    #[clap(long)]
-//    ccut: Option<String>,
 //  },
 }
 

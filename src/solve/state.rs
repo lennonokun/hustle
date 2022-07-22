@@ -23,25 +23,22 @@ pub struct SData {
   pub ntops: u32,
   /// number of remaining words makes it "endgame"
   pub endgcutoff: u32,
-  /// number of remaining words that makes caching worth it
-  pub cachecutoff: u32,
 }
 
 impl SData {
-  pub fn new(hd: HData, cache: Cache, ntops: u32, endgcutoff: u32, cachecutoff: u32) -> Self {
+  pub fn new(hd: HData, cache: Cache, ntops: u32, endgcutoff: u32) -> Self {
     Self {
       hd,
       cache,
       ntops,
       endgcutoff,
-      cachecutoff,
     }
   }
 
   pub fn new2(ntops: u32) -> Self {
     let hd = HData::load(DEFHDP).unwrap();
     let cache = Cache::new(64, 8);
-    Self::new(hd, cache, ntops, 15, 30)
+    Self::new(hd, cache, ntops, 15)
   }
 }
 
@@ -305,11 +302,9 @@ impl State {
         }
       }
     }
-    // read cache if worth it
-    if alen >= sd.cachecutoff as usize {
-      if let Some(dt) = sd.cache.read(self) {
-        return Some(dt.clone());
-      }
+    // check cache
+    if let Some(dt) = sd.cache.read(self) {
+      return Some(dt.clone());
     }
 
     // finally, check top words
@@ -328,11 +323,9 @@ impl State {
       }
     }
 
-    // add cache if worth it
-   if alen >= sd.cachecutoff as usize {
-     if let Some(ref dt) = dt {
-       sd.cache.add(self.clone(), dt.clone());
-     }
+    // add cache
+   if let Some(ref dt) = dt {
+     sd.cache.add(self.clone(), dt.clone());
    }
 
     dt

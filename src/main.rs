@@ -52,14 +52,13 @@ fn main() {
       wlen,
       ntops,
       ecut,
-      ccut,
     } => {
       // create state + sdata
       let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
       let hd = HData::load(&hdp).unwrap();
-      let cache = Cache::new(16, 4);
+      let cache = Cache::new(64, 16);
       let mut state = State::new(gwb.data, awb.data, wlen.into(), hard);
-      let mut sd = SData::new(hd, cache, ntops, ecut, ccut);
+      let mut sd = SData::new(hd, cache, ntops, ecut);
 
       // parse gamestate
       let mut w: Option<Word> = None;
@@ -149,13 +148,12 @@ fn main() {
       hdp,
       ntops,
       ecut,
-      ccut,
     } => {
       // get banks + solve data
       let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
       let hd = HData::load(DEFHDP).unwrap();
       let cache = Cache::new(16, 4);
-      let sd = SData::new(hd, cache, 2, 15, 30);
+      let sd = SData::new(hd, cache, 2, 15);
 
       // open and write header if new
       let mut f;
