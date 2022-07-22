@@ -51,13 +51,14 @@ fn main() {
       hard,
       wlen,
       ntops,
+      turns,
       ecut,
     } => {
       // create state + sdata
       let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
       let hd = HData::load(&hdp).unwrap();
       let cache = Cache::new(64, 16);
-      let mut state = State::new(gwb.data, awb.data, wlen.into(), hard);
+      let mut state = State::new2(gwb.data, awb.data, wlen.into(), turns, hard);
       let mut sd = SData::new(hd, cache, ntops, ecut);
 
       // parse gamestate
@@ -147,6 +148,7 @@ fn main() {
       wbp,
       hdp,
       ntops,
+      turns,
       ecut,
     } => {
       // get banks + solve data
@@ -181,7 +183,7 @@ fn main() {
           gwb.data.clone(),
           aws2,
           awb.wlen.into(),
-          NGUESSES as u32,
+          turns,
           false,
         );
         let mut sd = sd.clone();

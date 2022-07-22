@@ -41,6 +41,9 @@ pub enum Commands {
     /// the number of top words to check at each state
     #[clap(long, default_value_t = 10)]
     ntops: u32,
+    /// the maximum number of turns to solve in
+    #[clap(long, default_value_t = 6)]
+    turns: u32,
     /// the maximum number of answer words left for an "endgame"
     #[clap(long, default_value_t = 15)]
     ecut: u32,
@@ -65,6 +68,9 @@ pub enum Commands {
     /// the number of 
     #[clap(long, default_value_t = 3)]
     ntops: usize,
+    /// the maximum number of turns to solve in
+    #[clap(long, default_value_t = 6)]
+    turns: u32,
     /// endgame cutoff
     #[clap(long, default_value_t = 15)]
     ecut: u32,
