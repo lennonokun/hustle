@@ -22,8 +22,7 @@ use crate::ds::*;
 mod command;
 use crate::command::{cli_parse, Commands};
 mod solve;
-use crate::solve::{Cache, SData, HData, State, DataGenerator};
-use crate::solve::gen::parse_uniform;
+use crate::solve::{Cache, SData, HData, State};
 mod game;
 use crate::game::play;
 
