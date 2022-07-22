@@ -1,5 +1,6 @@
 use rand::Rng;
 use std::hash::{Hash, Hasher};
+use rayon::prelude::*;
 
 use super::analysis::HData;
 use super::cache::Cache;
@@ -132,6 +133,29 @@ impl State {
     map
   }
 
+  pub fn fb_partition_vec(&self, gw: &Word) -> Vec<(Feedback, State)> {
+    let mut awss = vec![Vec::new(); 3usize.pow(self.wlen)];
+
+    for aw in &self.aws {
+      awss[fb_id(*gw, *aw) as usize].push(*aw);
+    }
+
+    awss.iter()
+      .enumerate()
+      .filter(|(id, aws)| !aws.is_empty())
+      .map(|(id, aws)| {
+        let fb = Feedback::from_id(id as u32, self.wlen as u8);
+        let gws2 = if self.hard {
+          fb_filter(*gw, fb, &self.gws)
+        } else {
+          self.gws.clone()
+        };
+        let state = State::new2(gws2, aws.clone(), self.wlen, self.n-1, self.hard);
+        (fb, state)
+      })
+      .collect()
+  }
+
   pub fn fb_counts(&self, gw: &Word) -> FbMap<u32> {
     let mut map = FbMap::new();
     for aw in &self.aws {
@@ -141,12 +165,31 @@ impl State {
     map
   }
 
+  pub fn fb_counts_vec(&self, gw: &Word) -> Vec<u32> {
+    // initialize vec with zeros
+    let mut vec = vec![0; 3usize.pow(self.wlen)];
+
+    for aw in &self.aws {
+      vec[fb_id(*gw, *aw) as usize] += 1;
+    }
+
+    vec
+  }
+
   pub fn heuristic(&self, gw: &Word, sd: &SData) -> f64 {
-    let h = self
-      .fb_counts(gw)
-      .iter()
-      .map(|(_, n)| sd.hd.get_approx(*n as usize))
-      .sum();
+    let h = if self.wlen <= 5 {
+      self.fb_counts_vec(gw)
+        .iter()
+        .filter(|x| **x > 0)
+        .map(|x| sd.hd.get_approx(*x as usize))
+        .sum()
+    } else {
+      self.fb_counts(gw)
+        .iter()
+        .map(|(_, n)| sd.hd.get_approx(*n as usize))
+        .sum()
+    };
+
     if self.aws.contains(gw) {
       h - 1.
     } else {
@@ -156,9 +199,9 @@ impl State {
 
   pub fn top_words(&self, sd: &SData) -> Vec<Word> {
     let mut tups: Vec<(Word, f64)> = self
-      .gws
-      .iter()
-      .map(|gw| (*gw, self.heuristic(gw, sd)))
+      .gws.clone()
+      .into_par_iter()
+      .map(|gw| (gw, self.heuristic(&gw, sd)))
       .collect();
     tups.sort_by(|(_, f1), (_, f2)| f1.partial_cmp(f2).unwrap());
     tups
@@ -184,25 +227,44 @@ impl State {
       return None;
     }
 
-    // partition and sort by increasing alen (right now it is not beneficial)
-    let fbp = self.fb_partition(&gw);
-    // let mut sfbp: Vec<(&Feedback, &State)> = fbp.iter().collect();
-    // sfbp.sort_by_key(|(fb, s)| s.aws.len());
-
-    // calculate
     let mut tot = alen as u32;
     let mut fbm = FbMap::new();
-    for (fb, s2) in fbp {
-      if fb.is_correct() {
-        fbm.insert(fb, DTree::Leaf);
-      } else {
-        match s2.solve(sd, beta - tot) {
-          None => return None,
-          Some(dt) => {
-            tot += dt.get_tot();
-            fbm.insert(fb, dt);
-            if tot >= beta {
-              return None;
+
+    if self.wlen <= 5 {
+      let fbpv = self.fb_partition_vec(&gw);
+      for (fb, s2) in fbpv {
+        if fb.is_correct() {
+          fbm.insert(fb, DTree::Leaf);
+        } else {
+          match s2.solve(sd, beta - tot) {
+            None => return None,
+            Some(dt) => {
+              tot += dt.get_tot();
+              fbm.insert(fb, dt);
+              if tot >= beta {
+                return None;
+              }
+            }
+          }
+        }
+      }
+    } else {
+      let fbp = self.fb_partition(&gw);
+      // let mut sfbp: Vec<(&Feedback, &State)> = fbp.iter().collect();
+      // sfbp.sort_by_key(|(fb, s)| s.aws.len());
+
+      for (fb, s2) in fbp {
+        if fb.is_correct() {
+          fbm.insert(fb, DTree::Leaf);
+        } else {
+          match s2.solve(sd, beta - tot) {
+            None => return None,
+            Some(dt) => {
+              tot += dt.get_tot();
+              fbm.insert(fb, dt);
+              if tot >= beta {
+                return None;
+              }
             }
           }
         }
@@ -267,11 +329,11 @@ impl State {
     }
 
     // add cache if worth it
-    if alen >= sd.cachecutoff as usize {
-      if let Some(ref dt) = dt {
-        sd.cache.add(self.clone(), dt.clone());
-      }
-    }
+   if alen >= sd.cachecutoff as usize {
+     if let Some(ref dt) = dt {
+       sd.cache.add(self.clone(), dt.clone());
+     }
+   }
 
     dt
   }

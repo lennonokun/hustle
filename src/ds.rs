@@ -93,6 +93,35 @@ pub struct Feedback {
   wlen: u8,
 }
 
+pub fn fb_id(mut gw: Word, mut aw: Word) -> u32 {
+  let wlen = gw.wlen as usize;
+  let mut id = 0;
+
+  let mut w = 1;
+  for i in 0..wlen {
+    if gw.data[i] == aw.data[i] {
+      id += 2*w;
+      gw.data[i] = 254;
+      aw.data[i] = 255;
+    }
+    w *= 3;
+  }
+
+  let mut w = 1;
+  for i in 0..wlen {
+    for j in 0..wlen {
+      if gw.data[i] == aw.data[j] {
+        id += w;
+        aw.data[j] = 255;
+        break;
+      }
+    }
+    w *= 3;
+  }
+
+  id
+}
+
 impl Feedback {
   pub fn from(mut gw: Word, mut aw: Word) -> Option<Self> {
     if gw.wlen != aw.wlen {
@@ -124,6 +153,24 @@ impl Feedback {
       }
     }
     Some(Feedback { g_bs, y_bs, wlen })
+  }
+
+  pub fn from_id(mut id: u32, wlen: u8) -> Self {
+    let mut g_bs = 0u16;
+    let mut y_bs = 0u16;
+
+    for i in 0..wlen {
+      let r = id % 3;
+      id = id / 3;
+
+      if r == 2 {
+        g_bs |= 1 << i;
+      } else if r == 1{
+        y_bs |= 1 << i;
+      }
+    }
+
+    Feedback { g_bs, y_bs, wlen }
   }
 
   pub fn to_string(&self) -> String {
