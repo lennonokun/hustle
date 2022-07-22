@@ -59,22 +59,30 @@ For the configuration options, see defaults at `/usr/share/hustle/config.toml`.
 * get rid of WBank?
 * generally refactor, don't ignore warnings
 * create benchmarks and unit tests
-* make man page with clap
+* make man page with clap?
 * explain scripts + dependencies in README
 * look at each files TODOs
+* create github releases?
+* make more easily installable
+  - try to publish to AUR?
+  - create packages for more distros
+* integrate solver with tui?
 ### Solver
 * add cache settings to main?
+* specify max turns
 * record cache stats
 * standardize types for stuff like NLETS and wlen
 * make heuristics work for any word bank
 * check if solve strings are impossible? (allow impossible with --dirty)
 * improve dtree pprint format
-* multiple heuristic options? (linear reg, precomputed, etc)
-* optimize solving
+* make cache work for hard mode
+* re-add bounds + general generation?
+* optimization:
   - better lower bounds
-  - re-add multithreading
-    (beta pruning is mostly single-threaded though)
-  - look at flame graphs, etc
+  - is making dtree slow?
+  - faster top words selection:
+    * check lower bounds while building?
+    * don't need to sort entire vec
 ### Game
 * why do my ctrl-backspaces get sent as ctrl-h's?
 * why doesn't backtab work?
@@ -82,22 +90,17 @@ For the configuration options, see defaults at `/usr/share/hustle/config.toml`.
 * keep statistics and track pb's
 * adjust layout for overflow
 * re-add unknowns
-* multiple in a row?
-* exordle
-* infinite
 * display pace
+* multiple in a row?
+  - exordle
+  - infinite
 * optionally show known letters beneath columns (or above?)
 * single word
   - different layout for single
   - different modes like hard mode
-- sync with wordle, duordle, quordle, octordle's, etc daily
+* sync with wordle, duordle, quordle, octordle's, etc daily
 * config
   - how to handle enum fields?
   - better error handling
   - unknowns
-  - set theme not just palette?
   - find out how to remove serde_json dependency from config (features)
-* create github releases?
-* make more easily installable
-  - try to publish to AUR?
-  - create packages for more distros
