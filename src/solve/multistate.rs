@@ -219,10 +219,6 @@ impl MState {
   pub fn solve_given(&self, gw: Word, md: &mut MData) -> Option<f64> {
     let awss_sample = self.sample_answers(&mut rand::thread_rng(), md);
     let fbps = self.fb_partition(&gw, awss_sample);
-    fn awss_disp(awss: Vec<Vec<Word>>) -> Vec<usize> {
-      awss.iter().map(|aws| aws.len()).collect()
-    }
-    let fbp_disp: Vec<(Vec<Feedback>, Vec<usize>)> = fbps.iter().map(|(fb, s)| (fb.clone(), awss_disp(s.awss.clone()))).collect();
 
     let mut tot = 0.;
     let mut sz = 0;
@@ -239,10 +235,31 @@ impl MState {
     if self.finished.iter().all(|&fin| fin) {return Some(0.)}
     if self.turns == 0 {return None}
 
+    let n_finished: usize = self.finished.iter().map(|&fin| fin as usize).sum();
+    let n_unfinished: usize = self.nwords as usize - n_finished;
+
+
     // one answer -> guess it
     for (aws, fin) in zip(&self.awss, &self.finished) {
       if aws.len() == 1 && !fin {
         return self.solve_given(*aws.get(0).unwrap(), md);
+      }
+    }
+
+    // check if a potential answer fixes rest
+    if self.awss.iter().all(|aws| aws.len() < 15) {
+      let mut smallest_fix = usize::MAX;
+      for (aws, fin) in zip(&self.awss, &self.finished) {
+        if aws.len() >= smallest_fix || *fin {continue}
+        for aw in aws {
+          if self.fb_counts(&aw).iter().all(|fbc| fbc.iter().all(|(fb, ct)| *ct == 1)) {
+            smallest_fix = aws.len();
+          }
+        }
+      }
+
+      if smallest_fix != usize::MAX {
+        return Some(n_unfinished as f64 - 1f64 / smallest_fix as f64);
       }
     }
 
@@ -254,23 +271,15 @@ impl MState {
 //    }
 
     // find best top word
-    let mut tot = None;
+    let mut tot = f64::INFINITY;
     let tops = self.top_words(md);
     for w in tops {
       let tot2 = self.solve_given(w, md);
-      tot = if let Some(tot) = tot {
-        if let Some(tot2) = tot2 {
-          if tot2 < tot {
-            Some(tot2)
-          } else {
-            Some(tot)
-          }
-        } else {
-          Some(tot)
-        }
-      } else {
-        tot2
-      };
+      if let Some(tot2) = self.solve_given(w, md) {
+        if tot2 < tot {tot = tot2}
+        // return if best case
+        if tot2 == n_unfinished as f64 {return Some(tot2)}
+      }
     }
 
     // add cache
@@ -280,7 +289,7 @@ impl MState {
 //      }
 //    }
 
-    tot
+    if tot == f64::INFINITY { None } else { Some(tot) }
   }
 }
 
@@ -304,9 +313,9 @@ mod test {
   fn solve_blah() {
     let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
     let mut state = MState::new(gwb.data, vec![awb.data; 6], 5, 6, false);
-    let mut md = MData::new2(5, 10);
+    let mut md = MData::new2(7, 5);
 
-    state = state.fb_follow(Word::from_str("flame").unwrap(), vec![
+    state = state.fb_follow(Word::from_str("salet").unwrap(), vec![
       Feedback::from_str("bgbgb").unwrap(),
       Feedback::from_str("byybb").unwrap(),
       Feedback::from_str("bbybb").unwrap(),
@@ -328,6 +337,28 @@ mod test {
     assert!(tot.is_some());
     assert!(false);
   }
+
+  #[test]
+  fn solve_endgame() {
+    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
+    let mut state = MState::new(gwb.data, vec![awb.data; 2], 5, 2, false);
+    let mut md = MData::new2(0, 0);
+
+    // FLICK, ICILY
+    // ENSUE, GUESS, GUISE, ISSUE
+    // guessing ENSUE/ISSUE gives 1.75
+    // which should be found in endgame check
+    state = state.fb_follow(Word::from_str("salet").unwrap(), vec![
+      Feedback::from_str("bbybb").unwrap(),
+      Feedback::from_str("ybbyb").unwrap(),
+    ]);
+    state = state.fb_follow(Word::from_str("courd").unwrap(), vec![
+      Feedback::from_str("ybbbb").unwrap(),
+      Feedback::from_str("bbybb").unwrap(),
+    ]);
+    assert!(state.solve(&mut md) == Some(1.75));
+  }
+
 //  #[test]
 //  fn check_news() {
 //    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
