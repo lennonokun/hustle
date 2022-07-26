@@ -80,7 +80,8 @@ impl View for EditView {
         return EventResult::Consumed(None);
       } Event::Key(Key::Backspace) => {
         Rc::make_mut(&mut self.content).pop();
-        self.cursor = cmp::max(self.cursor-1, 0);
+        if self.cursor > 0 { self.cursor -= 1}
+        eprintln!("{:?} {:?}", self.content, self.cursor);
         return EventResult::Consumed(None);
       } Event::CtrlChar('w') | Event::Ctrl(Key::Backspace) => {
         Rc::make_mut(&mut self.content).clear();
