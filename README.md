@@ -67,6 +67,7 @@ For the configuration options, see defaults at `/usr/share/hustle/config.toml`.
   - try to publish to AUR?
   - create packages for more distros
 * integrate solver with tui?
+* make decision tree viewer in tui
 ### Solver
 * add cache settings to main?
 * specify max turns
@@ -77,12 +78,14 @@ For the configuration options, see defaults at `/usr/share/hustle/config.toml`.
 * improve dtree pprint format
 * make cache work for hard mode
 * re-add bounds + general generation?
+* isolate fbmaps + methods (simplify wlen <= 5 optimizations)
 * optimization:
   - better lower bounds
   - is making dtree slow?
   - faster top words selection:
     * check lower bounds while building?
     * don't need to sort entire vec
+* see how decision tree would process specific answer(s)?
 ### Game
 * why do my ctrl-backspaces get sent as ctrl-h's?
 * why doesn't backtab work?
