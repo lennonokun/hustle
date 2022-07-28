@@ -49,7 +49,7 @@ where X: Copy + FromStr + SampleUniform {
       // FOR NOW UNWRAP
       let a: X = caps.get(1).unwrap().as_str().parse().ok().unwrap();
       let b: X = caps.get(3).unwrap().as_str().parse().ok().unwrap();
-      let inc = caps.get(2).unwrap().as_str().is_empty();
+      let inc = !caps.get(2).unwrap().as_str().is_empty();
       Ok(Self::new(a, b, inc))
     } else {
       Err(Error::new(
