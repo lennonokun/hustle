@@ -51,11 +51,12 @@ impl LGen {
     ]
   }
 
-  // open, check formatting, append if existing
+  // open, check formatting, get previous bounds
   pub fn open_file(&self, out: &Path) -> Result<(File, HashMap<usize, u32>), Error> {
     let existed = out.exists();
     let meta = self.meta();
     let mut f = OpenOptions::new()
+      .write(true)
       .create(true)
       .open(out)?;
 
@@ -84,11 +85,12 @@ impl LGen {
         Some((alen, lb))
       }).collect::<HashMap<usize, u32>>()
     } else {
-      // write metadata + header, + return empty lower bounds
-      writeln!(f, "{}", meta.join("\n"));
-      writeln!(f, "{}", Self::header());
       HashMap::new()
     };
+
+    // write metadata + header
+    writeln!(f, "{}", meta.join("\n"));
+    writeln!(f, "{}", Self::header());
 
     Ok((f, lbs))
   }
@@ -99,8 +101,9 @@ impl LGen {
     let f = Mutex::new(f);
     let lbs = Mutex::new(lbs);
     let i = Mutex::new(1);
-    // TODO par iter
-    (self.alens.a..=self.alens.b).step_by(self.step).for_each(|alen| {
+
+    let alens: Vec<usize> = (self.alens.a..=self.alens.b).step_by(self.step).collect();
+    alens.into_par_iter().for_each(|alen| {
       let mut lb = lbs.lock().unwrap().get(&alen).map(|x| *x).unwrap_or(u32::MAX);
       let mut rng = rand::thread_rng();
 

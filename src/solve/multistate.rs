@@ -193,7 +193,7 @@ impl MState {
         let mut sz = 0;
         for (fb, n) in fbc {
           if !fb.is_correct() {
-            tot += md.hd.get_approx(n as usize);
+            tot += md.hd.get_approx(n as usize).unwrap();
           }
           sz += n;
         }

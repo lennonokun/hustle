@@ -173,12 +173,12 @@ impl State {
       self.fb_counts_vec(gw)
         .iter()
         .filter(|x| **x > 0)
-        .map(|x| sd.hd.get_approx(*x as usize))
+        .map(|x| sd.hd.get_approx(*x as usize).unwrap())
         .sum()
     } else {
       self.fb_counts(gw)
         .iter()
-        .map(|(_, n)| sd.hd.get_approx(*n as usize))
+        .map(|(_, n)| sd.hd.get_approx(*n as usize).unwrap())
         .sum()
     };
 
