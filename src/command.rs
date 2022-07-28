@@ -93,6 +93,9 @@ pub enum Commands {
     /// heuristic data path
     #[clap(long, default_value_t=String::from(DEFHDP))]
     hdp: String,
+    /// the range of answer lengths to try
+    #[clap(long)]
+    alens: Option<Range<usize>>,
     /// the range of ntops to try
     #[clap(long, default_value_t=Range::new(1, 10, true))]
     ntops: Range<u32>,
@@ -102,6 +105,39 @@ pub enum Commands {
     /// endgame cutoff
     #[clap(long, default_value_t=Range::new(1, 30, true))]
     ecut: Range<u32>,
+  },
+  /// generate general data
+  Lgen {
+    /// the number of tries at each alen
+    #[clap(value_parser)]
+    niter: usize,
+    /// the step between each alen to try
+    #[clap(value_parser)]
+    step: usize,
+    /// the file to output data to
+    #[clap(value_parser)]
+    out: String,
+    /// word length
+    #[clap(long, default_value_t = 5)]
+    wlen: u8,
+    /// word bank path
+    #[clap(long, default_value_t=String::from(DEFWBP))]
+    wbp: String,
+    /// heuristic data path
+    #[clap(long, default_value_t=String::from(DEFHDP))]
+    hdp: String,
+    /// the range of answer lengths to try
+    #[clap(long)]
+    alens: Option<Range<usize>>,
+    /// the number of top words to try
+    #[clap(long, default_value_t = 3)]
+    ntops: u32,
+    /// the maximum number of turns to solve in
+    #[clap(long, default_value_t = 6)]
+    turns: u32,
+    /// endgame cutoff
+    #[clap(long, default_value_t = 15)]
+    ecut: u32,
   },
 }
 

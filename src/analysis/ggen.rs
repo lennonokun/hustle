@@ -17,9 +17,7 @@ use super::range::Range;
 
 // TODO default settings to out's settings if existed
 
-const LEN_METADATA: usize = 4;
-
-pub struct SGen {
+pub struct GGen {
   pub gwb: WBank,
   pub awb: WBank,
   pub wlen: u32,
@@ -32,54 +30,51 @@ pub struct SGen {
   pub niter: usize,
 }
 
-impl SGen { 
-  pub fn metadata(&self) -> String {
-    let mut s = String::new();
-    s += &format!("# alens: {}\n", self.alens);
-    s += &format!("# turns: {}\n", self.turns);
-    s += &format!("# ntops: {}\n", self.ntops);
-    s += &format!("# ecuts: {}\n", self.ecuts);
-    s
+impl GGen { 
+  fn header() -> &'static str {
+    "alen,tot,time,turns,mode,ntops,ecut"
+  }
+
+  fn metadata(&self) -> Vec<String> {
+    vec![
+      "# kind: sgen".to_owned(),
+      format!("# alens: {}", self.alens),
+      format!("# turns: {}", self.turns),
+      format!("# ntops: {}", self.ntops),
+      format!("# ecuts: {}", self.ecuts),
+    ]
   }
 
   // open, check formatting, append if existing
-  pub fn open_file(&self, out: &Path) -> Result<File, Error> {
-    // create and check if already existed
+  fn open_file(&self, out: &Path) -> Result<File, Error> {
     let existed = out.exists();
-    let metadata = self.metadata();
+    let meta = self.metadata();
     let mut f = OpenOptions::new()
       .create(true)
       .append(true)
       .open(out)?;
 
-    // check metadata if existed
     if existed {
+      // check metadata
       let f = File::open(out)?;
       let reader = BufReader::new(f);
-      let existing_metadata = reader
-        .lines()
-        .take(LEN_METADATA)
-        .filter_map(|x| x.ok())
-        .collect::<Vec<String>>().join("\n") + "\n";
-      if existing_metadata != metadata {
-        return Err(Error::new(
-          ErrorKind::Other,
-          "metadata does not match!"
-        ));
+      let mut lines = reader.lines();
+
+      // check first lines of metadata
+      for meta_line in &meta {
+        if &lines.next().ok_or(Error::new(ErrorKind::Other,"not enough lines!"))?? != meta_line {
+          return Err(Error::new(
+            ErrorKind::Other,
+            "metadata does not match!"
+          ));
+        }
       }
+    } else {
+      // write metadata + header if new
+      writeln!(f, "{}", meta.join("\n"));
+      writeln!(f, "{}", Self::header());
     }
-
-    let mut f = OpenOptions::new()
-      .create(true)
-      .append(true)
-      .open(out)?;
-
-    // write metadata + header if new
-    if !existed {
-      write!(f, "{}", metadata);
-      write!(f, "alen,tot,time,turns,mode,ntops,ecut\n");
-    }
-
+    
     Ok(f)
   }
 
