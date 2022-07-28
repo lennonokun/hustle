@@ -7,8 +7,8 @@ use std::sync::Mutex;
 use rand::prelude::*;
 use rayon::prelude::*;
 
-use super::analysis::HData;
 use super::cache::Cache;
+use crate::analysis::HData;
 use crate::ds::*;
 
 // TODO: also hash gws?

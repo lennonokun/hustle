@@ -2,8 +2,8 @@ use rand::Rng;
 use std::hash::{Hash, Hasher};
 use rayon::prelude::*;
 
-use super::analysis::HData;
 use super::cache::Cache;
+use crate::analysis::HData;
 use crate::ds::*;
 
 // TODO: also hash gws?

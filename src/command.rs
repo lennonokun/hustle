@@ -1,5 +1,6 @@
 use clap::{Parser, Subcommand};
-use super::ds::{DEFWBP, DEFHDP};
+use crate::ds::{DEFWBP, DEFHDP};
+use crate::analysis::Range;
 
 #[derive(Parser)]
 #[clap(version, about)]
@@ -75,30 +76,33 @@ pub enum Commands {
     #[clap(long, default_value_t = 15)]
     ecut: u32,
   },
-//  /// generate general data
-//  Ggen {
-//    /// the number of data points to generate
-//    #[clap(value_parser)]
-//    niter: usize,
-//    /// the file to output data to
-//    #[clap(value_parser)]
-//    out: String,
-//    /// word length
-//    #[clap(long, default_value_t = 5)]
-//    wlen: u8,
-//    /// word bank path
-//    #[clap(long, default_value_t=String::from(DEFWBP))]
-//    wbp: String,
-//    /// heuristic data path
-//    #[clap(long, default_value_t=String::from(DEFHDP))]
-//    hdp: String,
-//    /// the range of ntops to try
-//    #[clap(long)]
-//    ntops: Option<String>,
-//    /// endgame cutoff
-//    #[clap(long)]
-//    ecut: Option<String>,
-//  },
+  /// generate general data
+  Ggen {
+    /// the number of data points to generate
+    #[clap(value_parser)]
+    niter: usize,
+    /// the file to output data to
+    #[clap(value_parser)]
+    out: String,
+    /// word length
+    #[clap(long, default_value_t = 5)]
+    wlen: u8,
+    /// word bank path
+    #[clap(long, default_value_t=String::from(DEFWBP))]
+    wbp: String,
+    /// heuristic data path
+    #[clap(long, default_value_t=String::from(DEFHDP))]
+    hdp: String,
+    /// the range of ntops to try
+    #[clap(long, default_value_t=Range::new(1, 10, true))]
+    ntops: Range<u32>,
+    /// the range of turns to try
+    #[clap(long, default_value_t=Range::new(1, 6, true))]
+    turns: Range<u32>,
+    /// endgame cutoff
+    #[clap(long, default_value_t=Range::new(1, 30, true))]
+    ecut: Range<u32>,
+  },
 }
 
 pub fn cli_parse() -> Cli {

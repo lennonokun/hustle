@@ -86,6 +86,14 @@ For the configuration options, see defaults at `/usr/share/hustle/config.toml`.
     * check lower bounds while building?
     * don't need to sort entire vec
 * see how decision tree would process specific answer(s)?
+### Generation
+* add lbound gen?
+* add hgen?
+* add more things to metadata
+* default to out's settings
+* settings profiles?
+* also check wbanks and hdata?
+* range has option for single
 ### Game
 * why do my ctrl-backspaces get sent as ctrl-h's?
 * why doesn't backtab work?

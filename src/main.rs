@@ -15,14 +15,15 @@ use std::collections::HashMap;
 use std::io::Write;
 use std::path::Path;
 use std::time::Instant;
-use std::ops::{Range, Add};
 
 mod ds;
 use crate::ds::*;
 mod command;
 use crate::command::{cli_parse, Commands};
+mod analysis;
+use analysis::{SGen, Range, HData};
 mod solve;
-use crate::solve::{Cache, SData, HData, State};
+use crate::solve::{Cache, SData, State};
 mod game;
 use crate::game::play;
 
@@ -151,61 +152,52 @@ fn main() {
       turns,
       ecut,
     } => {
-      // get banks + solve data
       let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
       let hd = HData::load(DEFHDP).unwrap();
-      let cache = Cache::new(16, 4);
-      let sd = SData::new(hd, cache, 2, 15);
+      let cache = Cache::new(64, 16);
 
-      // open and write header if new
-      let mut f;
-      if Path::new(&out).exists() {
-        f = OpenOptions::new()
-          .write(true)
-          .append(true)
-          .open(out)
-          .unwrap();
-      } else {
-        f = File::create(out).unwrap();
-        writeln!(&mut f, "alen,tot,time,turns,mode,ntops,ecut,ccut");
-      }
-
-      // solve randomly sized states in parallel
-      let f = Mutex::new(f);
-      let i = Mutex::new(1);
-      (0..niter).into_par_iter().for_each(|_| {
-        // pick aws
-        let mut rng = rand::thread_rng();
-        let alen = rng.gen_range(1..=NWORDS);
-        let aws2 = awb.pick(&mut rng, alen as usize);
-
-        let s = State::new2(
-          gwb.data.clone(),
-          aws2,
-          awb.wlen.into(),
-          turns,
-          false,
-        );
-        let mut sd = sd.clone();
-        if let Some(dt) = s.solve(&mut sd, u32::MAX) {
-          let mut f = f.lock().unwrap();
-          let mut i = i.lock().unwrap();
-          println!("{}. alen: {}, tot: {}", i, alen, dt.get_tot());
-          writeln!(f, "{},{}", alen, dt.get_tot());
-          *i += 1;
-        }
-      });
+      let mut sgen = SGen {
+        gwb,
+        awb,
+        wlen: wlen as u32,
+        hd,
+        cache,
+        alens: Range::new(1, 2309, true),
+        turns: Range::new(6, 6, true),
+        ntops: Range::new(turns, turns, true),
+        ecuts: Range::new(ecut, ecut, true),
+        niter,
+      };
+      sgen.run(Path::new(&out));
     },
-//    Commands::Ggen {
-//      niter,
-//      out,
-//      wlen,
-//      wbp,
-//      hdp,
-//      ntops,
-//      ecut,
-//      ccut,
-//    } => {
-//    },
+    Commands::Ggen {
+      niter,
+      out,
+      wlen,
+      wbp,
+      hdp,
+      ntops,
+      turns,
+      ecut,
+    } => {
+      let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
+      let hd = HData::load(DEFHDP).unwrap();
+      let cache = Cache::new(64, 16);
+
+      let alen_max = awb.len();
+      let mut sgen = SGen {
+        gwb,
+        awb,
+        wlen: wlen as u32,
+        hd,
+        cache,
+        alens: Range::new(1, alen_max, true),
+        turns,
+        ntops,
+        ecuts: ecut,
+        niter,
+      };
+      sgen.run(Path::new(&out));
+    },
   }
 }

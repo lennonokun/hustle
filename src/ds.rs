@@ -268,6 +268,10 @@ impl WBank {
     Ok((WBank { data: gdata, wlen }, WBank { data: adata, wlen }))
   }
 
+  pub fn len(&self) -> usize {
+    self.data.len()
+  }
+
   pub fn new() -> Self {
     WBank {
       data: Vec::new(),
