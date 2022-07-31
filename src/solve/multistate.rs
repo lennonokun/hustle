@@ -333,9 +333,7 @@ mod test {
 //    ]);
 
     let tot = state.solve(&mut md);
-    println!("tot: {:?}", tot);
     assert!(tot.is_some());
-    assert!(false);
   }
 
   #[test]
