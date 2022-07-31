@@ -1,5 +1,7 @@
-use rand::Rng;
 use std::hash::{Hash, Hasher};
+use std::sync::Mutex;
+
+use rand::Rng;
 use rayon::prelude::*;
 
 use super::cache::Cache;
@@ -40,6 +42,12 @@ impl SData {
     let cache = Cache::new(64, 8);
     Self::new(hd, cache, ntops, 15)
   }
+}
+
+#[derive(Clone)]
+struct GivenData {
+  pub dt: Option<DTree>,
+  pub beta: u32,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -159,13 +167,55 @@ impl State {
 
   pub fn fb_counts_vec(&self, gw: &Word) -> Vec<u32> {
     // initialize vec with zeros
-    let mut vec = vec![0; 3usize.pow(self.wlen)];
+    let mut cts = vec![0; 3usize.pow(self.wlen)];
 
     for aw in &self.aws {
-      vec[fb_id(*gw, *aw) as usize] += 1;
+      cts[fb_id(*gw, *aw) as usize] += 1;
     }
 
-    vec
+    cts
+  }
+
+  pub fn letter_evals(&self) -> (Vec<Vec<f64>>, Vec<f64>) {
+    // get letter counts
+    let mut gss = vec![vec![0usize; self.wlen as usize]; 26];
+    let mut ys = vec![0usize; 26];
+    for aw in &self.aws {
+      for i in 0..(self.wlen as usize) {
+        gss[aw.data[i] as usize][i] += 1;
+        if !aw.data[0..i].contains(&aw.data[i]) {
+          ys[aw.data[i] as usize] += 1;
+        }
+      }
+    }
+
+    // maximize entropy (very fuzzy) 
+    let n = self.aws.len() as f64;
+    let gss = gss.iter()
+      .map(|gs| gs.iter()
+           .map(|&g| {let p = (g as f64) / n; p*(1.-p)})
+           .collect())
+      .collect();
+    let ys = ys.iter()
+      .map(|&y| {let p = (y as f64) / n; p*(1.-p)})
+      .collect();
+    (gss, ys)
+  }
+
+  pub fn letter_heuristic(&self, gw: &Word, gss: &Vec<Vec<f64>>, ys: &Vec<f64>) -> f64 {
+    let mut h = 0f64;
+    for i in 0..(self.wlen as usize) {
+      h += gss[gw.data[i] as usize][i];
+      if !gw.data[0..i].contains(&gw.data[i]) {
+        h += ys[gw.data[i] as usize];
+      }
+    }
+
+    if self.aws.contains(&gw) {
+      h * 1.05
+    } else {
+      h
+    }
   }
 
   pub fn heuristic(&self, gw: &Word, sd: &SData) -> f64 {
@@ -173,7 +223,7 @@ impl State {
       self.fb_counts_vec(gw)
         .iter()
         .filter(|x| **x > 0)
-        .map(|x| sd.hd.get_approx(*x as usize).unwrap())
+        .map(|&x| sd.hd.get_approx(x as usize).unwrap())
         .sum()
     } else {
       self.fb_counts(gw)
@@ -190,10 +240,23 @@ impl State {
   }
 
   pub fn top_words(&self, sd: &SData) -> Vec<Word> {
+    // fast heuristic
+    let (gss, ys) = self.letter_evals();
     let mut tups: Vec<(Word, f64)> = self
       .gws.clone()
       .into_par_iter()
-      .map(|gw| (gw, self.heuristic(&gw, sd)))
+      .map(|gw| (gw, self.letter_heuristic(&gw, &gss, &ys)))
+      .collect();
+    tups.sort_by(|(_, f1), (_, f2)| f2.partial_cmp(f1).unwrap());
+    let gws2 = tups.iter()
+      .take(650) // for now
+      .map(|(gw, _)| *gw)
+      .collect::<Vec<Word>>();
+    
+    // slow heuristic
+    let mut tups: Vec<(Word, f64)> = gws2
+      .iter()
+      .map(|gw| (*gw, self.heuristic(&gw, sd)))
       .collect();
     tups.sort_by(|(_, f1), (_, f2)| f1.partial_cmp(f2).unwrap());
     tups
@@ -203,7 +266,7 @@ impl State {
       .collect()
   }
 
-  pub fn solve_given(&self, gw: Word, sd: &mut SData, beta: u32) -> Option<DTree> {
+  pub fn solve_given(&self, gw: Word, sd: &SData, beta: u32) -> Option<DTree> {
     let alen = self.aws.len();
 
     // leaf if guessed
@@ -272,7 +335,7 @@ impl State {
     })
   }
 
-  pub fn solve(&self, sd: &mut SData, beta: u32) -> Option<DTree> {
+  pub fn solve(&self, sd: &SData, beta: u32) -> Option<DTree> {
     let alen = self.aws.len();
 
     // no more turns
@@ -300,34 +363,37 @@ impl State {
       }
     }
     // check cache
-    if !self.hard {
-      if let Some(dt) = sd.cache.read(self) {
-        return Some(dt.clone());
-      }
-    }
+//    if !self.hard {
+//      if let Some(dt) = sd.cache.read(self) {
+//        return Some(dt.clone());
+//      }
+//    }
 
     // finally, check top words
-    let mut dt = None;
-    let mut beta = beta;
-    for w in self.top_words(sd) {
-      if beta <= 2 * alen as u32 {
-        break;
-      }
-      let dt2 = self.solve_given(w, sd, beta);
+    let tws = self.top_words(sd);
+    let gd = Mutex::new(GivenData{dt: None, beta});
+    tws.into_par_iter().for_each(|w| {
+      let gd2 = gd.lock().unwrap().clone();
+      if gd2.beta <= 2 * alen as u32 {return}
+      let dt2 = self.solve_given(w, sd, gd2.beta);
       if let Some(dt2) = dt2 {
-        if dt2.get_tot() < beta {
-          beta = dt2.get_tot();
-          dt = Some(dt2);
+        let mut gd = gd.lock().unwrap();
+        if dt2.get_tot() < gd.beta {
+          gd.beta = dt2.get_tot();
+          gd.dt = Some(dt2);
         }
       }
-    }
+    });
+
+    let gd = gd.into_inner().unwrap();
+    let dt = gd.dt;
 
     // add cache
-    if !self.hard {
-      if let Some(ref dt) = dt {
-        sd.cache.add(self.clone(), dt.clone());
-      }
-    }
+//    if !self.hard {
+//      if let Some(ref dt) = dt {
+//        sd.cache.add(self.clone(), dt.clone());
+//      }
+//    }
 
     dt
   }
