@@ -173,6 +173,20 @@ impl Feedback {
     Feedback { g_bs, y_bs, wlen }
   }
 
+  pub fn to_id(&self) -> u32 {
+    let mut id = 0;
+    let mut w = 1;
+    for i in 0..self.wlen {
+      if self.get_g(i) {
+        id += 2*w;
+      } else if self.get_y(i) {
+        id += w;
+      }
+      w *= 3;
+    }
+    id
+  }
+
   pub fn to_string(&self) -> String {
     let mut out = String::new();
     for i in 0..self.wlen {
@@ -365,12 +379,40 @@ impl DTree {
         let mut indent2 = indent.clone();
         indent2.push(' ');
         let mut items: Vec<(&Feedback, &DTree)> = fbmap.iter().collect();
-        items.sort_by_key(|(_fb, dt)| -(dt.get_tot() as i32));
+        items.sort_by_key(|(fb, dt)| fb.to_id());
         for (fb, dt) in items {
           writeln!(out, "{}{}{}", indent2, fb.to_string(), n);
           dt.pprint(out, &indent2, n + 1);
         }
       }
     }
+  }
+}
+
+#[cfg(test)]
+mod test {
+  use super::*;
+
+  #[test]
+  pub fn feedback() {
+    let w1 = Word::from_str("salve").unwrap();
+    let w2 = Word::from_str("raise").unwrap();
+    let w3 = Word::from_str("cabal").unwrap();
+    let w4 = Word::from_str("antic").unwrap();
+
+    let fb1 = Feedback::from(w1, w2).unwrap();
+    let fb2 = Feedback::from(w3, w4).unwrap();
+    let id1 = fb_id(w1, w2);
+    let id2 = fb_id(w3, w4);
+
+    assert_eq!(fb1, Feedback::from_str("ygbbg").unwrap());
+    assert_eq!(fb2, Feedback::from_str("yybbb").unwrap());
+    assert_eq!(id1, 1*1 + 2*3 + 2*81);
+    assert_eq!(id2, 1*1 + 1*3);   
+
+    assert_eq!(fb1, Feedback::from_id(id1, 5));
+    assert_eq!(fb2, Feedback::from_id(id2, 5));
+    assert_eq!(id1, fb1.to_id());
+    assert_eq!(id2, fb2.to_id());
   }
 }
