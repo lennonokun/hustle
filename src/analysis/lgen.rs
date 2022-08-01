@@ -12,7 +12,6 @@ use rayon::prelude::*;
 
 use crate::ds::*;
 use crate::solve::{State, SData, HData, Cache};
-use super::range::Range;
 
 // TODO default settings to out's settings if existed
 

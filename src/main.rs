@@ -18,7 +18,7 @@ use crate::ds::*;
 mod command;
 use crate::command::{cli_parse, Commands};
 mod analysis;
-use analysis::{LGen, GGen, Range};
+use analysis::{LGen, GGen};
 mod solve;
 use crate::solve::{Cache, SData, State, HData};
 mod game;

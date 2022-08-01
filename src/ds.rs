@@ -1,9 +1,16 @@
-use rand::prelude::*;
-use std::collections::HashMap;
+use core::str::FromStr;
 use std::fmt;
+use std::collections::HashMap;
 use std::fs::File;
-use std::io::{BufRead, BufReader, Result, Write};
+use std::io::{self, BufRead, BufReader, Write, Error, ErrorKind};
 use std::path::Path;
+
+use rand::prelude::*;
+use rand::distributions::Distribution;
+use rand::distributions::uniform::{Uniform, SampleUniform};
+use rayon::prelude::*;
+use lazy_static::lazy_static;
+use regex::Regex;
 
 pub const NLETS: usize = 5;
 pub const NGUESSES: usize = 6;
@@ -258,7 +265,7 @@ pub struct WBank {
 }
 
 impl WBank {
-  pub fn from2<P>(p: P, wlen: u8) -> Result<(Self, Self)>
+  pub fn from2<P>(p: P, wlen: u8) -> io::Result<(Self, Self)>
   where
     P: AsRef<Path>, {
     let file = File::open(p)?;
@@ -385,6 +392,67 @@ impl DTree {
           dt.pprint(out, &indent2, n + 1);
         }
       }
+    }
+  }
+}
+
+pub struct Range<X> where X: Copy + SampleUniform {
+  /// lower bound
+  pub a: X,
+  /// upper bound
+  pub b: X,
+  /// inclusive flag
+  pub inc: bool,
+  /// distribution
+  pub dist: Uniform<X>,
+}
+
+impl<X> Range<X> where X: Copy + SampleUniform {
+  pub fn new(a: X, b: X, inc: bool) -> Self {
+    let dist = if inc {
+      Uniform::new_inclusive(a, b)
+    } else {
+      Uniform::new(a, b)
+    };
+    Self {a, b, inc, dist}
+  }
+
+  pub fn sample(&self, rng: &mut ThreadRng) -> X {
+    self.dist.sample(rng)
+  }
+}
+
+impl<X> FromStr for Range<X>
+where X: Copy + FromStr + SampleUniform {
+  type Err = Error;
+  
+  fn from_str(s: &str) -> Result<Self, Self::Err> {
+    lazy_static! {
+      static ref RE_UNIF: Regex = Regex::new(r"^(\d+)..(=?)(\d+)$").unwrap();
+    }
+
+    if let Some(caps) = RE_UNIF.captures(s) {
+      // FOR NOW UNWRAP
+      let a: X = caps.get(1).unwrap().as_str().parse().ok().unwrap();
+      let b: X = caps.get(3).unwrap().as_str().parse().ok().unwrap();
+      let inc = !caps.get(2).unwrap().as_str().is_empty();
+      Ok(Self::new(a, b, inc))
+    } else {
+      Err(Error::new(
+        ErrorKind::Other,
+        "metadata does not match!"
+      ))
+    }
+  }
+}
+
+impl<X> fmt::Display for Range<X>
+where X: Copy + fmt::Display + SampleUniform {
+  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    if self.inc {
+      write!(f, "{}..={}", self.a, self.b)
+    } else {
+      write!(f, "{}..{}", self.a, self.b)
     }
   }
 }
