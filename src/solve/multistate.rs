@@ -313,7 +313,7 @@ mod test {
   fn solve_blah() {
     let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
     let mut state = MState::new(gwb.data, vec![awb.data; 6], 5, 6, false);
-    let mut md = MData::new2(7, 5);
+    let mut md = MData::new2(5, 5);
 
     state = state.fb_follow(Word::from_str("salet").unwrap(), vec![
       Feedback::from_str("bgbgb").unwrap(),

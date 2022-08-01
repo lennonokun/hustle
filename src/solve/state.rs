@@ -21,27 +21,31 @@ pub struct SData {
   pub hd: HData,
   /// cache
   pub cache: Arc<Mutex<Cache>>,
-  /// number of top words to try
-  pub ntops: u32,
+  /// number of top words to try using soft heuristic
+  pub ntops1: u32,
+  /// number of top words to try using hard heuristic
+  pub ntops2: u32,
   /// number of remaining words makes it "endgame"
-  pub endgcutoff: u32,
+  pub ecut: u32,
 }
 
 impl SData {
-  pub fn new(hd: HData, cache: Cache, ntops: u32, endgcutoff: u32) -> Self {
+  pub fn new(hd: HData, cache: Cache, ntops1: u32,
+             ntops2: u32, ecut: u32) -> Self {
     let cache = Arc::new(Mutex::new(cache));
     Self {
       hd,
       cache,
-      ntops,
-      endgcutoff,
+      ntops1,
+      ntops2,
+      ecut,
     }
   }
 
-  pub fn new2(ntops: u32) -> Self {
+  pub fn new2(ntops1: u32, ntops2: u32) -> Self {
     let hd = HData::load(DEFHDP).unwrap();
     let cache = Cache::new(64, 8);
-    Self::new(hd, cache, ntops, 15)
+    Self::new(hd, cache, ntops1, ntops2, 15)
   }
 }
 
@@ -250,7 +254,7 @@ impl State {
       .collect();
     tups.sort_by(|(_, f1), (_, f2)| f2.partial_cmp(f1).unwrap());
     let gws2 = tups.iter()
-      .take(650) // for now
+      .take(sd.ntops1 as usize)
       .map(|(gw, _)| *gw)
       .collect::<Vec<Word>>();
     
@@ -263,7 +267,7 @@ impl State {
     tups
       .iter()
       .map(|(gw, _)| *gw)
-      .take(sd.ntops as usize)
+      .take(sd.ntops2 as usize)
       .collect()
   }
 
@@ -356,7 +360,7 @@ impl State {
       return None;
     }
     // check endgame if viable
-    if alen <= sd.endgcutoff as usize {
+    if alen <= sd.ecut as usize {
       for aw in self.aws.iter() {
         if self.fb_counts(aw).values().all(|c| *c == 1) {
           return self.solve_given(*aw, sd, beta);
@@ -427,7 +431,7 @@ mod test {
   // takes a while
   // #[test]
   fn simple_solve() {
-    let mut sd = SData::new2(15);
+    let mut sd = SData::new2(3, 300);
     let state1 = State::new3();
     let mut state2 = State::new3();
     state2.hard = true;
@@ -438,7 +442,7 @@ mod test {
 
   #[test]
   fn impossible_solve() {
-    let mut sd = SData::new2(2);
+    let mut sd = SData::new2(2, 200);
     let mut state = State::new3();
     state.n = 2;
 

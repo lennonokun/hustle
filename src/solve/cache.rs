@@ -86,7 +86,7 @@ mod test {
 
   #[test]
   fn add_read() {
-    let mut sd = SData::new2(2);
+    let mut sd = SData::new2(2, 200);
     let state = State::random(20);
     let dt = state.solve(&sd, u32::MAX).unwrap();
 

@@ -22,14 +22,15 @@ pub struct GGen {
   pub cache: Cache, // TODO using the same cache interferes with time results
   pub alens: Range<usize>,
   pub turns: Range<u32>,
-  pub ntops: Range<u32>,
+  pub ntops1: Range<u32>,
+  pub ntops2: Range<u32>,
   pub ecuts: Range<u32>,
   pub niter: usize,
 }
 
 impl GGen { 
   fn header() -> &'static str {
-    "alen,tot,time,turns,mode,ntops,ecut"
+    "alen,tot,time,turns,mode,ntops1,ntops2,ecut"
   }
 
   fn metadata(&self) -> Vec<String> {
@@ -37,7 +38,8 @@ impl GGen {
       "# kind: sgen".to_owned(),
       format!("# alens: {}", self.alens),
       format!("# turns: {}", self.turns),
-      format!("# ntops: {}", self.ntops),
+      format!("# ntops1: {}", self.ntops1),
+      format!("# ntops2: {}", self.ntops2),
       format!("# ecuts: {}", self.ecuts),
     ]
   }
@@ -84,14 +86,16 @@ impl GGen {
       let mut rng = rand::thread_rng();
       let alen = self.alens.sample(&mut rng);
       let turns = self.turns.sample(&mut rng);
-      let ntops = self.ntops.sample(&mut rng);
+      let ntops1 = self.ntops1.sample(&mut rng);
+      let ntops2 = self.ntops2.sample(&mut rng);
       let ecut = self.ecuts.sample(&mut rng);
       let hard = false; // FOR NOW ALWAYS EASY BC CACHE DOESNT CHECK GWS
 
       // make state
       let aws2 = self.awb.pick(&mut rng, alen as usize);
       let s = State::new2(self.gwb.data.clone(), aws2, self.wlen, turns as u32, false);
-      let mut sd = SData::new(self.hd.clone(), self.cache.clone(), ntops as u32, ecut as u32);
+      let mut sd = SData::new(self.hd.clone(), self.cache.clone(),
+                              ntops1 as u32, ntops2 as u32, ecut as u32);
 
       // solve and time
       let instant = Instant::now();
@@ -103,13 +107,14 @@ impl GGen {
       let mut i = i.lock().unwrap();
       let mut f = f.lock().unwrap();
       let s = format!(
-        "{},{},{},{},{},{},{}",
+        "{},{},{},{},{},{},{},{}",
         alen,
         tot,
         time,
         turns,
         if hard { "H" } else { "E" },
-        ntops,
+        ntops1,
+        ntops2,
         ecut,
       );
       println!("{}. {}", *i, s);

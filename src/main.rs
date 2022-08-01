@@ -56,7 +56,8 @@ fn main() {
       hdp,
       hard,
       wlen,
-      ntops,
+      ntops1,
+      ntops2,
       turns,
       ecut,
     } => {
@@ -65,7 +66,7 @@ fn main() {
       let hd = HData::load(&hdp).unwrap();
       let cache = Cache::new(64, 16);
       let mut state = State::new2(gwb.data, awb.data, wlen.into(), turns, hard);
-      let mut sd = SData::new(hd, cache, ntops, ecut);
+      let mut sd = SData::new(hd, cache, ntops1, ntops2, ecut);
 
       // parse gamestate
       let mut w: Option<Word> = None;
@@ -154,7 +155,8 @@ fn main() {
       wlen,
       wbp,
       hdp,
-      ntops,
+      ntops1,
+      ntops2,
       turns,
       ecut,
     } => {
@@ -163,7 +165,7 @@ fn main() {
       let cache = Cache::new(64, 16);
       let alen_max = awb.len();
 
-      let mut sgen = GGen {
+      let mut hgen = GGen {
         gwb,
         awb,
         wlen: wlen as u32,
@@ -171,11 +173,12 @@ fn main() {
         cache,
         alens: Range::new(1, alen_max, true),
         turns: Range::new(6, 6, true),
-        ntops: Range::new(turns, turns, true),
+        ntops1: Range::new(ntops1, ntops1, true),
+        ntops2: Range::new(ntops2, ntops2, true),
         ecuts: Range::new(ecut, ecut, true),
         niter,
       };
-      sgen.run(Path::new(&out));
+      hgen.run(Path::new(&out));
     },
     #[cfg(feature = "gen")]
     Commands::Ggen {
@@ -185,7 +188,8 @@ fn main() {
       wbp,
       hdp,
       alens,
-      ntops,
+      ntops1,
+      ntops2,
       turns,
       ecut,
     } => {
@@ -202,7 +206,8 @@ fn main() {
         cache,
         alens,
         turns,
-        ntops,
+        ntops1,
+        ntops2,
         ecuts: ecut,
         niter,
       };
@@ -217,7 +222,8 @@ fn main() {
       wbp,
       hdp,
       alens,
-      ntops,
+      ntops1,
+      ntops2,
       turns,
       ecut,
     } => {
@@ -236,7 +242,8 @@ fn main() {
         cache,
         alens,
         turns,
-        ntops,
+        ntops1,
+        ntops2,
         ecut,
       };
       lgen.run(Path::new(&out));

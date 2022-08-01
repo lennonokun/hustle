@@ -25,7 +25,8 @@ pub struct LGen {
   pub cache: Cache, // TODO using the same cache interferes with time results
   pub turns: u32,
   pub alens: Range<usize>,
-  pub ntops: u32,
+  pub ntops1: u32,
+  pub ntops2: u32,
   pub ecut: u32,
   pub niter: usize,
   pub step: usize,
@@ -42,7 +43,8 @@ impl LGen {
       format!("# alens: {}", self.alens),
       format!("# step: {}", self.step),
       format!("# turns: {}", self.turns),
-      format!("# ntops: {}", self.ntops),
+      format!("# ntops1: {}", self.ntops1),
+      format!("# ntops2: {}", self.ntops2),
       format!("# ecut: {}", self.ecut),
       format!("# step: {}", self.step),
     ]
@@ -108,7 +110,8 @@ impl LGen {
         // make state
         let aws2 = self.awb.pick(&mut rng, alen as usize);
         let s = State::new2(self.gwb.data.clone(), aws2, self.wlen, self.turns as u32, false);
-        let mut sd = SData::new(self.hd.clone(), self.cache.clone(), self.ntops as u32, self.ecut as u32);
+        let mut sd = SData::new(self.hd.clone(), self.cache.clone(),
+                                self.ntops1 as u32, self.ntops2, self.ecut as u32);
 
         // solve and time
         let dt = s.solve(&sd, u32::MAX);
