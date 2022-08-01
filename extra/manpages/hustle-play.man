@@ -1,4 +1,4 @@
-.TH hustle-solve 1 "18 July 2022" "version 1.3.0" "User Commands"
+.TH hustle-solve 1 "1 August 2022" "version 1.3.0" "User Commands"
 .SH NAME
 hustle-play \- Play hustle
 .SH SYNOPSIS

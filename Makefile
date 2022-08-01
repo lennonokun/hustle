@@ -28,6 +28,12 @@ install: target/release/hustle
 		| sudo dd status=none of="/usr/share/man/man1/hustle-solve.1.gz"
 	gzip -c "extra/manpages/hustle-play.man" \
 		| sudo dd status=none of="/usr/share/man/man1/hustle-play.1.gz"
+	gzip -c "extra/manpages/hustle-hgen.man" \
+		| sudo dd status=none of="/usr/share/man/man1/hustle-hgen.1.gz"
+	gzip -c "extra/manpages/hustle-ggen.man" \
+		| sudo dd status=none of="/usr/share/man/man1/hustle-ggen.1.gz"
+	gzip -c "extra/manpages/hustle-lgen.man" \
+		| sudo dd status=none of="/usr/share/man/man1/hustle-lgen.1.gz"
 	# misc
 	sudo install -Dm0644 -t "/usr/share/licenses/hustle" "LICENSE"
 	sudo install -Dm0644 -t "/usr/share/doc/hustle" "README.md"
