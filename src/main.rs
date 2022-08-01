@@ -8,11 +8,8 @@ use rand::distributions::Uniform;
 use regex::Regex;
 use rayon::prelude::*;
 
-use std::sync::Mutex;
 use std::str::FromStr;
 use std::fs::{File, OpenOptions};
-use std::collections::HashMap;
-use std::io::Write;
 use std::path::Path;
 use std::time::Instant;
 
@@ -21,9 +18,9 @@ use crate::ds::*;
 mod command;
 use crate::command::{cli_parse, Commands};
 mod analysis;
-use analysis::{LGen, GGen, Range, HData};
+use analysis::{LGen, GGen, Range};
 mod solve;
-use crate::solve::{Cache, SData, State};
+use crate::solve::{Cache, SData, State, HData};
 mod game;
 use crate::game::play;
 

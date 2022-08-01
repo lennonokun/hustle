@@ -1,5 +1,3 @@
-pub mod hdata;
-pub use hdata::HData;
 pub mod range;
 pub use range::Range;
 pub mod ggen;

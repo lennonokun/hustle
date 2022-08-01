@@ -10,9 +10,7 @@ use rand::distributions::{Distribution, Uniform};
 use rayon::prelude::*;
 
 use crate::ds::*;
-use crate::solve::{State, SData, Cache};
-
-use super::hdata::HData;
+use crate::solve::{State, SData, HData, Cache};
 use super::range::Range;
 
 // TODO default settings to out's settings if existed

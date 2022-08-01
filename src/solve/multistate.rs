@@ -8,7 +8,7 @@ use rand::prelude::*;
 use rayon::prelude::*;
 
 use super::cache::Cache;
-use crate::analysis::HData;
+use super::hdata::HData;
 use crate::ds::*;
 
 // TODO: also hash gws?
