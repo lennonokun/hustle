@@ -17,11 +17,17 @@ mod ds;
 use crate::ds::*;
 mod command;
 use crate::command::{cli_parse, Commands};
+#[cfg(feature = "gen")]
 mod analysis;
+#[cfg(feature = "gen")]
 use analysis::{LGen, GGen};
+#[cfg(feature = "solve")]
 mod solve;
+#[cfg(feature = "solve")]
 use crate::solve::{Cache, SData, State, HData};
+#[cfg(feature = "play")]
 mod game;
+#[cfg(feature = "play")]
 use crate::game::play;
 
 
@@ -36,9 +42,11 @@ fn main() {
   let cli = cli_parse();
 
   match cli.command {
+    #[cfg(feature = "play")]
     Commands::Play {} => {
       play();
     }
+    #[cfg(feature = "solve")]
     Commands::Solve {
       gamestate,
       elist,
@@ -139,6 +147,7 @@ fn main() {
         }
       }
     }
+    #[cfg(feature = "gen")]
     Commands::Hgen {
       niter,
       out,
@@ -168,6 +177,7 @@ fn main() {
       };
       sgen.run(Path::new(&out));
     },
+    #[cfg(feature = "gen")]
     Commands::Ggen {
       niter,
       out,
@@ -198,6 +208,7 @@ fn main() {
       };
       ggen.run(Path::new(&out));
     },
+    #[cfg(feature = "gen")]
     Commands::Lgen {
       niter,
       step,

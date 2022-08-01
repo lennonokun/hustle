@@ -1,7 +1,13 @@
-target/release/hustle: $(shell find src)
-	cargo build -r
+# default features are play and solve
+FEATURES := "play,solve"
 
-# is there a better way than repeating sudo
+# force rebuild, because cargo is smart and FEATURES might be different
+.PHONY: target/release/hustle
+target/release/hustle: $(shell find src)
+	$(info $(FEATURES))
+	cargo build --release --features "$(FEATURES)"
+
+.PHONY: install
 install: target/release/hustle
 	# binary
 	sudo install -Dm0755 -t "/usr/bin" "target/release/hustle"
@@ -21,6 +27,7 @@ install: target/release/hustle
 	sudo install -Dm0644 -t "/usr/share/licenses/hustle" "LICENSE"
 	sudo install -Dm0644 -t "/usr/share/doc/hustle" "README.md"
 
+.PHONY: uninstall
 uninstall:
 	# binary
 	sudo rm "/usr/bin/hustle"

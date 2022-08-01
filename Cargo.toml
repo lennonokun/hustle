@@ -14,20 +14,35 @@ readme = "README.md"
 license = "MIT"
 edition = "2021"
 
-[profile.release]
-opt-level = 3
+[features]
+default = []
+play = ["dep:cursive", "dep:serde", "dep:indexmap", "dep:config"]
+solve = ["dep:rayon"]
+gen = ["solve"]
 
 [dependencies]
-rayon = "1.5.3"
-rand = "0.8.5"
-cursive = {version="0.18", features=["termion-backend"]}
 clap = {version="3.2.7", features=["derive"]}
-serde = {version="1.0.139", features=["derive"]}
+rayon = {version="1.5.3", optional=true}
+indexmap = {version="1.9.1", optional=true}
 lazy_static = "1.4.0"
-config = {version="0.13.1", features=["toml", "preserve_order"], default-features=false}
-indexmap = "1.9.1"
+rand = "0.8.5"
 regex = "1.6.0"
-# log = "0.4"
+
+[dependencies.serde]
+version="1.0.139"
+features=["derive"]
+optional=true
+
+[dependencies.cursive]
+version="0.18"
+features=["termion-backend"]
+optional=true
+
+[dependencies.config]
+version="0.13.1"
+default-features=false
+features=["toml", "preserve_order"]
+optional=true
 
 [[bin]]
 name = "hustle"

@@ -11,8 +11,10 @@ pub struct Cli {
 #[derive(Subcommand)]
 pub enum Commands {
   /// play hustle
+  #[cfg(feature = "play")]
   Play,
   /// solve game state
+  #[cfg(feature = "solve")]
   Solve {
     /// the game state to solve from
     #[clap(value_parser, default_value = "")]
@@ -49,6 +51,7 @@ pub enum Commands {
     ecut: u32,
   },
   /// generate heuristic data
+  #[cfg(feature = "gen")]
   Hgen {
     /// the number of data points to generate
     #[clap(value_parser)]
@@ -76,6 +79,7 @@ pub enum Commands {
     ecut: u32,
   },
   /// generate general data
+  #[cfg(feature = "gen")]
   Ggen {
     /// the number of data points to generate
     #[clap(value_parser)]
@@ -106,6 +110,7 @@ pub enum Commands {
     ecut: Range<u32>,
   },
   /// generate general data
+  #[cfg(feature = "gen")]
   Lgen {
     /// the number of tries at each alen
     #[clap(value_parser)]
