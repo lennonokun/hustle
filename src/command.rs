@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use crate::ds::{Range, DEFWBP, DEFHDP};
+use crate::ds::{Range, DEFWBP, DEFHDP, DEFLDP};
 
 #[derive(Parser)]
 #[clap(version, about)]
@@ -37,6 +37,9 @@ pub enum Commands {
     /// heuristic data path
     #[clap(long, default_value_t=String::from(DEFHDP))]
     hdp: String,
+    /// lower bounds data path
+    #[clap(long, default_value_t=String::from(DEFLDP))]
+    ldp: String,
     /// play in hard mode
     #[clap(long)]
     hard: bool,
@@ -71,6 +74,9 @@ pub enum Commands {
     /// heuristic data path
     #[clap(long, default_value_t=String::from(DEFHDP))]
     hdp: String,
+    /// lower bounds data path
+    #[clap(long, default_value_t=String::from(DEFLDP))]
+    ldp: String,
     /// the number of top soft heuristic words to try
     #[clap(long, default_value_t=500)]
     ntops1: u32,
@@ -102,6 +108,9 @@ pub enum Commands {
     /// heuristic data path
     #[clap(long, default_value_t=String::from(DEFHDP))]
     hdp: String,
+    /// lower bounds data path
+    #[clap(long, default_value_t=String::from(DEFLDP))]
+    ldp: String,
     /// the range of answer lengths to try (defaults to all)
     #[clap(long)]
     alens: Option<Range<usize>>,
@@ -111,7 +120,7 @@ pub enum Commands {
     /// the range of number of top hard heuristic words to try
     #[clap(long, default_value_t=Range::new(1, 10, true))]
     ntops2: Range<u32>,
-    /// the maximum number of turns to solve in
+    /// the range of maximum numbers of turns to solve in
     #[clap(long, default_value_t=Range::new(1, 6, true))]
     turns: Range<u32>,
     /// endgame cutoff
@@ -136,8 +145,11 @@ pub enum Commands {
     /// word bank path
     #[clap(long, default_value_t=String::from(DEFWBP))]
     wbp: String,
-    /// heuristic data path
+    /// lower bounds data path
     #[clap(long, default_value_t=String::from(DEFHDP))]
+    ldp: String,
+    /// heuristic data path
+    #[clap(long, default_value_t=String::from(DEFLDP))]
     hdp: String,
     /// the range of answer lengths to try
     #[clap(long)]

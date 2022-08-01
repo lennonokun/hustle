@@ -5,7 +5,7 @@ use rand::Rng;
 use rayon::prelude::*;
 
 use super::cache::Cache;
-use super::hdata::HData;
+use super::adata::AData;
 use crate::ds::*;
 
 // TODO: also hash gws?
@@ -17,8 +17,8 @@ const MAX_TWOSOLVE: u32 = 20;
 /// solve data
 #[derive(Debug, Clone)]
 pub struct SData {
-  /// heuristic data
-  pub hd: HData,
+  /// analysis data
+  pub adata: AData,
   /// cache
   pub cache: Arc<Mutex<Cache>>,
   /// number of top words to try using soft heuristic
@@ -30,11 +30,11 @@ pub struct SData {
 }
 
 impl SData {
-  pub fn new(hd: HData, cache: Cache, ntops1: u32,
+  pub fn new(adata: AData, cache: Cache, ntops1: u32,
              ntops2: u32, ecut: u32) -> Self {
     let cache = Arc::new(Mutex::new(cache));
     Self {
-      hd,
+      adata,
       cache,
       ntops1,
       ntops2,
@@ -43,9 +43,9 @@ impl SData {
   }
 
   pub fn new2(ntops1: u32, ntops2: u32) -> Self {
-    let hd = HData::load(DEFHDP).unwrap();
+    let adata = AData::load(DEFHDP, DEFLDP).unwrap();
     let cache = Cache::new(64, 8);
-    Self::new(hd, cache, ntops1, ntops2, 15)
+    Self::new(adata, cache, ntops1, ntops2, 15)
   }
 }
 
@@ -228,12 +228,12 @@ impl State {
       self.fb_counts_vec(gw)
         .iter()
         .filter(|x| **x > 0)
-        .map(|&x| sd.hd.get_approx(x as usize).unwrap())
+        .map(|&x| sd.adata.get_approx(x as usize).unwrap())
         .sum()
     } else {
       self.fb_counts(gw)
         .iter()
-        .map(|(_, n)| sd.hd.get_approx(*n as usize).unwrap())
+        .map(|(_, n)| sd.adata.get_approx(*n as usize).unwrap())
         .sum()
     };
 

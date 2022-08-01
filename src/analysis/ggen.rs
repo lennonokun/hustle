@@ -10,7 +10,7 @@ use rand::distributions::{Distribution, Uniform};
 use rayon::prelude::*;
 
 use crate::ds::*;
-use crate::solve::{State, SData, HData, Cache};
+use crate::solve::{State, SData, AData, Cache};
 
 // TODO default settings to out's settings if existed
 
@@ -18,7 +18,7 @@ pub struct GGen {
   pub gwb: WBank,
   pub awb: WBank,
   pub wlen: u32,
-  pub hd: HData,
+  pub adata: AData,
   pub cache: Cache, // TODO using the same cache interferes with time results
   pub alens: Range<usize>,
   pub turns: Range<u32>,
@@ -94,7 +94,7 @@ impl GGen {
       // make state
       let aws2 = self.awb.pick(&mut rng, alen as usize);
       let s = State::new2(self.gwb.data.clone(), aws2, self.wlen, turns as u32, false);
-      let mut sd = SData::new(self.hd.clone(), self.cache.clone(),
+      let mut sd = SData::new(self.adata.clone(), self.cache.clone(),
                               ntops1 as u32, ntops2 as u32, ecut as u32);
 
       // solve and time

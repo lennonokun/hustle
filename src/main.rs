@@ -6,7 +6,6 @@ use lazy_static::lazy_static;
 use rand::Rng;
 use rand::distributions::Uniform;
 use regex::Regex;
-use rayon::prelude::*;
 
 use std::str::FromStr;
 use std::fs::{File, OpenOptions};
@@ -24,7 +23,7 @@ use analysis::{LGen, GGen};
 #[cfg(feature = "solve")]
 mod solve;
 #[cfg(feature = "solve")]
-use crate::solve::{Cache, SData, State, HData};
+use crate::solve::{Cache, SData, State, AData};
 #[cfg(feature = "play")]
 mod game;
 #[cfg(feature = "play")]
@@ -54,6 +53,7 @@ fn main() {
       dt,
       wbp,
       hdp,
+      ldp,
       hard,
       wlen,
       ntops1,
@@ -63,10 +63,10 @@ fn main() {
     } => {
       // create state + sdata
       let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
-      let hd = HData::load(&hdp).unwrap();
+      let adata = AData::load(&hdp, &ldp).unwrap();
       let cache = Cache::new(64, 16);
       let mut state = State::new2(gwb.data, awb.data, wlen.into(), turns, hard);
-      let mut sd = SData::new(hd, cache, ntops1, ntops2, ecut);
+      let mut sd = SData::new(adata, cache, ntops1, ntops2, ecut);
 
       // parse gamestate
       let mut w: Option<Word> = None;
@@ -155,13 +155,14 @@ fn main() {
       wlen,
       wbp,
       hdp,
+      ldp,
       ntops1,
       ntops2,
       turns,
       ecut,
     } => {
       let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
-      let hd = HData::load(DEFHDP).unwrap();
+      let adata = AData::load(&hdp, &ldp).unwrap();
       let cache = Cache::new(64, 16);
       let alen_max = awb.len();
 
@@ -169,7 +170,7 @@ fn main() {
         gwb,
         awb,
         wlen: wlen as u32,
-        hd,
+        adata,
         cache,
         alens: Range::new(1, alen_max, true),
         turns: Range::new(6, 6, true),
@@ -187,6 +188,7 @@ fn main() {
       wlen,
       wbp,
       hdp,
+      ldp,
       alens,
       ntops1,
       ntops2,
@@ -194,7 +196,7 @@ fn main() {
       ecut,
     } => {
       let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
-      let hd = HData::load(DEFHDP).unwrap();
+      let adata = AData::load(&hdp, &ldp).unwrap();
       let cache = Cache::new(64, 16);
 
       let alens = alens.unwrap_or(Range::new(1, awb.len(), true));
@@ -202,7 +204,7 @@ fn main() {
         gwb,
         awb,
         wlen: wlen as u32,
-        hd,
+        adata,
         cache,
         alens,
         turns,
@@ -221,6 +223,7 @@ fn main() {
       wlen,
       wbp,
       hdp,
+      ldp,
       alens,
       ntops1,
       ntops2,
@@ -228,7 +231,7 @@ fn main() {
       ecut,
     } => {
       let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
-      let hd = HData::load(DEFHDP).unwrap();
+      let adata = AData::load(&hdp, &ldp).unwrap();
       let cache = Cache::new(64, 16);
 
       let alens = alens.unwrap_or(Range::new(1, awb.len(), true));
@@ -238,7 +241,7 @@ fn main() {
         gwb,
         awb,
         wlen: wlen as u32,
-        hd,
+        adata,
         cache,
         alens,
         turns,

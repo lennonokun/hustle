@@ -4,21 +4,20 @@ use std::path::Path;
 
 use crate::ds::*;
 
-// loaded approximated heuristics
-// does this really need to be f64
+/// analysis data, including heuristics and lower bounds
 #[derive(Debug, Clone)]
-pub struct HData {
+pub struct AData {
+  // does this really need to be f64
   approxs: Vec<f64>,
   lbounds: Vec<u32>,
 }
 
-impl HData {
-  pub fn load<P>(p1: &P) -> Result<Self>
+impl AData {
+  pub fn load<P>(hdp: &P, ldp: &P) -> Result<Self>
   where P: AsRef<Path> + ?Sized, {
-    let p2 = "/home/lokun/code/hustle/data/lbs.csv";
-    let reader1 = BufReader::new(File::open(p1)?);
-    let reader2 = BufReader::new(File::open(p2)?);
-    let approxs = reader1
+    let hd_reader = BufReader::new(File::open(hdp)?);
+    let ld_reader = BufReader::new(File::open(ldp)?);
+    let approxs = hd_reader
       .lines()
       .skip(1)
       .filter_map(|s| {
@@ -27,7 +26,7 @@ impl HData {
         s.parse::<f64>().ok()
       })
       .collect::<Vec<f64>>();
-    let lbounds = reader2
+    let lbounds = ld_reader
       .lines()
       .skip(1)
       .filter_map(|s| {

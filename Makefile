@@ -19,6 +19,7 @@ install: target/release/hustle
 	sudo install -Dm0644 -t "/usr/share/hustle" "data/bank1.csv"
 	sudo install -Dm0644 -t "/usr/share/hustle" "data/bank2.csv"
 	sudo install -Dm0644 -t "/usr/share/hustle" "data/happrox.csv"
+	sudo install -Dm0644 -t "/usr/share/hustle" "data/lbounds.csv"
 	sudo install -Dm0644 -t "/usr/share/hustle" "data/config.toml"
 	# manpages
 	gzip -c "extra/manpages/hustle.man" \

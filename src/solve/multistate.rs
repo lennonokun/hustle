@@ -8,7 +8,7 @@ use rand::prelude::*;
 use rayon::prelude::*;
 
 use super::cache::Cache;
-use super::hdata::HData;
+use super::adata::AData;
 use crate::ds::*;
 
 // TODO: also hash gws?
@@ -18,8 +18,8 @@ type MFbMap<T> = HashMap<Vec<Feedback>, T>;
 /// solve data
 #[derive(Debug, Clone)]
 pub struct MData {
-  /// heuristic data
-  pub hd: HData,
+  /// analysis data
+  pub adata: AData,
   /// cache
   pub cache: Cache,
   /// number of top guesses to try
@@ -31,10 +31,10 @@ pub struct MData {
 }
 
 impl MData {
-  pub fn new(hd: HData, cache: Cache, nguesses: u32,
+  pub fn new(adata: AData, cache: Cache, nguesses: u32,
              nanswers: u32, endgcutoff: u32) -> Self {
     Self {
-      hd,
+      adata,
       cache,
       nguesses,
       nanswers,
@@ -43,9 +43,9 @@ impl MData {
   }
 
   pub fn new2(nguesses: u32, nanswers: u32) -> Self {
-    let hd = HData::load(DEFHDP).unwrap();
+    let adata = AData::load(DEFHDP, DEFLDP).unwrap();
     let cache = Cache::new(64, 8);
-    Self::new(hd, cache, nguesses, nanswers, 15)
+    Self::new(adata, cache, nguesses, nanswers, 15)
   }
 }
 
@@ -193,7 +193,7 @@ impl MState {
         let mut sz = 0;
         for (fb, n) in fbc {
           if !fb.is_correct() {
-            tot += md.hd.get_approx(n as usize).unwrap();
+            tot += md.adata.get_approx(n as usize).unwrap();
           }
           sz += n;
         }

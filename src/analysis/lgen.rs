@@ -11,7 +11,7 @@ use rand::distributions::{Distribution, Uniform};
 use rayon::prelude::*;
 
 use crate::ds::*;
-use crate::solve::{State, SData, HData, Cache};
+use crate::solve::{State, SData, AData, Cache};
 
 // TODO default settings to out's settings if existed
 
@@ -21,7 +21,7 @@ pub struct LGen {
   pub gwb: WBank,
   pub awb: WBank,
   pub wlen: u32,
-  pub hd: HData,
+  pub adata: AData,
   pub cache: Cache, // TODO using the same cache interferes with time results
   pub turns: u32,
   pub alens: Range<usize>,
@@ -110,7 +110,7 @@ impl LGen {
         // make state
         let aws2 = self.awb.pick(&mut rng, alen as usize);
         let s = State::new2(self.gwb.data.clone(), aws2, self.wlen, self.turns as u32, false);
-        let mut sd = SData::new(self.hd.clone(), self.cache.clone(),
+        let mut sd = SData::new(self.adata.clone(), self.cache.clone(),
                                 self.ntops1 as u32, self.ntops2, self.ecut as u32);
 
         // solve and time
