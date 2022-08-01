@@ -98,7 +98,7 @@ impl GGen {
 
       // solve and time
       let instant = Instant::now();
-      let dt = s.solve(&mut sd, u32::MAX);
+      let dt = s.solve(&sd, u32::MAX);
       let time = instant.elapsed().as_millis();
       let tot = dt.map_or(u32::MAX, |dt| dt.get_tot());
 

@@ -1,5 +1,5 @@
 use std::hash::{Hash, Hasher};
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 
 use rand::Rng;
 use rayon::prelude::*;
@@ -20,7 +20,7 @@ pub struct SData {
   /// heuristic data
   pub hd: HData,
   /// cache
-  pub cache: Cache,
+  pub cache: Arc<Mutex<Cache>>,
   /// number of top words to try
   pub ntops: u32,
   /// number of remaining words makes it "endgame"
@@ -29,6 +29,7 @@ pub struct SData {
 
 impl SData {
   pub fn new(hd: HData, cache: Cache, ntops: u32, endgcutoff: u32) -> Self {
+    let cache = Arc::new(Mutex::new(cache));
     Self {
       hd,
       cache,
@@ -363,14 +364,15 @@ impl State {
       }
     }
     // check cache
-//    if !self.hard {
-//      if let Some(dt) = sd.cache.read(self) {
-//        return Some(dt.clone());
-//      }
-//    }
+    if !self.hard {
+      let mut cache = sd.cache.lock().unwrap();
+      if let Some(dt) = cache.read(self) {
+        return Some(dt.clone());
+      }
+    }
 
     // finally, check top words
-    let tws = self.top_words(sd);
+    let tws = self.top_words(&sd);
     let gd = Mutex::new(GivenData{dt: None, beta});
     tws.into_par_iter().for_each(|w| {
       let gd2 = gd.lock().unwrap().clone();
@@ -389,11 +391,12 @@ impl State {
     let dt = gd.dt;
 
     // add cache
-//    if !self.hard {
-//      if let Some(ref dt) = dt {
-//        sd.cache.add(self.clone(), dt.clone());
-//      }
-//    }
+    if !self.hard {
+      if let Some(ref dt) = dt {
+        let mut cache = sd.cache.lock().unwrap();
+        cache.add(self.clone(), dt.clone());
+      }
+    }
 
     dt
   }
@@ -429,8 +432,8 @@ mod test {
     let mut state2 = State::new3();
     state2.hard = true;
 
-    assert!(state1.solve(&mut sd, u32::MAX).is_some());
-    assert!(state2.solve(&mut sd, u32::MAX).is_some());
+    assert!(state1.solve(&sd, u32::MAX).is_some());
+    assert!(state2.solve(&sd, u32::MAX).is_some());
   }
 
   #[test]
@@ -440,6 +443,6 @@ mod test {
     state.n = 2;
 
     // cannot solve in 2 guesses
-    assert!(state.solve(&mut sd, u32::MAX).is_none());
+    assert!(state.solve(&sd, u32::MAX).is_none());
   }
 }

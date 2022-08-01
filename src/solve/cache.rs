@@ -73,7 +73,7 @@ mod test {
   use super::*;
   use crate::solve::{SData, State};
 
-  fn add_garbage<'a>(n: usize, cache: &mut Cache, sd: &mut SData) {
+  fn add_garbage<'a>(n: usize, cache: &mut Cache, sd: &SData) {
     let mut i = 0;
     while i < n {
       let state = State::random(20);
@@ -88,7 +88,7 @@ mod test {
   fn add_read() {
     let mut sd = SData::new2(2);
     let state = State::random(20);
-    let dt = state.solve(&mut sd, u32::MAX).unwrap();
+    let dt = state.solve(&sd, u32::MAX).unwrap();
 
     // fully associative 5-way cache
     let mut cache = Cache::new(1, 5);
@@ -97,12 +97,12 @@ mod test {
     assert_eq!(cache.read(&state).unwrap().clone(), dt);
 
     // add less than m garbage, state should still be there
-    add_garbage(4, &mut cache, &mut sd);
+    add_garbage(4, &mut cache, &sd);
     assert_eq!(cache.read(&state).unwrap().clone(), dt);
 
     // original state brought back to top
     // after m garbage, it should be gone
-    add_garbage(5, &mut cache, &mut sd);
+    add_garbage(5, &mut cache, &sd);
     println!("row size: {}", cache.table.get(0).unwrap().len());
     assert!(cache.read(&state).is_none());
   }

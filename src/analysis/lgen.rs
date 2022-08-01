@@ -114,7 +114,7 @@ impl LGen {
         let mut sd = SData::new(self.hd.clone(), self.cache.clone(), self.ntops as u32, self.ecut as u32);
 
         // solve and time
-        let dt = s.solve(&mut sd, u32::MAX);
+        let dt = s.solve(&sd, u32::MAX);
         let tot = dt.map_or(u32::MAX, |dt| dt.get_tot());
         if tot < lb {
           lb = tot;

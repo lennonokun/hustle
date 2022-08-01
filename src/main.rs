@@ -96,7 +96,7 @@ fn main() {
         let ws = state.top_words(&sd);
         let mut scores: Vec<(Word, DTree)> = ws
           .iter()
-          .filter_map(|w| Some((*w, state.solve_given(*w, &mut sd, u32::MAX)?)))
+          .filter_map(|w| Some((*w, state.solve_given(*w, &sd, u32::MAX)?)))
           .collect();
         scores.sort_by_key(|(_w, dt)| dt.get_tot());
         println!("Evaluations:");
@@ -113,9 +113,9 @@ fn main() {
         println!();
         Some(scores.remove(0).1)
       } else if !given {
-        state.solve(&mut sd, u32::MAX)
+        state.solve(&sd, u32::MAX)
       } else {
-        state.solve_given(w.unwrap(), &mut sd, u32::MAX)
+        state.solve_given(w.unwrap(), &sd, u32::MAX)
       }
       .expect("couldn't make dtree!");
 
