@@ -109,7 +109,7 @@ pub enum Commands {
     #[clap(long, default_value_t=Range::new(1, 30, true))]
     ecut: Range<u32>,
   },
-  /// generate general data
+  /// generate lower bounds data
   #[cfg(feature = "gen")]
   Lgen {
     /// the number of tries at each alen
