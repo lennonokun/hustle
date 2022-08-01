@@ -5,7 +5,7 @@ FEATURES := "play,solve"
 .PHONY: target/release/hustle
 target/release/hustle: $(shell find src)
 	$(info $(FEATURES))
-	cargo build --release --features "$(FEATURES)"
+	cargo build --release --features $(FEATURES)
 
 .PHONY: install
 install: target/release/hustle
