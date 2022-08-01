@@ -7,6 +7,10 @@ target/release/hustle: $(shell find src)
 	$(info $(FEATURES))
 	cargo build --release --features $(FEATURES)
 
+.PHONY: test
+test:
+	cargo test --release --features "play,solve,gen"
+
 .PHONY: install
 install: target/release/hustle
 	# binary
