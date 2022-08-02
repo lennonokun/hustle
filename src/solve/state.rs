@@ -44,8 +44,14 @@ impl SData {
 
   pub fn new2(ntops1: u32, ntops2: u32) -> Self {
     let adata = AData::load(DEFHDP, DEFLDP).unwrap();
-    let cache = Cache::new(64, 8);
+    let cache = Cache::new(64, 16);
     Self::new(adata, cache, ntops1, ntops2, 15)
+  }
+
+  pub fn deep_clone(&self) -> Self {
+    let cache2 = (*self.cache.lock().unwrap()).clone();
+    Self::new(self.adata.clone(), cache2, self.ntops1,
+              self.ntops2, self.ecut)
   }
 }
 
