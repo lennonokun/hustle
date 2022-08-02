@@ -6,7 +6,7 @@ use rayon::prelude::*;
 
 use super::cache::Cache;
 use super::adata::AData;
-use crate::ds::*;
+use crate::util::*;
 
 // TODO: also hash gws?
 // could also iteratively hash when forming the state

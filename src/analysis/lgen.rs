@@ -10,12 +10,10 @@ use rand::rngs::ThreadRng;
 use rand::distributions::{Distribution, Uniform};
 use rayon::prelude::*;
 
-use crate::ds::*;
+use crate::util::*;
 use crate::solve::{State, SData, AData, Cache};
 
 // TODO default settings to out's settings if existed
-
-const LEN_METADATA: usize = 5;
 
 pub struct LGen {
   pub gwb: WBank,

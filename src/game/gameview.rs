@@ -12,7 +12,7 @@ use cursive::direction::Direction;
 use cursive::{Printer, Vec2};
 use cursive::view::CannotFocus;
 
-use crate::ds::*;
+use crate::util::*;
 use super::config::CONFIG;
 use super::menu::open_menu;
 

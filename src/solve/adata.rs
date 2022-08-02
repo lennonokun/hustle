@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::{BufRead, BufReader, Result};
 use std::path::Path;
 
-use crate::ds::*;
+use crate::util::*;
 
 /// analysis data, including heuristics and lower bounds
 #[derive(Debug, Clone)]

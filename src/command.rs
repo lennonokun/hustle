@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use crate::ds::{Range, DEFWBP, DEFHDP, DEFLDP};
+use crate::util::{Range, DEFWBP, DEFHDP, DEFLDP};
 
 #[derive(Parser)]
 #[clap(version, about)]

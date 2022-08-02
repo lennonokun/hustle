@@ -12,10 +12,10 @@ use std::fs::{File, OpenOptions};
 use std::path::Path;
 use std::time::Instant;
 
-mod ds;
-use crate::ds::*;
+mod util;
+use util::*;
 mod command;
-use crate::command::{cli_parse, Commands};
+use command::{cli_parse, Commands};
 #[cfg(feature = "gen")]
 mod analysis;
 #[cfg(feature = "gen")]
@@ -23,11 +23,11 @@ use analysis::{LGen, GGen};
 #[cfg(feature = "solve")]
 mod solve;
 #[cfg(feature = "solve")]
-use crate::solve::{Cache, SData, State, AData};
+use solve::{Cache, SData, State, AData};
 #[cfg(feature = "play")]
 mod game;
 #[cfg(feature = "play")]
-use crate::game::play;
+use game::play;
 
 
 fn flatten_opt<T>(x: Option<Option<T>>) -> Option<T> {

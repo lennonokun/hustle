@@ -3,7 +3,7 @@ use std::collections::VecDeque;
 use std::hash::{Hash, Hasher};
 
 use super::state::State;
-use crate::ds::*;
+use crate::util::*;
 
 // TODO: cache tests don't need to actually solve
 
