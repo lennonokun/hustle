@@ -1,5 +1,6 @@
 use core::str::FromStr;
 use std::fmt;
+use std::cmp;
 use std::io::{Error, ErrorKind};
 
 use rand::prelude::*;
@@ -43,7 +44,10 @@ where X: Copy + FromStr + SampleUniform {
       static ref RE_UNIF: Regex = Regex::new(r"^(\d+)..(=?)(\d+)$").unwrap();
     }
 
-    if let Some(caps) = RE_UNIF.captures(s) {
+    // check if one number
+    if let Ok(x) = s.parse::<X>() {
+      Ok(Self::new(x, x, true))
+    } else if let Some(caps) = RE_UNIF.captures(s) {
       // FOR NOW UNWRAP
       let a: X = caps.get(1).unwrap().as_str().parse().ok().unwrap();
       let b: X = caps.get(3).unwrap().as_str().parse().ok().unwrap();
@@ -59,9 +63,11 @@ where X: Copy + FromStr + SampleUniform {
 }
 
 impl<X> fmt::Display for Range<X>
-where X: Copy + fmt::Display + SampleUniform {
+where X: Copy + PartialEq + fmt::Display + SampleUniform {
   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-    if self.inc {
+    if self.inc && self.a == self.b {
+      write!(f, "{}", self.a)
+    } else if self.inc {
       write!(f, "{}..={}", self.a, self.b)
     } else {
       write!(f, "{}..{}", self.a, self.b)
