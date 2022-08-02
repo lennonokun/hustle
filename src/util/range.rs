@@ -1,6 +1,5 @@
 use core::str::FromStr;
 use std::fmt;
-use std::cmp;
 use std::io::{Error, ErrorKind};
 
 use rand::prelude::*;

@@ -154,7 +154,7 @@ impl State {
 
     awss.iter()
       .enumerate()
-      .filter(|(id, aws)| !aws.is_empty())
+      .filter(|(_id, aws)| !aws.is_empty())
       .map(|(id, aws)| {
         let fb = Feedback::from_id(id as u32, self.wlen as u8);
         let gws2 = if self.hard {

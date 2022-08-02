@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 // constants
 pub const NLETS: usize = 5;
 pub const NGUESSES: usize = 6;

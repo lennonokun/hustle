@@ -1,10 +1,7 @@
 use config::{Config as ConfigMod, File};
 use lazy_static::lazy_static;
-use std::io::{self, Read};
-use std::error::Error;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::env;
-use std::collections::HashMap;
 
 use indexmap::IndexMap;
 use serde::Deserialize;
@@ -12,7 +9,7 @@ use cursive::theme::{Color, Palette, Theme, BorderStyle};
 
 lazy_static! {
   // find config on start up
-  pub static ref CONFIG: Config = {Config::find().unwrap()};
+  pub static ref CONFIG: Config = Config::find().unwrap();
 }
 
 pub struct Config {

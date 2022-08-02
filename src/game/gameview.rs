@@ -1,11 +1,7 @@
 use std::time::{Duration, Instant};
-use std::path::Path;
 use std::cmp::min;
 
-use cursive::Cursive;
-use cursive::view::Nameable;
-use cursive::views::*;
-use cursive::theme::{Color, BaseColor, ColorStyle, Effect, PaletteColor};
+use cursive::theme::{ColorStyle, PaletteColor};
 use cursive::traits::*;
 use cursive::event::{Event, EventResult, Key};
 use cursive::direction::Direction;
@@ -338,7 +334,7 @@ impl View for GameView {
     }
   }
 
-  fn take_focus(&mut self, source: Direction) -> Result<EventResult, CannotFocus> {
+  fn take_focus(&mut self, _source: Direction) -> Result<EventResult, CannotFocus> {
     Ok(EventResult::Consumed(None))
   }
 }

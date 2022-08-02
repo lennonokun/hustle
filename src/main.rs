@@ -1,13 +1,7 @@
-use lazy_static::lazy_static;
-use rand::Rng;
-use rand::distributions::Uniform;
-use regex::Regex;
-
-use std::str::FromStr;
-use std::fs::{File, OpenOptions};
-use std::path::Path;
+use std::fs::File;
 use std::time::Instant;
 use std::sync::Arc;
+use std::path::Path;
 
 use hustle::util::*;
 use hustle::command::{cli_parse, Commands};
@@ -17,14 +11,6 @@ use hustle::analysis::{LGen, GGen};
 use hustle::solve::{Cache, SData, State, AData};
 #[cfg(feature = "play")]
 use hustle::game::play;
-
-
-fn flatten_opt<T>(x: Option<Option<T>>) -> Option<T> {
-  match x {
-    Some(x) => x,
-    None => None
-  }
-}
 
 fn main() {
   let cli = cli_parse();
@@ -55,7 +41,7 @@ fn main() {
       let adata = AData::load(&hdp, &ldp).unwrap();
       let cache = Cache::new(64, 16);
       let mut state = State::new2(Arc::new(gwb.data), awb.data, wlen.into(), turns, hard);
-      let mut sd = SData::new(adata, cache, ntops1, ntops2, ecut);
+      let sd = SData::new(adata, cache, ntops1, ntops2, ecut);
 
       // parse gamestate
       let mut w: Option<Word> = None;

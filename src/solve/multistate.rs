@@ -1,7 +1,6 @@
 use std::iter::zip;
 use std::hash::{Hash, Hasher};
-use std::collections::{HashMap, HashSet};
-use std::cmp;
+use std::collections::{HashMap};
 use std::sync::Mutex;
 
 use rand::prelude::*;
@@ -130,7 +129,7 @@ impl MState {
   pub fn fb_follow(&self, gw: Word, fbs: Vec<Feedback>) -> Self {
     let gws = self.gws.clone(); // for now
     let awss = fb_filter_all(gw, &fbs, &self.awss);
-    let mut finished = zip(self.finished.clone(), fbs)
+    let finished = zip(self.finished.clone(), fbs)
       .map(|(fin, fb)| fin || fb.is_correct())
       .collect();
     MState::new2(gws, awss, self.wlen, self.nwords, finished, self.turns - 1, self.hard)
@@ -150,7 +149,7 @@ impl MState {
   pub fn fb_partition(&self, gw: &Word, awss: Vec<Vec<Word>>) -> MFbMap<MState> {
     // for now just randomly access and make feedback as you go
     // TODO: use top-k NRA, LARA, etc?
-    let mut fbp = Mutex::new(MFbMap::new());
+    let fbp = Mutex::new(MFbMap::new());
 
     // iterate over sample answer lists
     awss.par_iter().for_each(|aws| {
@@ -222,7 +221,7 @@ impl MState {
 
     let mut tot = 0.;
     let mut sz = 0;
-    for (fb, state) in fbps.iter() {
+    for (_fb, state) in fbps.iter() {
       let sz2 = state.size();
       tot += sz2 as f64 * state.solve(md)?;
       sz += sz2;
@@ -252,7 +251,7 @@ impl MState {
       for (aws, fin) in zip(&self.awss, &self.finished) {
         if aws.len() >= smallest_fix || *fin {continue}
         for aw in aws {
-          if self.fb_counts(&aw).iter().all(|fbc| fbc.iter().all(|(fb, ct)| *ct == 1)) {
+          if self.fb_counts(&aw).iter().all(|fbc| fbc.iter().all(|(_fb, ct)| *ct == 1)) {
             smallest_fix = aws.len();
           }
         }
@@ -274,7 +273,6 @@ impl MState {
     let mut tot = f64::INFINITY;
     let tops = self.top_words(md);
     for w in tops {
-      let tot2 = self.solve_given(w, md);
       if let Some(tot2) = self.solve_given(w, md) {
         if tot2 < tot {tot = tot2}
         // return if best case

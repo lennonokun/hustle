@@ -1,15 +1,7 @@
-use std::io;
-use std::env;
-use std::path::{Path, PathBuf};
-
 use cursive::Cursive;
 use cursive::views::*;
 use cursive::traits::*;
-use cursive::event::{Event, Key};
-use cursive::theme::PaletteColor::*;
-use cursive::theme::Color::*;
-use cursive::theme::BaseColor::*;
-use cursive::theme::{Theme, Palette, BorderStyle};
+use cursive::event::Key;
 
 use super::hselectview::HSelectView;
 use super::gameview::GameView;

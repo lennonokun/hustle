@@ -61,7 +61,7 @@ impl DTree {
         let mut indent2 = indent.clone();
         indent2.push(' ');
         let mut items: Vec<(&Feedback, &DTree)> = fbmap.iter().collect();
-        items.sort_by_key(|(fb, dt)| fb.to_id());
+        items.sort_by_key(|(fb, _dt)| fb.to_id());
         for (fb, dt) in items {
           writeln!(out, "{}{}{}", indent2, fb.to_string(), n);
           dt.pprint(out, &indent2, n + 1);

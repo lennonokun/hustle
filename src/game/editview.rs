@@ -1,11 +1,7 @@
-use std::fmt::Display;
 use std::rc::Rc;
 use std::cmp;
 
-use cursive::Cursive;
-use cursive::view::Nameable;
-use cursive::views::*;
-use cursive::theme::{Color, BaseColor, Style, ColorStyle, Effect};
+use cursive::theme::{Style, ColorStyle, Effect};
 use cursive::traits::*;
 use cursive::event::{Event, EventResult, Key};
 use cursive::direction::Direction;
@@ -98,7 +94,7 @@ impl View for EditView {
     }
   }
 
-  fn take_focus(&mut self, source: Direction) -> Result<EventResult, CannotFocus> {
+  fn take_focus(&mut self, _source: Direction) -> Result<EventResult, CannotFocus> {
     Ok(EventResult::Consumed(None))
   }
 }

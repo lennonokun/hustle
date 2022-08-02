@@ -1,16 +1,11 @@
-use std::fmt::Display;
 use std::rc::Rc;
-use std::cmp;
 
-use cursive::Cursive;
-use cursive::view::Nameable;
-use cursive::views::*;
-use cursive::theme::{Color, BaseColor, Style, ColorStyle, Effect};
+use cursive::theme::{Style, ColorStyle, Effect};
 use cursive::reexports::enumset::{EnumSet,enum_set};
 use cursive::traits::*;
 use cursive::event::{Event, EventResult, Key};
 use cursive::direction::Direction;
-use cursive::{Printer, Vec2, Rect};
+use cursive::{Printer, Vec2};
 use cursive::align::*;
 use cursive::view::CannotFocus;
 
@@ -111,7 +106,7 @@ impl<T: 'static> View for HSelectView<T> {
     EventResult::Consumed(None)
   }
 
-  fn take_focus(&mut self, source: Direction) -> Result<EventResult, CannotFocus> {
+  fn take_focus(&mut self, _source: Direction) -> Result<EventResult, CannotFocus> {
     Ok(EventResult::Consumed(None))
   }
 }
