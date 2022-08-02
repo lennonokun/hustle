@@ -57,7 +57,7 @@ $ sudo pacman -U hustle-1.3.1-1-x86_64.pkg.tar.zst
 Refer to manpages with `man hustle`, and `man hustle <SUBCOMMAND>`.
 
 ## Configuration
-Hustle's can be configured with a TOML file at the following locations (with decreasing priority):
+Hustle can be configured with a TOML file at the following locations (with decreasing priority):
 
 1. `$XDG_CONFIG_HOME/hustle/config.toml`
 2. `$HOME/hustle/config.toml`
