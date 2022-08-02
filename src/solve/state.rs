@@ -267,7 +267,7 @@ impl State {
     tups
       .iter()
       .map(|(gw, _)| *gw)
-      .take(sd.ntops2 as usize)
+      .take(if self.hard {2 * sd.ntops2 as usize} else {sd.ntops2 as usize})
       .collect()
   }
 
@@ -428,10 +428,9 @@ mod test {
     assert_eq!(state2, state3);
   }
 
-  // takes a while
-  // #[test]
+  #[test]
   fn simple_solve() {
-    let mut sd = SData::new2(3, 300);
+    let sd = SData::new2(1000, 10);
     let state1 = State::new3();
     let mut state2 = State::new3();
     state2.hard = true;
@@ -442,7 +441,7 @@ mod test {
 
   #[test]
   fn impossible_solve() {
-    let mut sd = SData::new2(2, 200);
+    let mut sd = SData::new2(200, 2);
     let mut state = State::new3();
     state.n = 2;
 
