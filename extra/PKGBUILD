@@ -34,15 +34,22 @@ package() {
 	install -Dm0644 -t "$pkgdir/usr/share/hustle" "data/bank1.csv"
 	install -Dm0644 -t "$pkgdir/usr/share/hustle" "data/bank2.csv"
 	install -Dm0644 -t "$pkgdir/usr/share/hustle" "data/happrox.csv"
+	install -Dm0644 -t "$pkgdir/usr/share/hustle" "data/lbounds.csv"
 	install -Dm0644 -t "$pkgdir/usr/share/hustle" "data/config.toml"
   # manpages
   echo "installing into $pkgdir/usr/share/man"
 	gzip -c "extra/manpages/hustle.man" \
-		| sudo dd status=none of="/usr/share/man/man1/hustle.1.gz"
+		| sudo dd status=none of="$pkgdir/usr/share/man/man1/hustle.1.gz"
 	gzip -c "extra/manpages/hustle-solve.man" \
-		| sudo dd status=none of="/usr/share/man/man1/hustle-solve.1.gz"
+		| sudo dd status=none of="$pkgdir/usr/share/man/man1/hustle-solve.1.gz"
 	gzip -c "extra/manpages/hustle-play.man" \
-		| sudo dd status=none of="/usr/share/man/man1/hustle-play.1.gz"
+		| sudo dd status=none of="$pkgdir/usr/share/man/man1/hustle-play.1.gz"
+	gzip -c "extra/manpages/hustle-hgen.man" \
+		| sudo dd status=none of="$pkgdir/usr/share/man/man1/hustle-hgen.1.gz"
+	gzip -c "extra/manpages/hustle-ggen.man" \
+		| sudo dd status=none of="$pkgdir/usr/share/man/man1/hustle-ggen.1.gz"
+	gzip -c "extra/manpages/hustle-lgen.man" \
+		| sudo dd status=none of="$pkgdir/usr/share/man/man1/hustle-lgen.1.gz"
 	# misc
 	echo "installing into $pkgdir/usr/share/licenses+doc"
 	install -Dm0644 -t "$pkgdir/usr/share/licenses/$pkgname" "LICENSE"
