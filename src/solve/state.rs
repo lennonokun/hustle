@@ -63,7 +63,8 @@ struct GivenData {
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct State {
-  pub gws: Vec<Word>,
+  // arc bc easy mode keeps guesses constant
+  pub gws: Arc<Vec<Word>>,
   pub aws: Vec<Word>,
   pub wlen: u32,
   pub n: u32,
@@ -81,7 +82,7 @@ pub fn fb_filter(gw: Word, fb: Feedback, gws: &Vec<Word>) -> Vec<Word> {
 impl State {
   pub fn new(gws: Vec<Word>, aws: Vec<Word>, wlen: u32, hard: bool) -> Self {
     State {
-      gws,
+      gws: Arc::new(gws),
       aws,
       wlen,
       n: NGUESSES as u32,
@@ -89,7 +90,7 @@ impl State {
     }
   }
 
-  pub fn new2(gws: Vec<Word>, aws: Vec<Word>, wlen: u32, n: u32, hard: bool) -> Self {
+  pub fn new2(gws: Arc<Vec<Word>>, aws: Vec<Word>, wlen: u32, n: u32, hard: bool) -> Self {
     State {
       gws,
       aws,
@@ -109,7 +110,7 @@ impl State {
     let mut rng = rand::thread_rng();
     let len = rng.gen_range(1..=maxlen);
     State::new2(
-      gwb.data,
+      Arc::new(gwb.data),
       awb.pick(&mut rng, len),
       NLETS as u32,
       NGUESSES as u32,
@@ -119,7 +120,7 @@ impl State {
 
   pub fn fb_follow(self, gw: Word, fb: Feedback) -> Self {
     let gws = if self.hard {
-      fb_filter(gw, fb, &self.gws)
+      Arc::new(fb_filter(gw, fb, &self.gws))
     } else {
       self.gws
     };
@@ -133,7 +134,7 @@ impl State {
       let fb = Feedback::from(*gw, *aw).unwrap();
       let s2: &mut State = map.entry(fb).or_insert_with(|| {
         let gws2 = if self.hard {
-          fb_filter(*gw, fb, &self.gws)
+          Arc::new(fb_filter(*gw, fb, &self.gws))
         } else {
           self.gws.clone()
         };
@@ -157,7 +158,7 @@ impl State {
       .map(|(id, aws)| {
         let fb = Feedback::from_id(id as u32, self.wlen as u8);
         let gws2 = if self.hard {
-          fb_filter(*gw, fb, &self.gws)
+          Arc::new(fb_filter(*gw, fb, &self.gws))
         } else {
           self.gws.clone()
         };
@@ -253,10 +254,9 @@ impl State {
   pub fn top_words(&self, sd: &SData) -> Vec<Word> {
     // fast heuristic
     let (gss, ys) = self.letter_evals();
-    let mut tups: Vec<(Word, f64)> = self
-      .gws.clone()
-      .into_par_iter()
-      .map(|gw| (gw, self.letter_heuristic(&gw, &gss, &ys)))
+    let mut tups: Vec<(Word, f64)> = (&self.gws)
+      .par_iter()
+      .map(|gw| (*gw, self.letter_heuristic(&gw, &gss, &ys)))
       .collect();
     tups.sort_by(|(_, f1), (_, f2)| f2.partial_cmp(f1).unwrap());
     let gws2 = tups.iter()
@@ -428,7 +428,7 @@ mod test {
     let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
 
     let state1 = State::new(gwb.data.clone(), awb.data.clone(), 5, false);
-    let state2 = State::new2(gwb.data.clone(), awb.data.clone(), 5, 6, false);
+    let state2 = State::new2(Arc::new(gwb.data.clone()), awb.data.clone(), 5, 6, false);
     let state3 = State::new3();
     assert_eq!(state1, state2);
     assert_eq!(state2, state3);

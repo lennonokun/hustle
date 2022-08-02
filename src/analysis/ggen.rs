@@ -3,6 +3,7 @@ use std::io::{Error, ErrorKind, Write, BufRead, BufReader};
 use std::path::Path;
 use std::sync::Mutex;
 use std::time::Instant;
+use std::sync::Arc;
 
 use rand::Rng;
 use rand::rngs::ThreadRng;
@@ -93,7 +94,7 @@ impl GGen {
 
       // make state
       let aws2 = self.awb.pick(&mut rng, alen as usize);
-      let s = State::new2(self.gwb.data.clone(), aws2, self.wlen, turns as u32, false);
+      let s = State::new2(Arc::new(self.gwb.data.clone()), aws2, self.wlen, turns as u32, false);
       let mut sd = SData::new(self.adata.clone(), self.cache.clone(),
                               ntops1 as u32, ntops2 as u32, ecut as u32);
 

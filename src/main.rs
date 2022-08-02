@@ -7,6 +7,7 @@ use std::str::FromStr;
 use std::fs::{File, OpenOptions};
 use std::path::Path;
 use std::time::Instant;
+use std::sync::Arc;
 
 use hustle::util::*;
 use hustle::command::{cli_parse, Commands};
@@ -53,7 +54,7 @@ fn main() {
       let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
       let adata = AData::load(&hdp, &ldp).unwrap();
       let cache = Cache::new(64, 16);
-      let mut state = State::new2(gwb.data, awb.data, wlen.into(), turns, hard);
+      let mut state = State::new2(Arc::new(gwb.data), awb.data, wlen.into(), turns, hard);
       let mut sd = SData::new(adata, cache, ntops1, ntops2, ecut);
 
       // parse gamestate
