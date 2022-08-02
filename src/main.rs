@@ -1,7 +1,3 @@
-#![allow(unused)]
-
-extern crate lazy_static;
-
 use lazy_static::lazy_static;
 use rand::Rng;
 use rand::distributions::Uniform;
@@ -12,22 +8,14 @@ use std::fs::{File, OpenOptions};
 use std::path::Path;
 use std::time::Instant;
 
-mod util;
-use util::*;
-mod command;
-use command::{cli_parse, Commands};
+use hustle::util::*;
+use hustle::command::{cli_parse, Commands};
 #[cfg(feature = "gen")]
-mod analysis;
-#[cfg(feature = "gen")]
-use analysis::{LGen, GGen};
+use hustle::analysis::{LGen, GGen};
 #[cfg(feature = "solve")]
-mod solve;
-#[cfg(feature = "solve")]
-use solve::{Cache, SData, State, AData};
+use hustle::solve::{Cache, SData, State, AData};
 #[cfg(feature = "play")]
-mod game;
-#[cfg(feature = "play")]
-use game::play;
+use hustle::game::play;
 
 
 fn flatten_opt<T>(x: Option<Option<T>>) -> Option<T> {
