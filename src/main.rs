@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use std::fs::File;
 use std::time::Instant;
 use std::sync::Arc;
