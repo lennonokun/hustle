@@ -29,20 +29,32 @@ inspired by the many wordle spin-offs like
 </details>
 
 ## Installation
-On Linux, you can install hustle by cloning and building it:
+Hustle has three feature flags:
+* `play`: makes the command `hustle play` in which you can play wordle.
+* `solve`: makes the command `hustle solve`, which solves game states.
+* `gen`: requires `solve` and makes the following commands:
+  * `hustle hgen`: generate heuristic data
+  * `hustle ggen`: generate general analysis data
+  * `hustle lgen`: generate lower bounds data
+
+You can specify which features you want by joining them with commas
+(e.g. FEATURES="play,solve").
+
+On Linux, you can install hustle with specific features by cloning and building it:
 ```
 $ git clone https://github.com/lennonokun/hustle.git
 $ cd hustle
-$ make install
+$ make install FEATURES=<FEATURES>
 ```
-On Arch Linux, you can install hustle using the PKGBUILD in extra:
+On Arch Linux, you can install hustle only with all features using the PKGBUILD in extra:
 ```
 $ makepkg --clean PKGBUILD
 # tarball may be named something else
 $ sudo pacman -U hustle-1.3.0-1-x86_64.pkg.tar.zst
 ```
+
 ## Usage
-Refer to manpages with `man hustle`, `man hustle solve`, and `man hustle play`.
+Refer to manpages with `man hustle`, and `man hustle <SUBCOMMAND>`.
 
 ## Configuration
 Hustle's can be configured with a TOML file at the following locations (with decreasing priority):
@@ -59,7 +71,6 @@ For the configuration options, see defaults at `/usr/share/hustle/config.toml`.
 * get rid of WBank?
 * generally refactor, don't ignore warnings
 * create benchmarks and unit tests
-* make man page with clap?
 * explain scripts + dependencies in README
 * look at each files TODOs
 * create github releases?
@@ -70,26 +81,17 @@ For the configuration options, see defaults at `/usr/share/hustle/config.toml`.
 * make decision tree viewer in tui
 ### Solver
 * add cache settings to main?
-* specify max turns
 * record cache stats
 * standardize types for stuff like NLETS and wlen
-* make heuristics work for any word bank
 * check if solve strings are impossible? (allow impossible with --dirty)
 * improve dtree pprint format
 * make cache work for hard mode
-* re-add bounds + general generation?
 * isolate fbmaps + methods (simplify wlen <= 5 optimizations)
 * optimization:
-  - better lower bounds
   - is making dtree slow?
-  - faster top words selection:
-    * check lower bounds while building?
-    * don't need to sort entire vec
+  - don't need to sort entire vec for selection
 * see how decision tree would process specific answer(s)?
 ### Generation
-* add lbound gen?
-* add hgen?
-* add more things to metadata
 * default to out's settings
 * settings profiles?
 * also check wbanks and hdata?
@@ -111,7 +113,6 @@ For the configuration options, see defaults at `/usr/share/hustle/config.toml`.
   - different modes like hard mode
 * sync with wordle, duordle, quordle, octordle's, etc daily
 * config
-  - how to handle enum fields?
   - better error handling
   - unknowns
   - find out how to remove serde_json dependency from config (features)
