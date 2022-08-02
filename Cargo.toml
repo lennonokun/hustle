@@ -44,5 +44,12 @@ default-features=false
 features=["toml", "preserve_order"]
 optional=true
 
+[dev-dependencies]
+criterion = "0.3.6"
+
+[[bench]]
+name = "benchmark"
+harness = false
+
 [[bin]]
 name = "hustle"

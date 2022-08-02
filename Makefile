@@ -10,6 +10,10 @@ target/release/hustle: $(shell find src)
 test:
 	cargo test --release --features "play,solve,gen"
 
+.PHONY: bench
+bench:
+	cargo bench --features "play,solve,gen"
+
 .PHONY: install
 install: target/release/hustle
 	# binary
