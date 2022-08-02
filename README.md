@@ -50,7 +50,7 @@ On Arch Linux, you can install hustle only with all features using the PKGBUILD 
 ```
 $ makepkg --clean PKGBUILD
 # tarball may be named something else
-$ sudo pacman -U hustle-1.3.0-1-x86_64.pkg.tar.zst
+$ sudo pacman -U hustle-1.3.1-1-x86_64.pkg.tar.zst
 ```
 
 ## Usage
