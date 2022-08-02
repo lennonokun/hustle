@@ -69,8 +69,7 @@ For the configuration options, see defaults at `/usr/share/hustle/config.toml`.
 * better error handling
 * use Path instead of AsPath
 * get rid of WBank?
-* generally refactor, don't ignore warnings
-* create benchmarks and unit tests
+* more benchmarks + tests
 * explain scripts + dependencies in README
 * look at each files TODOs
 * create github releases?
@@ -80,6 +79,7 @@ For the configuration options, see defaults at `/usr/share/hustle/config.toml`.
 * integrate solver with tui?
 * make decision tree viewer in tui
 ### Solver
+* fix patch for ntops with hard
 * add cache settings to main?
 * record cache stats
 * standardize types for stuff like NLETS and wlen
