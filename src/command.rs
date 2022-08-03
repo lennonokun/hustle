@@ -21,43 +21,43 @@ pub enum Commands {
     #[clap(value_parser, default_value="")]
     gamestate: String,
     /// list potential answers
-    #[clap(long)]
+    #[clap(long, short='a')]
     alist: bool,
     /// list potential feedbacks and their evaluations
-    #[clap(long)]
+    #[clap(long, short='f')]
     flist: bool,
     /// list top guess evaluations
-    #[clap(long)]
+    #[clap(long, short='g')]
     glist: bool,
     /// output decision tree to file
-    #[clap(long)]
+    #[clap(long, short='o')]
     dt: Option<String>,
     /// word length
-    #[clap(long, default_value_t=5)]
+    #[clap(long, short='l', default_value_t=5)]
     wlen: u8,
     /// word bank path
-    #[clap(long, default_value_t=String::from(DEFWBP))]
+    #[clap(long, short='B', default_value_t=String::from(DEFWBP))]
     wbp: String,
     /// heuristic data path
-    #[clap(long, default_value_t=String::from(DEFHDP))]
+    #[clap(long, short='H', default_value_t=String::from(DEFHDP))]
     hdp: String,
     /// lower bounds data path
-    #[clap(long, default_value_t=String::from(DEFLDP))]
+    #[clap(long, short='L', default_value_t=String::from(DEFLDP))]
     ldp: String,
     /// play in hard mode
     #[clap(long)]
     hard: bool,
     /// the number of top soft heuristic words to try
-    #[clap(long, default_value_t=1000)]
+    #[clap(long, short='m', default_value_t=1000)]
     ntops1: u32,
     /// the number of top hard heuristic words to try
-    #[clap(long, default_value_t=10)]
+    #[clap(long, short='n', default_value_t=10)]
     ntops2: u32,
     /// the maximum number of turns to solve in
-    #[clap(long, default_value_t=6)]
+    #[clap(long, short='t', default_value_t=6)]
     turns: u32,
     /// the maximum number of answer words left for an "endgame"
-    #[clap(long, default_value_t=15)]
+    #[clap(long, short='e', default_value_t=15)]
     ecut: u32,
   },
   /// generate heuristic data
@@ -70,28 +70,28 @@ pub enum Commands {
     #[clap(value_parser)]
     out: String,
     /// word length
-    #[clap(long, default_value_t=5)]
+    #[clap(long, short='l', default_value_t=5)]
     wlen: u8,
     /// word bank path
-    #[clap(long, default_value_t=String::from(DEFWBP))]
+    #[clap(long, short='B', default_value_t=String::from(DEFWBP))]
     wbp: String,
     /// heuristic data path
-    #[clap(long, default_value_t=String::from(DEFHDP))]
+    #[clap(long, short='H', default_value_t=String::from(DEFHDP))]
     hdp: String,
     /// lower bounds data path
-    #[clap(long, default_value_t=String::from(DEFLDP))]
+    #[clap(long, short='L', default_value_t=String::from(DEFLDP))]
     ldp: String,
     /// the number of top soft heuristic words to try
-    #[clap(long, default_value_t=500)]
+    #[clap(long, short='m', default_value_t=500)]
     ntops1: u32,
     /// the number of top hard heuristic words to try
-    #[clap(long, default_value_t=5)]
+    #[clap(long, short='n', default_value_t=5)]
     ntops2: u32,
     /// the maximum number of turns to solve in
-    #[clap(long, default_value_t=6)]
+    #[clap(long, short='t', default_value_t=6)]
     turns: u32,
     /// endgame cutoff
-    #[clap(long, default_value_t=15)]
+    #[clap(long, short='e', default_value_t=15)]
     ecut: u32,
   },
   /// generate general data
@@ -104,31 +104,31 @@ pub enum Commands {
     #[clap(value_parser)]
     out: String,
     /// word length
-    #[clap(long, default_value_t = 5)]
+    #[clap(long, short='l', default_value_t = 5)]
     wlen: u8,
     /// word bank path
-    #[clap(long, default_value_t=String::from(DEFWBP))]
+    #[clap(long, short='B', default_value_t=String::from(DEFWBP))]
     wbp: String,
     /// heuristic data path
-    #[clap(long, default_value_t=String::from(DEFHDP))]
+    #[clap(long, short='H', default_value_t=String::from(DEFHDP))]
     hdp: String,
     /// lower bounds data path
-    #[clap(long, default_value_t=String::from(DEFLDP))]
+    #[clap(long, short='L', default_value_t=String::from(DEFLDP))]
     ldp: String,
     /// the range of answer lengths to try (defaults to all)
-    #[clap(long)]
+    #[clap(long, short='a')]
     alens: Option<Range<usize>>,
     /// the range of number of top soft heuristic words to try
-    #[clap(long, default_value_t=Range::new(1, 1000, true))]
+    #[clap(long, short='m', default_value_t=Range::new(1, 1000, true))]
     ntops1: Range<u32>,
     /// the range of number of top hard heuristic words to try
-    #[clap(long, default_value_t=Range::new(1, 10, true))]
+    #[clap(long, short='n', default_value_t=Range::new(1, 10, true))]
     ntops2: Range<u32>,
     /// the range of maximum numbers of turns to solve in
-    #[clap(long, default_value_t=Range::new(1, 6, true))]
+    #[clap(long, short='t', default_value_t=Range::new(1, 6, true))]
     turns: Range<u32>,
     /// endgame cutoff
-    #[clap(long, default_value_t=Range::new(1, 30, true))]
+    #[clap(long, short='e', default_value_t=Range::new(1, 30, true))]
     ecut: Range<u32>,
   },
   /// generate lower bounds data
@@ -144,31 +144,31 @@ pub enum Commands {
     #[clap(value_parser)]
     out: String,
     /// word length
-    #[clap(long, default_value_t = 5)]
+    #[clap(long, short='l', default_value_t = 5)]
     wlen: u8,
     /// word bank path
-    #[clap(long, default_value_t=String::from(DEFWBP))]
+    #[clap(long, short='B', default_value_t=String::from(DEFWBP))]
     wbp: String,
     /// lower bounds data path
-    #[clap(long, default_value_t=String::from(DEFHDP))]
+    #[clap(long, short='L', default_value_t=String::from(DEFHDP))]
     ldp: String,
     /// heuristic data path
-    #[clap(long, default_value_t=String::from(DEFLDP))]
+    #[clap(long, short='H', default_value_t=String::from(DEFLDP))]
     hdp: String,
     /// the range of answer lengths to try
-    #[clap(long)]
+    #[clap(long, short='a')]
     alens: Option<Range<usize>>,
     /// the number of top soft heuristic words to try
-    #[clap(long, default_value_t=1000)]
+    #[clap(long, short='m', default_value_t=1000)]
     ntops1: u32,
     /// the number of top hard heuristic words to try
-    #[clap(long, default_value_t=10)]
+    #[clap(long, short='n', default_value_t=10)]
     ntops2: u32,
     /// the maximum number of turns to solve in
-    #[clap(long, default_value_t=6)]
+    #[clap(long, short='t', default_value_t=6)]
     turns: u32,
     /// endgame cutoff
-    #[clap(long, default_value_t=15)]
+    #[clap(long, short='e', default_value_t=15)]
     ecut: u32,
   },
 }
