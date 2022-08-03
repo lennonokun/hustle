@@ -5,6 +5,8 @@ use std::time::Instant;
 use std::sync::Arc;
 use std::path::Path;
 
+use tabled::{Tabled, Table, Style};
+
 use hustle::util::*;
 use hustle::command::{cli_parse, Commands};
 #[cfg(feature = "gen")]
@@ -13,6 +15,34 @@ use hustle::analysis::{LGen, GGen};
 use hustle::solve::{Cache, SData, State, AData};
 #[cfg(feature = "play")]
 use hustle::game::play;
+
+#[derive(Tabled)]
+struct GResult {
+  i: usize,
+  guess: Word,
+  total: u32,
+  #[tabled(display_with = "display_eval")]
+  eval: f64,
+}
+
+#[derive(Tabled)]
+struct AResult {
+  i: usize,
+  answer: Word,
+}
+
+#[derive(Tabled)]
+struct FResult {
+  i: usize,
+  feedback: Feedback,
+  total: u32,
+  #[tabled(display_with = "display_eval")]
+  eval: f64,
+}
+
+fn display_eval(eval: &f64)  -> String {
+  format!("{eval:.4}")
+}
 
 fn main() {
   let cli = cli_parse();
@@ -39,7 +69,12 @@ fn main() {
       turns,
       ecut,
     } => {
-      // create state + sdata
+      // define table style
+      let style = Style::modern()
+        .off_horizontal()
+        .lines([(1, Style::modern().get_horizontal())]);
+
+      // create state + adata
       let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
       let adata = AData::load(&hdp, &ldp).unwrap();
       let cache = Cache::new(64, 16);
@@ -66,10 +101,11 @@ fn main() {
 
       // list answers
       if alist {
-        println!("Potential Answers:");
-        for (i, aw) in state.aws.iter().enumerate() {
-          println!("{}. {}", i + 1, aw);
-        }
+        println!("Answers:");
+        let aresults = state.aws.iter().enumerate()
+          .map(|(i, answer)| AResult {i: i+1, answer: *answer})
+          .collect::<Vec<AResult>>();
+        println!("{}", Table::new(aresults).with(style.clone()));
         println!();
       }
 
@@ -84,16 +120,14 @@ fn main() {
           .collect();
         scores.sort_by_key(|(_w, dt)| dt.get_tot());
         println!("Evaluations:");
-        for (i, (w, dt)) in scores.iter().enumerate() {
-          println!(
-            "{}. {}: {}/{} = {}",
-            i + 1,
-            w,
-            dt.get_tot(),
-            dt.get_alen(),
-            dt.get_eval(),
-          );
-        }
+        let gresults = scores.iter().enumerate()
+          .map(|(i, (guess, dt))| GResult {
+            i: i+1,
+            guess: *guess,
+            total: dt.get_tot(),
+            eval: dt.get_eval(),
+          }).collect::<Vec<GResult>>();
+        println!("{}", Table::new(gresults).with(style.clone()));
         println!();
         Some(scores.remove(0).1)
       } else if !given {
@@ -112,16 +146,14 @@ fn main() {
             word: _,
             ref fbmap,
           } => {
-            for (i, (fb, dt)) in fbmap.iter().enumerate() {
-              println!(
-                "{}. {}: {}/{} = {}",
-                i + 1,
-                fb,
-                dt.get_tot(),
-                dt.get_alen(),
-                dt.get_eval(),
-              );
-            }
+            let fresults = fbmap.iter().enumerate()
+              .map(|(i, (fb, dt))| FResult {
+                i: i+1,
+                feedback: *fb,
+                total: dt.get_tot(),
+                eval: dt.get_eval(),
+              }).collect::<Vec<FResult>>();
+            println!("{}", Table::new(fresults).with(style.clone()));
           }
         }
         println!();
@@ -136,7 +168,7 @@ fn main() {
       {
         println!("Solution:");
         println!(
-          "{}: {}/{} = {} in {}s",
+          "{}: {}/{} = {:.4} in {}s",
           word.to_string(),
           tot,
           state.aws.len(),
