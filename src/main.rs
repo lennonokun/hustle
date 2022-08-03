@@ -10,7 +10,7 @@ use hustle::command::{cli_parse, Commands};
 #[cfg(feature = "gen")]
 use hustle::analysis::{LGen, GGen};
 #[cfg(feature = "solve")]
-use hustle::solve::SolveCommand;
+use hustle::solve::{Cache, AData, SolveCommand};
 #[cfg(feature = "play")]
 use hustle::game::play;
 
