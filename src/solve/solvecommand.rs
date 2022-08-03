@@ -160,15 +160,15 @@ impl SolveCommand {
 
     // list feedbacks
     if self.flist {
-      if let DTree::Node {tot, word, ref fbmap} = dtree {
+      if let DTree::Node {tot: _, word: _, ref fbmap} = dtree {
         println!("Feedbacks:");
         let fresults = fbmap.iter().enumerate()
           .map(|(i, (fb, dt))| FResult {
             i: i+1,
             feedback: *fb,
-            total: tot,
-            alen: dtree.get_alen(),
-            eval: dtree.get_eval(),
+            total: dt.get_tot(),
+            alen: dt.get_alen(),
+            eval: dt.get_eval(),
           }).collect::<Vec<FResult>>();
         println!("{}", Table::new(fresults).with(style.clone()));
         println!();
