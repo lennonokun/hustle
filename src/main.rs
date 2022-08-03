@@ -25,8 +25,9 @@ fn main() {
     #[cfg(feature = "solve")]
     Commands::Solve {
       gamestate,
-      elist,
       alist,
+      glist,
+      flist,
       dt,
       wbp,
       hdp,
@@ -72,10 +73,10 @@ fn main() {
         println!();
       }
 
-      // solve + elist?
+      // solve + glist?
       let inst = Instant::now();
       let given = w.is_some();
-      let dtree = if !given && elist {
+      let dtree = if !given && glist {
         let ws = state.top_words(&sd);
         let mut scores: Vec<(Word, DTree)> = ws
           .iter()
@@ -85,12 +86,12 @@ fn main() {
         println!("Evaluations:");
         for (i, (w, dt)) in scores.iter().enumerate() {
           println!(
-            "{}. {}: {}/{} = {:.3}",
+            "{}. {}: {}/{} = {}",
             i + 1,
-            w.to_string(),
+            w,
             dt.get_tot(),
-            state.aws.len(),
-            dt.get_tot() as f64 / state.aws.len() as f64
+            dt.get_alen(),
+            dt.get_eval(),
           );
         }
         println!();
@@ -102,6 +103,30 @@ fn main() {
       }
       .expect("couldn't make dtree!");
 
+      if flist {
+        println!("Feedbacks:");
+        match dtree {
+          DTree::Leaf => println!("N/A"),
+          DTree::Node {
+            tot: _,
+            word: _,
+            ref fbmap,
+          } => {
+            for (i, (fb, dt)) in fbmap.iter().enumerate() {
+              println!(
+                "{}. {}: {}/{} = {}",
+                i + 1,
+                fb,
+                dt.get_tot(),
+                dt.get_alen(),
+                dt.get_eval(),
+              );
+            }
+          }
+        }
+        println!();
+      }
+
       // print results
       if let DTree::Node {
         tot,
@@ -111,7 +136,7 @@ fn main() {
       {
         println!("Solution:");
         println!(
-          "{}: {}/{} = {:.3} in {:.3}s",
+          "{}: {}/{} = {} in {}s",
           word.to_string(),
           tot,
           state.aws.len(),

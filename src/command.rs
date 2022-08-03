@@ -20,12 +20,15 @@ pub enum Commands {
     /// the game state to solve from
     #[clap(value_parser, default_value="")]
     gamestate: String,
-    /// list top word evaluations
-    #[clap(long)]
-    elist: bool,
     /// list potential answers
     #[clap(long)]
     alist: bool,
+    /// list potential feedbacks and their evaluations
+    #[clap(long)]
+    flist: bool,
+    /// list top guess evaluations
+    #[clap(long)]
+    glist: bool,
     /// output decision tree to file
     #[clap(long)]
     dt: Option<String>,

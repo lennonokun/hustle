@@ -62,6 +62,25 @@ impl DTree {
     }
   }
 
+  pub fn get_alen(&self) -> u32 {
+    match self {
+      DTree::Leaf => 1,
+      DTree::Node {
+        tot,
+        word: _,
+        fbmap,
+      } => {
+        fbmap.iter()
+          .map(|(fb, dt)| dt.get_alen())
+          .sum()
+      }
+    }
+  }
+
+  pub fn get_eval(&self) -> f64 {
+    self.get_tot() as f64 / self.get_alen() as f64
+  }
+
   pub fn get_fbmap(&self) -> Option<&FbMap<DTree>> {
     match self {
       DTree::Leaf => None,
