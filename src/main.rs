@@ -5,51 +5,19 @@ use std::time::Instant;
 use std::sync::Arc;
 use std::path::Path;
 
-use tabled::{Tabled, Table, Style};
-
 use hustle::util::*;
 use hustle::command::{cli_parse, Commands};
 #[cfg(feature = "gen")]
 use hustle::analysis::{LGen, GGen};
 #[cfg(feature = "solve")]
-use hustle::solve::{Cache, SData, State, AData};
+use hustle::solve::SolveCommand;
 #[cfg(feature = "play")]
 use hustle::game::play;
-
-#[derive(Tabled)]
-struct GResult {
-  i: usize,
-  guess: Word,
-  total: u32,
-  alen: u32,
-  #[tabled(display_with = "display_eval")]
-  eval: f64,
-}
-
-#[derive(Tabled)]
-struct AResult {
-  i: usize,
-  answer: Word,
-}
-
-#[derive(Tabled)]
-struct FResult {
-  i: usize,
-  feedback: Feedback,
-  total: u32,
-  alen: u32,
-  #[tabled(display_with = "display_eval")]
-  eval: f64,
-}
-
-fn display_eval(eval: &f64)  -> String {
-  format!("{eval:.4}")
-}
 
 fn main() {
   let cli = cli_parse();
 
-  match cli.command {
+  match cli_parse().command {
     #[cfg(feature = "play")]
     Commands::Play {} => {
       play();
@@ -71,120 +39,23 @@ fn main() {
       turns,
       ecut,
     } => {
-      // define table style
-      let style = Style::modern()
-        .off_horizontal()
-        .lines([(1, Style::modern().get_horizontal())]);
-
-      // create state + adata
-      let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
-      let adata = AData::load(&hdp, &ldp).unwrap();
-      let cache = Cache::new(64, 16);
-      let mut state = State::new2(Arc::new(gwb.data), awb.data, wlen.into(), turns, hard);
-      let sd = SData::new(adata, cache, ntops1, ntops2, ecut);
-
-      // parse gamestate
-      let mut w: Option<Word> = None;
-      let mut turn = 0u32;
-      let mut it = gamestate.split('.');
-      while let Some(s_a) = it.next() {
-        if s_a.is_empty() {
-          break;
-        }
-        turn += 1;
-        if let Some(s_b) = it.next() {
-          let gw = Word::from_str(s_a).unwrap();
-          let fb = Feedback::from_str(s_b).unwrap();
-          state = state.fb_follow(gw, fb);
-        } else {
-          w = Some(Word::from_str(s_a).unwrap());
-        }
-      }
-
-      // list answers
-      if alist {
-        println!("Answers:");
-        let aresults = state.aws.iter().enumerate()
-          .map(|(i, answer)| AResult {i: i+1, answer: *answer})
-          .collect::<Vec<AResult>>();
-        println!("{}", Table::new(aresults).with(style.clone()));
-        println!();
-      }
-
-      // solve + glist?
-      let inst = Instant::now();
-      let given = w.is_some();
-      let dtree = if !given && glist {
-        let ws = state.top_words(&sd);
-        let mut scores: Vec<(Word, DTree)> = ws
-          .iter()
-          .filter_map(|w| Some((*w, state.solve_given(*w, &sd, u32::MAX)?)))
-          .collect();
-        scores.sort_by_key(|(_w, dt)| dt.get_tot());
-        println!("Guesses:");
-        let gresults = scores.iter().enumerate()
-          .map(|(i, (guess, dt))| GResult {
-            i: i+1,
-            guess: *guess,
-            total: dt.get_tot(),
-            alen: dt.get_alen(),
-            eval: dt.get_eval(),
-          }).collect::<Vec<GResult>>();
-        println!("{}", Table::new(gresults).with(style.clone()));
-        println!();
-        Some(scores.remove(0).1)
-      } else if !given {
-        state.solve(&sd, u32::MAX)
-      } else {
-        state.solve_given(w.unwrap(), &sd, u32::MAX)
-      }
-      .expect("couldn't make dtree!");
-
-      if flist {
-        println!("Feedbacks:");
-        match dtree {
-          DTree::Leaf => println!("N/A"),
-          DTree::Node {
-            tot: _,
-            word: _,
-            ref fbmap,
-          } => {
-            let fresults = fbmap.iter().enumerate()
-              .map(|(i, (fb, dt))| FResult {
-                i: i+1,
-                feedback: *fb,
-                total: dt.get_tot(),
-                alen: dt.get_alen(),
-                eval: dt.get_eval(),
-              }).collect::<Vec<FResult>>();
-            println!("{}", Table::new(fresults).with(style.clone()));
-          }
-        }
-        println!();
-      }
-
-      // print results
-      if let DTree::Node {
-        tot,
-        word,
-        fbmap: _,
-      } = dtree
-      {
-        println!("Solution:");
-        println!(
-          "{}: {}/{} = {:.4} in {}s",
-          word.to_string(),
-          tot,
-          state.aws.len(),
-          tot as f64 / state.aws.len() as f64,
-          inst.elapsed().as_millis() as f64 / 1000.
-        );
-        // output dtree
-        if let Some(dt) = dt {
-          let mut f = File::create(dt).unwrap();
-          dtree.pprint(&mut f, &"".into(), turn);
-        }
-      }
+      let scmd = SolveCommand {
+        gamestate,
+        alist,
+        glist,
+        flist,
+        dt,
+        wbp,
+        hdp,
+        ldp,
+        hard,
+        wlen,
+        ntops1,
+        ntops2,
+        turns,
+        ecut,
+      };
+      scmd.run();
     }
     #[cfg(feature = "gen")]
     Commands::Hgen {

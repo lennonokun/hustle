@@ -6,4 +6,5 @@ pub mod multistate;
 pub use self::multistate::{MData, MState};
 pub mod adata;
 pub use self::adata::AData;
-
+pub mod solvecommand;
+pub use self::solvecommand::SolveCommand;
