@@ -21,6 +21,7 @@ struct GResult {
   i: usize,
   guess: Word,
   total: u32,
+  alen: u32,
   #[tabled(display_with = "display_eval")]
   eval: f64,
 }
@@ -36,6 +37,7 @@ struct FResult {
   i: usize,
   feedback: Feedback,
   total: u32,
+  alen: u32,
   #[tabled(display_with = "display_eval")]
   eval: f64,
 }
@@ -119,12 +121,13 @@ fn main() {
           .filter_map(|w| Some((*w, state.solve_given(*w, &sd, u32::MAX)?)))
           .collect();
         scores.sort_by_key(|(_w, dt)| dt.get_tot());
-        println!("Evaluations:");
+        println!("Guesses:");
         let gresults = scores.iter().enumerate()
           .map(|(i, (guess, dt))| GResult {
             i: i+1,
             guess: *guess,
             total: dt.get_tot(),
+            alen: dt.get_alen(),
             eval: dt.get_eval(),
           }).collect::<Vec<GResult>>();
         println!("{}", Table::new(gresults).with(style.clone()));
@@ -151,6 +154,7 @@ fn main() {
                 i: i+1,
                 feedback: *fb,
                 total: dt.get_tot(),
+                alen: dt.get_alen(),
                 eval: dt.get_eval(),
               }).collect::<Vec<FResult>>();
             println!("{}", Table::new(fresults).with(style.clone()));
