@@ -56,7 +56,14 @@ impl SData {
 }
 
 #[derive(Clone)]
-struct GivenData {
+struct SolveGivenData {
+  pub fbmap: FbMap<DTree>,
+  pub tot: u32,
+  pub impossible: bool,
+}
+
+#[derive(Clone)]
+struct SolveAllData {
   pub dt: Option<DTree>,
   pub beta: u32,
 }
@@ -295,55 +302,70 @@ impl State {
       return None;
     }
 
-    let mut tot = alen as u32;
-    let mut fbm = FbMap::new();
+    let sgdata = Mutex::new(SolveGivenData {
+      fbmap: FbMap::new(),
+      tot: alen as u32,
+      impossible: false,
+    });
 
     if self.wlen <= 5 {
       let fbpv = self.fb_partition_vec(&gw);
-      for (fb, s2) in fbpv {
-        if fb.is_correct() {
-          fbm.insert(fb, DTree::Leaf);
-        } else {
-          match s2.solve(sd, beta - tot) {
-            None => return None,
-            Some(dt) => {
-              tot += dt.get_tot();
-              fbm.insert(fb, dt);
-              if tot >= beta {
-                return None;
-              }
-            }
+      fbpv.into_par_iter().for_each(|(fb, s2)| {
+        if sgdata.lock().unwrap().impossible {
+          return;
+        } else if fb.is_correct() {
+          let fbmap = &mut sgdata.lock().unwrap().fbmap;
+          fbmap.insert(fb, DTree::Leaf);
+          return;
+        }
+
+        let tot = sgdata.lock().unwrap().tot.clone();
+        match s2.solve(sd, beta - tot) {
+          None => {
+            sgdata.lock().unwrap().impossible = true;
+          }, Some(dt) => {
+            let mut sgdata = sgdata.lock().unwrap();
+            sgdata.tot += dt.get_tot();
+            sgdata.fbmap.insert(fb, dt);
+            sgdata.impossible |= sgdata.tot >= beta;
           }
         }
-      }
+      });
     } else {
       let fbp = self.fb_partition(&gw);
-      // let mut sfbp: Vec<(&Feedback, &State)> = fbp.iter().collect();
-      // sfbp.sort_by_key(|(fb, s)| s.aws.len());
+      fbp.into_par_iter().for_each(|(fb, s2)| {
+        if sgdata.lock().unwrap().impossible {
+          return;
+        } else if fb.is_correct() {
+          let fbmap = &mut sgdata.lock().unwrap().fbmap;
+          fbmap.insert(fb, DTree::Leaf);
+          return;
+        }
 
-      for (fb, s2) in fbp {
-        if fb.is_correct() {
-          fbm.insert(fb, DTree::Leaf);
-        } else {
-          match s2.solve(sd, beta - tot) {
-            None => return None,
-            Some(dt) => {
-              tot += dt.get_tot();
-              fbm.insert(fb, dt);
-              if tot >= beta {
-                return None;
-              }
-            }
+        let tot = sgdata.lock().unwrap().tot.clone();
+        match s2.solve(sd, beta - tot) {
+          None => {
+            sgdata.lock().unwrap().impossible = true;
+          }, Some(dt) => {
+            let mut sgdata = sgdata.lock().unwrap();
+            sgdata.tot += dt.get_tot();
+            sgdata.fbmap.insert(fb, dt);
+            sgdata.impossible |= sgdata.tot >= beta;
           }
         }
-      }
+      });
     }
 
-    Some(DTree::Node {
-      tot,
-      word: gw,
-      fbmap: fbm,
-    })
+    let sgdata = sgdata.into_inner().unwrap();
+    if sgdata.impossible {
+      None
+    } else {
+      Some(DTree::Node {
+        tot: sgdata.tot,
+        word: gw,
+        fbmap: sgdata.fbmap,
+      })
+    }
   }
 
   pub fn solve(&self, sd: &SData, beta: u32) -> Option<DTree> {
@@ -383,22 +405,22 @@ impl State {
 
     // finally, check top words
     let tws = self.top_words(&sd);
-    let gd = Mutex::new(GivenData{dt: None, beta});
+    let sad = Mutex::new(SolveAllData {dt: None, beta});
     tws.into_par_iter().for_each(|w| {
-      let gd2 = gd.lock().unwrap().clone();
-      if gd2.beta <= 2 * alen as u32 {return}
-      let dt2 = self.solve_given(w, sd, gd2.beta);
+      let sad2 = sad.lock().unwrap().clone();
+      if sad2.beta <= 2 * alen as u32 {return}
+      let dt2 = self.solve_given(w, sd, sad2.beta);
       if let Some(dt2) = dt2 {
-        let mut gd = gd.lock().unwrap();
-        if dt2.get_tot() < gd.beta {
-          gd.beta = dt2.get_tot();
-          gd.dt = Some(dt2);
+        let mut sad = sad.lock().unwrap();
+        if dt2.get_tot() < sad.beta {
+          sad.beta = dt2.get_tot();
+          sad.dt = Some(dt2);
         }
       }
     });
 
-    let gd = gd.into_inner().unwrap();
-    let dt = gd.dt;
+    let sad = sad.into_inner().unwrap();
+    let dt = sad.dt;
 
     // add cache
     if !self.hard {
