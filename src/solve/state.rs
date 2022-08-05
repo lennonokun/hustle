@@ -3,9 +3,9 @@ use std::sync::{Arc, Mutex};
 
 use rand::Rng;
 use rayon::prelude::*;
+use rayon::iter::ParallelBridge;
 
-use super::cache::Cache;
-use super::adata::AData;
+use super::{Cache, AData, AutoFbMap};
 use crate::util::*;
 
 // TODO: also hash gws?
@@ -135,64 +135,20 @@ impl State {
     State::new2(gws, aws, self.wlen, self.n - 1, self.hard)
   }
 
-  pub fn fb_partition(&self, gw: &Word) -> FbMap<State> {
-    let mut map = FbMap::new();
+  pub fn fb_partition(&self, gw: &Word) -> AutoFbMap<Vec<Word>> {
+    let mut afbmap = AutoFbMap::new(self.wlen as u8, self.aws.len(), Vec::new());
     for aw in &self.aws {
-      let fb = Feedback::from(*gw, *aw).unwrap();
-      let s2: &mut State = map.entry(fb).or_insert_with(|| {
-        let gws2 = if self.hard {
-          Arc::new(fb_filter(*gw, fb, &self.gws))
-        } else {
-          self.gws.clone()
-        };
-        State::new2(gws2, Vec::new(), self.wlen, self.n - 1, self.hard)
-      });
-      s2.aws.push(*aw);
+      afbmap.get_mut(*gw, *aw).push(*aw);
     }
-    map
+    afbmap
   }
 
-  pub fn fb_partition_vec(&self, gw: &Word) -> Vec<(Feedback, State)> {
-    let mut awss = vec![Vec::new(); 3usize.pow(self.wlen)];
-
+  pub fn fb_counts(&self, gw: &Word) -> AutoFbMap<u16> {
+    let mut afbmap = AutoFbMap::new(self.wlen as u8, self.aws.len(), 0u16);
     for aw in &self.aws {
-      awss[fb_id(*gw, *aw) as usize].push(*aw);
+      *afbmap.get_mut(*gw, *aw) += 1u16;
     }
-
-    awss.iter()
-      .enumerate()
-      .filter(|(_id, aws)| !aws.is_empty())
-      .map(|(id, aws)| {
-        let fb = Feedback::from_id(id as u32, self.wlen as u8);
-        let gws2 = if self.hard {
-          Arc::new(fb_filter(*gw, fb, &self.gws))
-        } else {
-          self.gws.clone()
-        };
-        let state = State::new2(gws2, aws.clone(), self.wlen, self.n-1, self.hard);
-        (fb, state)
-      })
-      .collect()
-  }
-
-  pub fn fb_counts(&self, gw: &Word) -> FbMap<u32> {
-    let mut map = FbMap::new();
-    for aw in &self.aws {
-      let fb = Feedback::from(*gw, *aw).unwrap();
-      *map.entry(fb).or_insert(0) += 1;
-    }
-    map
-  }
-
-  pub fn fb_counts_vec(&self, gw: &Word) -> Vec<u32> {
-    // initialize vec with zeros
-    let mut cts = vec![0; 3usize.pow(self.wlen)];
-
-    for aw in &self.aws {
-      cts[fb_id(*gw, *aw) as usize] += 1;
-    }
-
-    cts
+    afbmap
   }
 
   pub fn letter_evals(&self) -> (Vec<Vec<f64>>, Vec<f64>) {
@@ -238,18 +194,11 @@ impl State {
   }
 
   pub fn heuristic(&self, gw: &Word, sd: &SData) -> f64 {
-    let h = if self.wlen <= 5 {
-      self.fb_counts_vec(gw)
-        .iter()
-        .filter(|x| **x > 0)
-        .map(|&x| sd.adata.get_approx(x as usize).unwrap())
-        .sum()
-    } else {
-      self.fb_counts(gw)
-        .iter()
-        .map(|(_, n)| sd.adata.get_approx(*n as usize).unwrap())
-        .sum()
-    };
+    let h = self.fb_counts(gw)
+      .into_iter()
+      .filter(|(_fb, n)| *n > 0)
+      .map(|(_fb, n)| sd.adata.get_approx(n as usize).unwrap())
+      .sum();
 
     if self.aws.contains(gw) {
       h - 1.
@@ -308,53 +257,38 @@ impl State {
       impossible: false,
     });
 
-    if self.wlen <= 5 {
-      let fbpv = self.fb_partition_vec(&gw);
-      fbpv.into_par_iter().for_each(|(fb, s2)| {
-        if sgdata.lock().unwrap().impossible {
-          return;
-        } else if fb.is_correct() {
-          let fbmap = &mut sgdata.lock().unwrap().fbmap;
-          fbmap.insert(fb, DTree::Leaf);
-          return;
-        }
+    let mut fbp = self.fb_partition(&gw);
+    fbp.into_iter().par_bridge().for_each(|(fb, aws)| {
+      if aws.is_empty() {
+        return;
+      } else if sgdata.lock().unwrap().impossible {
+        return;
+      } else if fb.is_correct() {
+        let fbmap = &mut sgdata.lock().unwrap().fbmap;
+        fbmap.insert(fb, DTree::Leaf);
+        return;
+      }
 
-        let tot = sgdata.lock().unwrap().tot.clone();
-        match s2.solve(sd, beta - tot) {
-          None => {
-            sgdata.lock().unwrap().impossible = true;
-          }, Some(dt) => {
-            let mut sgdata = sgdata.lock().unwrap();
-            sgdata.tot += dt.get_tot();
-            sgdata.fbmap.insert(fb, dt);
-            sgdata.impossible |= sgdata.tot >= beta;
-          }
-        }
-      });
-    } else {
-      let fbp = self.fb_partition(&gw);
-      fbp.into_par_iter().for_each(|(fb, s2)| {
-        if sgdata.lock().unwrap().impossible {
-          return;
-        } else if fb.is_correct() {
-          let fbmap = &mut sgdata.lock().unwrap().fbmap;
-          fbmap.insert(fb, DTree::Leaf);
-          return;
-        }
+      // make state
+      let gws2 = if self.hard {
+        Arc::new(fb_filter(gw, fb, &self.gws))
+      } else {
+        self.gws.clone()
+      };
+      let s2 = State::new2(gws2, aws, self.wlen, self.n - 1, self.hard);
 
-        let tot = sgdata.lock().unwrap().tot.clone();
-        match s2.solve(sd, beta - tot) {
-          None => {
-            sgdata.lock().unwrap().impossible = true;
-          }, Some(dt) => {
-            let mut sgdata = sgdata.lock().unwrap();
-            sgdata.tot += dt.get_tot();
-            sgdata.fbmap.insert(fb, dt);
-            sgdata.impossible |= sgdata.tot >= beta;
-          }
+      let tot = sgdata.lock().unwrap().tot.clone();
+      match s2.solve(sd, beta - tot) {
+        None => {
+          sgdata.lock().unwrap().impossible = true;
+        }, Some(dt) => {
+          let mut sgdata = sgdata.lock().unwrap();
+          sgdata.tot += dt.get_tot();
+          sgdata.fbmap.insert(fb, dt);
+          sgdata.impossible |= sgdata.tot >= beta;
         }
-      });
-    }
+      }
+    });
 
     let sgdata = sgdata.into_inner().unwrap();
     if sgdata.impossible {
@@ -390,7 +324,7 @@ impl State {
     // check endgame if viable
     if alen <= sd.ecut as usize {
       for aw in self.aws.iter() {
-        if self.fb_counts(aw).values().all(|c| *c == 1) {
+        if self.fb_counts(aw).into_iter().all(|(_fb, c)| c == 1) {
           return self.solve_given(*aw, sd, beta);
         }
       }

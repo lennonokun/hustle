@@ -1,10 +1,12 @@
 pub mod cache;
 pub use self::cache::Cache;
+pub mod adata;
+pub use self::adata::AData;
+pub mod autofbmap;
+pub use self::autofbmap::AutoFbMap;
 pub mod state;
 pub use self::state::{fb_filter, SData, State};
 pub mod multistate;
 pub use self::multistate::{MData, MState};
-pub mod adata;
-pub use self::adata::AData;
 pub mod solvecommand;
 pub use self::solvecommand::SolveCommand;
