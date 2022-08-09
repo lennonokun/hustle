@@ -34,6 +34,8 @@ fn main() {
       ldp,
       hard,
       wlen,
+      ncacherows,
+      ncachecols,
       ntops1,
       ntops2,
       turns,
@@ -50,6 +52,8 @@ fn main() {
         ldp,
         hard,
         wlen,
+        ncacherows,
+        ncachecols,
         ntops1,
         ntops2,
         turns,
@@ -65,6 +69,8 @@ fn main() {
       wbp,
       hdp,
       ldp,
+      ncacherows,
+      ncachecols,
       ntops1,
       ntops2,
       turns,
@@ -72,7 +78,6 @@ fn main() {
     } => {
       let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
       let adata = AData::load(&hdp, &ldp).unwrap();
-      let cache = Cache::new(64, 16);
       let alen_max = awb.len();
 
       let mut hgen = GGen {
@@ -80,9 +85,10 @@ fn main() {
         awb,
         wlen: wlen as u32,
         adata,
-        cache,
         alens: Range::new(1, alen_max, true),
         turns: Range::new(6, 6, true),
+        ncacherows,
+        ncachecols,
         ntops1: Range::new(ntops1, ntops1, true),
         ntops2: Range::new(ntops2, ntops2, true),
         ecuts: Range::new(ecut, ecut, true),
@@ -99,6 +105,8 @@ fn main() {
       hdp,
       ldp,
       alens,
+      ncacherows,
+      ncachecols,
       ntops1,
       ntops2,
       turns,
@@ -114,9 +122,10 @@ fn main() {
         awb,
         wlen: wlen as u32,
         adata,
-        cache,
         alens,
         turns,
+        ncacherows,
+        ncachecols,
         ntops1,
         ntops2,
         ecuts: ecut,
@@ -134,6 +143,8 @@ fn main() {
       hdp,
       ldp,
       alens,
+      ncacherows,
+      ncachecols,
       ntops1,
       ntops2,
       turns,
@@ -141,7 +152,6 @@ fn main() {
     } => {
       let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
       let adata = AData::load(&hdp, &ldp).unwrap();
-      let cache = Cache::new(64, 16);
 
       let alens = alens.unwrap_or(Range::new(1, awb.len(), true));
       let mut lgen = LGen {
@@ -151,9 +161,10 @@ fn main() {
         awb,
         wlen: wlen as u32,
         adata,
-        cache,
         alens,
         turns,
+        ncacherows,
+        ncachecols,
         ntops1,
         ntops2,
         ecut,

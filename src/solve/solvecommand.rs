@@ -59,6 +59,10 @@ pub struct SolveCommand {
   pub ldp: String,
   /// play in hard mode
   pub hard: bool,
+  /// the number of rows/sets in the cache
+  pub ncacherows: usize,
+  /// the number of columns in the cache
+  pub ncachecols: usize,
   /// the number of top soft heuristic words to try
   pub ntops1: u32,
   /// the number of top hard heuristic words to try
@@ -74,7 +78,7 @@ impl SolveCommand {
     // load data
     let (gwb, awb) = WBank::from2(self.wbp.clone(), self.wlen).unwrap();
     let adata = AData::load(&self.hdp, &self.ldp).unwrap();
-    let cache = Cache::new(64, 16);
+    let cache = Cache::new(self.ncacherows, self.ncachecols);
     let sdata = SData::new(adata, cache, self.ntops1, self.ntops2, self.ecut);
 
     // parse gamestate

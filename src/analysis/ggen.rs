@@ -20,9 +20,10 @@ pub struct GGen {
   pub awb: WBank,
   pub wlen: u32,
   pub adata: AData,
-  pub cache: Cache, // TODO using the same cache interferes with time results
   pub alens: Range<usize>,
   pub turns: Range<u32>,
+  pub ncacherows: usize,
+  pub ncachecols: usize,
   pub ntops1: Range<u32>,
   pub ntops2: Range<u32>,
   pub ecuts: Range<u32>,
@@ -90,12 +91,13 @@ impl GGen {
       let ntops1 = self.ntops1.sample(&mut rng);
       let ntops2 = self.ntops2.sample(&mut rng);
       let ecut = self.ecuts.sample(&mut rng);
+      let cache = Cache::new(self.ncacherows, self.ncachecols);
       let hard = false; // FOR NOW ALWAYS EASY BC CACHE DOESNT CHECK GWS
 
       // make state
       let aws2 = self.awb.pick(&mut rng, alen as usize);
       let s = State::new2(Arc::new(self.gwb.data.clone()), aws2, self.wlen, turns as u32, false);
-      let mut sd = SData::new(self.adata.clone(), self.cache.clone(),
+      let mut sd = SData::new(self.adata.clone(), cache,
                               ntops1 as u32, ntops2 as u32, ecut as u32);
 
       // solve and time
