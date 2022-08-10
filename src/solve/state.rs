@@ -237,12 +237,12 @@ impl State {
       .par_iter()
       .map(|gw| ScoredWord {w: *gw, h: -self.letter_heuristic(&gw, &gss, &ys)})
       .collect();
-    qselect(&mut tops, glen - 1, 0, glen-1);
+    select(&mut tops, ntops1-1, 0, glen-1);
     
     (&mut tops[0..ntops1]).par_iter_mut().for_each(|sw| {
       (*sw).h = self.heuristic(&sw.w, sd)
     });
-    qselect(&mut tops, min(glen, ntops2) - 1, 0, ntops1-1);
+    select(&mut tops, min(glen, ntops2) - 1, 0, ntops1-1);
 
     tops.iter().take(ntops2).map(|tw| tw.w).collect()
   }
