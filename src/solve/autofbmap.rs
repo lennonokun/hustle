@@ -7,7 +7,7 @@ use std::iter::{Enumerate, IntoIterator};
 use crate::util::*;
 
 // decided through benchmarks
-const AFBMAP_WLEN_CUT: u8 = 7;
+const AFBMAP_WLEN_CUT: u8 = 6;
 const AFBMAP_ALEN_CUT: usize = 25;
 
 pub struct AutoFbMap<T> {
