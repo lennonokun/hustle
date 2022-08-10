@@ -5,8 +5,7 @@ use std::path::Path;
 /// analysis data, including heuristics and lower bounds
 #[derive(Debug, Clone)]
 pub struct AData {
-  // does this really need to be f64
-  approxs: Vec<f64>,
+  approxs: Vec<f32>,
   lbounds: Vec<u32>,
 }
 
@@ -21,9 +20,9 @@ impl AData {
       .filter_map(|s| {
         let s = s.ok()?;
         let s = s.split(",").nth(1)?;
-        s.parse::<f64>().ok()
+        s.parse::<f32>().ok()
       })
-      .collect::<Vec<f64>>();
+      .collect::<Vec<f32>>();
     let lbounds = ld_reader
       .lines()
       .skip(1)
@@ -38,7 +37,7 @@ impl AData {
   }
 
   #[inline]
-  pub fn get_approx(&self, n: usize) -> Option<f64> {
+  pub fn get_approx(&self, n: usize) -> Option<f32> {
     self.approxs.get(n-1).map(|x| *x)
   }
 

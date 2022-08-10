@@ -4,6 +4,7 @@ use std::sync::Arc;
 
 use tabled::{Tabled, Table, Style};
 use rayon::prelude::*;
+use pheap::PairingHeap;
 
 use crate::util::*;
 use super::{State, SData, AData, Cache};
@@ -112,24 +113,24 @@ impl SolveCommand {
       .off_horizontal()
       .lines([(1, Style::modern().get_horizontal())]);
 
-    let ws = state.top_words(sdata);
-    let mut scores: Vec<(Word, DTree)> = ws
-      .iter()
-      .filter_map(|w| Some((*w, state.solve_given(*w, sdata, u32::MAX)?)))
-      .collect();
-    scores.sort_by_key(|(_w, dt)| dt.get_tot());
+    let tops = state.top_words(sdata);
+    let mut solutions = tops.into_par_iter()
+      .map(|w| (w, state.solve_given(w, sdata, u32::MAX)))
+      .collect::<Vec<(Word, Option<DTree>)>>();
+    solutions.sort_by_cached_key(|(w, odt)| odt.as_ref().map_or(u32::MAX, |dt| dt.get_tot()));
+
     println!("Guesses:");
-    let gresults = (&scores).into_par_iter().enumerate()
-      .map(|(i, (guess, dt))| GResult {
+    let gresults = solutions.par_iter().enumerate()
+      .map(|(i, (w, odt))| GResult {
         i: i+1,
-        guess: *guess,
-        total: dt.get_tot(),
-        alen: dt.get_alen(),
-        eval: dt.get_eval(),
-      }).collect::<Vec<GResult>>();
+        guess: *w,
+        total: odt.as_ref().map_or(u32::MAX, |odt| odt.get_tot()),
+        alen: odt.as_ref().map_or(u32::MAX, |odt| odt.get_alen()),
+        eval: odt.as_ref().map_or(f64::INFINITY, |odt| odt.get_eval()),
+    }).collect::<Vec<GResult>>();
     println!("{}", Table::new(gresults).with(style));
     println!();
-    Some(scores.remove(0).1)
+    solutions.remove(0).1
   }
 
   pub fn run(&self) {

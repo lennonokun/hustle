@@ -1,5 +1,6 @@
 use std::hash::{Hash, Hasher};
 use std::sync::{Arc, Mutex};
+use std::cmp::{min, Ordering};
 
 use rand::Rng;
 use rayon::prelude::*;
@@ -151,7 +152,7 @@ impl State {
     afbmap
   }
 
-  pub fn letter_evals(&self) -> (Vec<Vec<f64>>, Vec<f64>) {
+  pub fn letter_evals(&self) -> (Vec<Vec<f32>>, Vec<f32>) {
     // get letter counts
     let mut gss = vec![vec![0usize; self.wlen as usize]; 26];
     let mut ys = vec![0usize; 26];
@@ -165,20 +166,20 @@ impl State {
     }
 
     // maximize entropy (very fuzzy) 
-    let n = self.aws.len() as f64;
+    let n = self.aws.len() as f32;
     let gss = gss.iter()
       .map(|gs| gs.iter()
-           .map(|&g| {let p = (g as f64) / n; p*(1.-p)})
+           .map(|&g| {let p = (g as f32) / n; p*(1.-p)})
            .collect())
       .collect();
     let ys = ys.iter()
-      .map(|&y| {let p = (y as f64) / n; p*(1.-p)})
+      .map(|&y| {let p = (y as f32) / n; p*(1.-p)})
       .collect();
     (gss, ys)
   }
 
-  pub fn letter_heuristic(&self, gw: &Word, gss: &Vec<Vec<f64>>, ys: &Vec<f64>) -> f64 {
-    let mut h = 0f64;
+  pub fn letter_heuristic(&self, gw: &Word, gss: &Vec<Vec<f32>>, ys: &Vec<f32>) -> f32 {
+    let mut h = 0f32;
     for i in 0..(self.wlen as usize) {
       h += gss[gw.data[i] as usize][i];
       if !gw.data[0..i].contains(&gw.data[i]) {
@@ -193,7 +194,7 @@ impl State {
     }
   }
 
-  pub fn heuristic(&self, gw: &Word, sd: &SData) -> f64 {
+  pub fn heuristic(&self, gw: &Word, sd: &SData) -> f32 {
     let h = self.fb_counts(gw)
       .into_iter()
       .filter(|(_fb, n)| *n > 0)
@@ -208,29 +209,42 @@ impl State {
   }
 
   pub fn top_words(&self, sd: &SData) -> Vec<Word> {
-    // fast heuristic
+    #[derive(Debug, Clone, Copy)]
+    struct ScoredWord {
+      pub w: Word,
+      pub h: f32,
+    }
+
+    impl PartialEq for ScoredWord {
+      fn eq(&self, other: &Self) -> bool {
+        false // we are all unique in our own special ways
+      }
+    }
+
+    impl PartialOrd for ScoredWord {
+      fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.h.partial_cmp(&other.h)
+      }
+    }
+
+    let glen = self.gws.len();
+    let ntops1 = min(sd.ntops1 as usize, glen);
+    let ntops2 = if self.hard {2 * sd.ntops2 as usize} else {sd.ntops2 as usize};
+    let ntops2 = min(ntops2, glen);
     let (gss, ys) = self.letter_evals();
-    let mut tups: Vec<(Word, f64)> = (&self.gws)
+
+    let mut tops: Vec<ScoredWord> = (&self.gws)
       .par_iter()
-      .map(|gw| (*gw, self.letter_heuristic(&gw, &gss, &ys)))
+      .map(|gw| ScoredWord {w: *gw, h: -self.letter_heuristic(&gw, &gss, &ys)})
       .collect();
-    tups.sort_by(|(_, f1), (_, f2)| f2.partial_cmp(f1).unwrap());
-    let gws2 = tups.iter()
-      .take(sd.ntops1 as usize)
-      .map(|(gw, _)| *gw)
-      .collect::<Vec<Word>>();
+    qselect(&mut tops, glen - 1, 0, glen-1);
     
-    // slow heuristic
-    let mut tups: Vec<(Word, f64)> = gws2
-      .iter()
-      .map(|gw| (*gw, self.heuristic(&gw, sd)))
-      .collect();
-    tups.sort_by(|(_, f1), (_, f2)| f1.partial_cmp(f2).unwrap());
-    tups
-      .iter()
-      .map(|(gw, _)| *gw)
-      .take(if self.hard {2 * sd.ntops2 as usize} else {sd.ntops2 as usize})
-      .collect()
+    (&mut tops[0..ntops1]).par_iter_mut().for_each(|sw| {
+      (*sw).h = self.heuristic(&sw.w, sd)
+    });
+    qselect(&mut tops, min(glen, ntops2) - 1, 0, ntops1-1);
+
+    tops.iter().take(ntops2).map(|tw| tw.w).collect()
   }
 
   pub fn solve_given(&self, gw: Word, sd: &SData, beta: u32) -> Option<DTree> {
@@ -338,9 +352,8 @@ impl State {
     }
 
     // finally, check top words
-    let tws = self.top_words(&sd);
     let sad = Mutex::new(SolveAllData {dt: None, beta});
-    tws.into_par_iter().for_each(|w| {
+    self.top_words(&sd).into_par_iter().for_each(|w| {
       let sad2 = sad.lock().unwrap().clone();
       if sad2.beta <= 2 * alen as u32 {return}
       let dt2 = self.solve_given(w, sd, sad2.beta);

@@ -1,8 +1,79 @@
-use criterion::{black_box, criterion_group, criterion_main, Criterion, BenchmarkGroup};
-use criterion::measurement::Measurement;
-use hustle::solve::{State, SData, MState, MData, AData, Cache};
+use std::time::Duration;
+use std::collections::HashMap;
+
+use rand::prelude::*;
+use rand::seq::SliceRandom;
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
+
+use hustle::solve::*;
 use hustle::util::*;
-use std::time::{Instant, Duration};
+
+pub fn fbmap_bench(c: &mut Criterion) {
+  let mut rng = thread_rng();
+
+  let mut group = c.benchmark_group("fbmap");
+  group.warm_up_time(Duration::from_secs(1));
+  for wlen in 4..=6 {
+    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank2.csv", wlen).unwrap();
+    for alen in vec![15] {
+      let gw = *gwb.data.choose(&mut rng).unwrap();
+      let aws = awb.pick(&mut rng, alen);
+
+      group.bench_function(format!("auto_{wlen}_{alen}_u16"), |b| b.iter(|| {
+        let mut autofbmap = AutoFbMap::<u16>::new(wlen, alen, 0);
+        for aw in aws.iter().copied() {
+          black_box(*autofbmap.get_mut(gw, aw));
+        }
+        for (fb, n) in autofbmap.into_iter() {
+          black_box((fb, n));
+        }
+      }));
+      group.bench_function(format!("vec_{wlen}_{alen}_u16"), |b| b.iter(|| {
+        let mut vec = vec![0u16; 3usize.pow(wlen as u32)];
+        for aw in aws.iter().copied() {
+          black_box(vec[fb_id(gw, aw) as usize]);
+        }
+        for (id, n) in vec.iter_mut().enumerate() {
+          black_box((Feedback::from_id(id as u32, wlen), n));
+        }
+      }));
+      group.bench_function(format!("map_{wlen}_{alen}_u16"), |b| b.iter(|| {
+        let mut map = HashMap::<Feedback, u16>::new();
+        for aw in aws.iter().copied() {
+          black_box(map.entry(Feedback::from(gw, aw).unwrap()).or_insert(0));
+        }
+        for (fb, n) in map.iter() {
+          black_box((fb, n));
+        }
+      }));
+    }
+  }
+  group.finish();
+}
+
+pub fn top_words_bench(c: &mut Criterion) {
+  let wlen = 5;
+  let (gwb, awb) = WBank::from2("/usr/share/hustle/bank2.csv", wlen).unwrap();
+  let mut rng = rand::thread_rng();
+
+  let mut group = c.benchmark_group("top_words");
+  group.warm_up_time(Duration::from_secs(1));
+  group.sample_size(30);
+
+  for glen in vec![1000, 10000] {
+    for alen in vec![10, 100, 1000, 10000] {
+      let gws = gwb.data.choose_multiple(&mut rng, glen).cloned().collect();
+      let aws = awb.data.choose_multiple(&mut rng, alen).cloned().collect();
+      let state = State::new(gws, aws, wlen.into(), false);
+      let sd = SData::new2(1000, 10);
+      group.bench_function(format!("top_words_{glen}_{alen}"), |b| b.iter(|| {
+        black_box(&state).top_words(&sd);
+      }));
+    }
+  }
+
+  group.finish();
+}
 
 pub fn single_solve_bench(c: &mut Criterion) {
   let gw = Word::from_str("SALET").unwrap();
@@ -55,5 +126,11 @@ pub fn multi_solve_bench(c: &mut Criterion) {
 }
 
 
-criterion_group!(benches, single_solve_bench, multi_solve_bench);
+criterion_group!(
+  benches,
+  // fbmap_bench,
+  top_words_bench,
+  single_solve_bench,
+  multi_solve_bench
+);
 criterion_main!(benches);

@@ -46,6 +46,12 @@ impl MData {
     let cache = Cache::new(64, 8);
     Self::new(adata, cache, nguesses, nanswers, 15)
   }
+//
+//  pub fn deep_clone(&self) -> Self {
+//    let cache2 = (*self.cache.lock().unwrap()).clone();
+//    Self::new(self.adata.clone(), cache2, self.nguesses,
+//              self.nanswers, self.ecut)
+//  }
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -182,13 +188,13 @@ impl MState {
   
   // approximately quantify how good each guess is
   // TODO bad for low numbers, add bonus for potentially correct guess
-  pub fn heuristic(&self, gw: &Word, md: &MData) -> f64 {
+  pub fn heuristic(&self, gw: &Word, md: &MData) -> f32 {
     (self.fb_counts(gw), &self.finished)
       .into_par_iter()
       .map(|(fbc, &fin)| {
         if fin { return 0. }
 
-        let mut tot = 0f64;
+        let mut tot = 0f32;
         let mut sz = 0;
         for (fb, n) in fbc {
           if !fb.is_correct() {
@@ -196,13 +202,13 @@ impl MState {
           }
           sz += n;
         }
-        tot / sz as f64
+        tot / sz as f32
       })
       .sum()
   }
 
   pub fn top_words(&self, md: &MData) -> Vec<Word> {
-    let mut tups: Vec<(Word, f64)> = self
+    let mut tups: Vec<(Word, f32)> = self
       .gws.clone()
       .into_par_iter()
       .map(|gw| (gw, self.heuristic(&gw, md)))
@@ -215,7 +221,7 @@ impl MState {
       .collect()
   }
 
-  pub fn solve_given(&self, gw: Word, md: &mut MData) -> Option<f64> {
+  pub fn solve_given(&self, gw: Word, md: &mut MData) -> Option<f32> {
     let awss_sample = self.sample_answers(&mut rand::thread_rng(), md);
     let fbps = self.fb_partition(&gw, awss_sample);
 
@@ -223,14 +229,14 @@ impl MState {
     let mut sz = 0;
     for (_fb, state) in fbps.iter() {
       let sz2 = state.size();
-      tot += sz2 as f64 * state.solve(md)?;
+      tot += sz2 as f32 * state.solve(md)?;
       sz += sz2;
     }
 
-    Some(1. + tot / sz as f64)
+    Some(1. + tot / sz as f32)
   }
 
-  pub fn solve(&self, md: &mut MData) -> Option<f64> {
+  pub fn solve(&self, md: &mut MData) -> Option<f32> {
     if self.finished.iter().all(|&fin| fin) {return Some(0.)}
     if self.turns == 0 {return None}
 
@@ -258,7 +264,7 @@ impl MState {
       }
 
       if smallest_fix != usize::MAX {
-        return Some(n_unfinished as f64 - 1f64 / smallest_fix as f64);
+        return Some(n_unfinished as f32 - 1f32 / smallest_fix as f32);
       }
     }
 
@@ -270,13 +276,13 @@ impl MState {
 //    }
 
     // find best top word
-    let mut tot = f64::INFINITY;
+    let mut tot = f32::INFINITY;
     let tops = self.top_words(md);
     for w in tops {
       if let Some(tot2) = self.solve_given(w, md) {
         if tot2 < tot {tot = tot2}
         // return if best case
-        if tot2 == n_unfinished as f64 {return Some(tot2)}
+        if tot2 == n_unfinished as f32 {return Some(tot2)}
       }
     }
 
@@ -287,7 +293,7 @@ impl MState {
 //      }
 //    }
 
-    if tot == f64::INFINITY { None } else { Some(tot) }
+    if tot == f32::INFINITY { None } else { Some(tot) }
   }
 }
 
