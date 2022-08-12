@@ -4,7 +4,6 @@ use std::sync::Arc;
 
 use tabled::{Tabled, Table, Style};
 use rayon::prelude::*;
-use pheap::PairingHeap;
 
 use crate::util::*;
 use super::{State, SData, AData, Cache};
