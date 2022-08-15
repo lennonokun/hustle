@@ -1,7 +1,7 @@
 use std::iter::zip;
 use std::hash::{Hash, Hasher};
 use std::collections::{HashMap};
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 
 use rand::prelude::*;
 use rayon::prelude::*;
@@ -56,7 +56,7 @@ impl MData {
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct MState {
-  pub gws: Vec<Word>,
+  pub gws: Arc<Vec<Word>>,
   pub awss: Vec<Vec<Word>>,
   pub finished: Vec<bool>,
   pub turns: u32,
@@ -81,7 +81,7 @@ pub fn fb_filter_all(gw: Word, fbs: &Vec<Feedback>, awss: &Vec<Vec<Word>>) -> Ve
 impl MState {
   pub fn new(wbank: &WBank, nwords: u32, turns: Option<u32>, hard: bool) -> Self {
     Self {
-      gws: wbank.gws.clone(),
+      gws: Arc::new(wbank.gws.clone()),
       awss: vec![wbank.aws.clone(); nwords as usize],
       finished: vec![false; nwords as usize],
       turns: turns.unwrap_or(nwords + NEXTRA as u32),
@@ -91,7 +91,7 @@ impl MState {
     }
   }
 
-  pub fn child(&self, gws: Vec<Word>, awss: Vec<Vec<Word>>, finished: Vec<bool>) -> Self {
+  pub fn child(&self, gws: Arc<Vec<Word>>, awss: Vec<Vec<Word>>, finished: Vec<bool>) -> Self {
     Self {
       gws,
       awss,
@@ -202,8 +202,9 @@ impl MState {
 
   pub fn top_words(&self, md: &MData) -> Vec<Word> {
     let mut tups: Vec<(Word, f32)> = self
-      .gws.clone()
-      .into_par_iter()
+      .gws
+      .par_iter()
+      .cloned()
       .map(|gw| (gw, self.heuristic(&gw, md)))
       .collect();
     tups.sort_by(|(_, f1), (_, f2)| f1.partial_cmp(f2).unwrap());
