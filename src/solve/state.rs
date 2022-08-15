@@ -130,10 +130,23 @@ impl State {
     self.child(gws, aws)
   }
 
-  pub fn fb_partition(&self, gw: &Word) -> AutoFbMap<Vec<Word>> {
-    let mut afbmap = AutoFbMap::new(self.wlen as u8, self.aws.len(), Vec::new());
+  pub fn fb_partition(&self, gw: &Word) -> AutoFbMap<(Option<Vec<Word>>, Vec<Word>)> {
+    let default_gws = self.hard.then(Vec::new);
+    let mut afbmap = AutoFbMap::new(
+      self.wlen as u8,
+      self.aws.len(),
+      (default_gws, Vec::new())
+    );
+    // partition gws if hard
+    if self.hard {
+      for gw2 in &*self.gws {
+        afbmap.get_mut(*gw, *gw2).0
+          .as_mut().unwrap().push(*gw2);
+      }
+    }
+    // partition aws
     for aw in &self.aws {
-      afbmap.get_mut(*gw, *aw).push(*aw);
+      afbmap.get_mut(*gw, *aw).1.push(*aw);
     }
     afbmap
   }
@@ -266,7 +279,7 @@ impl State {
     });
 
     let mut fbp = self.fb_partition(&gw);
-    fbp.into_iter().par_bridge().for_each(|(fb, aws)| {
+    fbp.into_iter().par_bridge().for_each(|(fb, (ogws, aws))| {
       if aws.is_empty() {
         return;
       } else if sgdata.lock().unwrap().impossible {
@@ -278,11 +291,7 @@ impl State {
       }
 
       // make state
-      let gws = if self.hard {
-        Arc::new(fb_filter(gw, fb, &self.gws))
-      } else {
-        self.gws.clone()
-      };
+      let gws = ogws.map(|gws| Arc::new(gws)).unwrap_or_else(|| self.gws.clone());
       let state2 = self.child(gws, aws);
 
       let tot = sgdata.lock().unwrap().tot.clone();
