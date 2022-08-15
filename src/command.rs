@@ -47,6 +47,9 @@ pub enum Commands {
     /// play in hard mode
     #[clap(long)]
     hard: bool,
+    /// the maximum number of turns to solve in
+    #[clap(long, short='t')]
+    turns: Option<u32>,
     /// the number of rows/sets in the cache
     #[clap(long, short='M', default_value_t=64)]
     ncacherows: usize,
@@ -59,9 +62,6 @@ pub enum Commands {
     /// the number of top hard heuristic words to try
     #[clap(long, short='n', default_value_t=10)]
     ntops2: u32,
-    /// the maximum number of turns to solve in
-    #[clap(long, short='t', default_value_t=6)]
-    turns: u32,
     /// the maximum number of answer words left for an "endgame"
     #[clap(long, short='e', default_value_t=15)]
     ecut: u32,
@@ -99,9 +99,6 @@ pub enum Commands {
     /// the number of top hard heuristic words to try
     #[clap(long, short='n', default_value_t=5)]
     ntops2: u32,
-    /// the maximum number of turns to solve in
-    #[clap(long, short='t', default_value_t=6)]
-    turns: u32,
     /// endgame cutoff
     #[clap(long, short='e', default_value_t=15)]
     ecut: u32,
@@ -144,9 +141,6 @@ pub enum Commands {
     /// the range of number of top hard heuristic words to try
     #[clap(long, short='n', default_value_t=Range::new(1, 10, true))]
     ntops2: Range<u32>,
-    /// the range of maximum numbers of turns to solve in
-    #[clap(long, short='t', default_value_t=Range::new(1, 6, true))]
-    turns: Range<u32>,
     /// endgame cutoff
     #[clap(long, short='e', default_value_t=Range::new(1, 30, true))]
     ecut: Range<u32>,
@@ -190,9 +184,6 @@ pub enum Commands {
     /// the number of top hard heuristic words to try
     #[clap(long, short='n', default_value_t=10)]
     ntops2: u32,
-    /// the maximum number of turns to solve in
-    #[clap(long, short='t', default_value_t=6)]
-    turns: u32,
     /// endgame cutoff
     #[clap(long, short='e', default_value_t=15)]
     ecut: u32,

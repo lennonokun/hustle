@@ -58,11 +58,11 @@ impl MData {
 pub struct MState {
   pub gws: Vec<Word>,
   pub awss: Vec<Vec<Word>>,
-  pub wlen: u32,
-  pub nwords: u32,
-  pub turns: u32,
   pub finished: Vec<bool>,
+  pub turns: u32,
   pub hard: bool,
+  pub wlen: u8,
+  pub nwords: u32,
 }
 
 pub fn fb_filter(gw: Word, fb: &Feedback, aws: &Vec<Word>) -> Vec<Word> {
@@ -79,37 +79,28 @@ pub fn fb_filter_all(gw: Word, fbs: &Vec<Feedback>, awss: &Vec<Vec<Word>>) -> Ve
 }
 
 impl MState {
-  pub fn new(gws: Vec<Word>, awss: Vec<Vec<Word>>,
-             wlen: u32, nwords: u32, hard: bool) -> Self {
-    MState {
-      gws,
-      awss,
-      wlen,
-      nwords,
+  pub fn new(wbank: &WBank, nwords: u32, turns: Option<u32>, hard: bool) -> Self {
+    Self {
+      gws: wbank.gws.clone(),
+      awss: vec![wbank.aws.clone(); nwords as usize],
       finished: vec![false; nwords as usize],
-      turns: nwords + NEXTRA as u32,
+      turns: turns.unwrap_or(nwords + NEXTRA as u32),
       hard,
+      wlen: wbank.wlen,
+      nwords,
     }
   }
 
-  pub fn new2(gws: Vec<Word>, awss: Vec<Vec<Word>>, wlen: u32,
-              nwords: u32, finished: Vec<bool>, turns: u32, hard: bool) -> Self {
-    MState {
+  pub fn child(&self, gws: Vec<Word>, awss: Vec<Vec<Word>>, finished: Vec<bool>) -> Self {
+    Self {
       gws,
       awss,
-      wlen,
-      nwords,
       finished,
-      turns,
-      hard,
+      turns: self.turns - 1,
+      hard: self.hard,
+      wlen: self.wlen,
+      nwords: self.nwords,
     }
-  }
-
-  pub fn new3() -> Self {
-    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", NLETS as u8).unwrap();
-    let gws = gwb.data;
-    let awss = vec![awb.data];
-    MState::new(gws, awss, 1, NLETS as u32, false)
   }
 
   pub fn size(&self) -> usize {
@@ -138,7 +129,7 @@ impl MState {
     let finished = zip(self.finished.clone(), fbs)
       .map(|(fin, fb)| fin || fb.is_correct())
       .collect();
-    MState::new2(gws, awss, self.wlen, self.nwords, finished, self.turns - 1, self.hard)
+    self.child(gws, awss, finished)
   }
 
   pub fn sample_answers(&self, rng: &mut ThreadRng, md: &MData) -> Vec<Vec<Word>> {
@@ -161,10 +152,12 @@ impl MState {
     awss.par_iter().for_each(|aws| {
       let fbs: Vec<Feedback> = aws.iter().map(|aw| Feedback::from(*gw, *aw).unwrap()).collect();
       if !fbp.lock().unwrap().contains_key(&fbs) {
-        let gws2 = self.gws.clone(); // for now
-        let awss2 = fb_filter_all(*gw, &fbs, &self.awss);
-        let finished2 = zip(self.finished.clone(), fbs.clone()).map(|(fin, fb)| fin || fb.is_correct()).collect();
-        let state = MState::new2(gws2, awss2, self.wlen, self.nwords, finished2, self.turns - 1, self.hard);
+        let gws = self.gws.clone();
+        let awss = fb_filter_all(*gw, &fbs, &self.awss);
+        let finished = zip(self.finished.clone(), fbs.clone())
+          .map(|(fin, fb)| fin || fb.is_correct())
+          .collect();
+        let state = self.child(gws, awss, finished);
         
         let mut fbp = fbp.lock().unwrap();
         fbp.insert(fbs.clone(), state);
@@ -297,7 +290,7 @@ impl MState {
   }
 }
 
-impl<'a> Hash for MState {
+impl Hash for MState {
   fn hash<H: Hasher>(&self, h: &mut H) {
     self.gws.hash(h);
     self.awss.hash(h);
@@ -315,8 +308,8 @@ mod test {
 
   #[test]
   fn solve_blah() {
-    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
-    let mut state = MState::new(gwb.data, vec![awb.data; 6], 5, 6, false);
+    let wbank = WBank::load1().unwrap();
+    let mut state = MState::new(&wbank, 6, None, false);
     let mut md = MData::new2(5, 5);
 
     state = state.fb_follow(Word::from_str("salet").unwrap(), vec![
@@ -327,14 +320,6 @@ mod test {
       Feedback::from_str("byyyb").unwrap(),
       Feedback::from_str("bbbyb").unwrap(),
     ]);
-//    state = state.fb_follow(Word::from_str("brick").unwrap(), vec![
-//      Feedback::from_str("gbbyb").unwrap(),
-//      Feedback::from_str("byybb").unwrap(),
-//    ]);
-//    state = state.fb_follow(Word::from_str("podgy").unwrap(), vec![
-//      Feedback::from_str("bybbb").unwrap(),
-//      Feedback::from_str("bbbbb").unwrap(),
-//    ]);
 
     let tot = state.solve(&mut md);
     assert!(tot.is_some());
@@ -342,8 +327,8 @@ mod test {
 
   #[test]
   fn solve_endgame() {
-    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
-    let mut state = MState::new(gwb.data, vec![awb.data; 2], 5, 2, false);
+    let wbank = WBank::load1().unwrap();
+    let mut state = MState::new(&wbank, 2, None, false);
     let mut md = MData::new2(0, 0);
 
     // FLICK, ICILY
@@ -360,37 +345,5 @@ mod test {
     ]);
     assert!(state.solve(&mut md) == Some(1.75));
   }
-
-//  #[test]
-//  fn check_news() {
-//    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
-//
-//    let state1 = MState::new(gwb.data.clone(), awb.data.clone(), 5, false);
-//    let state2 = MState::new2(gwb.data.clone(), awb.data.clone(), 5, 6, false);
-//    let state3 = MState::new3();
-//    assert_eq!(state1, state2);
-//    assert_eq!(state2, state3);
-//  }
-
-  // takes a while
-  // #[test]
-//  fn simple_solve() {
-//    let mut md = MData::new2(15);
-//    let state1 = MState::new3();
-//    let mut state2 = MState::new3();
-//    state2.hard = true;
-//
-//    assert!(state1.solve(&mut md, u32::MAX).is_some());
-//    assert!(state2.solve(&mut md, u32::MAX).is_some());
-//  }
-
-//  #[test]
-//  fn impossible_solve() {
-//    let mut md = MData::new2(2);
-//    let mut state = MState::new3();
-//    state.n = 2;
-//
-//    // cannot solve in 2 guesses
-//    assert!(state.solve(&mut md, u32::MAX).is_none());
-//  }
 }
+

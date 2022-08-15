@@ -51,12 +51,12 @@ fn main() {
         hdp,
         ldp,
         hard,
+        turns,
         wlen,
         ncacherows,
         ncachecols,
         ntops1,
         ntops2,
-        turns,
         ecut,
       };
       scmd.run();
@@ -73,20 +73,16 @@ fn main() {
       ncachecols,
       ntops1,
       ntops2,
-      turns,
       ecut,
     } => {
-      let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
+      let wbank = WBank::load(&wbp, wlen).unwrap();
       let adata = AData::load(&hdp, &ldp).unwrap();
-      let alen_max = awb.len();
+      let alen = wbank.alen();
 
       let mut hgen = GGen {
-        gwb,
-        awb,
-        wlen: wlen as u32,
+        wbank,
         adata,
-        alens: Range::new(1, alen_max, true),
-        turns: Range::new(6, 6, true),
+        alens: Range::new(1, alen, true),
         ncacherows,
         ncachecols,
         ntops1: Range::new(ntops1, ntops1, true),
@@ -109,21 +105,17 @@ fn main() {
       ncachecols,
       ntops1,
       ntops2,
-      turns,
       ecut,
     } => {
-      let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
+      let wbank = WBank::load(&wbp, wlen).unwrap();
       let adata = AData::load(&hdp, &ldp).unwrap();
-      let cache = Cache::new(64, 16);
+      let cache = Cache::new(ncacherows, ncachecols);
 
-      let alens = alens.unwrap_or(Range::new(1, awb.len(), true));
+      let alens = alens.unwrap_or(Range::new(1, wbank.alen(), true));
       let mut ggen = GGen {
-        gwb,
-        awb,
-        wlen: wlen as u32,
+        wbank,
         adata,
         alens,
-        turns,
         ncacherows,
         ncachecols,
         ntops1,
@@ -147,22 +139,18 @@ fn main() {
       ncachecols,
       ntops1,
       ntops2,
-      turns,
       ecut,
     } => {
-      let (gwb, awb) = WBank::from2(DEFWBP, NLETS as u8).unwrap();
+      let wbank = WBank::load(&wbp, wlen).unwrap();
       let adata = AData::load(&hdp, &ldp).unwrap();
 
-      let alens = alens.unwrap_or(Range::new(1, awb.len(), true));
+      let alens = alens.unwrap_or(Range::new(1, wbank.alen(), true));
       let mut lgen = LGen {
         niter,
         step,
-        gwb,
-        awb,
-        wlen: wlen as u32,
+        wbank,
         adata,
         alens,
-        turns,
         ncacherows,
         ncachecols,
         ntops1,

@@ -1,12 +1,11 @@
 // constants
-pub const NLETS: usize = 5;
-pub const NGUESSES: usize = 6;
+pub const DEFTURNS: u32 = 6;
 pub const NEXTRA: usize = 5;
-pub const NWORDS: usize = 2309;
-pub const MINWLEN: usize = 4;
+pub const DEFWLEN: u8 = 5;
 pub const MAXWLEN: usize = 11;
 
 pub const DEFWBP: &'static str = "/usr/share/hustle/bank1.csv";
+pub const DEFWBP2: &'static str = "/usr/share/hustle/bank2.csv";
 pub const DEFHDP: &'static str = "/usr/share/hustle/happrox.csv";
 pub const DEFLDP: &'static str = "/usr/share/hustle/lbounds.csv";
 

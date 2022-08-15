@@ -62,9 +62,8 @@ pub struct GameView {
   wbn: String,
   wbp: String,
   nwords: usize,
-  wlen: u8,
-  gwb: WBank,
-  awb: WBank,
+  wbank: WBank,
+  wlen: usize,
   fbcols: Vec<FbCol>,
   guesses: Vec<Word>,
   answers: Vec<Word>,
@@ -83,14 +82,13 @@ pub struct GameView {
 impl GameView {
   pub fn new(wbn: &String, wlen: u8, nwords: usize) -> Self {
     let wbp = CONFIG.word_banks.get(wbn).unwrap();
-    let (gwb, awb) = WBank::from2(wbp, wlen).unwrap();
+    let wbank = WBank::load(&wbp, wlen).unwrap();
     let mut out = Self {
       wbn: wbn.clone(),
       wbp: wbp.clone(),
       nwords,
-      wlen,
-      gwb,
-      awb,
+      wbank,
+      wlen: wlen as usize,
       fbcols: Vec::<FbCol>::new(),
       guesses: Vec::<Word>::new(),
       answers: Vec::<Word>::new(),
@@ -111,7 +109,7 @@ impl GameView {
 
   pub fn start(&mut self) {
     self.guesses.clear();
-    self.answers = self.awb.pick(&mut rand::thread_rng(), self.nwords);
+    self.answers = self.wbank.sample_aws(&mut rand::thread_rng(), self.nwords);
     self.fbcols = self.answers.iter()
       .map(|ans| FbCol {ans: *ans, done: false}).collect();
     self.guessbuf.clear();
@@ -132,7 +130,7 @@ impl GameView {
     // TODO why have to clone, the value is lost
     let gw = Word::from(self.guessbuf.clone()).unwrap();
     self.guessbuf = String::new();
-    if !self.gwb.data.contains(&gw) {return}
+    if !self.wbank.contains_gw(gw) {return}
 
     // inst timing on first guess
     if self.guesses.is_empty() {
@@ -286,10 +284,10 @@ impl View for GameView {
     if self.state == State::Play {
       match event {
         Event::Char(c) => if is_alpha(c) {
-          if (self.guessbuf.len() as u8) < self.wlen {
+          if self.guessbuf.len() < self.wlen {
             self.guessbuf.push(upper(c));
           }
-          if (self.guessbuf.len() as u8) == self.wlen && CONFIG.quick_guess {
+          if self.guessbuf.len() == self.wlen && CONFIG.quick_guess {
             self.guess();
           }
         } else if c == ' ' {

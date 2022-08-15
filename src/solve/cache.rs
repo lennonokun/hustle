@@ -64,7 +64,7 @@ impl Cache {
 impl Entry {
   // check if equal
   pub fn check(&self, state: &State) -> bool {
-    self.state.n == state.n && self.state.aws == state.aws
+    self.state.turns == state.turns && self.state.aws == state.aws
   }
 }
 
@@ -74,10 +74,15 @@ mod test {
   use crate::solve::{SData, State};
 
   fn add_garbage<'a>(n: usize, cache: &mut Cache, sd: &SData) {
+    let mut rng = rand::thread_rng();
+    let wbank1 = WBank::load1().unwrap();
+    let sd = SData::new2(2, 200);
+
     let mut i = 0;
     while i < n {
-      let state = State::random(20);
-      if let Some(dt) = state.solve(sd, u32::MAX) {
+      let wbank2 = wbank1.sample(&mut rng, None, Some(20));
+      let state = State::new(&wbank2, None, false);
+      if let Some(dt) = state.solve(&sd, u32::MAX) {
         cache.add(state.clone(), dt.clone());
         i += 1;
       }
@@ -86,8 +91,11 @@ mod test {
 
   #[test]
   fn add_read() {
-    let mut sd = SData::new2(2, 200);
-    let state = State::random(20);
+    let mut rng = rand::thread_rng();
+    let wbank1 = WBank::load1().unwrap();
+    let wbank2 = wbank1.sample(&mut rng, None, Some(20));
+    let state = State::new(&wbank2, None, false); 
+    let sd = SData::new2(2, 200);
     let dt = state.solve(&sd, u32::MAX).unwrap();
 
     // fully associative 5-way cache

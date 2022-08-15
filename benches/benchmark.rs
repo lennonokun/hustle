@@ -2,7 +2,6 @@ use std::time::Duration;
 use std::collections::HashMap;
 
 use rand::prelude::*;
-use rand::seq::SliceRandom;
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 use hustle::solve::*;
@@ -14,10 +13,10 @@ pub fn fbmap_bench(c: &mut Criterion) {
   let mut group = c.benchmark_group("fbmap");
   group.warm_up_time(Duration::from_secs(1));
   for wlen in 4..=6 {
-    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank2.csv", wlen).unwrap();
+    let wbank = WBank::load1().unwrap();
     for alen in vec![15] {
-      let gw = *gwb.data.choose(&mut rng).unwrap();
-      let aws = awb.pick(&mut rng, alen);
+      let gw = wbank.choose_gw(&mut rng);
+      let aws = wbank.sample_aws(&mut rng, alen);
 
       group.bench_function(format!("auto_{wlen}_{alen}_u16"), |b| b.iter(|| {
         let mut autofbmap = AutoFbMap::<u16>::new(wlen, alen, 0);
@@ -52,8 +51,7 @@ pub fn fbmap_bench(c: &mut Criterion) {
 }
 
 pub fn top_words_bench(c: &mut Criterion) {
-  let wlen = 5;
-  let (gwb, awb) = WBank::from2("/usr/share/hustle/bank2.csv", wlen).unwrap();
+  let wbank1 = WBank::load1().unwrap();
   let mut rng = rand::thread_rng();
 
   let mut group = c.benchmark_group("top_words");
@@ -62,9 +60,8 @@ pub fn top_words_bench(c: &mut Criterion) {
 
   for glen in vec![1000, 10000] {
     for alen in vec![10, 100, 1000, 10000] {
-      let gws = gwb.data.choose_multiple(&mut rng, glen).cloned().collect();
-      let aws = awb.data.choose_multiple(&mut rng, alen).cloned().collect();
-      let state = State::new(gws, aws, wlen.into(), false);
+      let wbank2 = wbank1.sample(&mut rng, Some(glen), Some(alen));
+      let state = State::new(&wbank2, None, false);
       let sd = SData::new2(1000, 10);
       group.bench_function(format!("top_words_{glen}_{alen}"), |b| b.iter(|| {
         black_box(&state).top_words(&sd);
@@ -76,10 +73,10 @@ pub fn top_words_bench(c: &mut Criterion) {
 }
 
 pub fn single_solve_bench(c: &mut Criterion) {
-  let gw = Word::from_str("SALET").unwrap();
-  let state_e = State::new3();
-  let mut state_h = State::new3();
-  state_h.hard = true;
+  let wbank = WBank::load1().unwrap();
+  let state_easy = State::new(&wbank, None, false);
+  let state_hard = State::new(&wbank, None, true);
+  let gw = Word::from_str("salet").unwrap();
 
   let mut group = c.benchmark_group("solve");
   group.sample_size(30);
@@ -89,7 +86,7 @@ pub fn single_solve_bench(c: &mut Criterion) {
     let name = format!("single_solve_e_{nwords1}_{nwords2}");
     let sdata = SData::new2(nwords1, nwords2);
     group.bench_function(name, |b| b.iter(|| {
-      black_box(&state_e).solve_given(gw, &sdata, u32::MAX);
+      black_box(&state_easy).solve_given(gw, &sdata, u32::MAX);
     }));
   }
 
@@ -98,15 +95,14 @@ pub fn single_solve_bench(c: &mut Criterion) {
     let name = format!("single_solve_h_{nwords1}_{nwords2}");
     let sdata = SData::new2(nwords1, nwords2);
     group.bench_function(name, |b| b.iter(|| {
-      black_box(&state_h).solve_given(gw, &sdata, u32::MAX);
+      black_box(&state_hard).solve_given(gw, &sdata, u32::MAX);
     }));
   }
   group.finish();
 }
 
 pub fn multi_solve_bench(c: &mut Criterion) {
-  let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
-  let (gws, aws) = (gwb.data, awb.data);
+  let wbank = WBank::load1().unwrap();
   let gw = Word::from_str("SALET").unwrap();
 
   let mut group = c.benchmark_group("multi_solve");
@@ -114,7 +110,7 @@ pub fn multi_solve_bench(c: &mut Criterion) {
   for nwords in vec![2, 4, 6] {
     for (nguesses, nanswers) in vec![(3,3), (5,5)] {
       let name = format!("multi_solve_{nwords}_{nguesses}_{nanswers}");
-      let state = MState::new(gws.clone(), vec![aws.clone(); nwords as usize], 5, nwords, false);
+      let state = MState::new(&wbank, nwords, None, false);
       let mut mdata = MData::new2(nguesses, nanswers);
       
       group.bench_function(name, |b| b.iter(|| {

@@ -68,7 +68,7 @@ pub struct SolveCommand {
   /// the number of top hard heuristic words to try
   pub ntops2: u32,
   /// the maximum number of turns to solve in
-  pub turns: u32,
+  pub turns: Option<u32>,
   /// the maximum number of answer words left for an "endgame"
   pub ecut: u32,
 }
@@ -76,14 +76,13 @@ pub struct SolveCommand {
 impl SolveCommand {
   fn load_and_parse(&self) -> (State, SData, Option<Word>, u32) {
     // load data
-    let (gwb, awb) = WBank::from2(self.wbp.clone(), self.wlen).unwrap();
+    let wbank = WBank::load(&self.wbp, self.wlen).unwrap();
     let adata = AData::load(&self.hdp, &self.ldp).unwrap();
     let cache = Cache::new(self.ncacherows, self.ncachecols);
     let sdata = SData::new(adata, cache, self.ntops1, self.ntops2, self.ecut);
 
     // parse gamestate
-    let mut state = State::new2(Arc::new(gwb.data), awb.data,
-                                self.wlen.into(), self.turns, self.hard);
+    let mut state = State::new(&wbank, self.turns, self.hard);
     let mut gw: Option<Word> = None;
     let mut turn = 0u32;
     let mut it = self.gamestate.split('.');

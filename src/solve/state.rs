@@ -74,8 +74,8 @@ pub struct State {
   // arc bc easy mode keeps guesses constant
   pub gws: Arc<Vec<Word>>,
   pub aws: Vec<Word>,
-  pub wlen: u32,
-  pub n: u32,
+  pub wlen: u8,
+  pub turns: u32,
   pub hard: bool,
 }
 
@@ -88,52 +88,46 @@ pub fn fb_filter(gw: Word, fb: Feedback, gws: &Vec<Word>) -> Vec<Word> {
 }
 
 impl State {
-  pub fn new(gws: Vec<Word>, aws: Vec<Word>, wlen: u32, hard: bool) -> Self {
-    State {
-      gws: Arc::new(gws),
-      aws,
-      wlen,
-      n: NGUESSES as u32,
+  pub fn new(wbank: &WBank, turns: Option<u32>, hard: bool) -> Self {
+    Self {
+      gws: Arc::new(wbank.gws.clone()),
+      aws: wbank.aws.clone(),
+      wlen: wbank.wlen,
+      turns: turns.unwrap_or(wbank.wlen as u32 + NEXTRA as u32),
       hard,
     }
   }
 
-  pub fn new2(gws: Arc<Vec<Word>>, aws: Vec<Word>, wlen: u32, n: u32, hard: bool) -> Self {
-    State {
+  pub fn child(&self, gws: Arc<Vec<Word>>, aws: Vec<Word>) -> Self {
+    Self {
       gws,
       aws,
-      wlen,
-      n,
-      hard,
+      wlen: self.wlen,
+      turns: self.turns - 1,
+      hard: self.hard,
     }
   }
-
-  pub fn new3() -> Self {
-    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", NLETS as u8).unwrap();
-    State::new(gwb.data, awb.data, NLETS as u32, false)
-  }
-
-  pub fn random(maxlen: usize) -> Self {
-    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
-    let mut rng = rand::thread_rng();
-    let len = rng.gen_range(1..=maxlen);
-    State::new2(
-      Arc::new(gwb.data),
-      awb.pick(&mut rng, len),
-      NLETS as u32,
-      NGUESSES as u32,
-      false,
-    )
-  }
+//  pub fn random(maxlen: usize) -> Self {
+//    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
+//    let mut rng = rand::thread_rng();
+//    let len = rng.gen_range(1..=maxlen);
+//    State::new2(
+//      Arc::new(gwb.data),
+//      awb.pick(&mut rng, len),
+//      NLETS as u32,
+//      NGUESSES as u32,
+//      false,
+//    )
+//  }
 
   pub fn fb_follow(self, gw: Word, fb: Feedback) -> Self {
     let gws = if self.hard {
       Arc::new(fb_filter(gw, fb, &self.gws))
     } else {
-      self.gws
+      self.gws.clone()
     };
     let aws = fb_filter(gw, fb, &self.aws);
-    State::new2(gws, aws, self.wlen, self.n - 1, self.hard)
+    self.child(gws, aws)
   }
 
   pub fn fb_partition(&self, gw: &Word) -> AutoFbMap<Vec<Word>> {
@@ -255,9 +249,9 @@ impl State {
       return Some(DTree::Leaf);
     }
     // impossible guesses
-    if self.n == 0
-      || (self.n == 1 && alen > 1)
-      || (self.n == 2 && alen > MAX_TWOSOLVE as usize) {
+    if self.turns == 0
+      || (self.turns == 1 && alen > 1)
+      || (self.turns == 2 && alen > MAX_TWOSOLVE as usize) {
       return None;
     }
     // check alpha = 2|A|-1
@@ -284,15 +278,15 @@ impl State {
       }
 
       // make state
-      let gws2 = if self.hard {
+      let gws = if self.hard {
         Arc::new(fb_filter(gw, fb, &self.gws))
       } else {
         self.gws.clone()
       };
-      let s2 = State::new2(gws2, aws, self.wlen, self.n - 1, self.hard);
+      let state2 = self.child(gws, aws);
 
       let tot = sgdata.lock().unwrap().tot.clone();
-      match s2.solve(sd, beta - tot) {
+      match state2.solve(sd, beta - tot) {
         None => {
           sgdata.lock().unwrap().impossible = true;
         }, Some(dt) => {
@@ -320,7 +314,7 @@ impl State {
     let alen = self.aws.len();
 
     // no more turns
-    if self.n == 0 {
+    if self.turns == 0 {
       return None;
     }
     // one answer -> guess it
@@ -381,9 +375,16 @@ impl State {
   }
 }
 
-impl<'a> Hash for State {
+impl Default for State {
+  fn default() -> Self {
+    let wbank = WBank::load(&DEFWBP, DEFWLEN).unwrap();
+    Self::new(&wbank, None, false)
+  }
+}
+
+impl Hash for State {
   fn hash<H: Hasher>(&self, h: &mut H) {
-    self.n.hash(h);
+    self.turns.hash(h);
     self.aws.hash(h);
   }
 }
@@ -392,23 +393,23 @@ impl<'a> Hash for State {
 mod test {
   use super::*;
 
-  #[test]
-  fn check_news() {
-    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
-
-    let state1 = State::new(gwb.data.clone(), awb.data.clone(), 5, false);
-    let state2 = State::new2(Arc::new(gwb.data.clone()), awb.data.clone(), 5, 6, false);
-    let state3 = State::new3();
-    assert_eq!(state1, state2);
-    assert_eq!(state2, state3);
-  }
-
+//  #[test]
+//  fn check_news() {
+//    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
+//
+//    let state1 = State::new(gwb.data.clone(), awb.data.clone(), 5, false);
+//    let state2 = State::new2(Arc::new(gwb.data.clone()), awb.data.clone(), 5, 6, false);
+//    let state3 = State::new3();
+//    assert_eq!(state1, state2);
+//    assert_eq!(state2, state3);
+//  }
+//
   #[test]
   fn simple_solve() {
+    let wbank = WBank::load1().unwrap();
+    let state1 = State::new(&wbank, None, false);
+    let state2 = State::new(&wbank, None, true);
     let sd = SData::new2(1000, 10);
-    let state1 = State::new3();
-    let mut state2 = State::new3();
-    state2.hard = true;
 
     assert!(state1.solve(&sd, u32::MAX).is_some());
     assert!(state2.solve(&sd, u32::MAX).is_some());
@@ -416,11 +417,11 @@ mod test {
 
   #[test]
   fn impossible_solve() {
-    let mut sd = SData::new2(200, 2);
-    let mut state = State::new3();
-    state.n = 2;
+    let wbank = WBank::load1().unwrap();
+    let state = State::new(&wbank, Some(2), false);
+    let sd = SData::new2(1000, 10);
 
-    // cannot solve in 2 guesses
+    // should not be able to solve bank1 in two turns
     assert!(state.solve(&sd, u32::MAX).is_none());
   }
 }

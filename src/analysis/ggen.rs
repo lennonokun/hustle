@@ -16,12 +16,9 @@ use crate::solve::{State, SData, AData, Cache};
 // TODO default settings to out's settings if existed
 
 pub struct GGen {
-  pub gwb: WBank,
-  pub awb: WBank,
-  pub wlen: u32,
+  pub wbank: WBank,
   pub adata: AData,
   pub alens: Range<usize>,
-  pub turns: Range<u32>,
   pub ncacherows: usize,
   pub ncachecols: usize,
   pub ntops1: Range<u32>,
@@ -32,14 +29,13 @@ pub struct GGen {
 
 impl GGen { 
   fn header() -> &'static str {
-    "alen,tot,time,turns,mode,ntops1,ntops2,ecut"
+    "alen,tot,time,mode,ntops1,ntops2,ecut"
   }
 
   fn metadata(&self) -> Vec<String> {
     vec![
       "# kind: sgen".to_owned(),
       format!("# alens: {}", self.alens),
-      format!("# turns: {}", self.turns),
       format!("# ntops1: {}", self.ntops1),
       format!("# ntops2: {}", self.ntops2),
       format!("# ecuts: {}", self.ecuts),
@@ -87,7 +83,6 @@ impl GGen {
       // take samples
       let mut rng = rand::thread_rng();
       let alen = self.alens.sample(&mut rng);
-      let turns = self.turns.sample(&mut rng);
       let ntops1 = self.ntops1.sample(&mut rng);
       let ntops2 = self.ntops2.sample(&mut rng);
       let ecut = self.ecuts.sample(&mut rng);
@@ -95,14 +90,14 @@ impl GGen {
       let hard = false; // FOR NOW ALWAYS EASY BC CACHE DOESNT CHECK GWS
 
       // make state
-      let aws2 = self.awb.pick(&mut rng, alen as usize);
-      let s = State::new2(Arc::new(self.gwb.data.clone()), aws2, self.wlen, turns as u32, false);
+      let wbank = self.wbank.sample(&mut rng, None, Some(alen as usize));
+      let state = State::new(&wbank, None, hard);
       let mut sd = SData::new(self.adata.clone(), cache,
                               ntops1 as u32, ntops2 as u32, ecut as u32);
 
       // solve and time
       let instant = Instant::now();
-      let dt = s.solve(&sd, u32::MAX);
+      let dt = state.solve(&sd, u32::MAX);
       let time = instant.elapsed().as_millis();
       let tot = dt.map_or(u32::MAX, |dt| dt.get_tot());
 
@@ -110,11 +105,10 @@ impl GGen {
       let mut i = i.lock().unwrap();
       let mut f = f.lock().unwrap();
       let s = format!(
-        "{},{},{},{},{},{},{},{}",
+        "{},{},{},{},{},{},{}",
         alen,
         tot,
         time,
-        turns,
         if hard { "H" } else { "E" },
         ntops1,
         ntops2,

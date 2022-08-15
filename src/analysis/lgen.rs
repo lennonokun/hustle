@@ -17,11 +17,8 @@ use crate::solve::{State, SData, AData, Cache};
 // TODO default settings to out's settings if existed
 
 pub struct LGen {
-  pub gwb: WBank,
-  pub awb: WBank,
-  pub wlen: u32,
+  pub wbank: WBank,
   pub adata: AData,
-  pub turns: u32,
   pub alens: Range<usize>,
   pub ncacherows: usize,
   pub ncachecols: usize,
@@ -42,7 +39,6 @@ impl LGen {
       "# kind: lgen".to_owned(),
       format!("# alens: {}", self.alens),
       format!("# step: {}", self.step),
-      format!("# turns: {}", self.turns),
       format!("# ncacherows: {}", self.ncacherows),
       format!("# ncachecols: {}", self.ncachecols),
       format!("# ntops1: {}", self.ntops1),
@@ -110,15 +106,15 @@ impl LGen {
 
       for _ in 0..self.niter {
         // make state
-        let aws2 = self.awb.pick(&mut rng, alen as usize);
+        let wbank = self.wbank.sample(&mut rng, None, Some(alen as usize));
+        let state = State::new(&wbank, None, false);
+        // make sdata
         let cache = Cache::new(self.ncacherows, self.ncachecols);
-        let s = State::new2(Arc::new(self.gwb.data.clone()), aws2,
-                            self.wlen, self.turns as u32, false);
         let mut sd = SData::new(self.adata.clone(), cache,
                                 self.ntops1 as u32, self.ntops2, self.ecut as u32);
 
-        // solve and time
-        let dt = s.solve(&sd, u32::MAX);
+        // solve and update lower bound
+        let dt = state.solve(&sd, u32::MAX);
         let tot = dt.map_or(u32::MAX, |dt| dt.get_tot());
         if tot < lb {
           lb = tot;
