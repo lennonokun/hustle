@@ -52,7 +52,7 @@ pub struct SolveCommand {
   /// word length
   pub wlen: u8,
   /// word bank path
-  pub wbp: String,
+  pub wbank: String,
   /// heuristic data path
   pub hard: bool,
   /// the number of rows/sets in the cache
@@ -72,7 +72,7 @@ pub struct SolveCommand {
 impl SolveCommand {
   fn load_and_parse(&self) -> (State, SData, Option<Word>, u32) {
     // load data
-    let wbank = WBank::load(&self.wbp, self.wlen)
+    let wbank = WBank::load(&self.wbank, self.wlen)
       .expect("could not load word bank!");
     let cache = Cache::new(self.ncacherows, self.ncachecols);
     let sdata = SData::new(cache, self.ntops1, self.ntops2, self.ecut);

@@ -36,12 +36,12 @@ pub enum Commands {
     #[clap(long, short='l', default_value_t=5)]
     wlen: u8,
     /// word bank path
-    #[clap(long, short='B', default_value_t=String::from(DEFWBP))]
-    wbp: String,
+    #[clap(long, short='b', default_value_t=String::from(DEFWBP))]
+    wbank: String,
     /// play in hard mode
     #[clap(long)]
     hard: bool,
-    /// the maximum number of turns to solve in
+    /// the maximum number of turns to solve in [default: 6]
     #[clap(long, short='t')]
     turns: Option<u32>,
     /// the number of rows/sets in the cache
@@ -73,15 +73,15 @@ pub enum Commands {
     #[clap(long, short='l', default_value_t = 5)]
     wlen: u8,
     /// word bank path
-    #[clap(long, short='B', default_value_t=String::from(DEFWBP))]
-    wbp: String,
-    /// the range of guess lengths to try (defaults to all)
+    #[clap(long, short='b', default_value_t=String::from(DEFWBP))]
+    wbank: String,
+    /// the range of guess lengths to try [default: all]
     #[clap(long, short='g')]
     glens: Option<Range<usize>>,
-    /// the range of answer lengths to try (defaults to all)
+    /// the range of answer lengths to try [default: all]
     #[clap(long, short='a')]
     alens: Option<Range<usize>>,
-    /// the range of number of turns to solve in (defaults to only max)
+    /// the range of number of turns to solve in [default: 6]
     #[clap(long, short='t')]
     turns: Option<Range<u32>>,
     // TODO: make range (only power of 2)?

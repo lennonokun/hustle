@@ -29,7 +29,7 @@ fn main() {
       glist,
       flist,
       dt,
-      wbp,
+      wbank,
       hard,
       wlen,
       ncacherows,
@@ -45,7 +45,7 @@ fn main() {
         glist,
         flist,
         dt,
-        wbp,
+        wbank,
         hard,
         turns,
         wlen,
@@ -62,7 +62,7 @@ fn main() {
       niter,
       out,
       wlen,
-      wbp,
+      wbank,
       glens,
       alens,
       turns,
@@ -72,13 +72,12 @@ fn main() {
       ntops2,
       ecut,
     } => {
-      let wbank = WBank::load(&wbp, wlen).expect("could not load word bank");
+      let wbank = WBank::load(&wbank, wlen).expect("could not load word bank");
       let cache = Cache::new(ncacherows, ncachecols);
 
-      let defturns = NEXTRA as u32 + wbank.wlen as u32;
       let glens = glens.unwrap_or(Range::new(1, wbank.glen(), true));
       let alens = alens.unwrap_or(Range::new(1, wbank.alen(), true));
-      let turns = turns.unwrap_or(Range::new(defturns, defturns, true));
+      let turns = turns.unwrap_or(Range::new(6, 6, true));
       let mut gen = Generator {
         wbank,
         glens,

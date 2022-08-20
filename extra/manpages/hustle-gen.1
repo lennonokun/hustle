@@ -1,66 +1,71 @@
-.TH hustle-solve 1 "20 August 2022" "version 1.3.1" "User Commands"
+.TH hustle-ggen 1 "20 August 2022" "version 1.3.1" "User Commands"
 .SH NAME
-hustle-solve \- Solve a given state
+hustle-gen \- Generate solving data
 .SH SYNOPSIS
-hustle solve [GAMESTATE] [FLAGS] [OPTIONS]
+hustle gen [FLAGS] [OPTIONS]
 .SH ARGS
 .PP
-\fB<GAMESTATE>\fR
+\fB<NITER>\fR
 .RS 4
-The gamestate to solve [default: initial state].
-Can end with or without a specified last guess [example: salet.bbygb, lodge.bbyby.triad]\&.
+The number of data points to generate.
+.RE
+.PP
+\fB<OUT>\fR
+.RS 4
+The file to output data to.
 .RE
 .SH FLAGS
-.SS BASIC
-.PP
-\fB--hard\fR
-.RS 4
-Treat as a 'hard mode' game (hints must be reused).
-.RE
 .PP
 \fB-h\fR, \fB--help\fR
 .RS 4
 Print a synopsis for this command.
 .RE
-.SS TABLES
-\fB-a\fR, \fB--alist\fR
-.RS 4
-Display a table of potential answers at GAMESTATE.
-.RE
-.PP
-\fB-g\fR, \fB--glist\fR
-.RS 4
-Display a table of top guesses at GAMESTATE if no last guess specified.
-.RE
-.PP
-\fB-f\fR, \fB--flist\fR
-.RS 4
-Display a table of potential feedbacks at GAMESTATE if last guess specified.
-.RE
 .SH OPTIONS
 .SS BASIC
-.PP
 \fB-b\fR, \fB--wbank\fR <\fIWBP\fR>
 .RS 4
 Specify the word bank file to use [default: \fI/usr/share/hustle/bank1.csv\fR,
 wordle's standard word bank]. Hellowordl's word bank is also included on installation
 at \fI/usr/share/hustle/bank2.csv\fR.
 .RE
+.PP
 \fB-l\fR, \fB--wlen\fR <\fIWLEN\fR>
 .RS 4
 Specify the word length to use [default: 5].
 .RE
-.PP
-\fB-o\fR, \fB--dt\fR <\fIDT\fR>
-.RS 4
-Output decision tree to \fIDT\fR.
-.RE
-\fB-f
 .SS PARAMETERS
+.sp
+Range parameters can be written in the following ways, where A and B are numbers:
+.RE
+.IP " 1." 4
+A
+.RS 4
+A range consisting of only A.
+.RE
+.IP " 2." 4
+A..B
+.RS 4
+An exclusive range from A to B.
+.RE
+.IP " 3." 4
+A..=B
+.RS 4
+An inclusive range from A to B.
+.RE
+.PP
+\fB-a\fR, \fB--alens\fR <\fIALENS\fR>
+.RS 4
+Specify the range of answer lengths to try [default: all].
+.RE
 .PP
 \fB-e\fR, \fB--ecut\fR <\fIECUT\fR>
 .RS 4
-Specify the maximum number of remaining answers to treat as an 'endgame' [default: 15]
+Specify the range of endgame cutoffs to try [default: 1..=30]
+.RE
+.PP
+\fB-g\fR, \fB--glens\fR <\fIGLENS\fR>
+.RS 4
+Specify the range of guess lengths to try [default: all].
 .RE
 .PP
 \fB-M\fR, \fB--ncacherows\fR <\fINCACHEROWS\fR>
@@ -86,7 +91,9 @@ Specify the range of top hard heuristic words to try [default: 1..=10].
 \fB-t\fR, \fB--turns\fR <\fITURNS\fR>
 .RS 4
 Specify the range of maximum numbers of turns to solve in [default: 6].
+.RE
+.PP
 .SH "SEE ALSO"
 .sp
-\fBhustle\fR(1), \fBhustle-play\fR(1), \fBhustle-gen\fR(1)
+\fBhustle\fR(1), \fBhustle-play\fR(1), \fBhustle-solve\fR(1)
 
