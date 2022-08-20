@@ -60,40 +60,9 @@ pub enum Commands {
     #[clap(long, short='e', default_value_t=15)]
     ecut: u32,
   },
-  /// generate heuristic data
-  #[cfg(feature = "gen")]
-  Hgen {
-    /// the number of data points to generate
-    #[clap(value_parser)]
-    niter: usize,
-    /// the file to output data to
-    #[clap(value_parser)]
-    out: String,
-    /// word length
-    #[clap(long, short='l', default_value_t=5)]
-    wlen: u8,
-    /// word bank path
-    #[clap(long, short='B', default_value_t=String::from(DEFWBP))]
-    wbp: String,
-    /// the number of rows/sets in the cache
-    #[clap(long, short='M', default_value_t=64)]
-    ncacherows: usize,
-    /// the number of columns in the cache
-    #[clap(long, short='N', default_value_t=16)]
-    ncachecols: usize,
-    /// the number of top soft heuristic words to try
-    #[clap(long, short='m', default_value_t=500)]
-    ntops1: u32,
-    /// the number of top hard heuristic words to try
-    #[clap(long, short='n', default_value_t=5)]
-    ntops2: u32,
-    /// endgame cutoff
-    #[clap(long, short='e', default_value_t=15)]
-    ecut: u32,
-  },
   /// generate general data
   #[cfg(feature = "gen")]
-  Ggen {
+  Gen {
     /// the number of data points to generate
     #[clap(value_parser)]
     niter: usize,
@@ -107,7 +76,7 @@ pub enum Commands {
     #[clap(long, short='B', default_value_t=String::from(DEFWBP))]
     wbp: String,
     /// the range of guess lengths to try (defaults to all)
-    #[clap(long, short='a')]
+    #[clap(long, short='g')]
     glens: Option<Range<usize>>,
     /// the range of answer lengths to try (defaults to all)
     #[clap(long, short='a')]
@@ -129,43 +98,6 @@ pub enum Commands {
     /// endgame cutoff
     #[clap(long, short='e', default_value_t=Range::new(1, 30, true))]
     ecut: Range<u32>,
-  },
-  /// generate lower bounds data
-  #[cfg(feature = "gen")]
-  Lgen {
-    /// the number of tries at each alen
-    #[clap(value_parser)]
-    niter: usize,
-    /// the step between each alen to try
-    #[clap(value_parser)]
-    step: usize,
-    /// the file to output data to
-    #[clap(value_parser)]
-    out: String,
-    /// word length
-    #[clap(long, short='l', default_value_t = 5)]
-    wlen: u8,
-    /// word bank path
-    #[clap(long, short='B', default_value_t=String::from(DEFWBP))]
-    wbp: String,
-    /// the range of answer lengths to try
-    #[clap(long, short='a')]
-    alens: Option<Range<usize>>,
-    /// the number of rows/sets in the cache
-    #[clap(long, short='M', default_value_t=64)]
-    ncacherows: usize,
-    /// the number of columns in the cache
-    #[clap(long, short='N', default_value_t=16)]
-    ncachecols: usize,
-    /// the number of top soft heuristic words to try
-    #[clap(long, short='m', default_value_t=1000)]
-    ntops1: u32,
-    /// the number of top hard heuristic words to try
-    #[clap(long, short='n', default_value_t=10)]
-    ntops2: u32,
-    /// endgame cutoff
-    #[clap(long, short='e', default_value_t=15)]
-    ecut: u32,
   },
 }
 

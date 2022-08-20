@@ -15,7 +15,7 @@ use crate::solve::{State, SData, Cache};
 
 // TODO default settings to out's settings if existed
 
-pub struct GGen {
+pub struct Generator {
   pub wbank: WBank,
   pub glens: Range<usize>,
   pub alens: Range<usize>,
@@ -27,7 +27,7 @@ pub struct GGen {
   pub niter: usize,
 }
 
-impl GGen { 
+impl Generator { 
   fn header() -> &'static str {
     "glen,alen,tot,time,mode,ntops1,ntops2,ecut"
   }
