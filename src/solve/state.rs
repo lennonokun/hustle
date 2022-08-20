@@ -168,14 +168,15 @@ impl State {
     }
 
     // maximize entropy (very fuzzy) 
+    // x/n * (1 - x/n) prop to x * (n - x)
     let n = self.aws.len() as f32;
     let gss = gss.iter()
       .map(|gs| gs.iter()
-           .map(|&g| {let p = (g as f32) / n; p*(1.-p)})
+           .map(|&g| g as f32 * (n - g as f32))
            .collect())
       .collect();
     let ys = ys.iter()
-      .map(|&y| {let p = (y as f32) / n; p*(1.-p)})
+      .map(|&y| y as f32 * (n - y as f32))
       .collect();
     (gss, ys)
   }
@@ -197,17 +198,30 @@ impl State {
     }
   }
 
+  // tot = sum(ax+b)
+  //     = a*sum(x)+n*b
+  //     = alen+n*b
+  // alen is constant and b is negative, so just weigh by n
+  // correct h by 1 if gw is in aws
+  // |b| is much larger than 1, so just use b=-2
+  // fuzzier than using precomputed averages, but faster
+  // could be parallelized
   pub fn heuristic(&self, gw: &Word, sd: &SData) -> f32 {
-    let h = self.fb_counts(gw)
-      .into_iter()
-      .filter(|(_fb, n)| *n > 0)
-      .map(|(_fb, n)| sd.adata.get_approx(n as usize).unwrap())
-      .sum();
+    let mut parts = vec![false; 3usize.pow(self.wlen as u32)];
+    let mut sum = 0;
+    for aw in self.aws.iter().cloned() {
+      let i = fb_id(*gw, aw) as usize;
+      if !parts[i] {
+        sum += 1;
+        parts[i] = true;
+      }
+    }
 
+    // slow-ish
     if self.aws.contains(gw) {
-      h - 1.
+      (2*sum + 1) as f32
     } else {
-      h
+      (2*sum) as f32
     }
   }
 
@@ -220,13 +234,14 @@ impl State {
 
     impl PartialEq for ScoredWord {
       fn eq(&self, other: &Self) -> bool {
-        false // we are all unique in our own special ways
+        self.h.eq(&other.h)
       }
     }
 
     impl PartialOrd for ScoredWord {
+      // reversed, we want to select the highest h, not lowest
       fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.h.partial_cmp(&other.h)
+        other.h.partial_cmp(&self.h)
       }
     }
 
@@ -236,16 +251,18 @@ impl State {
     let ntops2 = min(ntops2, glen);
     let (gss, ys) = self.letter_evals();
 
+    // select ntops1 with fast heuristic
     let mut tops: Vec<ScoredWord> = (&self.gws)
       .par_iter()
-      .map(|gw| ScoredWord {w: *gw, h: -self.letter_heuristic(&gw, &gss, &ys)})
+      .map(|gw| ScoredWord {w: *gw, h: self.letter_heuristic(&gw, &gss, &ys)})
       .collect();
     select(&mut tops, ntops1-1, 0, glen-1);
     
+    // select ntops2 with slow heuristic
     (&mut tops[0..ntops1]).par_iter_mut().for_each(|sw| {
       (*sw).h = self.heuristic(&sw.w, sd)
     });
-    select(&mut tops, min(glen, ntops2) - 1, 0, ntops1-1);
+    select(&mut tops, ntops2-1, 0, ntops1-1);
 
     tops.iter().take(ntops2).map(|tw| tw.w).collect()
   }
