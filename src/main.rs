@@ -10,7 +10,7 @@ use hustle::command::{cli_parse, Commands};
 #[cfg(feature = "gen")]
 use hustle::analysis::{LGen, GGen};
 #[cfg(feature = "solve")]
-use hustle::solve::{Cache, AData, SolveCommand};
+use hustle::solve::{Cache, SolveCommand};
 #[cfg(feature = "play")]
 use hustle::game::play;
 
@@ -30,8 +30,6 @@ fn main() {
       flist,
       dt,
       wbp,
-      hdp,
-      ldp,
       hard,
       wlen,
       ncacherows,
@@ -48,8 +46,6 @@ fn main() {
         flist,
         dt,
         wbp,
-        hdp,
-        ldp,
         hard,
         turns,
         wlen,
@@ -67,8 +63,6 @@ fn main() {
       out,
       wlen,
       wbp,
-      hdp,
-      ldp,
       ncacherows,
       ncachecols,
       ntops1,
@@ -76,12 +70,12 @@ fn main() {
       ecut,
     } => {
       let wbank = WBank::load(&wbp, wlen).unwrap();
-      let adata = AData::load(&hdp, &ldp).unwrap();
+      let glen = wbank.glen();
       let alen = wbank.alen();
 
       let mut hgen = GGen {
         wbank,
-        adata,
+        glens: Range::new(glen, glen, true),
         alens: Range::new(1, alen, true),
         ncacherows,
         ncachecols,
@@ -98,8 +92,7 @@ fn main() {
       out,
       wlen,
       wbp,
-      hdp,
-      ldp,
+      glens,
       alens,
       ncacherows,
       ncachecols,
@@ -107,14 +100,14 @@ fn main() {
       ntops2,
       ecut,
     } => {
-      let wbank = WBank::load(&wbp, wlen).unwrap();
-      let adata = AData::load(&hdp, &ldp).unwrap();
+      let wbank = WBank::load(&wbp, wlen).expect("could not load word bank");
       let cache = Cache::new(ncacherows, ncachecols);
 
+      let glens = glens.unwrap_or(Range::new(1, wbank.glen(), true));
       let alens = alens.unwrap_or(Range::new(1, wbank.alen(), true));
       let mut ggen = GGen {
         wbank,
-        adata,
+        glens,
         alens,
         ncacherows,
         ncachecols,
@@ -132,8 +125,6 @@ fn main() {
       out,
       wlen,
       wbp,
-      hdp,
-      ldp,
       alens,
       ncacherows,
       ncachecols,
@@ -142,14 +133,12 @@ fn main() {
       ecut,
     } => {
       let wbank = WBank::load(&wbp, wlen).unwrap();
-      let adata = AData::load(&hdp, &ldp).unwrap();
 
       let alens = alens.unwrap_or(Range::new(1, wbank.alen(), true));
       let mut lgen = LGen {
         niter,
         step,
         wbank,
-        adata,
         alens,
         ncacherows,
         ncachecols,

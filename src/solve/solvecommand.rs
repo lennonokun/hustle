@@ -6,7 +6,7 @@ use tabled::{Tabled, Table, Style};
 use rayon::prelude::*;
 
 use crate::util::*;
-use super::{State, SData, AData, Cache};
+use super::{State, SData, Cache};
 
 #[derive(Tabled)]
 struct GResult {
@@ -54,10 +54,6 @@ pub struct SolveCommand {
   /// word bank path
   pub wbp: String,
   /// heuristic data path
-  pub hdp: String,
-  /// lower bounds data path
-  pub ldp: String,
-  /// play in hard mode
   pub hard: bool,
   /// the number of rows/sets in the cache
   pub ncacherows: usize,
@@ -76,10 +72,10 @@ pub struct SolveCommand {
 impl SolveCommand {
   fn load_and_parse(&self) -> (State, SData, Option<Word>, u32) {
     // load data
-    let wbank = WBank::load(&self.wbp, self.wlen).unwrap();
-    let adata = AData::load(&self.hdp, &self.ldp).unwrap();
+    let wbank = WBank::load(&self.wbp, self.wlen)
+      .expect("could not load word bank!");
     let cache = Cache::new(self.ncacherows, self.ncachecols);
-    let sdata = SData::new(adata, cache, self.ntops1, self.ntops2, self.ecut);
+    let sdata = SData::new(cache, self.ntops1, self.ntops2, self.ecut);
 
     // parse gamestate
     let mut state = State::new(&wbank, self.turns, self.hard);

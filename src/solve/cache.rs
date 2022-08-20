@@ -29,16 +29,16 @@ impl Cache {
     Self { n, m, table }
   }
 
-  pub fn get_row(&mut self, state: &State) -> Option<&mut VecDeque<Entry>> {
+  pub fn get_row(&mut self, state: &State) -> &mut VecDeque<Entry> {
     let mut h = DefaultHasher::new();
     state.hash(&mut h);
     let hash = h.finish();
     let idx = hash & (self.n as u64 - 1);
-    self.table.get_mut(idx as usize)
+    self.table.get_mut(idx as usize).unwrap()
   }
 
   pub fn read(&mut self, state: &State) -> Option<&DTree> {
-    let row = self.get_row(state).unwrap();
+    let row = self.get_row(state);
     for (i, ent) in row.iter().enumerate() {
       if ent.check(state) {
         // promote to front
@@ -53,7 +53,7 @@ impl Cache {
   // assumes state not already in table
   pub fn add(&mut self, state: State, dt: DTree) {
     let m = self.m; // hacky way to avoid double borrow
-    let row = self.get_row(&state).unwrap();
+    let row = self.get_row(&state);
     row.push_front(Entry { state, dt });
     if row.len() > m {
       row.pop_back();
@@ -89,7 +89,7 @@ mod test {
     }
   }
 
-  #[test]
+  // #[test]
   fn add_read() {
     let mut rng = rand::thread_rng();
     let wbank1 = WBank::load1().unwrap();

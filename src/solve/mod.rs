@@ -1,7 +1,5 @@
 pub mod cache;
 pub use self::cache::Cache;
-pub mod adata;
-pub use self::adata::AData;
 pub mod autofbmap;
 pub use self::autofbmap::AutoFbMap;
 pub mod state;

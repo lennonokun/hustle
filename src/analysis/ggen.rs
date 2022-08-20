@@ -11,13 +11,13 @@ use rand::distributions::{Distribution, Uniform};
 use rayon::prelude::*;
 
 use crate::util::*;
-use crate::solve::{State, SData, AData, Cache};
+use crate::solve::{State, SData, Cache};
 
 // TODO default settings to out's settings if existed
 
 pub struct GGen {
   pub wbank: WBank,
-  pub adata: AData,
+  pub glens: Range<usize>,
   pub alens: Range<usize>,
   pub ncacherows: usize,
   pub ncachecols: usize,
@@ -29,12 +29,13 @@ pub struct GGen {
 
 impl GGen { 
   fn header() -> &'static str {
-    "alen,tot,time,mode,ntops1,ntops2,ecut"
+    "glen,alen,tot,time,mode,ntops1,ntops2,ecut"
   }
 
   fn metadata(&self) -> Vec<String> {
     vec![
       "# kind: sgen".to_owned(),
+      format!("# glens: {}", self.alens),
       format!("# alens: {}", self.alens),
       format!("# ntops1: {}", self.ntops1),
       format!("# ntops2: {}", self.ntops2),
@@ -83,6 +84,10 @@ impl GGen {
       // take samples
       let mut rng = rand::thread_rng();
       let alen = self.alens.sample(&mut rng);
+      let mut glen = self.glens.sample(&mut rng);
+      while glen < alen {
+        glen = self.glens.sample(&mut rng);
+      };
       let ntops1 = self.ntops1.sample(&mut rng);
       let ntops2 = self.ntops2.sample(&mut rng);
       let ecut = self.ecuts.sample(&mut rng);
@@ -90,10 +95,9 @@ impl GGen {
       let hard = false; // FOR NOW ALWAYS EASY BC CACHE DOESNT CHECK GWS
 
       // make state
-      let wbank = self.wbank.sample(&mut rng, None, Some(alen as usize));
+      let wbank = self.wbank.sample(&mut rng, Some(glen as usize), Some(alen as usize));
       let state = State::new(&wbank, None, hard);
-      let mut sd = SData::new(self.adata.clone(), cache,
-                              ntops1 as u32, ntops2 as u32, ecut as u32);
+      let mut sd = SData::new(cache, ntops1 as u32, ntops2 as u32, ecut as u32);
 
       // solve and time
       let instant = Instant::now();
@@ -105,7 +109,8 @@ impl GGen {
       let mut i = i.lock().unwrap();
       let mut f = f.lock().unwrap();
       let s = format!(
-        "{},{},{},{},{},{},{}",
+        "{},{},{},{},{},{},{},{}",
+        glen,
         alen,
         tot,
         time,

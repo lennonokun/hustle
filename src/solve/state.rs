@@ -7,7 +7,7 @@ use rayon::prelude::*;
 use rayon::iter::ParallelBridge;
 use pdqselect::select_by;
 
-use super::{Cache, AData, AutoFbMap};
+use super::{Cache, AutoFbMap};
 use crate::util::*;
 
 // maximum number of words solveable in two guesses
@@ -16,8 +16,6 @@ const MAX_TWOSOLVE: u32 = 20;
 /// solve data
 #[derive(Debug, Clone)]
 pub struct SData {
-  /// analysis data
-  pub adata: AData,
   /// cache
   pub cache: Arc<Mutex<Cache>>,
   /// number of top words to try using soft heuristic
@@ -29,11 +27,10 @@ pub struct SData {
 }
 
 impl SData {
-  pub fn new(adata: AData, cache: Cache, ntops1: u32,
+  pub fn new(cache: Cache, ntops1: u32,
              ntops2: u32, ecut: u32) -> Self {
     let cache = Arc::new(Mutex::new(cache));
     Self {
-      adata,
       cache,
       ntops1,
       ntops2,
@@ -42,15 +39,13 @@ impl SData {
   }
 
   pub fn new2(ntops1: u32, ntops2: u32) -> Self {
-    let adata = AData::load(DEFHDP, DEFLDP).unwrap();
     let cache = Cache::new(64, 16);
-    Self::new(adata, cache, ntops1, ntops2, 15)
+    Self::new(cache, ntops1, ntops2, 15)
   }
 
   pub fn deep_clone(&self) -> Self {
     let cache2 = (*self.cache.lock().unwrap()).clone();
-    Self::new(self.adata.clone(), cache2, self.ntops1,
-              self.ntops2, self.ecut)
+    Self::new(cache2, self.ntops1, self.ntops2, self.ecut)
   }
 }
 

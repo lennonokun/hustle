@@ -12,13 +12,12 @@ use rand::distributions::{Distribution, Uniform};
 use rayon::prelude::*;
 
 use crate::util::*;
-use crate::solve::{State, SData, AData, Cache};
+use crate::solve::{State, SData, Cache};
 
 // TODO default settings to out's settings if existed
 
 pub struct LGen {
   pub wbank: WBank,
-  pub adata: AData,
   pub alens: Range<usize>,
   pub ncacherows: usize,
   pub ncachecols: usize,
@@ -110,8 +109,7 @@ impl LGen {
         let state = State::new(&wbank, None, false);
         // make sdata
         let cache = Cache::new(self.ncacherows, self.ncachecols);
-        let mut sd = SData::new(self.adata.clone(), cache,
-                                self.ntops1 as u32, self.ntops2, self.ecut as u32);
+        let mut sd = SData::new(cache, self.ntops1 as u32, self.ntops2, self.ecut as u32);
 
         // solve and update lower bound
         let dt = state.solve(&sd, u32::MAX);

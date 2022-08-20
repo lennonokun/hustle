@@ -1,6 +1,6 @@
-use clap::{Parser, Subcommand};
+use clap::{arg, command, value_parser, ArgAction, Command, Parser, Subcommand};
 
-use crate::util::{Range, DEFWBP, DEFHDP, DEFLDP};
+use crate::util::{Range, DEFWBP};
 
 #[derive(Parser)]
 #[clap(version, about)]
@@ -38,12 +38,6 @@ pub enum Commands {
     /// word bank path
     #[clap(long, short='B', default_value_t=String::from(DEFWBP))]
     wbp: String,
-    /// heuristic data path
-    #[clap(long, short='H', default_value_t=String::from(DEFHDP))]
-    hdp: String,
-    /// lower bounds data path
-    #[clap(long, short='L', default_value_t=String::from(DEFLDP))]
-    ldp: String,
     /// play in hard mode
     #[clap(long)]
     hard: bool,
@@ -81,12 +75,6 @@ pub enum Commands {
     /// word bank path
     #[clap(long, short='B', default_value_t=String::from(DEFWBP))]
     wbp: String,
-    /// heuristic data path
-    #[clap(long, short='H', default_value_t=String::from(DEFHDP))]
-    hdp: String,
-    /// lower bounds data path
-    #[clap(long, short='L', default_value_t=String::from(DEFLDP))]
-    ldp: String,
     /// the number of rows/sets in the cache
     #[clap(long, short='M', default_value_t=64)]
     ncacherows: usize,
@@ -118,12 +106,9 @@ pub enum Commands {
     /// word bank path
     #[clap(long, short='B', default_value_t=String::from(DEFWBP))]
     wbp: String,
-    /// heuristic data path
-    #[clap(long, short='H', default_value_t=String::from(DEFHDP))]
-    hdp: String,
-    /// lower bounds data path
-    #[clap(long, short='L', default_value_t=String::from(DEFLDP))]
-    ldp: String,
+    /// the range of guess lengths to try (defaults to all)
+    #[clap(long, short='a')]
+    glens: Option<Range<usize>>,
     /// the range of answer lengths to try (defaults to all)
     #[clap(long, short='a')]
     alens: Option<Range<usize>>,
@@ -163,12 +148,6 @@ pub enum Commands {
     /// word bank path
     #[clap(long, short='B', default_value_t=String::from(DEFWBP))]
     wbp: String,
-    /// lower bounds data path
-    #[clap(long, short='L', default_value_t=String::from(DEFHDP))]
-    ldp: String,
-    /// heuristic data path
-    #[clap(long, short='H', default_value_t=String::from(DEFLDP))]
-    hdp: String,
     /// the range of answer lengths to try
     #[clap(long, short='a')]
     alens: Option<Range<usize>>,

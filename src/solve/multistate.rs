@@ -2,12 +2,13 @@ use std::iter::zip;
 use std::hash::{Hash, Hasher};
 use std::collections::{HashMap};
 use std::sync::{Arc, Mutex};
+use std::cmp::{min, Ordering};
 
 use rand::prelude::*;
 use rayon::prelude::*;
+use pdqselect::select_by;
 
 use super::cache::Cache;
-use super::adata::AData;
 use crate::util::*;
 
 // TODO: also hash gws?
@@ -17,8 +18,6 @@ type MFbMap<T> = HashMap<Vec<Feedback>, T>;
 /// solve data
 #[derive(Debug, Clone)]
 pub struct MData {
-  /// analysis data
-  pub adata: AData,
   /// cache
   pub cache: Cache,
   /// number of top guesses to try
@@ -30,10 +29,9 @@ pub struct MData {
 }
 
 impl MData {
-  pub fn new(adata: AData, cache: Cache, nguesses: u32,
+  pub fn new(cache: Cache, nguesses: u32,
              nanswers: u32, endgcutoff: u32) -> Self {
     Self {
-      adata,
       cache,
       nguesses,
       nanswers,
@@ -42,15 +40,13 @@ impl MData {
   }
 
   pub fn new2(nguesses: u32, nanswers: u32) -> Self {
-    let adata = AData::load(DEFHDP, DEFLDP).unwrap();
     let cache = Cache::new(64, 8);
-    Self::new(adata, cache, nguesses, nanswers, 15)
+    Self::new(cache, nguesses, nanswers, 15)
   }
 //
 //  pub fn deep_clone(&self) -> Self {
 //    let cache2 = (*self.cache.lock().unwrap()).clone();
-//    Self::new(self.adata.clone(), cache2, self.nguesses,
-//              self.nanswers, self.ecut)
+//    Self::new(cache2, self.nguesses, self.nanswers, self.ecut)
 //  }
 }
 
@@ -181,38 +177,56 @@ impl MState {
   
   // approximately quantify how good each guess is
   // TODO bad for low numbers, add bonus for potentially correct guess
-  pub fn heuristic(&self, gw: &Word, md: &MData) -> f32 {
-    (self.fb_counts(gw), &self.finished)
+  pub fn heuristic(&self, gw: &Word) -> f32 {
+    (&self.awss, &self.finished)
       .into_par_iter()
-      .map(|(fbc, &fin)| {
+      .map(|(aws, &fin)| {
         if fin { return 0. }
 
-        let mut tot = 0f32;
-        let mut sz = 0;
-        for (fb, n) in fbc {
-          if !fb.is_correct() {
-            tot += md.adata.get_approx(n as usize).unwrap();
+        let mut parts = vec![false; 3usize.pow(self.wlen as u32)];
+        let mut sum = 0;
+
+        for aw in aws.iter().cloned() {
+          let i = fb_id(*gw, aw) as usize;
+          if !parts[i] {
+            sum += 1;
+            parts[i] = true;
           }
-          sz += n;
         }
-        tot / sz as f32
+
+        // slow-ish
+        if aws.contains(gw) {
+          (16*sum + 1) as f32 / aws.len() as f32
+        } else {
+          (16*sum) as f32 / aws.len() as f32
+        }
       })
       .sum()
   }
 
   pub fn top_words(&self, md: &MData) -> Vec<Word> {
-    let mut tups: Vec<(Word, f32)> = self
-      .gws
+    #[derive(Debug, Clone, Copy)]
+    struct ScoredWord {
+      pub w: Word,
+      pub h: f32,
+    }
+
+    // reversed, we want to select the highest h, not lowest
+    fn cmp_scored(sw1: &ScoredWord, sw2: &ScoredWord) -> Ordering {
+      (&sw2.h).partial_cmp(&sw1.h).unwrap()
+    }
+
+    let glen = self.gws.len();
+    let ntops = min(md.nguesses as usize, glen);
+
+    // select ntops with slow heuristic
+    let mut tops: Vec<ScoredWord> = (&self.gws)
       .par_iter()
-      .cloned()
-      .map(|gw| (gw, self.heuristic(&gw, md)))
+      .map(|gw| ScoredWord {w: *gw, h: self.heuristic(&gw)})
       .collect();
-    tups.sort_by(|(_, f1), (_, f2)| f1.partial_cmp(f2).unwrap());
-    tups
-      .iter()
-      .map(|(gw, _)| *gw)
-      .take(md.nguesses as usize)
-      .collect()
+    select_by(&mut tops, ntops-1, &mut cmp_scored);
+
+    tops.iter().take(ntops).map(|tw| tw.w).collect()
   }
 
   pub fn solve_given(&self, gw: Word, md: &mut MData) -> Option<f32> {
@@ -320,6 +334,14 @@ mod test {
       Feedback::from_str("bgbgb").unwrap(),
       Feedback::from_str("byyyb").unwrap(),
       Feedback::from_str("bbbyb").unwrap(),
+    ]);
+    state = state.fb_follow(Word::from_str("courd").unwrap(), vec![
+      Feedback::from_str("bbbbb").unwrap(),
+      Feedback::from_str("bbbbb").unwrap(),
+      Feedback::from_str("bbbbb").unwrap(),
+      Feedback::from_str("bbbbb").unwrap(),
+      Feedback::from_str("bbbbb").unwrap(),
+      Feedback::from_str("bbbbb").unwrap(),
     ]);
 
     let tot = state.solve(&mut md);
