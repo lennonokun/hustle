@@ -341,7 +341,7 @@ impl State {
       });
     }
     // check alpha = 2|A|-1
-    if beta <= sd.adata.get_lbound(alen) {
+    if beta <= 2 * alen as u32 - 1 {
       return None;
     }
     // check endgame if viable
