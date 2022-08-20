@@ -19,6 +19,7 @@ pub struct Generator {
   pub wbank: WBank,
   pub glens: Range<usize>,
   pub alens: Range<usize>,
+  pub turns: Range<u32>,
   pub ncacherows: usize,
   pub ncachecols: usize,
   pub ntops1: Range<u32>,
@@ -29,14 +30,14 @@ pub struct Generator {
 
 impl Generator { 
   fn header() -> &'static str {
-    "glen,alen,tot,time,mode,ntops1,ntops2,ecut"
+    "glen,alen,turns,tot,time,mode,ntops1,ntops2,ecut"
   }
 
   fn metadata(&self) -> Vec<String> {
     vec![
-      "# kind: sgen".to_owned(),
-      format!("# glens: {}", self.alens),
+      format!("# glens: {}", self.glens),
       format!("# alens: {}", self.alens),
+      format!("# turns: {}", self.turns),
       format!("# ntops1: {}", self.ntops1),
       format!("# ntops2: {}", self.ntops2),
       format!("# ecuts: {}", self.ecuts),
@@ -88,6 +89,7 @@ impl Generator {
       while glen < alen {
         glen = self.glens.sample(&mut rng);
       };
+      let turns = self.turns.sample(&mut rng);
       let ntops1 = self.ntops1.sample(&mut rng);
       let ntops2 = self.ntops2.sample(&mut rng);
       let ecut = self.ecuts.sample(&mut rng);
@@ -96,7 +98,7 @@ impl Generator {
 
       // make state
       let wbank = self.wbank.sample(&mut rng, Some(glen as usize), Some(alen as usize));
-      let state = State::new(&wbank, None, hard);
+      let state = State::new(&wbank, Some(turns), hard);
       let mut sd = SData::new(cache, ntops1 as u32, ntops2 as u32, ecut as u32);
 
       // solve and time

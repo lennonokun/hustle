@@ -65,6 +65,7 @@ fn main() {
       wbp,
       glens,
       alens,
+      turns,
       ncacherows,
       ncachecols,
       ntops1,
@@ -74,12 +75,15 @@ fn main() {
       let wbank = WBank::load(&wbp, wlen).expect("could not load word bank");
       let cache = Cache::new(ncacherows, ncachecols);
 
+      let defturns = NEXTRA as u32 + wbank.wlen as u32;
       let glens = glens.unwrap_or(Range::new(1, wbank.glen(), true));
       let alens = alens.unwrap_or(Range::new(1, wbank.alen(), true));
+      let turns = turns.unwrap_or(Range::new(defturns, defturns, true));
       let mut gen = Generator {
         wbank,
         glens,
         alens,
+        turns,
         ncacherows,
         ncachecols,
         ntops1,

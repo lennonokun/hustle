@@ -81,6 +81,9 @@ pub enum Commands {
     /// the range of answer lengths to try (defaults to all)
     #[clap(long, short='a')]
     alens: Option<Range<usize>>,
+    /// the range of number of turns to solve in (defaults to only max)
+    #[clap(long, short='t')]
+    turns: Option<Range<u32>>,
     // TODO: make range (only power of 2)?
     /// the number of rows/sets in the cache
     #[clap(long, short='M', default_value_t=64)]
