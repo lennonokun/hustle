@@ -8,7 +8,5 @@ mod dtree;
 pub use dtree::DTree;
 mod range;
 pub use range::Range;
-mod select;
-pub use select::select;
 mod misc;
 pub use misc::*;

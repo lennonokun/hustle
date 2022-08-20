@@ -5,6 +5,7 @@ use std::cmp::{min, Ordering};
 use rand::Rng;
 use rayon::prelude::*;
 use rayon::iter::ParallelBridge;
+use pdqselect::select_by;
 
 use super::{Cache, AData, AutoFbMap};
 use crate::util::*;
@@ -232,17 +233,9 @@ impl State {
       pub h: f32,
     }
 
-    impl PartialEq for ScoredWord {
-      fn eq(&self, other: &Self) -> bool {
-        self.h.eq(&other.h)
-      }
-    }
-
-    impl PartialOrd for ScoredWord {
-      // reversed, we want to select the highest h, not lowest
-      fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        other.h.partial_cmp(&self.h)
-      }
+    // reversed, we want to select the highest h, not lowest
+    fn cmp_scored(sw1: &ScoredWord, sw2: &ScoredWord) -> Ordering {
+      (&sw2.h).partial_cmp(&sw1.h).unwrap()
     }
 
     let glen = self.gws.len();
@@ -256,13 +249,13 @@ impl State {
       .par_iter()
       .map(|gw| ScoredWord {w: *gw, h: self.letter_heuristic(&gw, &gss, &ys)})
       .collect();
-    select(&mut tops, ntops1-1, 0, glen-1);
+    select_by(&mut tops, ntops1-1, &mut cmp_scored);
     
     // select ntops2 with slow heuristic
     (&mut tops[0..ntops1]).par_iter_mut().for_each(|sw| {
       (*sw).h = self.heuristic(&sw.w, sd)
     });
-    select(&mut tops, ntops2-1, 0, ntops1-1);
+    select_by(&mut tops[0..ntops1], ntops2-1, &mut cmp_scored);
 
     tops.iter().take(ntops2).map(|tw| tw.w).collect()
   }
@@ -369,7 +362,9 @@ impl State {
 
     // finally, check top words
     let sad = Mutex::new(SolveAllData {dt: None, beta});
-    self.top_words(&sd).into_par_iter().for_each(|w| {
+    self.top_words(&sd)
+      .into_par_iter()
+      .for_each(|w| {
       let sad2 = sad.lock().unwrap().clone();
       if sad2.beta <= 2 * alen as u32 {return}
       let dt2 = self.solve_given(w, sd, sad2.beta);

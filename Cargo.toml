@@ -28,6 +28,7 @@ lazy_static = "1.4.0"
 tabled = "0.8.0"
 regex = "1.6.0"
 rand = "0.8.5"
+pdqselect = "0.1.1"
 
 [dependencies.serde]
 version="1.0.139"
@@ -44,6 +45,9 @@ version="0.13.1"
 default-features=false
 features=["toml", "preserve_order"]
 optional=true
+
+[profile.release]
+debug=true
 
 [dev-dependencies]
 criterion = "0.3.6"
