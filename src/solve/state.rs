@@ -9,9 +9,6 @@ use rayon::iter::ParallelBridge;
 use super::{Cache, AData, AutoFbMap};
 use crate::util::*;
 
-// TODO: also hash gws?
-// could also iteratively hash when forming the state
-
 // maximum number of words solveable in two guesses
 const MAX_TWOSOLVE: u32 = 20;
 
@@ -107,18 +104,6 @@ impl State {
       hard: self.hard,
     }
   }
-//  pub fn random(maxlen: usize) -> Self {
-//    let (gwb, awb) = WBank::from2("/usr/share/hustle/bank1.csv", 5).unwrap();
-//    let mut rng = rand::thread_rng();
-//    let len = rng.gen_range(1..=maxlen);
-//    State::new2(
-//      Arc::new(gwb.data),
-//      awb.pick(&mut rng, len),
-//      NLETS as u32,
-//      NGUESSES as u32,
-//      false,
-//    )
-//  }
 
   pub fn fb_follow(self, gw: Word, fb: Feedback) -> Self {
     let gws = if self.hard {
@@ -159,6 +144,16 @@ impl State {
     afbmap
   }
 
+  pub fn fb_unique(&self, gw: Word) -> bool {
+    let mut afbmap = AutoFbMap::new(self.wlen as u8, self.aws.len(), false);
+    for aw in self.aws.iter().cloned() {
+      let entry = afbmap.get_mut(gw, aw);
+      if *entry { return false; }
+      *entry = true;
+    }
+    true
+  }
+
   pub fn letter_evals(&self) -> (Vec<Vec<f32>>, Vec<f32>) {
     // get letter counts
     let mut gss = vec![vec![0usize; self.wlen as usize]; 26];
@@ -194,6 +189,7 @@ impl State {
       }
     }
 
+    // naive
     if self.aws.contains(&gw) {
       h * 1.05
     } else {
@@ -335,14 +331,14 @@ impl State {
       });
     }
     // check alpha = 2|A|-1
-    if beta <= 2 * (alen as u32) - 1 {
+    if beta <= sd.adata.get_lbound(alen) {
       return None;
     }
     // check endgame if viable
     if alen <= sd.ecut as usize {
-      for aw in self.aws.iter() {
-        if self.fb_counts(aw).into_iter().all(|(_fb, c)| c == 1) {
-          return self.solve_given(*aw, sd, beta);
+      for aw in self.aws.iter().cloned() {
+        if self.fb_unique(aw) {
+          return self.solve_given(aw, sd, beta);
         }
       }
     }
