@@ -51,10 +51,10 @@ pub enum Commands {
     #[clap(long, short='N', default_value_t=16)]
     ncachecols: usize,
     /// the number of top soft heuristic words to try
-    #[clap(long, short='m', default_value_t=1000)]
+    #[clap(long, short='m', default_value_t=1500)]
     ntops1: u32,
     /// the number of top hard heuristic words to try
-    #[clap(long, short='n', default_value_t=10)]
+    #[clap(long, short='n', default_value_t=15)]
     ntops2: u32,
     /// the maximum number of answer words left for an "endgame"
     #[clap(long, short='e', default_value_t=15)]
@@ -93,10 +93,10 @@ pub enum Commands {
     #[clap(long, short='N', default_value_t=16)]
     ncachecols: usize,
     /// the range of number of top soft heuristic words to try
-    #[clap(long, short='m', default_value_t=Range::new(1, 1000, true))]
+    #[clap(long, short='m', default_value_t=Range::new(1, 1500, true))]
     ntops1: Range<u32>,
     /// the range of number of top hard heuristic words to try
-    #[clap(long, short='n', default_value_t=Range::new(1, 10, true))]
+    #[clap(long, short='n', default_value_t=Range::new(1, 15, true))]
     ntops2: Range<u32>,
     /// endgame cutoff
     #[clap(long, short='e', default_value_t=Range::new(1, 30, true))]
