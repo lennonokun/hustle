@@ -1,4 +1,5 @@
 use std::hash::{Hash, Hasher};
+use std::collections::{HashMap, HashSet};
 use std::sync::{Arc, Mutex};
 use std::cmp::{min, Ordering};
 
@@ -7,7 +8,7 @@ use rayon::prelude::*;
 use rayon::iter::ParallelBridge;
 use pdqselect::select_by;
 
-use super::{Cache, AutoFbMap};
+use super::Cache;
 use crate::util::*;
 
 // maximum number of words solveable in two guesses
@@ -64,7 +65,7 @@ struct SolveAllData {
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct State {
-  // arc bc easy mode keeps guesses constant
+  // arc because easy mode keeps guesses constant
   pub gws: Arc<Vec<Word>>,
   pub aws: Vec<Word>,
   pub wlen: u8,
@@ -111,41 +112,37 @@ impl State {
     self.child(gws, aws)
   }
 
-  pub fn fb_partition(&self, gw: &Word) -> AutoFbMap<(Option<Vec<Word>>, Vec<Word>)> {
-    let default_gws = self.hard.then(Vec::new);
-    let mut afbmap = AutoFbMap::new(
-      self.wlen as u8,
-      self.aws.len(),
-      (default_gws, Vec::new())
-    );
+  pub fn fb_partition(&self, gw: &Word) -> FbMap<(Option<Vec<Word>>, Vec<Word>)> {
+    let default_entry = (self.hard.then(Vec::new), Vec::new());
+    let mut fbmap = FbMap::new();
     // partition gws if hard
     if self.hard {
       for gw2 in &*self.gws {
-        afbmap.get_mut(*gw, *gw2).0
+        let mut entry = fbmap.entry(Feedback::from(*gw, *gw2).unwrap());
+        entry.or_insert_with(|| default_entry.clone()).0
           .as_mut().unwrap().push(*gw2);
       }
     }
     // partition aws
     for aw in &self.aws {
-      afbmap.get_mut(*gw, *aw).1.push(*aw);
+      let mut entry = fbmap.entry(Feedback::from(*gw, *aw).unwrap());
+      entry.or_insert_with(|| default_entry.clone()).1.push(*aw);
     }
-    afbmap
+    fbmap
   }
 
-  pub fn fb_counts(&self, gw: &Word) -> AutoFbMap<u16> {
-    let mut afbmap = AutoFbMap::new(self.wlen as u8, self.aws.len(), 0u16);
-    for aw in &self.aws {
-      *afbmap.get_mut(*gw, *aw) += 1u16;
-    }
-    afbmap
-  }
+//  pub fn fb_counts(&self, gw: &Word) -> Vec<u16> {
+//    let mut counts = vec![0; 3usize.pow(self.wlen as u32)];
+//    for aw in self.aws.iter().cloned() {
+//      counts[fb_id(*gw, aw) as usize] += 1;
+//    }
+//    counts
+//  }
 
   pub fn fb_unique(&self, gw: Word) -> bool {
-    let mut afbmap = AutoFbMap::new(self.wlen as u8, self.aws.len(), false);
+    let mut set = HashSet::new();
     for aw in self.aws.iter().cloned() {
-      let entry = afbmap.get_mut(gw, aw);
-      if *entry { return false; }
-      *entry = true;
+      if !set.insert(fb_id(gw, aw)) { return false; }
     }
     true
   }
@@ -204,20 +201,20 @@ impl State {
   // could be parallelized
   pub fn heuristic(&self, gw: &Word, sd: &SData) -> f32 {
     let mut parts = vec![false; 3usize.pow(self.wlen as u32)];
-    let mut sum = 0;
+    let mut nparts = 0;
     for aw in self.aws.iter().cloned() {
       let i = fb_id(*gw, aw) as usize;
       if !parts[i] {
-        sum += 1;
+        nparts += 1;
         parts[i] = true;
       }
     }
 
     // slow-ish
     if self.aws.contains(gw) {
-      (2*sum + 1) as f32
+      (2*nparts + 1) as f32
     } else {
-      (2*sum) as f32
+      (2*nparts) as f32
     }
   }
 
