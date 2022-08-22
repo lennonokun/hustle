@@ -5,7 +5,6 @@ use std::cmp::{min, Ordering};
 
 use rand::Rng;
 use rayon::prelude::*;
-use rayon::iter::ParallelBridge;
 use pdqselect::select_by;
 
 use super::Cache;
@@ -272,7 +271,7 @@ impl State {
     });
 
     let mut fbp = self.fb_partition(&gw);
-    fbp.into_iter().par_bridge().for_each(|(fb, (ogws, aws))| {
+    fbp.into_par_iter().for_each(|(fb, (ogws, aws))| {
       if aws.is_empty() {
         return;
       } else if sgdata.lock().unwrap().impossible {
