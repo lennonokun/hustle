@@ -5,8 +5,6 @@ use std::io::{Error, ErrorKind};
 use rand::prelude::*;
 use rand::distributions::Distribution;
 use rand::distributions::uniform::{Uniform, SampleUniform};
-use regex::Regex;
-use lazy_static::lazy_static;
 
 pub struct Range<X> where X: Copy + SampleUniform {
   /// lower bound
@@ -39,23 +37,32 @@ where X: Copy + FromStr + SampleUniform {
   type Err = Error;
   
   fn from_str(s: &str) -> Result<Self, Self::Err> {
-    lazy_static! {
-      static ref RE_UNIF: Regex = Regex::new(r"^(\d+)..(=?)(\d+)$").unwrap();
-    }
-
-    // check if one number
     if let Ok(x) = s.parse::<X>() {
+      // parse singular (a)
       Ok(Self::new(x, x, true))
-    } else if let Some(caps) = RE_UNIF.captures(s) {
-      // FOR NOW UNWRAP
-      let a: X = caps.get(1).unwrap().as_str().parse().ok().unwrap();
-      let b: X = caps.get(3).unwrap().as_str().parse().ok().unwrap();
-      let inc = !caps.get(2).unwrap().as_str().is_empty();
-      Ok(Self::new(a, b, inc))
     } else {
-      Err(Error::new(
+      // parse multiple (a..=?b)
+      let vec = s.split("..").collect::<Vec<&str>>();
+      let range = match &vec[..] {
+        [a_str, b_str] => {
+          // check if inclusive
+          let stripped = b_str.strip_prefix("=");
+          let inc = stripped.is_some();
+          let b_str = stripped.unwrap_or(b_str);
+
+          // parse a and b, and create range
+          let a = a_str.parse::<X>().ok();
+          let b = b_str.parse::<X>().ok();
+          a.zip(b).map(|(a, b)| Self::new(a, b, inc))
+        }, _ => {
+          None
+        }
+      };
+      
+      // return or error
+      range.ok_or(Error::new(
         ErrorKind::Other,
-        "metadata does not match!"
+        "could not parse range"
       ))
     }
   }
