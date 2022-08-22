@@ -11,9 +11,6 @@ use pdqselect::select_by;
 use super::Cache;
 use crate::util::*;
 
-// maximum number of words solveable in two guesses
-const MAX_TWOSOLVE: u32 = 20;
-
 /// solve data
 #[derive(Debug, Clone)]
 pub struct SData {
@@ -260,9 +257,7 @@ impl State {
       return Some(DTree::Leaf);
     }
     // impossible guesses
-    if self.turns == 0
-      || (self.turns == 1 && alen > 1)
-      || (self.turns == 2 && alen > MAX_TWOSOLVE as usize) {
+    if self.turns == 0 || (self.turns == 1 && alen > 1) {
       return None;
     }
     // check alpha = 2|A|-1
@@ -324,17 +319,17 @@ impl State {
     if self.turns == 0 {
       return None;
     }
-    // one answer -> guess it
-    if alen == 1 {
-      return Some(DTree::Node {
-        tot: 1,
-        word: *self.aws.get(0).unwrap(),
-        fbmap: [(Feedback::from_str("GGGGG").unwrap(), DTree::Leaf)].into(),
-      });
-    }
     // check alpha = 2|A|-1
     if beta <= 2 * alen as u32 - 1 {
       return None;
+    }
+    // trivial decision tree for one answer
+    if let [aw] = &self.aws[..] {
+      return Some(DTree::Node {
+        tot: 1,
+        word: *aw,
+        fbmap: [(Feedback::from_str("GGGGG").unwrap(), DTree::Leaf)].into(),
+      });
     }
     // check endgame if viable
     if alen <= sd.ecut as usize {
@@ -357,8 +352,10 @@ impl State {
     self.top_words(&sd)
       .into_par_iter()
       .for_each(|w| {
+      // stop early if best possible is found
       let sad2 = sad.lock().unwrap().clone();
       if sad2.beta <= 2 * alen as u32 {return}
+      // solve and update best + beta
       let dt2 = self.solve_given(w, sd, sad2.beta);
       if let Some(dt2) = dt2 {
         let mut sad = sad.lock().unwrap();
@@ -372,7 +369,7 @@ impl State {
     let sad = sad.into_inner().unwrap();
     let dt = sad.dt;
 
-    // add cache
+    // add to cache
     if !self.hard {
       if let Some(ref dt) = dt {
         let mut cache = sd.cache.lock().unwrap();
@@ -381,13 +378,6 @@ impl State {
     }
 
     dt
-  }
-}
-
-impl Default for State {
-  fn default() -> Self {
-    let wbank = WBank::load(&DEFWBP, DEFWLEN).unwrap();
-    Self::new(&wbank, None, false)
   }
 }
 
