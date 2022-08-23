@@ -60,6 +60,13 @@ pub enum Commands {
     #[clap(long, short='e', default_value_t=15)]
     ecut: u32,
   },
+  /// print diff between two decision trees
+  Diff {
+    #[clap(value_parser)]
+    dtree1: String,
+    #[clap(value_parser)]
+    dtree2: String,
+  },
   /// generate general data
   #[cfg(feature = "gen")]
   Gen {

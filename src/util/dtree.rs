@@ -92,8 +92,9 @@ impl DTree {
     }
   }
 
-  pub fn load(p: &Path) -> Option<Self> {
+  pub fn load<P: AsRef<Path>+?Sized>(p: &P) -> Option<Self> {
     let f = File::open(p).ok()?;
+    if f.metadata().ok()?.is_dir() { return None; }
     let br = BufReader::new(f);
 
     let mut dt_stack = Vec::<NodeStruct>::new();
@@ -158,6 +159,68 @@ impl DTree {
           writeln!(out, "{}{}{}", indent2, fb.to_string(), n);
           dt.pprint(out, &indent2, n + 1);
         }
+      }
+    }
+  }
+
+  pub fn print_diff<W: Write>(
+    out: &mut W,
+    dt1: &DTree,
+    dt2: &DTree
+  ) -> Option<()> {
+    let mut path_stack = vec![];
+    Self::print_diff2(out, dt1, dt2, &mut path_stack)
+  }
+
+  fn print_diff2<W: Write>(
+    out: &mut W,
+    dt1: &DTree,
+    dt2: &DTree,
+    path_stack: &mut Vec<(Word, Feedback)>
+  ) -> Option<()> {
+    match (dt1, dt2) {
+      (DTree::Node {
+        tot: tot1, word: word1, fbmap: fbmap1
+      }, DTree::Node {
+        tot: tot2, word: word2, fbmap: fbmap2
+      }) => {
+        if tot1 == tot2 {
+          // stop early
+          Some(())
+        } else if word1 == word2 {
+          // recurse
+          for (fb, dt1) in fbmap1 {
+            let dt2 = fbmap2.get(fb)?;
+            path_stack.push((*word1, *fb));
+            Self::print_diff2(out, dt1, dt2, path_stack);
+            path_stack.pop()?;
+          }
+          Some(())
+        } else {
+          // print diff
+          let path_string = path_stack.iter()
+            .map(|(word, fb)| format!("{}.{}", word, fb))
+            .fold(String::new(), |mut a, b| {
+              a.reserve(b.len()+1);
+              a.push_str(&b);
+              a.push_str(".");
+              a
+            });
+          let path_string = if path_string.is_empty() {
+            "ROOT"
+          } else {
+            &path_string[0..path_string.len()-1]
+          };
+          writeln!(out, "{path_string}");
+          writeln!(out, "1. {word1}, {tot1}");
+          writeln!(out, "2. {word2}, {tot2}");
+          Some(())
+        }
+      }, (DTree::Leaf, DTree::Leaf) => {
+        Some(())
+      }, _ => {
+        // incompatible decision trees
+        None
       }
     }
   }

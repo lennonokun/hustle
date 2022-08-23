@@ -4,6 +4,7 @@ use std::fs::File;
 use std::time::Instant;
 use std::sync::Arc;
 use std::path::Path;
+use std::io::stdout;
 
 use hustle::util::*;
 use hustle::command::{cli_parse, Commands};
@@ -56,6 +57,17 @@ fn main() {
         ecut,
       };
       scmd.run();
+    }, Commands::Diff {
+      dtree1,
+      dtree2,
+    } => {
+      let dt1 = DTree::load(&dtree1)
+        .expect(&format!("could not load dtree at '{dtree1}'"));
+      let dt2 = DTree::load(&dtree2)
+        .expect(&format!("could not load dtree at '{dtree2}'"));
+      let mut stdout = stdout().lock();
+      DTree::print_diff(&mut stdout, &dt1, &dt2)
+        .expect("incompatible decision trees");
     },
     #[cfg(feature = "gen")]
     Commands::Gen {
