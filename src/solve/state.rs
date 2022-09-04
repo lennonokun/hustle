@@ -19,31 +19,45 @@ pub struct SData {
   pub ntops1: u32,
   /// number of top words to try using hard heuristic
   pub ntops2: u32,
+  /// the relative heuristic difference cut-off
+  pub delta: f32,
   /// number of remaining words makes it "endgame"
   pub ecut: u32,
 }
 
 impl SData {
   pub fn new(cache: Cache, ntops1: u32,
-             ntops2: u32, ecut: u32) -> Self {
+             ntops2: u32, delta: f32, ecut: u32) -> Self {
     let cache = Arc::new(Mutex::new(cache));
     Self {
       cache,
       ntops1,
       ntops2,
+      delta,
       ecut,
     }
   }
 
-  pub fn new2(ntops1: u32, ntops2: u32) -> Self {
+  pub fn new2(ntops1: u32, ntops2: u32, delta: f32) -> Self {
     let cache = Cache::new(64, 16);
-    Self::new(cache, ntops1, ntops2, 15)
+    Self::new(cache, ntops1, ntops2, delta, 15)
   }
 
   pub fn deep_clone(&self) -> Self {
     let cache2 = (*self.cache.lock().unwrap()).clone();
-    Self::new(cache2, self.ntops1, self.ntops2, self.ecut)
+    Self::new(cache2, self.ntops1, self.ntops2, self.delta, self.ecut)
   }
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct ScoredWord {
+  pub w: Word,
+  pub h: f32,
+}
+
+// reversed, we want to select the highest h, not lowest
+fn cmp_scored(sw1: &ScoredWord, sw2: &ScoredWord) -> Ordering {
+  (&sw2.h).partial_cmp(&sw1.h).unwrap()
 }
 
 #[derive(Clone)]
@@ -170,7 +184,7 @@ impl State {
     (gss, ys)
   }
 
-  pub fn letter_heuristic(&self, gw: &Word, gss: &Vec<Vec<f32>>, ys: &Vec<f32>) -> f32 {
+  pub fn heuristic1(&self, gw: &Word, gss: &Vec<Vec<f32>>, ys: &Vec<f32>) -> f32 {
     let mut h = 0f32;
     for i in 0..(self.wlen as usize) {
       h += gss[gw.data[i] as usize][i];
@@ -195,7 +209,7 @@ impl State {
   // |b| is much larger than 1, so just use b=-2
   // fuzzier than using precomputed averages, but faster
   // could be parallelized
-  pub fn heuristic(&self, gw: &Word, sd: &SData) -> f32 {
+  pub fn heuristic2(&self, gw: &Word, sd: &SData) -> f32 {
     let mut parts = vec![false; 3usize.pow(self.wlen as u32)];
     let mut nparts = 0;
     for aw in self.aws.iter().cloned() {
@@ -214,18 +228,7 @@ impl State {
     }
   }
 
-  pub fn top_words(&self, sd: &SData) -> Vec<Word> {
-    #[derive(Debug, Clone, Copy)]
-    struct ScoredWord {
-      pub w: Word,
-      pub h: f32,
-    }
-
-    // reversed, we want to select the highest h, not lowest
-    fn cmp_scored(sw1: &ScoredWord, sw2: &ScoredWord) -> Ordering {
-      (&sw2.h).partial_cmp(&sw1.h).unwrap()
-    }
-
+  pub fn top_words(&self, sd: &SData) -> Vec<ScoredWord> {
     let glen = self.gws.len();
     let ntops1 = min(sd.ntops1 as usize, glen);
     let ntops2 = if self.hard {2 * sd.ntops2 as usize} else {sd.ntops2 as usize};
@@ -235,17 +238,19 @@ impl State {
     // select ntops1 with fast heuristic
     let mut tops: Vec<ScoredWord> = (&self.gws)
       .par_iter()
-      .map(|gw| ScoredWord {w: *gw, h: self.letter_heuristic(&gw, &gss, &ys)})
+      .map(|gw| ScoredWord {w: *gw, h: self.heuristic1(&gw, &gss, &ys)})
       .collect();
     select_by(&mut tops, ntops1-1, &mut cmp_scored);
     
     // select ntops2 with slow heuristic
     (&mut tops[0..ntops1]).par_iter_mut().for_each(|sw| {
-      (*sw).h = self.heuristic(&sw.w, sd)
+      (*sw).h = self.heuristic2(&sw.w, sd)
     });
     select_by(&mut tops[0..ntops1], ntops2-1, &mut cmp_scored);
 
-    tops.iter().take(ntops2).map(|tw| tw.w).collect()
+    tops.truncate(ntops2);
+    tops.sort_by(cmp_scored);
+    tops
   }
 
   pub fn solve_given(&self, gw: Word, sd: &SData, beta: u32) -> Option<DTree> {
@@ -348,14 +353,18 @@ impl State {
 
     // finally, check top words
     let sad = Mutex::new(SolveAllData {dt: None, beta});
-    self.top_words(&sd)
-      .into_par_iter()
-      .for_each(|w| {
+    let tops = self.top_words(&sd);
+    let top_h = tops[0].h;
+    tops
+      .into_iter()
+      .take_while(|sw| (top_h - sw.h) / top_h < sd.delta)
+      .par_bridge()
+      .for_each(|sw| {
       // stop early if best possible is found
       let sad2 = sad.lock().unwrap().clone();
       if sad2.beta <= 2 * alen as u32 {return}
       // solve and update best + beta
-      let dt2 = self.solve_given(w, sd, sad2.beta);
+      let dt2 = self.solve_given(sw.w, sd, sad2.beta);
       if let Some(dt2) = dt2 {
         let mut sad = sad.lock().unwrap();
         if dt2.get_tot() < sad.beta {

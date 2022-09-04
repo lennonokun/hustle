@@ -54,8 +54,11 @@ pub enum Commands {
     #[clap(long, short='m', default_value_t=1500)]
     ntops1: u32,
     /// the number of top hard heuristic words to try
-    #[clap(long, short='n', default_value_t=15)]
+    #[clap(long, short='n', default_value_t=30)]
     ntops2: u32,
+    /// adaptive top word max proportional delta
+    #[clap(long, short='d', default_value_t=0.15)]
+    delta: f32,
     /// the maximum number of answer words left for an "endgame"
     #[clap(long, short='e', default_value_t=15)]
     ecut: u32,
@@ -105,6 +108,9 @@ pub enum Commands {
     /// the range of number of top hard heuristic words to try
     #[clap(long, short='n', default_value_t=Range::new(1, 15, true))]
     ntops2: Range<u32>,
+    /// adaptive top word max proportional delta
+    #[clap(long, short='d', default_value_t=Range::new(0.1, 0.25, true))]
+    deltas: Range<f32>,
     /// endgame cutoff
     #[clap(long, short='e', default_value_t=Range::new(1, 30, true))]
     ecut: Range<u32>,

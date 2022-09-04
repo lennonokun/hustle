@@ -11,6 +11,7 @@ use super::{State, SData, Cache};
 #[derive(Tabled)]
 struct GResult {
   i: usize,
+  score: f32,
   guess: Word,
   total: u32,
   alen: u32,
@@ -65,6 +66,8 @@ pub struct SolveCommand {
   pub ntops2: u32,
   /// the maximum number of turns to solve in
   pub turns: Option<u32>,
+  /// adaptive top word max proportional delta
+  pub delta: f32,
   /// the maximum number of answer words left for an "endgame"
   pub ecut: u32,
 }
@@ -75,7 +78,7 @@ impl SolveCommand {
     let wbank = WBank::load(&self.wbank, self.wlen)
       .expect("could not load word bank!");
     let cache = Cache::new(self.ncacherows, self.ncachecols);
-    let sdata = SData::new(cache, self.ntops1, self.ntops2, self.ecut);
+    let sdata = SData::new(cache, self.ntops1, self.ntops2, self.delta, self.ecut);
 
     // parse gamestate
     let mut state = State::new(&wbank, self.turns, self.hard);
@@ -109,22 +112,23 @@ impl SolveCommand {
 
     let tops = state.top_words(sdata);
     let mut solutions = tops.into_par_iter()
-      .map(|w| (w, state.solve_given(w, sdata, u32::MAX)))
-      .collect::<Vec<(Word, Option<DTree>)>>();
-    solutions.sort_by_cached_key(|(w, odt)| odt.as_ref().map_or(u32::MAX, |dt| dt.get_tot()));
+      .map(|sw| (sw.w, sw.h, state.solve_given(sw.w, sdata, u32::MAX)))
+      .collect::<Vec<(Word, f32, Option<DTree>)>>();
+    solutions.sort_by_cached_key(|(w, h, odt)| odt.as_ref().map_or(u32::MAX, |dt| dt.get_tot()));
 
     println!("Guesses:");
     let gresults = solutions.par_iter().enumerate()
-      .map(|(i, (w, odt))| GResult {
+      .map(|(i, (w, h, odt))| GResult {
         i: i+1,
         guess: *w,
+        score: *h,
         total: odt.as_ref().map_or(u32::MAX, |odt| odt.get_tot()),
         alen: odt.as_ref().map_or(u32::MAX, |odt| odt.get_alen()),
         eval: odt.as_ref().map_or(f64::INFINITY, |odt| odt.get_eval()),
     }).collect::<Vec<GResult>>();
     println!("{}", Table::new(gresults).with(style));
     println!();
-    solutions.remove(0).1
+    solutions.remove(0).2
   }
 
   pub fn run(&self) {

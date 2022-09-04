@@ -11,7 +11,7 @@ use hustle::command::{cli_parse, Commands};
 #[cfg(feature = "gen")]
 use hustle::analysis::Generator;
 #[cfg(feature = "solve")]
-use hustle::solve::{Cache, SolveCommand};
+use hustle::solve::{Cache, SData, SolveCommand};
 #[cfg(feature = "play")]
 use hustle::game::play;
 
@@ -37,6 +37,7 @@ fn main() {
       ncachecols,
       ntops1,
       ntops2,
+      delta,
       turns,
       ecut,
     } => {
@@ -54,6 +55,7 @@ fn main() {
         ncachecols,
         ntops1,
         ntops2,
+        delta,
         ecut,
       };
       scmd.run();
@@ -82,6 +84,7 @@ fn main() {
       ncachecols,
       ntops1,
       ntops2,
+      deltas,
       ecut,
     } => {
       let wbank = WBank::load(&wbank, wlen).expect("could not load word bank");
@@ -99,6 +102,7 @@ fn main() {
         ncachecols,
         ntops1,
         ntops2,
+        deltas,
         ecuts: ecut,
         niter,
       };

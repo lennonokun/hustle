@@ -24,13 +24,14 @@ pub struct Generator {
   pub ncachecols: usize,
   pub ntops1: Range<u32>,
   pub ntops2: Range<u32>,
+  pub deltas: Range<f32>,
   pub ecuts: Range<u32>,
   pub niter: usize,
 }
 
 impl Generator { 
   fn header() -> &'static str {
-    "glen,alen,turns,tot,time,mode,ntops1,ntops2,ecut"
+    "glen,alen,turns,tot,time,mode,ntops1,ntops2,delta,ecut"
   }
 
   fn metadata(&self) -> Vec<String> {
@@ -40,6 +41,7 @@ impl Generator {
       format!("# turns: {}", self.turns),
       format!("# ntops1: {}", self.ntops1),
       format!("# ntops2: {}", self.ntops2),
+      format!("# deltas: {}", self.deltas),
       format!("# ecuts: {}", self.ecuts),
     ]
   }
@@ -92,6 +94,7 @@ impl Generator {
       let turns = self.turns.sample(&mut rng);
       let ntops1 = self.ntops1.sample(&mut rng);
       let ntops2 = self.ntops2.sample(&mut rng);
+      let delta = self.deltas.sample(&mut rng);
       let ecut = self.ecuts.sample(&mut rng);
       let cache = Cache::new(self.ncacherows, self.ncachecols);
       let hard = false; // FOR NOW ALWAYS EASY BC CACHE DOESNT CHECK GWS
@@ -99,7 +102,7 @@ impl Generator {
       // make state
       let wbank = self.wbank.sample(&mut rng, Some(glen as usize), Some(alen as usize));
       let state = State::new(&wbank, Some(turns), hard);
-      let mut sd = SData::new(cache, ntops1 as u32, ntops2 as u32, ecut as u32);
+      let mut sd = SData::new(cache, ntops1 as u32, ntops2, delta, ecut as u32);
 
       // solve and time
       let instant = Instant::now();
