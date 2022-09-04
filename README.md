@@ -32,10 +32,7 @@ inspired by the many wordle spin-offs like
 Hustle has three feature flags:
 * `play`: makes the command `hustle play` in which you can play wordle.
 * `solve`: makes the command `hustle solve`, which solves game states.
-* `gen`: requires `solve` and makes the following commands:
-  * `hustle hgen`: generate heuristic data
-  * `hustle ggen`: generate general analysis data
-  * `hustle lgen`: generate lower bounds data
+* `gen`: makes the command `hustle gen`, which generates solving data.
 
 You can specify which features you want by joining them with commas
 (e.g. FEATURES="play,solve").
@@ -54,7 +51,7 @@ $ sudo pacman -U hustle-1.3.1-1-x86_64.pkg.tar.zst
 ```
 
 ## Usage
-Refer to manpages with `man hustle`, and `man hustle <SUBCOMMAND>`.
+Refer to manpages with `man hustle`, and `man hustle-<SUBCOMMAND>`.
 
 ## Configuration
 Hustle can be configured with a TOML file at the following locations (with decreasing priority):
