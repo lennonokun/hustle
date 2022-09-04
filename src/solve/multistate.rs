@@ -5,6 +5,7 @@ use std::sync::{Arc, Mutex};
 use std::cmp::{min, Ordering};
 
 use rand::prelude::*;
+use rand::Rng;
 use rayon::prelude::*;
 use pdqselect::select_by;
 
@@ -128,7 +129,7 @@ impl MState {
     self.child(gws, awss, finished)
   }
 
-  pub fn sample_answers(&self, rng: &mut ThreadRng, md: &MData) -> Vec<Vec<Word>> {
+  pub fn sample_answers<R: Rng>(&self, rng: &mut R, md: &MData) -> Vec<Vec<Word>> {
     (0..md.nanswers as usize)
       .map(|_| {
         self.awss.iter()

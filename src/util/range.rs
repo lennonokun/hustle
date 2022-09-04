@@ -3,6 +3,7 @@ use std::fmt;
 use std::io::{Error, ErrorKind};
 
 use rand::prelude::*;
+use rand::Rng;
 use rand::distributions::Distribution;
 use rand::distributions::uniform::{Uniform, SampleUniform};
 
@@ -27,7 +28,7 @@ impl<X> Range<X> where X: Copy + SampleUniform {
     Self {a, b, inc, dist}
   }
 
-  pub fn sample(&self, rng: &mut ThreadRng) -> X {
+  pub fn sample<R: Rng>(&self, rng: &mut R) -> X {
     self.dist.sample(rng)
   }
 }

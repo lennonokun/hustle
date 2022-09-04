@@ -4,6 +4,7 @@ use std::path::Path;
 use std::fmt;
 
 use rand::prelude::*;
+use rand::Rng;
 
 use super::word::Word;
 use super::misc::*;
@@ -70,17 +71,17 @@ impl WBank {
     *self.aws.choose(rng).unwrap()
   }
 
-  pub fn sample_gws(&self, rng: &mut ThreadRng, n: usize) -> Vec<Word> {
+  pub fn sample_gws<R: Rng>(&self, rng: &mut R, n: usize) -> Vec<Word> {
     self.gws.choose_multiple(rng, n).cloned().collect()
   }
 
-  pub fn sample_aws(&self, rng: &mut ThreadRng, n: usize) -> Vec<Word> {
+  pub fn sample_aws<R: Rng>(&self, rng: &mut R, n: usize) -> Vec<Word> {
     self.aws.choose_multiple(rng, n).cloned().collect()
   }
   
-  pub fn sample(
+  pub fn sample<R: Rng>(
     &self,
-    rng: &mut ThreadRng,
+    rng: &mut R,
     glen: Option<usize>,
     alen: Option<usize>
   ) -> WBank {
