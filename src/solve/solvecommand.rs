@@ -46,8 +46,10 @@ pub struct SolveCommand {
   pub alist: bool,
   /// list potential feedbacks and their evaluations
   pub flist: bool,
-  /// list top guess evaluations
+  /// list top guess evaluations in tot order
   pub glist: bool,
+  /// list top guess evaluations in score order
+  pub glist2: bool,
   /// output decision tree to file
   pub dt: Option<String>,
   /// word length
@@ -105,7 +107,7 @@ impl SolveCommand {
     (state, sdata, gw, turn)
   }
 
-  fn run_glist(&self, state: &State, sdata: &SData) -> Option<DTree> {
+  fn run_glist(&self, state: &State, sdata: &SData, glist1: bool) -> Option<DTree> {
     let style = Style::modern()
       .off_horizontal()
       .lines([(1, Style::modern().get_horizontal())]);
@@ -114,7 +116,9 @@ impl SolveCommand {
     let mut solutions = tops.into_par_iter()
       .map(|sw| (sw.w, sw.h, state.solve_given(sw.w, sdata, u32::MAX)))
       .collect::<Vec<(Word, f32, Option<DTree>)>>();
-    solutions.sort_by_cached_key(|(w, h, odt)| odt.as_ref().map_or(u32::MAX, |dt| dt.get_tot()));
+    if glist1 {
+      solutions.sort_by_cached_key(|(w, h, odt)| odt.as_ref().map_or(u32::MAX, |dt| dt.get_tot()));
+    }
 
     println!("Guesses:");
     let gresults = solutions.par_iter().enumerate()
@@ -128,7 +132,11 @@ impl SolveCommand {
     }).collect::<Vec<GResult>>();
     println!("{}", Table::new(gresults).with(style));
     println!();
-    solutions.remove(0).2
+
+    solutions.into_iter()
+      .min_by_key(|sol| sol.2.as_ref().map_or(u32::MAX, |dt| dt.get_tot()))
+      .map(|sol| sol.2)
+      .flatten()
   }
 
   pub fn run(&self) {
@@ -151,8 +159,8 @@ impl SolveCommand {
 
     // solve and try to list guesses
     let start = Instant::now();
-    let dtree = if !word.is_some() && self.glist {
-      self.run_glist(&state, &sdata)
+    let dtree = if !word.is_some() && (self.glist || self.glist2) {
+      self.run_glist(&state, &sdata, self.glist)
     } else if !word.is_some() {
       state.solve(&sdata, u32::MAX)
     } else {

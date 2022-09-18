@@ -26,9 +26,12 @@ pub enum Commands {
     /// list potential feedbacks and their evaluations
     #[clap(long, short='f')]
     flist: bool,
-    /// list top guess evaluations
+    /// list top guess evaluations in tot order
     #[clap(long, short='g')]
     glist: bool,
+    /// list top guess evaluations in score order
+    #[clap(long, short='G')]
+    glist2: bool,
     /// output decision tree to file
     #[clap(long, short='o')]
     dt: Option<String>,
