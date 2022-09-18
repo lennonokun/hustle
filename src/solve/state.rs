@@ -6,6 +6,7 @@ use std::cmp::{min, Ordering};
 use rand::Rng;
 use rayon::prelude::*;
 use pdqselect::select_by;
+use fast_math::*;
 
 use super::Cache;
 use crate::util::*;
@@ -26,8 +27,13 @@ pub struct SData {
 }
 
 impl SData {
-  pub fn new(cache: Cache, ntops1: u32,
-             ntops2: u32, delta: f32, ecut: u32) -> Self {
+  pub fn new(
+    cache: Cache,
+    ntops1: u32,
+    ntops2: u32,
+    delta: f32,
+    ecut: u32
+  ) -> Self {
     let cache = Arc::new(Mutex::new(cache));
     Self {
       cache,
@@ -159,28 +165,30 @@ impl State {
 
   pub fn letter_evals(&self) -> (Vec<Vec<f32>>, Vec<f32>) {
     // get letter counts
-    let mut gss = vec![vec![0usize; self.wlen as usize]; 26];
-    let mut ys = vec![0usize; 26];
+    let mut gss = vec![vec![0f32; self.wlen as usize]; 26];
+    let mut ys = vec![0f32; 26];
     for aw in &self.aws {
       for i in 0..(self.wlen as usize) {
-        gss[aw.data[i] as usize][i] += 1;
+        gss[aw.data[i] as usize][i] += 1.;
         if !aw.data[0..i].contains(&aw.data[i]) {
-          ys[aw.data[i] as usize] += 1;
+          ys[aw.data[i] as usize] += 1.;
         }
       }
     }
 
-    // maximize entropy (very fuzzy) 
-    // x/n * (1 - x/n) prop to x * (n - x)
+    // compute entropy
     let n = self.aws.len() as f32;
-    let gss = gss.iter()
-      .map(|gs| gs.iter()
-           .map(|&g| g as f32 * (n - g as f32))
-           .collect())
-      .collect();
-    let ys = ys.iter()
-      .map(|&y| y as f32 * (n - y as f32))
-      .collect();
+    let entropy = |m: f32| {
+      if m == 0. { return 0.}
+      - (m/n) * log2_raw(m/n)
+    };
+    for i in 0..26 {
+      for j in 0..(self.wlen as usize) {
+        gss[i][j] = entropy(gss[i][j]);
+      }
+      ys[i] = entropy(ys[i]);
+    }
+
     (gss, ys)
   }
 
@@ -230,6 +238,7 @@ impl State {
 
   pub fn top_words(&self, sd: &SData) -> Vec<ScoredWord> {
     let glen = self.gws.len();
+    let alen = self.aws.len();
     let ntops1 = min(sd.ntops1 as usize, glen);
     let ntops2 = if self.hard {2 * sd.ntops2 as usize} else {sd.ntops2 as usize};
     let ntops2 = min(ntops2, glen);
@@ -238,19 +247,49 @@ impl State {
     // select ntops1 with fast heuristic
     let mut tops: Vec<ScoredWord> = (&self.gws)
       .par_iter()
-      .map(|gw| ScoredWord {w: *gw, h: self.heuristic1(&gw, &gss, &ys)})
+      .map(|gw| {
+        ScoredWord {w: *gw, h: self.heuristic1(&gw, &gss, &ys)}
+      })
       .collect();
+    
+//    let ntops1 = if alen < 10 {
+//      500
+//    } else if alen < 25 {
+//      1000
+//    } else {
+//      3000
+//    };
+
+    // select ntops1 with fast heuristic
     select_by(&mut tops, ntops1-1, &mut cmp_scored);
     
-    // select ntops2 with slow heuristic
+    // select ntops2 with slow heuristic, and stop if best found
+    let best = Mutex::new(None);
     (&mut tops[0..ntops1]).par_iter_mut().for_each(|sw| {
-      (*sw).h = self.heuristic2(&sw.w, sd)
+      if best.lock().unwrap().is_none() {
+        (*sw).h = self.heuristic2(&sw.w, sd);
+        // stop if best is found
+        if (*sw).h >= (2*alen) as f32 {
+          *best.lock().unwrap() = Some(*sw);
+        }
+      }
     });
-    select_by(&mut tops[0..ntops1], ntops2-1, &mut cmp_scored);
 
+    // just return a vec with the best word if found
+    if let Some(sw) = *best.lock().unwrap() {
+      return vec![sw];
+    }
+
+    select_by(&mut tops[0..ntops1], ntops2-1, &mut cmp_scored);
     tops.truncate(ntops2);
+
     tops.sort_by(cmp_scored);
-    tops
+    if tops[0].h >= (2*alen - 2) as f32 {
+      vec![tops[0]]
+    } else {
+      tops
+    }
+
   }
 
   pub fn solve_given(&self, gw: Word, sd: &SData, beta: u32) -> Option<DTree> {
